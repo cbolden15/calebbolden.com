@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caleb Bolden - Mobile Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0a0a0f;
+            color: #e5e7eb;
+            max-width: 428px;
+            margin: 0 auto;
+        }
+
+        /* Background gradient orbs */
+        .bg-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-orb-1 {
+            width: 300px;
+            height: 300px;
+            background: #06b6d4;
+            top: -100px;
+            right: -100px;
+        }
+
+        .bg-orb-2 {
+            width: 250px;
+            height: 250px;
+            background: #3b82f6;
+            bottom: -50px;
+            left: -50px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(10, 10, 15, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .menu-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .menu-icon span {
+            width: 100%;
+            height: 2px;
+            background: #06b6d4;
+            border-radius: 2px;
+        }
+
+        /* Main content */
+        main {
+            padding-top: 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        section {
+            padding: 2rem 1.5rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: calc(100vh - 60px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .tagline-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .chip {
+            padding: 0.4rem 0.8rem;
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            color: #06b6d4;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subhead {
+            font-size: 1rem;
+            color: #9ca3af;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(6, 182, 212, 0.05);
+            border: 1px solid rgba(6, 182, 212, 0.1);
+            border-radius: 0.75rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #06b6d4;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: #9ca3af;
+        }
+
+        .cta-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+
+        .btn-outline {
+            border: 2px solid #06b6d4;
+            color: #06b6d4;
+            background: transparent;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            color: white;
+            border: none;
+        }
+
+        /* Workflow Demos - Simplified for Mobile */
+        .workflow-section {
+            background: rgba(6, 182, 212, 0.03);
+            border-radius: 0.75rem;
+            padding: 2rem 1.5rem;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: #ffffff;
+        }
+
+        .section-subtitle {
+            color: #9ca3af;
+            margin-bottom: 2rem;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        .workflow-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .workflow-item {
+            padding: 1.5rem;
+            background: rgba(10, 10, 15, 0.5);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 0.75rem;
+        }
+
+        .workflow-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 0.5rem;
+        }
+
+        .workflow-description {
+            font-size: 0.875rem;
+            color: #9ca3af;
+            line-height: 1.5;
+        }
+
+        .workflow-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .workflow-step {
+            padding: 0.75rem;
+            background: rgba(6, 182, 212, 0.05);
+            border-left: 3px solid #06b6d4;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            color: #e5e7eb;
+        }
+
+        /* Career Timeline */
+        .timeline-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .timeline-card {
+            background: rgba(6, 182, 212, 0.05);
+            border: 1px solid rgba(6, 182, 212, 0.1);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+        }
+
+        .timeline-card.current {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(59, 130, 246, 0.1));
+            border-color: #06b6d4;
+        }
+
+        .timeline-date {
+            color: #06b6d4;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .timeline-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: #ffffff;
+        }
+
+        .timeline-company {
+            color: #9ca3af;
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .timeline-description {
+            color: #6b7280;
+            font-size: 0.8rem;
+            line-height: 1.5;
+        }
+
+        /* Blog Preview */
+        .blog-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .blog-card {
+            background: rgba(6, 182, 212, 0.05);
+            border: 1px solid rgba(6, 182, 212, 0.1);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+        }
+
+        .blog-category {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 1rem;
+            font-size: 0.7rem;
+            color: #06b6d4;
+            margin-bottom: 0.75rem;
+        }
+
+        .blog-date {
+            color: #6b7280;
+            font-size: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .blog-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .blog-excerpt {
+            color: #9ca3af;
+            font-size: 0.8rem;
+            line-height: 1.5;
+        }
+
+        /* Floating Chat Button */
+        .chat-fab {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(6, 182, 212, 0.4);
+            cursor: pointer;
+            z-index: 150;
+            animation: pulse-fab 2s infinite;
+        }
+
+        @keyframes pulse-fab {
+            0%, 100% {
+                box-shadow: 0 4px 20px rgba(6, 182, 212, 0.4);
+            }
+            50% {
+                box-shadow: 0 4px 30px rgba(6, 182, 212, 0.6);
+            }
+        }
+
+        .chat-fab::before {
+            content: '💬';
+            font-size: 1.5rem;
+        }
+
+        .chat-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background: #10b981;
+            border-radius: 50%;
+            border: 2px solid #0a0a0f;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Chat Modal (would slide up from bottom) */
+        .chat-preview {
+            margin: 2rem 1.5rem;
+            padding: 1.5rem;
+            background: rgba(6, 182, 212, 0.05);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 0.75rem;
+        }
+
+        .chat-preview-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .online-indicator {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+        }
+
+        .chat-preview-title {
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .chat-preview-text {
+            font-size: 0.875rem;
+            color: #9ca3af;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .suggested-question {
+            padding: 0.75rem;
+            background: rgba(6, 182, 212, 0.05);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem 1.5rem;
+            border-top: 1px solid rgba(6, 182, 212, 0.1);
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background orbs -->
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">CB</div>
+            <div class="menu-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="tagline-chips">
+                <span class="chip">Product Operations</span>
+                <span class="chip">AI Automation</span>
+                <span class="chip">Process Improvement</span>
+            </div>
+            <h1>I build intelligent systems that give people their time back.</h1>
+            <p class="hero-subhead">
+                Product Manager at Blockdaemon with 10+ years optimizing operations at scale.
+                Lean Six Sigma certified.
+            </p>
+            <div class="stats-bar">
+                <div class="stat">
+                    <span class="stat-value">10+</span>
+                    <span class="stat-label">Years</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">50+</span>
+                    <span class="stat-label">Workflows</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">$2M+</span>
+                    <span class="stat-label">Savings</span>
+                </div>
+            </div>
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-primary">Need Automation?</a>
+                <a href="#" class="btn btn-outline">I'm Hiring</a>
+            </div>
+        </section>
+
+        <!-- Workflow Demos - Simplified for Mobile -->
+        <section class="workflow-section">
+            <h2>Automation in Action</h2>
+            <p class="section-subtitle">Real workflows that eliminate manual work</p>
+            <div class="workflow-list">
+                <div class="workflow-item">
+                    <div class="workflow-title">Lead Enrichment</div>
+                    <p class="workflow-description">Automatically research and score new leads</p>
+                    <div class="workflow-flow">
+                        <div class="workflow-step">1. New lead enters CRM</div>
+                        <div class="workflow-step">2. Enrich with company data</div>
+                        <div class="workflow-step">3. AI scores lead quality</div>
+                        <div class="workflow-step">4. Notify sales team</div>
+                    </div>
+                </div>
+                <div class="workflow-item">
+                    <div class="workflow-title">Content Repurposing</div>
+                    <p class="workflow-description">Turn one blog post into multi-platform content</p>
+                    <div class="workflow-flow">
+                        <div class="workflow-step">1. Publish blog post</div>
+                        <div class="workflow-step">2. AI generates summaries</div>
+                        <div class="workflow-step">3. Create social posts</div>
+                        <div class="workflow-step">4. Schedule distribution</div>
+                    </div>
+                </div>
+                <div class="workflow-item">
+                    <div class="workflow-title">Meeting Notes</div>
+                    <p class="workflow-description">Record, transcribe, and extract action items</p>
+                    <div class="workflow-flow">
+                        <div class="workflow-step">1. Record meeting</div>
+                        <div class="workflow-step">2. Transcribe with Whisper</div>
+                        <div class="workflow-step">3. AI extracts tasks</div>
+                        <div class="workflow-step">4. Create tickets</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Career Timeline -->
+        <section>
+            <h2>Career Journey</h2>
+            <p class="section-subtitle">Financial services to blockchain</p>
+            <div class="timeline-cards">
+                <div class="timeline-card current">
+                    <div class="timeline-date">2023 - Present</div>
+                    <h3 class="timeline-title">Product Manager</h3>
+                    <div class="timeline-company">Blockdaemon</div>
+                    <p class="timeline-description">
+                        Leading product operations for blockchain infrastructure.
+                        Driving automation across deployment workflows.
+                    </p>
+                </div>
+                <div class="timeline-card">
+                    <div class="timeline-date">2018 - 2023</div>
+                    <h3 class="timeline-title">Sr. Operations Analyst</h3>
+                    <div class="timeline-company">US Bank / Elavon</div>
+                    <p class="timeline-description">
+                        Optimized payment processing. Reduced processing time 40%
+                        with Lean Six Sigma methodologies.
+                    </p>
+                </div>
+                <div class="timeline-card">
+                    <div class="timeline-date">2013 - 2018</div>
+                    <h3 class="timeline-title">Process Improvement Specialist</h3>
+                    <div class="timeline-company">TSYS</div>
+                    <p class="timeline-description">
+                        Led process improvements achieving $1.5M annual savings
+                        through workflow optimization.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Preview -->
+        <section>
+            <h2>Latest Insights</h2>
+            <p class="section-subtitle">Analysis and technical deep-dives</p>
+            <div class="blog-grid">
+                <div class="blog-card">
+                    <span class="blog-category">AI Trends</span>
+                    <div class="blog-date">January 15, 2026</div>
+                    <h3 class="blog-title">The State of AI Agents in 2026</h3>
+                    <p class="blog-excerpt">
+                        Analyzing the shift from chatbots to autonomous agents and what
+                        it means for automation...
+                    </p>
+                </div>
+                <div class="blog-card">
+                    <span class="blog-category">Automation</span>
+                    <div class="blog-date">January 10, 2026</div>
+                    <h3 class="blog-title">Beyond RPA: Next-Gen Workflows</h3>
+                    <p class="blog-excerpt">
+                        Why traditional RPA is dying and what intelligent automation
+                        looks like in practice...
+                    </p>
+                </div>
+                <div class="blog-card">
+                    <span class="blog-category">Blockchain</span>
+                    <div class="blog-date">January 5, 2026</div>
+                    <h3 class="blog-title">Enterprise Blockchain: Lessons Learned</h3>
+                    <p class="blog-excerpt">
+                        Three years at Blockdaemon taught me these truths about
+                        production blockchain deployments...
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chat Preview -->
+        <div class="chat-preview">
+            <div class="chat-preview-header">
+                <div class="online-indicator"></div>
+                <div class="chat-preview-title">Ask Me Anything</div>
+            </div>
+            <p class="chat-preview-text">
+                Tap the chat button to ask about Caleb's experience, projects, or how he can help your business.
+            </p>
+            <div class="suggested-question">
+                💼 What's Caleb's AI automation experience?
+            </div>
+            <div class="suggested-question">
+                🛠️ Show me workflow examples
+            </div>
+            <div class="suggested-question">
+                🚀 How can Caleb help my business?
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Chat Button -->
+    <div class="chat-fab">
+        <div class="chat-badge"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Caleb Bolden<br>Built with Next.js, powered by AI</p>
+    </footer>
+</body>
+</html>
