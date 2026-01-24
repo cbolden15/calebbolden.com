@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-dark-base text-gray-200;
+  }
+}
+
+@layer utilities {
+  .glass-morphic {
+    @apply bg-dark-base/70 backdrop-blur-glass border border-primary-cyan/10;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-white to-primary-cyan bg-clip-text text-transparent;
+  }
+}
