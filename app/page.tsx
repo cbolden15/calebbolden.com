@@ -2,6 +2,7 @@ import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import WorkflowDemo from '@/components/WorkflowDemo';
 import CareerTimeline from '@/components/CareerTimeline';
+import BlogPreview from '@/components/BlogPreview';
 import Footer from '@/components/Footer';
 
 export default function Home() {
@@ -12,6 +13,7 @@ export default function Home() {
         <Hero />
         <WorkflowDemo />
         <CareerTimeline />
+        <BlogPreview />
       </main>
       <Footer />
     </>
