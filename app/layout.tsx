@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import AIChat from "@/components/AIChat";
 
 export const metadata: Metadata = {
   title: "Caleb Bolden | AI Automation & Product Operations",
@@ -25,6 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased">
         {children}
+        <AIChat />
       </body>
     </html>
   );
