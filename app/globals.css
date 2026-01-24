@@ -1,19 +1,31 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-primary-cyan: #06b6d4;
+  --color-primary-blue: #3b82f6;
+  --color-dark-base: #0a0a0f;
+  --color-dark-lighter: #1a1a1f;
+  --blur-glass: 10px;
+}
 
 @layer base {
   body {
-    @apply bg-dark-base text-gray-200;
+    background-color: var(--color-dark-base);
+    color: rgb(229 231 235);
   }
 }
 
 @layer utilities {
   .glass-morphic {
-    @apply bg-dark-base/70 backdrop-blur-glass border border-primary-cyan/10;
+    background-color: rgb(10 10 15 / 0.7);
+    backdrop-filter: blur(var(--blur-glass));
+    border: 1px solid rgb(6 182 212 / 0.1);
   }
 
   .gradient-text {
-    @apply bg-gradient-to-r from-white to-primary-cyan bg-clip-text text-transparent;
+    background-image: linear-gradient(to right, white, var(--color-primary-cyan));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
   }
 }
