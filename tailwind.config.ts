@@ -21,8 +21,22 @@ const config: Config = {
       backdropBlur: {
         'glass': '10px',
       },
+      typography: {
+        invert: {
+          css: {
+            '--tw-prose-body': '#e5e7eb',
+            '--tw-prose-headings': '#ffffff',
+            '--tw-prose-links': '#06b6d4',
+            '--tw-prose-bold': '#ffffff',
+            '--tw-prose-code': '#06b6d4',
+            '--tw-prose-quotes': '#9ca3af',
+          },
+        },
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 };
 export default config;
