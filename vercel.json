@@ -4,9 +4,6 @@
   "devCommand": "next dev",
   "installCommand": "npm install",
   "regions": ["iad1"],
-  "env": {
-    "GOOGLE_GENERATIVE_AI_API_KEY": "@google-generative-ai-api-key"
-  },
   "headers": [
     {
       "source": "/(.*)",
