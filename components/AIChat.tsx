@@ -3,8 +3,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport, type UIMessage } from 'ai';
-
-type ChatContext = 'hiring' | 'automation' | undefined;
+import type { ChatContext } from '@/lib/chat/system-prompt';
 
 /** Extract the concatenated text content from a UIMessage's parts. */
 function getMessageText(message: UIMessage): string {
@@ -35,7 +34,7 @@ export default function AIChat() {
     [],
   );
 
-  const { messages, sendMessage, status } = useChat({
+  const { messages, sendMessage, status, error } = useChat({
     transport,
   });
 
@@ -165,6 +164,11 @@ export default function AIChat() {
               Thinking...
             </div>
           )}
+          {error && (
+            <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-sm text-red-400">
+              Something went wrong. Please try again.
+            </div>
+          )}
           <div ref={messagesEndRef} />
         </div>
 
@@ -181,11 +185,4 @@ export default function AIChat() {
       </aside>
     </>
   );
-}
-
-// Export function to open chat with context
-export function openChatWithContext(ctx: ChatContext) {
-  // This will be called by Header CTA buttons
-  const event = new CustomEvent('open-chat', { detail: { context: ctx } });
-  window.dispatchEvent(event);
 }
