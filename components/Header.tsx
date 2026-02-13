@@ -40,8 +40,7 @@ export default function Header() {
           <button
             className="px-6 py-3 border-2 border-primary-cyan text-primary-cyan rounded-lg hover:bg-primary-cyan/10 transition-all font-semibold"
             onClick={() => {
-              // Will integrate with AI chat later
-              console.log('Open chat with hiring context');
+              window.dispatchEvent(new CustomEvent('open-chat', { detail: { context: 'hiring' } }));
             }}
           >
             I'm Hiring
@@ -49,8 +48,7 @@ export default function Header() {
           <button
             className="hidden md:block px-6 py-3 bg-gradient-to-r from-primary-cyan to-primary-blue text-white rounded-lg hover:shadow-lg hover:shadow-primary-cyan/30 hover:-translate-y-0.5 transition-all font-semibold"
             onClick={() => {
-              // Will integrate with AI chat later
-              console.log('Open chat with client context');
+              window.dispatchEvent(new CustomEvent('open-chat', { detail: { context: 'automation' } }));
             }}
           >
             Need Automation?
