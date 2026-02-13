@@ -1,91 +1,87 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { useChat } from '@ai-sdk/react';
+import { DefaultChatTransport, type UIMessage } from 'ai';
 
 type ChatContext = 'hiring' | 'automation' | undefined;
 
-interface Message {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
+/** Extract the concatenated text content from a UIMessage's parts. */
+function getMessageText(message: UIMessage): string {
+  return message.parts
+    .filter((p): p is { type: 'text'; text: string } => p.type === 'text')
+    .map((p) => p.text)
+    .join('');
 }
 
 export default function AIChat() {
   const [isOpen, setIsOpen] = useState(false);
-  const [context] = useState<ChatContext>(undefined);
-  const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [context, setContext] = useState<ChatContext>(undefined);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!input.trim() || isLoading) return;
+  // Use a ref so the transport body function always reads the latest context
+  const contextRef = useRef<ChatContext>(context);
+  useEffect(() => {
+    contextRef.current = context;
+  }, [context]);
 
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      role: 'user',
-      content: input.trim(),
-    };
+  // Create transport with dynamic body that includes the current context
+  const transport = useMemo(
+    () =>
+      new DefaultChatTransport({
+        api: '/api/chat',
+        body: () => ({ context: contextRef.current }),
+      }),
+    [],
+  );
 
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
-    setIsLoading(true);
+  const { messages, sendMessage, status } = useChat({
+    transport,
+  });
 
-    try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          messages: [...messages, userMessage].map(m => ({ role: m.role, content: m.content })),
-          context,
-        }),
-      });
-
-      if (!response.ok) throw new Error('Failed to get response');
-
-      const reader = response.body?.getReader();
-      const decoder = new TextDecoder();
-      let assistantMessage = '';
-
-      const assistantId = (Date.now() + 1).toString();
-
-      if (reader) {
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-
-          const chunk = decoder.decode(value);
-          assistantMessage += chunk;
-
-          setMessages(prev => {
-            const filtered = prev.filter(m => m.id !== assistantId);
-            return [
-              ...filtered,
-              { id: assistantId, role: 'assistant' as const, content: assistantMessage },
-            ];
-          });
-        }
-      }
-    } catch (error) {
-      console.error('Chat error:', error);
-      setMessages(prev => [
-        ...prev,
-        {
-          id: Date.now().toString(),
-          role: 'assistant',
-          content: 'Sorry, I encountered an error. Please try again.',
-        },
-      ]);
-    } finally {
-      setIsLoading(false);
+  // Listen for the 'open-chat' custom event dispatched by Header CTA buttons
+  useEffect(() => {
+    function handleOpenChat(e: Event) {
+      const detail = (e as CustomEvent).detail as {
+        context: ChatContext;
+      };
+      setContext(detail.context);
+      setIsOpen(true);
     }
+
+    window.addEventListener('open-chat', handleOpenChat);
+    return () => window.removeEventListener('open-chat', handleOpenChat);
+  }, []);
+
+  // Auto-scroll to bottom when messages change or status changes
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, status]);
+
+  const isWaiting = status === 'submitted';
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const inputEl = form.elements.namedItem('chat-input') as HTMLInputElement;
+    const value = inputEl.value.trim();
+    if (!value || status === 'submitted' || status === 'streaming') return;
+    sendMessage({ text: value });
+    inputEl.value = '';
+  };
+
+  const handleSuggestedClick = (question: string) => {
+    // Strip the leading emoji + space
+    const text = question.replace(/^[^\s]+\s/, '');
+    if (status === 'submitted' || status === 'streaming') return;
+    sendMessage({ text });
   };
 
   const suggestedQuestions = [
-    "💼 What's Caleb's experience with AI automation?",
-    "🛠️ Can you show me examples of workflows he's built?",
-    "📊 What's his background in process improvement?",
-    "🚀 How can Caleb help my business?",
+    "\uD83D\uDCBC What's Caleb's experience with AI automation?",
+    '\uD83D\uDEE0\uFE0F Can you show me examples of workflows he\'s built?',
+    "\uD83D\uDCCA What's his background in process improvement?",
+    '\uD83D\uDE80 How can Caleb help my business?',
   ];
 
   // Desktop: always visible sidebar
@@ -126,7 +122,7 @@ export default function AIChat() {
             </button>
           </div>
           <p className="text-sm text-gray-400">
-            I know Caleb's background, projects, and experience
+            I know Caleb&apos;s background, projects, and experience
           </p>
         </div>
 
@@ -135,14 +131,14 @@ export default function AIChat() {
           {messages.length === 0 ? (
             <>
               <div className="p-4 bg-primary-cyan/10 border border-primary-cyan/20 rounded-lg text-sm text-gray-300">
-                👋 Hi! I'm here to answer any questions about Caleb's experience, skills, or projects.
+                👋 Hi! I&apos;m here to answer any questions about Caleb&apos;s experience, skills, or projects.
                 What would you like to know?
               </div>
               <div className="space-y-3">
                 {suggestedQuestions.map((question, i) => (
                   <button
                     key={i}
-                    onClick={() => setInput(question.replace(/^[^\s]+\s/, ''))}
+                    onClick={() => handleSuggestedClick(question)}
                     className="w-full text-left p-3 bg-primary-cyan/5 border border-primary-cyan/20 rounded-lg text-sm text-gray-400 hover:bg-primary-cyan/10 hover:border-primary-cyan hover:text-primary-cyan transition-all"
                   >
                     {question}
@@ -154,31 +150,31 @@ export default function AIChat() {
             messages.map((message) => (
               <div
                 key={message.id}
-                className={`p-4 rounded-lg text-sm ${
+                className={`p-4 rounded-lg text-sm whitespace-pre-wrap ${
                   message.role === 'user'
                     ? 'bg-primary-blue/10 border border-primary-blue/20 ml-8'
                     : 'bg-primary-cyan/10 border border-primary-cyan/20'
                 }`}
               >
-                {message.content}
+                {getMessageText(message)}
               </div>
             ))
           )}
-          {isLoading && (
+          {isWaiting && (
             <div className="p-4 bg-primary-cyan/10 border border-primary-cyan/20 rounded-lg text-sm text-gray-400">
               Thinking...
             </div>
           )}
+          <div ref={messagesEndRef} />
         </div>
 
         {/* Input */}
-        <form onSubmit={handleSubmit} className="p-6 border-t border-primary-cyan/20">
+        <form onSubmit={handleFormSubmit} className="p-6 border-t border-primary-cyan/20">
           <input
             type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
+            name="chat-input"
             placeholder="Type your question..."
-            disabled={isLoading}
+            disabled={status === 'submitted' || status === 'streaming'}
             className="w-full px-4 py-3 bg-primary-cyan/5 border border-primary-cyan/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary-cyan focus:bg-primary-cyan/10 disabled:opacity-50"
           />
         </form>
