@@ -1,4 +1,4 @@
-type ChatContext = 'hiring' | 'automation' | undefined;
+export type ChatContext = 'hiring' | 'automation' | undefined;
 
 const BASE_PROMPT = `You are an AI assistant on Caleb Bolden's personal website (calebbolden.com). You know Caleb's complete background and answer questions about him in a friendly, professional tone. Keep responses concise (2-4 paragraphs max) unless asked for detail.
 
