@@ -1,5 +1,6 @@
 import { tool } from 'ai';
 import { z } from 'zod';
+import { execSync } from 'child_process';
 
 export const chatTools = {
   scrapeWebsite: tool({
@@ -126,17 +127,41 @@ export const chatTools = {
         .describe('Brief summary of what the user needs and what was recommended'),
     }),
     execute: async ({ name, email, phone, businessName, websiteUrl, summary }) => {
-      // Send notification to Caleb (webhook, email, etc.)
-      // For now, log it server-side. Replace with actual notification later.
-      console.log('=== NEW LEAD CAPTURED ===');
-      console.log(JSON.stringify({ name, email, phone, businessName, websiteUrl, summary }, null, 2));
+      const lines = [
+        'New lead from calebbolden.com chatbot',
+        '',
+        `Name: ${name || 'Not provided'}`,
+        `Email: ${email || 'Not provided'}`,
+        `Phone: ${phone || 'Not provided'}`,
+        `Business: ${businessName || 'Not provided'}`,
+        `Website: ${websiteUrl || 'Not provided'}`,
+        '',
+        'Summary:',
+        summary,
+      ];
+      const body = lines.join('\n');
 
-      // TODO: Replace with actual notification (n8n webhook, email API, etc.)
-      // Example: await fetch('https://your-n8n-webhook-url', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ name, email, phone, businessName, websiteUrl, summary }),
-      // });
+      try {
+        const subject = `New Lead: ${name || businessName || 'Website Visitor'}`;
+        const cmd = [
+          'node', '/opt/gws/run-gws.js',
+          'gmail', 'messages', 'send',
+          '--to', 'cbolden15@gmail.com',
+          '--subject', JSON.stringify(subject),
+          '--body', JSON.stringify(body),
+        ].join(' ');
+
+        execSync(cmd, {
+          timeout: 15000,
+          env: {
+            ...process.env,
+            GWS_CONFIG_DIR: '/opt/gws-config',
+            HOME: '/opt/gws-config',
+          },
+        });
+      } catch (err) {
+        console.error('Failed to send lead email:', err);
+      }
 
       return { success: true, message: 'Contact information saved. Caleb will follow up shortly.' };
     },
