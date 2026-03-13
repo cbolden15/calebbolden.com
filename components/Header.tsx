@@ -4,57 +4,17 @@ import Link from 'next/link';
 
 export default function Header() {
   return (
-    <header className="fixed top-0 left-0 right-0 md:right-[400px] z-50 glass-morphic">
-      <nav className="flex justify-between items-center px-6 md:px-12 py-6 max-w-7xl mx-auto">
-        {/* Logo */}
-        <Link href="/" className="text-2xl font-bold gradient-text">
-          CB
+    <nav style={{ padding: '20px 0', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+      <div className="max-w-[1100px] mx-auto px-6 flex justify-between items-center">
+        <Link href="/" className="text-[22px] font-extrabold tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+          CALEB <span style={{ fontWeight: 500, color: '#60A5FA' }}>BOLDEN</span>
         </Link>
-
-        {/* Navigation Links */}
-        <ul className="hidden md:flex gap-8">
-          <li>
-            <Link href="/about" className="text-gray-400 hover:text-primary-cyan transition-colors">
-              About
-            </Link>
-          </li>
-          <li>
-            <Link href="/workflows" className="text-gray-400 hover:text-primary-cyan transition-colors">
-              Workflows
-            </Link>
-          </li>
-          <li>
-            <Link href="/blog" className="text-gray-400 hover:text-primary-cyan transition-colors">
-              Blog
-            </Link>
-          </li>
-          <li>
-            <Link href="/contact" className="text-gray-400 hover:text-primary-cyan transition-colors">
-              Contact
-            </Link>
-          </li>
+        <ul className="hidden md:flex gap-7 list-none">
+          <li><Link href="#services" className="text-sm font-medium text-gray-400 hover:text-[#93C5FD] transition-colors">Services</Link></li>
+          <li><Link href="#industries" className="text-sm font-medium text-gray-400 hover:text-[#93C5FD] transition-colors">Industries</Link></li>
+          <li><Link href="/blog" className="text-sm font-medium text-gray-400 hover:text-[#93C5FD] transition-colors">Blog</Link></li>
         </ul>
-
-        {/* CTAs */}
-        <div className="flex gap-4">
-          <button
-            className="px-6 py-3 border-2 border-primary-cyan text-primary-cyan rounded-lg hover:bg-primary-cyan/10 transition-all font-semibold"
-            onClick={() => {
-              window.dispatchEvent(new CustomEvent('open-chat', { detail: { context: 'hiring' } }));
-            }}
-          >
-            I'm Hiring
-          </button>
-          <button
-            className="hidden md:block px-6 py-3 bg-gradient-to-r from-primary-cyan to-primary-blue text-white rounded-lg hover:shadow-lg hover:shadow-primary-cyan/30 hover:-translate-y-0.5 transition-all font-semibold"
-            onClick={() => {
-              window.dispatchEvent(new CustomEvent('open-chat', { detail: { context: 'automation' } }));
-            }}
-          >
-            Need Automation?
-          </button>
-        </div>
-      </nav>
-    </header>
+      </div>
+    </nav>
   );
 }

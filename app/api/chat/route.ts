@@ -1,13 +1,14 @@
 import { google } from '@ai-sdk/google';
-import { streamText, convertToModelMessages } from 'ai';
-import { getSystemPrompt, type ChatContext } from '@/lib/chat/system-prompt';
+import { streamText, convertToModelMessages, stepCountIs } from 'ai';
+import { getSystemPrompt } from '@/lib/chat/system-prompt';
+import { chatTools } from '@/lib/chat/tools';
 
-export const maxDuration = 30;
+export const maxDuration = 60;
 
 export async function POST(req: Request) {
-  const { messages, context } = await req.json();
+  const { messages } = await req.json();
 
-  const systemPrompt = getSystemPrompt(context as ChatContext);
+  const systemPrompt = getSystemPrompt();
 
   const modelMessages = await convertToModelMessages(messages);
 
@@ -15,6 +16,8 @@ export async function POST(req: Request) {
     model: google('gemini-2.0-flash'),
     system: systemPrompt,
     messages: modelMessages,
+    tools: chatTools,
+    stopWhen: stepCountIs(3),
   });
 
   return result.toUIMessageStreamResponse();
