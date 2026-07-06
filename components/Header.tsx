@@ -1,20 +1,47 @@
-'use client';
-
 import Link from 'next/link';
+
+// Hairline three-zone nav: brand / links / CTA. Built from rules, not chips
+// (working-wall direction, DESIGN.md). Offset right for the chat sidebar.
+
+const links = [
+  { label: 'Services', href: '#services' },
+  { label: 'Method', href: '#method' },
+  { label: 'Packages', href: '#packages' },
+  { label: 'Work', href: '#work' },
+  { label: 'Blog', href: '/blog' },
+];
 
 export default function Header() {
   return (
-    <nav style={{ padding: '20px 0', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-      <div className="max-w-[1100px] mx-auto px-6 flex justify-between items-center">
-        <Link href="/" className="text-[22px] font-extrabold tracking-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-          CALEB <span style={{ fontWeight: 500, color: '#60A5FA' }}>BOLDEN</span>
-        </Link>
-        <ul className="hidden md:flex gap-7 list-none">
-          <li><Link href="#services" className="text-sm font-medium text-gray-400 hover:text-[#93C5FD] transition-colors">Services</Link></li>
-          <li><Link href="#industries" className="text-sm font-medium text-gray-400 hover:text-[#93C5FD] transition-colors">Industries</Link></li>
-          <li><Link href="/blog" className="text-sm font-medium text-gray-400 hover:text-[#93C5FD] transition-colors">Blog</Link></li>
-        </ul>
-      </div>
+    <nav
+      className="chat-offset relative z-20 flex h-16 items-center justify-between gap-6 px-5 sm:px-8"
+      style={{ borderBottom: '1px solid var(--color-hairline)' }}
+    >
+      <Link
+        href="/"
+        className="type-display transition-opacity hover:opacity-60"
+        style={{ fontSize: 15, fontWeight: 700, letterSpacing: '0.01em' }}
+      >
+        Caleb Bolden
+      </Link>
+
+      <ul className="hidden list-none items-center gap-7 lg:flex">
+        {links.map((l) => (
+          <li key={l.href}>
+            <Link
+              href={l.href}
+              className="transition-colors hover:text-[var(--color-blue)]"
+              style={{ fontSize: 14, fontWeight: 500, color: 'var(--color-ink-muted)' }}
+            >
+              {l.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+
+      <Link href="/contact" className="btn-ink" style={{ padding: '8px 16px', fontSize: 14 }}>
+        Let&apos;s talk
+      </Link>
     </nav>
   );
 }

@@ -1,8 +1,9 @@
 import Header from '@/components/Header';
-import Hero3D from '@/components/Hero3D';
+import Hero from '@/components/Hero';
 import PainSolution from '@/components/PainSolution';
-import Ecosystem from '@/components/Ecosystem';
 import Process from '@/components/Process';
+import Packages from '@/components/Packages';
+import Proof from '@/components/Proof';
 import Industries from '@/components/Industries';
 import CTA from '@/components/CTA';
 import Footer from '@/components/Footer';
@@ -11,11 +12,12 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main className="md:mr-[360px]">
-        <Hero3D />
+      <main className="chat-offset">
+        <Hero />
         <PainSolution />
-        <Ecosystem />
         <Process />
+        <Packages />
+        <Proof />
         <Industries />
         <CTA />
       </main>

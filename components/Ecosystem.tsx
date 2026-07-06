@@ -7,7 +7,7 @@ const spokes = [
     title: 'AI Voice Agents',
     desc: 'Answer every call, book appointments, handle FAQs',
     icon: (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#93C5FD" strokeWidth="1.5">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#2563EB" strokeWidth="1.5">
         <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
       </svg>
     ),
@@ -18,7 +18,7 @@ const spokes = [
     title: 'Lead Capture',
     desc: 'Instant scoring, nurture sequences, zero leads lost',
     icon: (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#93C5FD" strokeWidth="1.5">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#2563EB" strokeWidth="1.5">
         <path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4-4v2" />
         <circle cx="9" cy="7" r="4" />
         <line x1="19" y1="8" x2="19" y2="14" />
@@ -32,7 +32,7 @@ const spokes = [
     title: 'Smart CRM',
     desc: 'Pipeline tracking, customer insights, auto follow-up',
     icon: (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#93C5FD" strokeWidth="1.5">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#2563EB" strokeWidth="1.5">
         <path d="M21.21 15.89A10 10 0 118 2.83" />
         <path d="M22 12A10 10 0 0012 2v10z" />
       </svg>
@@ -44,7 +44,7 @@ const spokes = [
     title: 'Marketing Engine',
     desc: 'Email, SMS, social, SEO, content generation',
     icon: (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#93C5FD" strokeWidth="1.5">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#2563EB" strokeWidth="1.5">
         <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
         <path d="M19.07 4.93a10 10 0 010 14.14" />
         <path d="M15.54 8.46a5 5 0 010 7.07" />
@@ -57,7 +57,7 @@ const spokes = [
     title: 'AI Employees',
     desc: 'Front desk, support, collections, social posting',
     icon: (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#93C5FD" strokeWidth="1.5">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#2563EB" strokeWidth="1.5">
         <rect x="3" y="11" width="18" height="10" rx="2" />
         <circle cx="12" cy="5" r="3" />
         <path d="M7 11V8a5 5 0 0110 0v3" />
@@ -70,7 +70,7 @@ const spokes = [
     title: 'Workflow Automation',
     desc: 'Connect tools, automate processes, eliminate data entry',
     icon: (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#93C5FD" strokeWidth="1.5">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#2563EB" strokeWidth="1.5">
         <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
       </svg>
     ),
@@ -226,13 +226,13 @@ export default function Ecosystem() {
                 <div
                   className="spoke-card-inner text-center transition-all duration-300"
                   style={{
-                    background: 'rgba(10,15,30,0.85)',
+                    background: '#FFFFFF',
                     backdropFilter: 'blur(16px)',
-                    border: '1px solid rgba(255,255,255,0.08)',
+                    border: '1px solid rgba(15,23,42,0.10)',
                     borderRadius: '14px',
                     padding: '16px',
                     width: '150px',
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+                    boxShadow: '0 8px 30px rgba(15,23,42,0.06)',
                   }}
                 >
                   <div
@@ -247,7 +247,7 @@ export default function Ecosystem() {
                   <h3 className="text-[12px] font-bold mb-[3px]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     {spoke.title}
                   </h3>
-                  <p className="text-[10px] text-[#9CA3AF] leading-[1.4]">{spoke.desc}</p>
+                  <p className="text-[10px] text-[#64748B] leading-[1.4]">{spoke.desc}</p>
                 </div>
               </div>
             ))}
@@ -289,13 +289,13 @@ export default function Ecosystem() {
                 key={i}
                 className="text-center"
                 style={{
-                  background: 'rgba(10,15,30,0.85)',
+                  background: '#FFFFFF',
                   backdropFilter: 'blur(16px)',
-                  border: '1px solid rgba(255,255,255,0.08)',
+                  border: '1px solid rgba(15,23,42,0.10)',
                   borderRadius: '14px',
                   padding: '16px',
                   width: '150px',
-                  boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+                  boxShadow: '0 8px 30px rgba(15,23,42,0.06)',
                 }}
               >
                 <div
@@ -310,7 +310,7 @@ export default function Ecosystem() {
                 <h3 className="text-[12px] font-bold mb-[3px]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                   {spoke.title}
                 </h3>
-                <p className="text-[10px] text-[#9CA3AF] leading-[1.4]">{spoke.desc}</p>
+                <p className="text-[10px] text-[#64748B] leading-[1.4]">{spoke.desc}</p>
               </div>
             ))}
           </div>
