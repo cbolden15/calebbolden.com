@@ -7,6 +7,8 @@ services:
       - "3010:3000"
     environment:
       - GOOGLE_GENERATIVE_AI_API_KEY=${GOOGLE_GENERATIVE_AI_API_KEY}
+      - BRITTANY_PREVIEW_USER=${BRITTANY_PREVIEW_USER}
+      - BRITTANY_PREVIEW_PASSWORD=${BRITTANY_PREVIEW_PASSWORD}
     volumes:
       - /home/cbolden15/.npm-global/lib/node_modules/@googleworkspace/cli:/opt/gws:ro
       - /home/cbolden15/.config/gws:/opt/gws-config:ro
