@@ -9,13 +9,20 @@ type Props = {
   className?: string;
   /** visibility fraction that triggers the reveal */
   amount?: number;
+  variant?: "rise" | "stagger";
 };
 
 /**
  * Plays the `.fade-up` (blur-fade-up) entrance once the element scrolls into
  * view. Dependency-free stand-in for framer-motion's whileInView.
  */
-export default function Reveal({ children, delay = 0, className = "", amount = 0.2 }: Props) {
+export default function Reveal({
+  children,
+  delay = 0,
+  className = "",
+  amount = 0.2,
+  variant = "rise",
+}: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
 
@@ -35,10 +42,12 @@ export default function Reveal({ children, delay = 0, className = "", amount = 0
     return () => io.disconnect();
   }, [amount]);
 
+  const variantClass = variant === "stagger" ? " reveal--stagger" : "";
+
   return (
     <div
       ref={ref}
-      className={`reveal ${shown ? "in" : ""} ${className}`}
+      className={`reveal${variantClass} ${shown ? "in" : ""} ${className}`}
       style={{ animationDelay: `${delay}ms` }}
     >
       {children}

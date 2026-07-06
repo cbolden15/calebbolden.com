@@ -3,11 +3,12 @@ import Link from 'next/link';
 // Hairline three-zone nav: brand / links / CTA. Built from rules, not chips
 // (working-wall direction, DESIGN.md). Offset right for the chat sidebar.
 
+// Hash links are rooted so they resolve from any route (/services/*, /blog).
 const links = [
-  { label: 'Services', href: '#services' },
-  { label: 'Method', href: '#method' },
-  { label: 'Packages', href: '#packages' },
-  { label: 'Work', href: '#work' },
+  { label: 'Services', href: '/#services' },
+  { label: 'Method', href: '/#method' },
+  { label: 'Packages', href: '/#packages' },
+  { label: 'Work', href: '/#work' },
   { label: 'Blog', href: '/blog' },
 ];
 
@@ -30,7 +31,7 @@ export default function Header() {
           <li key={l.href}>
             <Link
               href={l.href}
-              className="transition-colors hover:text-[var(--color-blue)]"
+              className="link-draw transition-colors hover:text-[var(--color-blue)]"
               style={{ fontSize: 14, fontWeight: 500, color: 'var(--color-ink-muted)' }}
             >
               {l.label}
@@ -39,9 +40,19 @@ export default function Header() {
         ))}
       </ul>
 
-      <Link href="/contact" className="btn-ink" style={{ padding: '8px 16px', fontSize: 14 }}>
-        Let&apos;s talk
+      <div className="flex items-center gap-3">
+      <Link href="/contact" className="btn-ink btn-roll" style={{ padding: '8px 16px', fontSize: 14 }}>
+        <span className="roll-box">
+          <span className="roll-a">Let&apos;s talk</span>
+          <span className="roll-b" aria-hidden="true">
+            Let&apos;s talk
+          </span>
+        </span>
       </Link>
+        <span className="anno hidden lg:block" style={{ color: 'var(--color-ink-faint)' }}>
+          sht 1 / rev b
+        </span>
+      </div>
     </nav>
   );
 }

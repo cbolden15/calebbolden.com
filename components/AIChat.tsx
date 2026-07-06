@@ -256,7 +256,7 @@ export default function AIChat() {
                 return (
                   <div
                     key={message.id}
-                    className={`rounded-[2px] p-3.5 text-[13.5px] leading-[1.6] whitespace-pre-wrap ${
+                    className={`msg-in rounded-[2px] p-3.5 text-[13.5px] leading-[1.6] whitespace-pre-wrap ${
                       isUser ? 'ml-8' : ''
                     }`}
                     style={{
@@ -272,19 +272,24 @@ export default function AIChat() {
               })}
               {status === 'submitted' && (
                 <div
-                  className="anno rounded-[2px] p-3.5"
+                  className="msg-in anno rounded-[2px] p-3.5"
                   style={{
                     background: 'transparent',
                     border: '1px solid rgba(255,255,255,0.1)',
                     color: 'rgba(255,255,255,0.6)',
                   }}
                 >
-                  Analyzing...
+                  <span className="sr-only">Analyzing</span>
+                  <span className="typing-dots" aria-hidden="true">
+                    <span />
+                    <span />
+                    <span />
+                  </span>
                 </div>
               )}
               {error && (
                 <div
-                  className="rounded-[2px] p-3.5 text-[13.5px] leading-[1.6]"
+                  className="msg-in rounded-[2px] p-3.5 text-[13.5px] leading-[1.6]"
                   style={{
                     background: 'rgba(239,68,68,0.08)',
                     border: '1px solid rgba(239,68,68,0.18)',

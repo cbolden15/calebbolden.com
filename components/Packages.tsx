@@ -19,7 +19,7 @@ const audit = {
 const followOns = [
   {
     name: 'Build sprint',
-    desc: 'The top item on your roadmap, built and wired into your real systems. One automation, one success metric, your team trained on it.',
+    desc: 'The top item on your roadmap, built and wired into your real systems. An automation, a website that converts, search visibility, or follow-up marketing. One success metric, your team trained on it.',
     meta: '4-8 wks',
   },
   {
@@ -29,12 +29,29 @@ const followOns = [
   },
 ];
 
+const cardHoverClass =
+  'group corner-hover hover:-translate-y-[3px] transition-[transform,box-shadow] duration-[250ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:shadow-[0_8px_24px_oklch(0.48_0.1_210_/_0.10)] motion-reduce:transition-none motion-reduce:hover:translate-y-0';
+
+function DimensionReadout({ label }: { label: string }) {
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute right-5 top-5 flex -translate-y-1 items-center gap-1.5 opacity-0 transition-[opacity,transform] duration-[250ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-y-0 group-hover:opacity-100 motion-reduce:translate-y-0 motion-reduce:transition-none"
+    >
+      <svg width="14" height="6" viewBox="0 0 14 6" fill="none" aria-hidden="true">
+        <path d="M1 3H13M1 2.5V3.5M13 2.5V3.5" stroke="var(--color-blue)" strokeWidth="1" />
+      </svg>
+      <span className="anno anno-blue">{label}</span>
+    </div>
+  );
+}
+
 export default function Packages() {
   return (
     <section id="packages" className="py-20 lg:py-28">
       <div className="mx-auto w-[90%] max-w-[1200px]">
         <Reveal>
-          <h2 className="type-display mb-4" style={{ fontSize: 'clamp(1.8rem, 3.6vw, 2.6rem)' }}>
+          <h2 className="type-display mb-4" style={{ fontSize: 'clamp(2.1rem, 4.2vw, 3.4rem)' }}>
             Three ways to work with me
           </h2>
           <p className="mb-12 max-w-lg" style={{ fontSize: 16, color: 'var(--color-ink-muted)' }}>
@@ -47,10 +64,11 @@ export default function Packages() {
           {/* Featured: the audit */}
           <Reveal className="lg:col-span-7">
             <div
-              className="relative flex h-full flex-col rounded-[2px] p-7 sm:p-9"
+              className={`${cardHoverClass} relative flex h-full flex-col rounded-[2px] p-7 sm:p-9`}
               style={{ background: 'var(--color-bg)', border: '1.5px solid var(--color-blue)' }}
             >
-              <span className="sticky-note absolute -top-4 right-6 px-3 py-1.5" style={{ fontSize: 13, fontWeight: 600 }}>
+              <DimensionReadout label={audit.meta} />
+              <span className="sticky-note sticky-settle absolute -top-4 right-6 px-3 py-1.5" style={{ fontSize: 13, fontWeight: 600 }}>
                 Start here
               </span>
               <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 650, color: 'var(--color-ink)', marginBottom: 10 }}>
@@ -84,8 +102,11 @@ export default function Packages() {
 
               <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
                 <span className="anno anno-blue">{audit.meta}</span>
-                <Link href="/contact" className="btn-ink">
-                  Let&apos;s talk
+                <Link href="/contact" className="btn-ink btn-roll">
+                  <span className="roll-box">
+                    <span className="roll-a">Let&apos;s talk</span>
+                    <span className="roll-b" aria-hidden="true">Let&apos;s talk</span>
+                  </span>
                 </Link>
               </div>
             </div>
@@ -96,9 +117,10 @@ export default function Packages() {
             {followOns.map((pkg, i) => (
               <Reveal key={pkg.name} delay={100 + i * 100} className="flex-1">
                 <div
-                  className="flex h-full flex-col rounded-[2px] p-7"
+                  className={`${cardHoverClass} relative flex h-full flex-col rounded-[2px] p-7`}
                   style={{ border: '1px solid var(--color-hairline)' }}
                 >
+                  <DimensionReadout label={pkg.meta} />
                   <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 19, fontWeight: 650, color: 'var(--color-ink)', marginBottom: 8 }}>
                     {pkg.name}
                   </h3>

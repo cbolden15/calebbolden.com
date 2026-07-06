@@ -61,7 +61,7 @@ export default function PainSolution() {
         {/* Statement */}
         <div className="lg:col-span-5">
           <Reveal>
-            <h2 className="type-display mb-6" style={{ fontSize: 'clamp(1.8rem, 3.6vw, 2.6rem)' }}>
+            <h2 className="type-display mb-6" style={{ fontSize: 'clamp(2.1rem, 4.2vw, 3.4rem)' }}>
               Your problem. My system.
             </h2>
             <p className="max-w-md" style={{ fontSize: 16, color: 'var(--color-ink-muted)' }}>
@@ -92,7 +92,20 @@ export default function PainSolution() {
                     >
                       {row.pain}
                     </span>
-                    <span className="anno shrink-0">{isOpen ? 'close' : row.tag}</span>
+                    <span className="anno flex shrink-0 items-center gap-2">
+                      {!isOpen && <span>{row.tag}</span>}
+                      <svg
+                        aria-hidden="true"
+                        focusable="false"
+                        viewBox="0 0 12 12"
+                        className={`h-3 w-3 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+                          isOpen ? 'rotate-45' : 'rotate-0'
+                        }`}
+                      >
+                        <path d="M6 2V10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                        <path d="M2 6H10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                      </svg>
+                    </span>
                   </button>
 
                   <div
@@ -100,7 +113,11 @@ export default function PainSolution() {
                     style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}
                   >
                     <div className="overflow-hidden">
-                      <div className="pb-6">
+                      <div
+                        className={`pb-6 transition-opacity duration-[250ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:delay-0 motion-reduce:transition-none ${
+                          isOpen ? 'opacity-100 delay-[80ms]' : 'opacity-0 delay-0'
+                        }`}
+                      >
                         <p className="max-w-xl" style={{ fontSize: 14.5, lineHeight: 1.6, color: 'var(--color-ink-muted)' }}>
                           {row.painDesc}
                         </p>

@@ -36,7 +36,7 @@ export default function Proof() {
     <section id="work" className="py-20 lg:py-28">
       <div className="mx-auto w-[90%] max-w-[1200px]">
         <Reveal>
-          <h2 className="type-display mb-4" style={{ fontSize: 'clamp(1.8rem, 3.6vw, 2.6rem)' }}>
+          <h2 className="type-display mb-4" style={{ fontSize: 'clamp(2.1rem, 4.2vw, 3.4rem)' }}>
             The systems I recommend are ones I&apos;ve already shipped
           </h2>
           <p className="mb-10 max-w-lg" style={{ fontSize: 16, color: 'var(--color-ink-muted)' }}>
@@ -48,7 +48,7 @@ export default function Proof() {
           {products.map((p, i) => (
             <Reveal key={p.name} delay={i * 70}>
               <div
-                className="grid grid-cols-1 gap-2 py-6 sm:grid-cols-12 sm:items-baseline sm:gap-6"
+                className="corner-hover grid grid-cols-1 gap-2 py-6 transition-colors duration-200 hover:bg-surface sm:grid-cols-12 sm:items-baseline sm:gap-6"
                 style={{ borderBottom: '1px solid var(--color-hairline)' }}
               >
                 <h3
@@ -61,13 +61,23 @@ export default function Proof() {
                   {p.desc}
                 </p>
                 <div className="flex items-baseline gap-5 sm:col-span-3 sm:justify-end">
-                  <span className="anno">{p.status}</span>
+                  <span className="inline-flex items-baseline gap-2">
+                    {p.status === 'live' && <span className="pulse-dot" aria-hidden="true" />}
+                    {p.status === 'running' && (
+                      <span
+                        className="inline-block h-[7px] w-[7px] shrink-0 rounded-full"
+                        style={{ background: 'var(--color-blue)' }}
+                        aria-hidden="true"
+                      />
+                    )}
+                    <span className="anno">{p.status}</span>
+                  </span>
                   {p.href && (
                     <a
                       href={p.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="transition-colors hover:underline"
+                      className="link-draw transition-colors"
                       style={{ fontSize: 14, fontWeight: 500, color: 'var(--color-blue)' }}
                     >
                       Visit {p.name}
