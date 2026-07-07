@@ -40,11 +40,15 @@ Every thank-you page carries the same soft CTA: "Want me to look at yours? Book 
 
 The highest-converting move in the research was the manual mini-audit (5-minute video review of their site or profile). It does not scale, so offer it only on thank-you pages behind magnets 3-5, capped at what a week can absorb. The delivery is the discovery call warm-up.
 
-## Build order
+## Build status (2026-07-07)
 
-1. Ship magnets as styled PDFs (the markdown is print-ready copy).
-2. Landing pages + email capture on calebbolden.com (needs an email provider decision; Resend is already wired for transactional sends).
-3. Interactive revenue-leak calculator page (magnet 3) once the static version proves demand.
+Built and live on the site:
+- /tools/ai-readiness: the scorecard as an interactive page (score shown free, full read-out behind the email gate).
+- /tools/revenue-leak: the leak worksheet as a live calculator (magnets 1 and 3 are web forms; the research showed interactive formats convert 2x+ over static PDFs).
+- /resources: hub page; magnets 2, 4, 5 are print-styled PDFs in public/downloads/, each behind an email gate.
+- /api/lead-magnet: every capture emails Caleb via Resend and logs `[lead-magnet]` JSON in container logs.
+
+Still open: verify a sender domain in Resend (visitor-facing email is not possible until then), and a proper email list provider once volume justifies it.
 
 ## Voice rules (already applied, keep applying)
 
