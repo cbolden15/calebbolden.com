@@ -13,7 +13,7 @@ Traditional Robotic Process Automation (RPA) promised to automate repetitive tas
 
 ## The RPA Problem
 
-RPA tools automate by recording and replaying user actions—clicking buttons, entering data, copying information between systems. This works until:
+RPA tools automate by recording and replaying user actions: clicking buttons, entering data, copying information between systems. This works until:
 
 - The UI changes (breaking the automation)
 - An exception occurs (requiring human intervention)
@@ -64,4 +64,4 @@ If you're still using RPA:
 3. Add AI for decision-making
 4. Measure maintenance hours saved
 
-The future of automation isn't robots clicking through UIs—it's intelligent workflows that adapt and evolve.
+The future of automation isn't robots clicking through UIs. It is intelligent workflows that adapt and evolve.

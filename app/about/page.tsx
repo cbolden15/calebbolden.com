@@ -1,66 +1,114 @@
+import type { Metadata } from 'next';
+import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Reveal from '@/components/Reveal';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'About | Caleb Bolden',
-  description: 'Product Manager and automation specialist with 10+ years optimizing operations at scale.',
+  description: "Builder first, consultant second. Payments and fintech background, lean process mapping, and live products: Vora, ChapterHQ, and this site's assistant.",
 };
 
 export default function AboutPage() {
   return (
     <>
       <Header />
-      <main className="md:mr-[400px] pt-32 px-6 md:px-12 min-h-screen">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-6xl font-bold gradient-text mb-8">
-            About Me
-          </h1>
-
-          <div className="prose prose-invert prose-cyan max-w-none">
-            <p className="text-xl text-gray-300 leading-relaxed mb-8">
-              I build intelligent systems that give people their time back. That's not just a tagline—it's
-              the lens through which I evaluate every automation project, product decision, and process improvement.
-            </p>
-
-            <h2 className="text-3xl font-bold text-white mt-12 mb-4">Background</h2>
-            <p className="text-gray-300 leading-relaxed">
-              I'm currently a Product Manager at Blockdaemon, where I lead product operations for our blockchain
-              infrastructure platform. Before entering the Web3 space, I spent nearly a decade in financial services
-              at US Bank, Elavon, and TSYS—running operations, optimizing processes, and earning my Lean Six Sigma
-              certification along the way.
-            </p>
-
-            <h2 className="text-3xl font-bold text-white mt-12 mb-4">Philosophy</h2>
-            <p className="text-gray-300 leading-relaxed">
-              Most automation conversations focus on ROI, efficiency gains, and cost reduction. Those metrics matter,
-              but they miss the point. The real value of automation isn't just making businesses run better—it's
-              giving people their time back to focus on work that actually requires human judgment, creativity, and empathy.
-            </p>
-            <p className="text-gray-300 leading-relaxed">
-              When I design a workflow that eliminates 10 hours of manual lead research per week, I'm not just
-              optimizing a process—I'm giving a sales team 10 hours back to have meaningful conversations with prospects.
-              That's the goal: less time on repetitive tasks, more time on work that matters.
-            </p>
-
-            <h2 className="text-3xl font-bold text-white mt-12 mb-4">What I Do</h2>
-            <p className="text-gray-300 leading-relaxed">
-              I help businesses implement intelligent automation using tools like n8n, Make.com, and modern AI APIs.
-              My specialty is combining workflow orchestration with AI to create systems that don't just execute
-              rules—they adapt, learn, and handle exceptions.
-            </p>
-            <p className="text-gray-300 leading-relaxed">
-              Common projects include lead enrichment workflows, content repurposing systems, meeting transcription
-              and action item extraction, and custom automation consulting for specific business processes.
-            </p>
-
-            <h2 className="text-3xl font-bold text-white mt-12 mb-4">Let's Work Together</h2>
-            <p className="text-gray-300 leading-relaxed">
-              Whether you're looking to hire a Product Operations specialist or need automation consulting for your
-              business, I'd love to chat. Use the AI assistant on this site to ask questions about my background,
-              or schedule a consultation directly.
-            </p>
+      <main className="chat-offset">
+        <section className="graph-field graph-fade py-16 lg:py-24">
+          <div className="mx-auto w-[90%] max-w-[1200px]">
+            <Reveal>
+              <h1 className="type-display max-w-[16ch]" style={{ fontSize: 'clamp(2.2rem, 4.4vw, 3.6rem)' }}>
+                Builder first, consultant second
+              </h1>
+              <p className="mt-6 max-w-xl" style={{ fontSize: 17, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
+                I'm Caleb Bolden. I run Vora Technologies, and I help small businesses find the work a system should be doing, then I build that system.
+              </p>
+            </Reveal>
           </div>
-        </div>
+        </section>
+
+        <section className="py-14" style={{ borderTop: '1px solid var(--color-hairline)' }}>
+          <div className="mx-auto w-[90%] max-w-[1200px]">
+            <Reveal>
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-12 sm:gap-6">
+                <p className="anno anno-blue sm:col-span-2">the background</p>
+                <div className="space-y-5 sm:col-span-8 sm:col-start-4">
+                  <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
+                    I came up through payments and fintech, working with US Bank, Elavon, and TSYS, then moved into product management in crypto infrastructure at Blockdaemon. Big companies are a masterclass in process: thousands of people moving work between them, and every improvement starts with someone mapping how the work moves today.
+                  </p>
+                  <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
+                    Along the way I picked up lean and six sigma the working way: value stream maps on real walls, timing real handoffs, sitting in the kaizen meetings where the map gets argued into the truth. That habit stuck harder than any job title.
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        <section className="py-14" style={{ borderTop: '1px solid var(--color-hairline)' }}>
+          <div className="mx-auto w-[90%] max-w-[1200px]">
+            <Reveal>
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-12 sm:gap-6">
+                <p className="anno anno-blue sm:col-span-2">the products</p>
+                <div className="sm:col-span-8 sm:col-start-4">
+                  <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
+                    Nights and weekends I built software, and the side projects became the main event. Vora is a CRM platform for service businesses. ChapterHQ runs clubs and nonprofits. The assistant in the corner of this site is one of those systems, live, not a demo reel. When I recommend something to a client, it is because I have already run it myself.
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        <section className="py-14" style={{ borderTop: '1px solid var(--color-hairline)' }}>
+          <div className="mx-auto w-[90%] max-w-[1200px]">
+            <Reveal>
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-12 sm:gap-6">
+                <p className="anno anno-blue sm:col-span-2">the method</p>
+                <div className="sm:col-span-8 sm:col-start-4">
+                  <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
+                    AI made automation cheap. It did not make judgment cheap. Most AI projects fail because they automate a process nobody understood, so I refuse to skip the mapping step. Interviews first, a value stream on the wall, honest scoring, then one build with one success metric. If the map says AI will not pay, I say that instead.
+                  </p>
+                  <Link
+                    href="/#method"
+                    className="link-draw mt-5 inline-block"
+                    style={{ fontSize: 14.5, color: 'var(--color-blue)' }}
+                  >
+                    See the five phases
+                  </Link>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        <section className="py-16">
+          <div className="mx-auto w-[90%] max-w-[1200px]">
+            <Reveal>
+              <div
+                className="max-w-2xl rounded-[2px] p-8 sm:p-10"
+                style={{ background: 'var(--color-bg)', border: '1.5px solid var(--color-blue)' }}
+              >
+                <h2 className="type-display mb-5" style={{ fontSize: 'clamp(1.6rem, 2.6vw, 2.1rem)' }}>
+                  Start with the audit
+                </h2>
+                <p className="max-w-xl" style={{ fontSize: 15, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
+                  The audit is where every engagement starts. Two to three weeks inside your business, and you end up with a map, a scored shortlist, and one recommended pilot, whether or not you hire me to build it.
+                </p>
+                <div className="mt-7">
+                  <Link href="/contact" className="btn-ink btn-roll">
+                    <span className="roll-box">
+                      <span className="roll-a">Let's talk</span>
+                      <span className="roll-b" aria-hidden="true">
+                        Let's talk
+                      </span>
+                    </span>
+                  </Link>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
       </main>
       <Footer />
     </>

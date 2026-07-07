@@ -1,80 +1,117 @@
+import type { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import OpenChatButton from '@/components/OpenChatButton';
+import Reveal from '@/components/Reveal';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Contact | Caleb Bolden',
-  description: 'Get in touch to discuss automation projects or job opportunities.',
+  description: 'Three ways to start: describe your business to the assistant, email me directly, or book a call.',
 };
 
 export default function ContactPage() {
+  const bookingUrl = process.env.NEXT_PUBLIC_CALENDLY_CLIENT_URL;
+
   return (
     <>
       <Header />
-      <main className="md:mr-[400px] pt-32 px-6 md:px-12 min-h-screen">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-6xl font-bold gradient-text mb-8">
-            Get in Touch
-          </h1>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* For Employers */}
-            <div className="p-8 bg-primary-cyan/5 border border-primary-cyan/10 rounded-xl">
-              <h2 className="text-2xl font-bold text-white mb-4">
-                For Employers
-              </h2>
-              <p className="text-gray-400 mb-6 leading-relaxed">
-                Looking to hire a Product Operations specialist with automation expertise?
-                Let's discuss how I can help your team.
+      <main className="chat-offset">
+        <section className="graph-field graph-fade py-16 lg:py-24">
+          <div className="mx-auto w-[90%] max-w-[1200px]">
+            <Reveal>
+              <h1 className="type-display max-w-[16ch]" style={{ fontSize: 'clamp(2.2rem, 4.4vw, 3.6rem)' }}>
+                Tell me what's eating your week
+              </h1>
+              <p className="mt-6 max-w-xl" style={{ fontSize: 17, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
+                Every engagement starts the same way: you describe how the work moves, I tell you whether a system can take it. Pick whichever route suits you.
               </p>
-              <div className="space-y-4">
-                <a
-                  href="https://linkedin.com/in/calebbolden"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block px-6 py-3 border-2 border-primary-cyan text-primary-cyan rounded-lg hover:bg-primary-cyan/10 transition-all text-center font-semibold"
-                >
-                  View LinkedIn Profile
-                </a>
-                <button className="w-full px-6 py-3 border-2 border-primary-cyan text-primary-cyan rounded-lg hover:bg-primary-cyan/10 transition-all font-semibold">
-                  Schedule Interview
-                </button>
-              </div>
-            </div>
-
-            {/* For Automation Clients */}
-            <div className="p-8 bg-gradient-to-br from-primary-cyan/10 to-primary-blue/10 border border-primary-cyan rounded-xl">
-              <h2 className="text-2xl font-bold text-white mb-4">
-                For Automation Clients
-              </h2>
-              <p className="text-gray-400 mb-6 leading-relaxed">
-                Need intelligent workflows that save time and scale your operations?
-                Let's explore what's possible.
-              </p>
-              <div className="space-y-4">
-                <button className="w-full px-6 py-3 bg-gradient-to-r from-primary-cyan to-primary-blue text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-primary-cyan/30 hover:-translate-y-0.5 transition-all">
-                  Book Free Consultation
-                </button>
-                <a
-                  href="mailto:cbolden15@gmail.com"
-                  className="block px-6 py-3 border-2 border-primary-cyan text-primary-cyan rounded-lg hover:bg-primary-cyan/10 transition-all text-center font-semibold"
-                >
-                  Send Email
-                </a>
-              </div>
-            </div>
+            </Reveal>
           </div>
+        </section>
 
-          {/* Or Use the AI Chat */}
-          <div className="mt-12 p-8 bg-primary-cyan/5 border border-primary-cyan/10 rounded-xl text-center">
-            <h2 className="text-2xl font-bold text-white mb-4">
-              Not sure what to ask?
-            </h2>
-            <p className="text-gray-400">
-              Use the AI assistant on this site to ask questions about my background,
-              services, or availability. It knows everything and can point you in the right direction.
-            </p>
+        <section className="py-14">
+          <div className="mx-auto w-[90%] max-w-[1200px]">
+            <Reveal delay={0}>
+              <div
+                className="grid grid-cols-1 gap-4 py-8 sm:grid-cols-12 sm:items-center sm:gap-6"
+                style={{ borderTop: '1px solid var(--color-hairline)' }}
+              >
+                <p className="anno anno-blue sm:col-span-2">route 1 / fastest</p>
+                <div className="sm:col-span-6">
+                  <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 650, color: 'var(--color-ink)' }}>
+                    Describe your business to the assistant
+                  </h2>
+                  <p className="mt-2" style={{ fontSize: 14.5, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
+                    It maps the conversation before we ever get on a call, and it is a live sample of my work.
+                  </p>
+                </div>
+                <div className="flex sm:col-span-4 sm:justify-end">
+                  <OpenChatButton label="Open the assistant" />
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={70}>
+              <div
+                className="grid grid-cols-1 gap-4 py-8 sm:grid-cols-12 sm:items-center sm:gap-6"
+                style={{ borderTop: '1px solid var(--color-hairline)' }}
+              >
+                <p className="anno anno-blue sm:col-span-2">route 2 / direct</p>
+                <div className="sm:col-span-6">
+                  <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 650, color: 'var(--color-ink)' }}>
+                    Email me
+                  </h2>
+                  <p className="mt-2" style={{ fontSize: 14.5, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
+                    I read everything myself. Two sentences about your business is plenty.
+                  </p>
+                </div>
+                <div className="flex sm:col-span-4 sm:justify-end">
+                  <a href="mailto:cbolden15@gmail.com" className="btn-hairline btn-roll max-w-full">
+                    <span className="roll-box">
+                      <span className="roll-a">cbolden15@gmail.com</span>
+                      <span className="roll-b" aria-hidden="true">
+                        cbolden15@gmail.com
+                      </span>
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={140}>
+              <div
+                className="grid grid-cols-1 gap-4 py-8 sm:grid-cols-12 sm:items-center sm:gap-6"
+                style={{ borderTop: '1px solid var(--color-hairline)' }}
+              >
+                <p className="anno anno-blue sm:col-span-2">route 3 / calendar</p>
+                <div className="sm:col-span-6">
+                  <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 650, color: 'var(--color-ink)' }}>
+                    Book a call
+                  </h2>
+                  <p className="mt-2" style={{ fontSize: 14.5, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
+                    Twenty minutes, no deck, no pitch. We talk through your process and what I would map first.
+                  </p>
+                </div>
+                <div className="flex sm:col-span-4 sm:justify-end">
+                  {bookingUrl ? (
+                    <a href={bookingUrl} target="_blank" rel="noopener" className="btn-hairline btn-roll">
+                      <span className="roll-box">
+                        <span className="roll-a">Pick a time</span>
+                        <span className="roll-b" aria-hidden="true">
+                          Pick a time
+                        </span>
+                      </span>
+                    </a>
+                  ) : (
+                    <p className="sm:text-right" style={{ fontSize: 14, color: 'var(--color-ink-faint)' }}>
+                      Booking link coming soon. Route 1 and 2 work today.
+                    </p>
+                  )}
+                </div>
+              </div>
+            </Reveal>
           </div>
-        </div>
+        </section>
       </main>
       <Footer />
     </>

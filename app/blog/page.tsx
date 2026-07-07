@@ -2,6 +2,7 @@ import { getAllBlogPosts } from '@/lib/blog/getBlogPosts';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Reveal from '@/components/Reveal';
 
 export const metadata = {
   title: 'Blog | Caleb Bolden',
@@ -14,42 +15,53 @@ export default function BlogPage() {
   return (
     <>
       <Header />
-      <main className="md:mr-[400px] pt-32 px-6 md:px-12 min-h-screen">
-        <div className="max-w-6xl mx-auto">
-          <h1 className="text-5xl md:text-6xl font-bold gradient-text mb-4">
-            Blog
-          </h1>
-          <p className="text-xl text-gray-400 mb-16">
-            Insights on AI automation, process improvement, and blockchain technology
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posts.map((post) => (
-              <Link
-                key={post.slug}
-                href={`/blog/${post.slug}`}
-                className="group block p-8 bg-primary-cyan/5 border border-primary-cyan/10 rounded-xl hover:border-primary-cyan hover:-translate-y-2 transition-all"
-              >
-                <span className="inline-block px-3 py-1 bg-primary-cyan/10 border border-primary-cyan/30 rounded-full text-xs text-primary-cyan mb-4">
-                  {post.category}
-                </span>
-                <div className="text-sm text-gray-500 mb-4">
-                  {new Date(post.date).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </div>
-                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-primary-cyan transition-colors">
-                  {post.title}
-                </h3>
-                <p className="text-sm text-gray-400 leading-relaxed">
-                  {post.excerpt}
-                </p>
-              </Link>
-            ))}
+      <main className="chat-offset min-h-screen">
+        <section className="graph-field graph-fade py-16 lg:py-24">
+          <div className="mx-auto w-[90%] max-w-[1200px]">
+            <Reveal>
+              <h1 className="type-display" style={{ fontSize: 'clamp(2.2rem, 4.4vw, 3.6rem)' }}>
+                Blog
+              </h1>
+              <p className="mt-6 max-w-xl" style={{ fontSize: 17, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
+                Insights on AI automation, process improvement, and blockchain technology
+              </p>
+            </Reveal>
           </div>
-        </div>
+        </section>
+
+        <section className="py-14" style={{ borderTop: '1px solid var(--color-hairline)' }}>
+          <div className="mx-auto w-[90%] max-w-[1200px]">
+            <div style={{ borderTop: '1px solid var(--color-hairline)' }}>
+              {posts.map((post, i) => (
+                <Reveal key={post.slug} delay={i * 60}>
+                  <article
+                    className="grid grid-cols-1 gap-3 py-6 sm:grid-cols-12 sm:items-baseline sm:gap-6"
+                    style={{ borderBottom: '1px solid var(--color-hairline)' }}
+                  >
+                    <time className="anno sm:col-span-2" dateTime={post.date}>
+                      {new Date(post.date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })}
+                    </time>
+                    <span className="anno sm:col-span-2">{post.category}</span>
+                    <div className="sm:col-span-8">
+                      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 650, color: 'var(--color-ink)' }}>
+                        <Link href={`/blog/${post.slug}`} className="link-draw transition-colors hover:text-blue">
+                          {post.title}
+                        </Link>
+                      </h2>
+                      <p className="mt-3 max-w-2xl" style={{ fontSize: 14.5, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
+                        {post.excerpt}
+                      </p>
+                    </div>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
       </main>
       <Footer />
     </>

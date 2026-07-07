@@ -13,7 +13,7 @@ The AI landscape has fundamentally shifted in the past 18 months. We've moved fr
 
 ## From Chat to Action
 
-Traditional chatbots were conversational interfaces—they could understand and respond to text, but couldn't take action in the real world. Today's AI agents are different. They can:
+Traditional chatbots were conversational interfaces: they could understand and respond to text, but couldn't take action in the real world. Today's AI agents are different. They can:
 
 - Read emails and draft responses
 - Research leads and update CRMs

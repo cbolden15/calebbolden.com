@@ -3,11 +3,11 @@
 import { useEffect, useMemo, useRef, useState, type TransitionEvent } from 'react';
 
 const items = [
-  'Mapping a quote-to-invoice flow',
-  'Auditing a client intake form',
-  'Timing a dispatch handoff',
-  'Drafting an automation spec',
-  'Testing a follow-up assistant',
+  'Running Vora, a CRM for service businesses',
+  'Building an AI assistant for real estate agents',
+  'Writing the process audit playbook',
+  "Shipping this site's assistant",
+  'Building ChapterHQ for clubs and nonprofits',
 ];
 
 const itemHeightEm = 1.6;

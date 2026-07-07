@@ -12,8 +12,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const post = getBlogPost(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = getBlogPost(slug);
 
   if (!post) {
     return {
@@ -34,8 +35,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = getBlogPost(params.slug);
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = getBlogPost(slug);
 
   if (!post) {
     notFound();
@@ -44,51 +46,46 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
   return (
     <>
       <Header />
-      <main className="md:mr-[400px] pt-32 px-6 md:px-12 min-h-screen">
-        <article className="max-w-3xl mx-auto">
-          {/* Breadcrumb */}
-          <Link
-            href="/blog"
-            className="text-primary-cyan hover:underline mb-8 inline-block"
-          >
-            ← Back to Blog
-          </Link>
-
-          {/* Header */}
-          <header className="mb-12">
-            <span className="inline-block px-3 py-1 bg-primary-cyan/10 border border-primary-cyan/30 rounded-full text-xs text-primary-cyan mb-4">
-              {post.category}
-            </span>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              {post.title}
-            </h1>
-            <div className="text-gray-400">
-              {new Date(post.date).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })}
+      <main className="chat-offset min-h-screen">
+        <article>
+          <section className="graph-field graph-fade py-16 lg:py-24">
+            <div className="mx-auto w-[90%] max-w-[1200px]">
+              <Link href="/blog" className="link-draw inline-block" style={{ fontSize: 14.5, color: 'var(--color-blue)' }}>
+                Back to blog
+              </Link>
+              <header className="mt-10 max-w-3xl">
+                <div className="flex flex-wrap gap-x-5 gap-y-2">
+                  <span className="anno">{post.category}</span>
+                  <time className="anno" dateTime={post.date}>
+                    {new Date(post.date).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </time>
+                </div>
+                <h1 className="type-display mt-5" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
+                  {post.title}
+                </h1>
+              </header>
             </div>
-          </header>
+          </section>
 
-          {/* Content */}
-          <div className="prose prose-invert prose-cyan max-w-none">
-            <MDXRemote source={post.content} />
-          </div>
+          <section className="py-14" style={{ borderTop: '1px solid var(--color-hairline)' }}>
+            <div className="mx-auto w-[90%] max-w-[1200px]">
+              <div className="prose-wall">
+                <MDXRemote source={post.content} />
+              </div>
 
-          {/* Tags */}
-          <div className="mt-12 pt-8 border-t border-primary-cyan/10">
-            <div className="flex flex-wrap gap-2">
-              {post.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-3 py-1 bg-primary-cyan/5 border border-primary-cyan/20 rounded-full text-xs text-gray-400"
-                >
-                  #{tag}
-                </span>
-              ))}
+              <div className="mt-12 flex flex-wrap gap-x-5 gap-y-2 pt-8" style={{ borderTop: '1px solid var(--color-hairline)' }}>
+                {post.tags.map((tag) => (
+                  <span key={tag} className="anno">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
+          </section>
         </article>
       </main>
       <Footer />
