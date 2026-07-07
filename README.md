@@ -1,81 +1,78 @@
-# calebbolden.com - Personal Website
+# calebbolden.com
 
-A dual-audience personal website featuring AI chat, interactive workflow demos, and comprehensive content management.
+Next.js site for Caleb Bolden's AI consulting work with local small businesses.
 
 ## Features
 
-- **AI Chat Panel**: Always-visible assistant powered by Gemini API, knows complete background and projects
-- **Interactive Workflow Demos**: React Flow visualizations of automation workflows
-- **Blog System**: MDX-based blog with Git-backed content management
-- **Dark Futuristic Design**: Glassmorphism, gradient text, cyan accents
-- **Responsive**: Parallel design approach (full desktop, streamlined mobile)
+- AI chat assistant using Google Gemini through the Vercel AI SDK.
+- MDX blog backed by files in `content/blog/`.
+- Service pages for web development, SEO, and marketing.
+- Lead capture with optional Resend email notifications.
+- Light working wall visual system: white background, blueprint-blue accents, graph paper fields, and Archivo, Schibsted Grotesk, and Martian Mono type.
 
-## Tech Stack
+## Tech stack
 
-- **Framework**: Next.js 16 with App Router
-- **Language**: TypeScript (strict mode)
-- **Styling**: Tailwind CSS 4 + Typography plugin
-- **AI**: Vercel AI SDK + Google Gemini API
-- **Content**: MDX with gray-matter, TinaCMS (installed)
-- **Deployment**: Vercel
+- Framework: Next.js 16.1.4 with App Router.
+- Language: TypeScript.
+- Styling: Tailwind CSS 4 with Typography plugin.
+- AI: Vercel AI SDK, `@ai-sdk/google`, and Google Gemini `gemini-3.5-flash`.
+- Content: MDX with `next-mdx-remote` and `gray-matter`.
+- Runtime: Docker image based on Node.js 22 Alpine.
 
-## Getting Started
+## Scripts
 
-### Prerequisites
+- `npm run dev`: start the local Next.js server.
+- `npm run build`: build the production app.
+- `npm run start`: start the production server.
+- `npm run lint`: run the configured Next.js lint command.
 
-- Node.js 18+
-- Google Gemini API key
+## Getting started
 
-### Installation
-
-1. Clone the repository
-2. Install dependencies:
+1. Install dependencies:
    ```bash
    npm install
    ```
 
-3. Create `.env.local`:
-   ```bash
-   cp .env.example .env.local
-   ```
+2. Create a local environment file with the needed values.
 
-4. Add your Gemini API key to `.env.local`:
-   ```bash
-   GOOGLE_GENERATIVE_AI_API_KEY=your_key_here
-   ```
-
-5. Run development server:
+3. Run the development server:
    ```bash
    npm run dev
    ```
 
-6. Open http://localhost:3000
+4. Open http://localhost:3000.
 
-## Project Structure
+## Project structure
 
 ```
 calebbolden.com/
 ├── app/                    # Next.js App Router
-│   ├── layout.tsx         # Root layout with AI chat
+│   ├── layout.tsx         # Root layout with fonts and AI chat
 │   ├── page.tsx           # Homepage
 │   ├── about/             # About page
 │   ├── blog/              # Blog listing and posts
-│   ├── workflows/         # Workflow portfolio
 │   ├── contact/           # Contact page
+│   ├── services/          # Web development, SEO, and marketing pages
 │   └── api/
 │       └── chat/          # AI chat endpoint
 ├── components/            # React components
+│   ├── AIChat.tsx
+│   ├── CTA.tsx
+│   ├── Footer.tsx
 │   ├── Header.tsx
 │   ├── Hero.tsx
-│   ├── WorkflowDemo.tsx
-│   ├── CareerTimeline.tsx
-│   ├── BlogPreview.tsx
-│   ├── AIChat.tsx
-│   └── Footer.tsx
+│   ├── Industries.tsx
+│   ├── NowStrip.tsx
+│   ├── OpenChatButton.tsx
+│   ├── Packages.tsx
+│   ├── PainSolution.tsx
+│   ├── Process.tsx
+│   ├── Proof.tsx
+│   ├── Reveal.tsx
+│   └── ServicePage.tsx
 ├── content/               # Markdown content
 │   ├── blog/             # Blog posts
-│   ├── workflows/        # Case studies
-│   └── pages/            # Static pages
+│   └── pages/            # Static page content
 ├── lib/                   # Utilities
 │   ├── blog/             # Blog data loading
 │   └── chat/             # AI chat configuration
@@ -84,29 +81,40 @@ calebbolden.com/
 
 ## Deployment
 
-### Vercel (Recommended)
+Production runs on a Hetzner server at `5.78.121.71`.
 
-1. Push to GitHub
-2. Import repository in Vercel
-3. Add environment variables:
-   - `GOOGLE_GENERATIVE_AI_API_KEY`
-   - `TINA_ADMIN_PASSWORD`
-   - `NEXT_PUBLIC_CALENDLY_HIRING_URL`
-   - `NEXT_PUBLIC_CALENDLY_CLIENT_URL`
-4. Deploy
+The app lives in `/opt/calebbolden`:
 
-### Manual Deployment
+- `docker-compose.yml`
+- `.env`
+- `./repo`, a plain source copy, not a git clone
+
+A shared Caddy reverse proxy at `/opt/caddy` routes `calebbolden.com` to the `calebbolden-site` container on port `3000`.
+
+Deploy from the local repo:
 
 ```bash
-npm run build
-npm start
+git archive <commit> | ssh root@5.78.121.71 'tar -x -C /opt/calebbolden/repo.new'
 ```
 
-## Environment Variables
+On the server, swap `repo.new` into place, keep a dated backup of the old `repo` directory, then rebuild and restart:
 
-See `.env.example` for all required environment variables.
+```bash
+cd /opt/calebbolden
+docker compose up -d --build
+```
 
-## Content Management
+A secondary Docker and Cloudflare Tunnel stack exists on the homelab server. It receives no production traffic.
+
+## Environment variables
+
+- `GOOGLE_GENERATIVE_AI_API_KEY`: Gemini chat key.
+- `RESEND_API_KEY`: Resend key for lead notification emails.
+- `LEAD_EMAIL_TO`: optional lead email recipient.
+- `LEAD_EMAIL_FROM`: optional lead email sender.
+- `NEXT_PUBLIC_CALENDLY_CLIENT_URL`: optional booking link.
+
+## Content management
 
 Blog posts are stored as Markdown files in `content/blog/` with frontmatter:
 

@@ -1,0 +1,18 @@
+{
+  "enabledPlugins": {
+    "github@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "context-mode@context-mode": true
+  },
+  "additionalSkills": [
+    "website-builder",
+    "frontend-design",
+    "ai-design-stack",
+    "premium-web-psychology",
+    "seo",
+    "seo-page",
+    "seo-technical",
+    "seo-schema",
+    "superpowers:*"
+  ]
+}

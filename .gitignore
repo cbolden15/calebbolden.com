@@ -42,3 +42,10 @@ next-env.d.ts
 
 # TinaCMS
 .tina/__generated__
+
+# local artifacts
+*.sync-conflict-*
+.env*.bak-*
+.playwright-mcp/
+.codegraph/
+cb-home-full.jpeg

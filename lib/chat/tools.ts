@@ -1,6 +1,5 @@
 import { tool } from 'ai';
 import { z } from 'zod';
-import { execSync } from 'child_process';
 
 export const chatTools = {
   scrapeWebsite: tool({
@@ -141,26 +140,36 @@ export const chatTools = {
       ];
       const body = lines.join('\n');
 
-      try {
-        const subject = `New Lead: ${name || businessName || 'Website Visitor'}`;
-        const cmd = [
-          'node', '/opt/gws/run-gws.js',
-          'gmail', 'messages', 'send',
-          '--to', 'cbolden15@gmail.com',
-          '--subject', JSON.stringify(subject),
-          '--body', JSON.stringify(body),
-        ].join(' ');
+      console.log('[lead]', JSON.stringify({ name, email, phone, businessName, websiteUrl, summary }));
 
-        execSync(cmd, {
-          timeout: 15000,
-          env: {
-            ...process.env,
-            GWS_CONFIG_DIR: '/opt/gws-config',
-            HOME: '/opt/gws-config',
-          },
-        });
-      } catch (err) {
-        console.error('Failed to send lead email:', err);
+      const subject = `New Lead: ${name || businessName || 'Website Visitor'}`;
+      const apiKey = process.env.RESEND_API_KEY;
+
+      if (!apiKey) {
+        console.error('Lead email not sent: RESEND_API_KEY is not set');
+      } else {
+        try {
+          const response = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${apiKey}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              from: process.env.LEAD_EMAIL_FROM || 'Caleb Bolden <onboarding@resend.dev>',
+              to: [process.env.LEAD_EMAIL_TO || 'cbolden15@gmail.com'],
+              subject,
+              text: body,
+            }),
+            signal: AbortSignal.timeout(10000),
+          });
+
+          if (!response.ok) {
+            console.error('Failed to send lead email:', response.status, await response.text());
+          }
+        } catch (err) {
+          console.error('Failed to send lead email:', err);
+        }
       }
 
       return { success: true, message: 'Contact information saved. Caleb will follow up shortly.' };
