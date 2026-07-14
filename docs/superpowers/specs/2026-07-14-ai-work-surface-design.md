@@ -5,7 +5,13 @@
 
 ## Problem
 
-calebbolden.com currently reads process/automation focused. It sells the SMB audit funnel well, but underplays the AI engineering work: shipped AI products, open-source tooling, and an operation that itself runs on AI. Goal: convey that depth to a broader audience (peers, partners, technically literate prospects) without weakening the SMB consulting funnel.
+calebbolden.com currently reads process/automation focused and serves one goal (consulting sales). Revised goal set (2026-07-14, Caleb): the site must accomplish three things **equally**:
+
+1. **Thought leadership** — a body of writing and a visible point of view (the existing "map before you automate" argument is the signature thread).
+2. **Advertise consulting services** — the existing audit-first funnel, elevated to mid-size firms + professional services.
+3. **Employer-visible skillset** — a hiring manager or recruiter can see engineering depth: shipped systems, open source, career background, skills.
+
+Assessment of current site against these: consulting 8/10, thought leadership 3/10 (blog buried, stale description mentioning blockchain, no POV surface), employer skillset 2/10 (no GitHub link, no career history, no skills inventory).
 
 ## Decisions made
 
@@ -14,8 +20,9 @@ calebbolden.com currently reads process/automation focused. It sells the SMB aud
 | Audience for AI emphasis | Broader audience (peers, partners, bigger clients) — not just SMB cred |
 | Site purpose | Consulting stays primary; AI depth layered in |
 | Content to show | Shipped products (incl. GitHub repos as shipped work), how-I-build story, systems/architecture depth, writing/teaching |
-| Homepage change size | Rework (revised 2026-07-14): broaden to mid-size firms + professional services, AI explicit |
-| Added audience | Mid-size/established firms + professional services (law, accounting, agencies). Tech buyers served by /work + /how-i-build, not homepage. Enterprise out. |
+| Homepage change size | Identity-led rework (option A, revised 2026-07-14): hero leads with who Caleb is, three doors under it |
+| Added audience | Mid-size/established firms + professional services (law, accounting, agencies). Tech buyers served by /work + /how-i-build. Enterprise out. Employers served by about + /work + GitHub/LinkedIn, no "hire me" banner. |
+| Site goals | Thought leadership + consulting + employer-visible skillset, weighted equally |
 | Structure | Hub + detail pages (option B) |
 
 ## Site map
@@ -52,17 +59,21 @@ Shared structure for `/work/vora`, `/work/chapterhq`, `/work/site-assistant`:
 5. Status: live / building (real semantic state, matching Proof section convention)
 6. Link out where public
 
-## Homepage rework
+## Homepage rework (identity-led, option A)
 
-Revised 2026-07-14: broadened beyond light touch. One funnel (audit first), voice elevated from solo-owner SMB to "businesses with real operations." Changes:
+Revised 2026-07-14 after three-goal reframe. Hero leads with identity; consulting funnel keeps full depth one screen lower.
 
-1. **Hero** — new headline, direction A (pending Caleb confirmation at mockup review): "AI systems built where your business actually needs them." Subline: "I map how your operation runs, then build the AI that pays for itself. I build these systems myself. The same ones run my own companies." CTAs unchanged.
-2. **Pain rows (PainSolution)** — keep strongest SMB rows (missed calls, leads sitting, admin); add white-collar rows: document intake/processing, client onboarding, knowledge search (answers buried in old files). Same accordion pattern, mono tags.
-3. **New AI-systems band** — short homepage section (placement between Process and Packages, finalize at implementation): what I actually build — voice agents, knowledge assistants, workflow automation, campaign systems — mono system-category tags, linking into /work.
-4. **Proof section** — rows that have a `/work/*` detail page link to it (others keep current behavior). Add one row: "Open source — tooling I publish on GitHub" → `/work/open-source`. Keep chat-assistant callout line.
-5. **Nav** — "Work" link in header and footer.
-6. **Metadata** — title/description/keywords broaden beyond "small business" (e.g. "AI systems and process consulting for businesses").
-7. **Industries line** — already lists professional services; verify copy reads firm-friendly.
+1. **Hero** — identity-led. Direction: "I build AI systems and the processes around them" (final wording at implementation; humanizer rules). Subline names the three facts: runs Vora Technologies, ships production AI products, consults on process-first AI. Under the subline, **three doors** (hairline panels or annotated links, working-wall style):
+   - Hire me → `#packages` / consulting funnel below
+   - See my work → `/work`
+   - Read my thinking → `/blog`
+2. **Consulting funnel below hero, intact** — PainSolution, Process, Packages, Proof, CTA all stay. Voice elevated from solo-owner SMB to "businesses with real operations."
+3. **Pain rows (PainSolution)** — keep strongest SMB rows (missed calls, leads sitting, admin); add white-collar rows: document intake/processing, client onboarding, knowledge search (answers buried in old files). Same accordion pattern, mono tags.
+4. **New AI-systems band** — short section (placement between Process and Packages, finalize at implementation): what I actually build — voice agents, knowledge assistants, workflow automation, campaign systems — mono system-category tags, linking into /work.
+5. **Proof section** — rows that have a `/work/*` detail page link to it (others keep current behavior). Add one row: "Open source — tooling I publish on GitHub" → `/work/open-source`. Keep chat-assistant callout line.
+6. **Nav** — "Work" link in header and footer. Blog stays in nav; confirm placement.
+7. **Metadata** — title/description/keywords broaden beyond "small business" (e.g. "AI systems, process consulting, and writing").
+8. **Industries line** — already lists professional services; verify copy reads firm-friendly.
 
 ## How-I-build page (`/how-i-build`)
 
@@ -82,9 +93,21 @@ Blog infrastructure already exists (`content/blog/` markdown, list + detail page
 - **New posts (content work, can trail the build)** — 2-3 posts carrying the AI depth story, e.g.: how my operation runs on agent teams; what an MCP server is and why a business should care; anatomy of the voice agent in Vora. Humanizer rules; blog tone matches existing posts.
 - Out of scope: RSS, tag filtering, category pages, related posts (revisit when post volume justifies).
 
-## About page rewrite
+## About page rewrite (employer pivot)
 
-Extend the current about page: braid two threads — process discipline (existing lean/six-sigma story) + builder credibility (new). Link to `/work` and `/how-i-build`.
+The about page carries the employer goal without a "hire me" banner (a visible for-hire signal would undercut consulting credibility with clients). Extend the current page:
+
+- Keep "Builder first, consultant second" framing; put substance behind it.
+- **Career background** — payments/fintech history (currently only in the meta description), what Caleb did before consulting.
+- **Skills band** — mono-annotated inventory: AI/agent systems, MCP, process mapping (lean/six sigma), full-stack (Next.js/SvelteKit/Postgres), infra (Docker, self-hosted). Grounded in shipped work, not a keyword wall.
+- **Links out** — GitHub (github.com/cbolden15) and LinkedIn, visible. Currently the site has no GitHub link anywhere.
+- Braid two threads: process discipline (existing lean/six-sigma story) + builder credibility. Link to `/work` and `/how-i-build`.
+
+## Thought leadership thread
+
+- **Signature POV**: "you can't automate a process you don't understand" / map-before-you-automate is the argument the writing keeps returning to. Blog and /how-i-build reference it consistently.
+- **Blog metadata fix** — current blog description says "AI automation, process improvement, and blockchain technology"; drop blockchain, align with positioning.
+- **Stale posts** — the two Jan-2026 posts (State of AI Agents, Beyond RPA) read generic; rewrite, retire, or leave dated (decide at implementation, lean rewrite-or-retire).
 
 ## Design system
 
