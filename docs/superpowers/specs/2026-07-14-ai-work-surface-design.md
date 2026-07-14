@@ -73,6 +73,15 @@ The meta story: the operation itself runs on AI. Bands:
 - **What this means for clients**: velocity, plus the failure modes have already been hit and survived.
 - Tone: no "10x" hype; concrete workflow descriptions. Humanizer rules throughout.
 
+## Blog integration (added 2026-07-14)
+
+Blog infrastructure already exists (`content/blog/` markdown, list + detail pages, 4 posts). No new infrastructure. Changes:
+
+- **Notes band on /work hub** — fourth band pulling the 2-3 latest posts (title, date, excerpt), linking to /blog. Makes writing visible from the AI surface.
+- **Sitemap** — add blog post URLs to `app/sitemap.ts` (known gap, pulled forward from backlog).
+- **New posts (content work, can trail the build)** — 2-3 posts carrying the AI depth story, e.g.: how my operation runs on agent teams; what an MCP server is and why a business should care; anatomy of the voice agent in Vora. Humanizer rules; blog tone matches existing posts.
+- Out of scope: RSS, tag filtering, category pages, related posts (revisit when post volume justifies).
+
 ## About page rewrite
 
 Extend the current about page: braid two threads — process discipline (existing lean/six-sigma story) + builder credibility (new). Link to `/work` and `/how-i-build`.
