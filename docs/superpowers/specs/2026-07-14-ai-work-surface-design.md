@@ -14,7 +14,8 @@ calebbolden.com currently reads process/automation focused. It sells the SMB aud
 | Audience for AI emphasis | Broader audience (peers, partners, bigger clients) — not just SMB cred |
 | Site purpose | Consulting stays primary; AI depth layered in |
 | Content to show | Shipped products (incl. GitHub repos as shipped work), how-I-build story, systems/architecture depth, writing/teaching |
-| Homepage change size | Light touch — funnel untouched |
+| Homepage change size | Rework (revised 2026-07-14): broaden to mid-size firms + professional services, AI explicit |
+| Added audience | Mid-size/established firms + professional services (law, accounting, agencies). Tech buyers served by /work + /how-i-build, not homepage. Enterprise out. |
 | Structure | Hub + detail pages (option B) |
 
 ## Site map
@@ -51,13 +52,17 @@ Shared structure for `/work/vora`, `/work/chapterhq`, `/work/site-assistant`:
 5. Status: live / building (real semantic state, matching Proof section convention)
 6. Link out where public
 
-## Homepage light touch
+## Homepage rework
 
-Funnel untouched. Three changes:
+Revised 2026-07-14: broadened beyond light touch. One funnel (audit first), voice elevated from solo-owner SMB to "businesses with real operations." Changes:
 
-1. **Hero subline** — sharpen to signal builder identity. Direction: "I map how your business actually runs, then build AI where it pays. I build these systems myself — the same ones running my own companies." Final wording at implementation; humanizer rules apply (that draft's em dash gets replaced).
-2. **Proof section** — keep spec-sheet rows; rows that have a `/work/*` detail page link to it (others keep current behavior). Add one row: "Open source — tooling I publish on GitHub" → `/work/open-source`. Keep chat-assistant callout line.
-3. **Nav** — "Work" link in header and footer.
+1. **Hero** — new headline, direction A (pending Caleb confirmation at mockup review): "AI systems built where your business actually needs them." Subline: "I map how your operation runs, then build the AI that pays for itself. I build these systems myself. The same ones run my own companies." CTAs unchanged.
+2. **Pain rows (PainSolution)** — keep strongest SMB rows (missed calls, leads sitting, admin); add white-collar rows: document intake/processing, client onboarding, knowledge search (answers buried in old files). Same accordion pattern, mono tags.
+3. **New AI-systems band** — short homepage section (placement between Process and Packages, finalize at implementation): what I actually build — voice agents, knowledge assistants, workflow automation, campaign systems — mono system-category tags, linking into /work.
+4. **Proof section** — rows that have a `/work/*` detail page link to it (others keep current behavior). Add one row: "Open source — tooling I publish on GitHub" → `/work/open-source`. Keep chat-assistant callout line.
+5. **Nav** — "Work" link in header and footer.
+6. **Metadata** — title/description/keywords broaden beyond "small business" (e.g. "AI systems and process consulting for businesses").
+7. **Industries line** — already lists professional services; verify copy reads firm-friendly.
 
 ## How-I-build page (`/how-i-build`)
 
