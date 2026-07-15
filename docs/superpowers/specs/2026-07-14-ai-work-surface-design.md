@@ -20,7 +20,7 @@ Assessment of current site against these: consulting 8/10, thought leadership 3/
 | Audience for AI emphasis | Broader audience (peers, partners, bigger clients) — not just SMB cred |
 | Site purpose | Consulting stays primary; AI depth layered in |
 | Content to show | Shipped products (incl. GitHub repos as shipped work), how-I-build story, systems/architecture depth, writing/teaching |
-| Homepage change size | Identity-led rework (option A, revised 2026-07-14): hero leads with who Caleb is, three doors under it |
+| Homepage change size | Narrative hero ("the map becomes the machine", supersedes three-doors option A) + elevated funnel |
 | Added audience | Mid-size/established firms + professional services (law, accounting, agencies). Tech buyers served by /work + /how-i-build. Enterprise out. Employers served by about + /work + GitHub/LinkedIn, no "hire me" banner. |
 | Site goals | Thought leadership + consulting + employer-visible skillset, weighted equally |
 | Structure | Hub + detail pages (option B) |
@@ -59,14 +59,24 @@ Shared structure for `/work/vora`, `/work/chapterhq`, `/work/site-assistant`:
 5. Status: live / building (real semantic state, matching Proof section convention)
 6. Link out where public
 
-## Homepage rework (identity-led, option A)
+## Homepage rework
 
-Revised 2026-07-14 after three-goal reframe. Hero leads with identity; consulting funnel keeps full depth one screen lower.
+Revised twice on 2026-07-14. The "identity-led three doors" hero (earlier revision) is **superseded** by the narrative hero below, designed through an iterative demo session with Caleb (8 prototype rounds). The three goals are now served by: consulting → hero CTA 1 + funnel below; work → hero CTA 2 (/work); writing → nav + /work notes band.
 
-1. **Hero** — identity-led. Direction: "I build AI systems and the processes around them" (final wording at implementation; humanizer rules). Subline names the three facts: runs Vora Technologies, ships production AI products, consults on process-first AI. Under the subline, **three doors** (hairline panels or annotated links, working-wall style):
-   - Hire me → `#packages` / consulting funnel below
-   - See my work → `/work`
-   - Read my thinking → `/blog`
+1. **Hero — "the map becomes the machine"** (approved prototype: `docs/design/hero-prototype-2026-07-14.html`, open in a browser and scroll):
+   - **Stage 1 (paper)**: the existing working-wall world. White graph paper, ink process boxes with plain-language labels (call comes in, front desk sorts, phone tag, paperwork pile, marketing? later, invoice sent), red-pen pain annotations (waits 4 days, rework ×2 with loop arrow), one amber sticky ("automate this →"), mono column headers 01/INTAKE → 04/DONE.
+   - **Stage 2 (scroll-driven sweep)**: a glowing scan line labeled AUDIT → BUILD sweeps left to right (scroll 12%–62% of a 280vh hero track). Behind it the page turns dark instrument and each drawn box rebuilds as a glass card **in the same position**: phone tag → VOICE AGENT, paperwork pile → DOCS AGENT, marketing? later → CAMPAIGN AGENT, sticky notes → MEMORY (dashed card). Copy crossfades; DOM chrome (spec pills, readout) restyles ink→glass via a body class.
+   - **Stage 3 (live system)**: corporate pipeline running — orthogonal connectors with arrowheads, job packets with label chips (missed call, invoice #4118, dues run…), progress bars inside cards while processing, DONE card with amber counter, spec-bar readout mirroring it ("jobs completed · NNN", "the map is running itself"). Camera pushes in (~1.4x) on remaining scroll; paper-white funnel section slides over.
+   - **Hero copy (final, approved)**:
+     - Stage 1 micro: "Caleb Bolden · Vora Technologies · sheet 1 / the map"; H1: "**AI agents** that answer your calls, chase your leads, and clear your paperwork"; sub: "I'm Caleb Bolden. I find where your business loses time, then build AI to take that work over. Every engagement starts with this map: a fixed-scope audit of how your business actually runs."
+     - Stage 2 micro: "sheet 2 / live system · same map, same boxes"; H1: "This is one of my systems, **running right now**"; sub: "A voice agent answering, a docs agent filing, a campaign agent sending. I build and run these for my own companies first, then for yours. The counter is real work."
+     - Copy rule established in session: the animation tells the story; the text states the offer. Stage 1 sells, stage 2 proves.
+   - CTAs both stages: "Analyze my business" (primary, opens chat/funnel) + "See my work" (→ /work).
+   - **Type on dark**: extralight Archivo (weight 200, stretch 88%) with a left-to-right gradient reveal (white 25% → 75% → 100%); strong spans at weight 750. Boot-up entrance cascade (0/0.2/0.4/0.6/0.8–1.1s delay ladder). Glass pill CTAs (backdrop-blur, white/18 border, inset highlight).
+   - **Tech**: single canvas 2D, no libraries, DPR capped at 2, both worlds share one node/edge geometry (clip-rect split at the scan line). Smoothed scroll (lerp 0.08). Provenance: synthesized from Caleb's design-prompt library (`automation-machines-spline-spec-hero` layout/type, `growth-marketing-saas-parallax` scroll constants, `cognitra` AI-motion concept, `futuristic-cinematic-shader` glow discipline with purple→steel-blue substitution).
+   - **Reduced motion**: static split state (scan line at 50%, both worlds visible, no packets, no cascade).
+   - **Mobile**: decide at implementation — recommended: vertical stack variant or static split-state image; the 280vh scroll choreography is desktop-only.
+   - **Design-system evolution (approved)**: the dark instrument surface is promoted from chat-sidebar/CTA-band accent to hero stage 2. Steel-blue/cyan glow palette on near-black joins the system for "live system" contexts; amber stays the single warm accent in both worlds. Light working-wall remains the identity everywhere else.
 2. **Consulting funnel below hero, intact** — PainSolution, Process, Packages, Proof, CTA all stay. Voice elevated from solo-owner SMB to "businesses with real operations."
 3. **Pain rows (PainSolution)** — keep strongest SMB rows (missed calls, leads sitting, admin); add white-collar rows: document intake/processing, client onboarding, knowledge search (answers buried in old files). Same accordion pattern, mono tags.
 4. **New AI-systems band** — short section (placement between Process and Packages, finalize at implementation): what I actually build — voice agents, knowledge assistants, workflow automation, campaign systems — mono system-category tags, linking into /work.
@@ -111,7 +121,14 @@ The about page carries the employer goal without a "hire me" banner (a visible f
 
 ## Design system
 
-Unchanged. Working wall: white, blueprint-blue, graph-paper fields, mono annotations, hairline dividers. New pages read like more sheets in the same drawing set. Utility contract in `app/globals.css`.
+Working wall stays the base identity: white, blueprint-blue, graph-paper fields, mono annotations, hairline dividers. New pages read like more sheets in the same drawing set. Utility contract in `app/globals.css`.
+
+One approved extension (from the hero session): a **dark instrument surface** — near-black `#05070c`, steel-blue/cyan glow, glass chrome — promoted from the chat-sidebar/CTA-band accent to a first-class stage for "live system" contexts (hero stage 2; potentially /work detail-page tech bands later). Amber remains the single warm accent in both worlds. DESIGN.md's "light only, locked" rule is amended to "light base, dark instrument stage where a live system is being shown."
+
+## Reference artifacts
+
+- `docs/design/hero-prototype-2026-07-14.html` — approved hero (open in browser, scroll). Source of truth for the hero's motion, timing, and copy.
+- `docs/design/site-mockup-2026-07-14.html` — 7-sheet static mockup of /work hub, detail template, open source, how-i-build, homepage, about. Note: sheet 5's hero (three doors) and sheet 7 (motion concepts) are superseded by the hero prototype; other sheets remain the visual direction.
 
 ## Copy rules
 
