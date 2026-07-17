@@ -64,6 +64,58 @@ export default function AboutPage() {
           <div className="mx-auto w-[90%] max-w-[1200px]">
             <Reveal>
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-12 sm:gap-6">
+                <p className="anno anno-blue sm:col-span-2">the skills</p>
+                <div className="space-y-5 sm:col-span-8 sm:col-start-4">
+                  <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
+                    The inventory, tied to things I have actually shipped:
+                  </p>
+                  <div
+                    className="grid grid-cols-2"
+                    style={{ borderTop: '1px solid var(--color-hairline)', borderLeft: '1px solid var(--color-hairline)' }}
+                  >
+                    <div className="p-3" style={{ borderRight: '1px solid var(--color-hairline)', borderBottom: '1px solid var(--color-hairline)' }}>
+                      <div className="anno">ai / agents</div>
+                    </div>
+                    <div className="p-3" style={{ borderRight: '1px solid var(--color-hairline)', borderBottom: '1px solid var(--color-hairline)' }}>
+                      <div style={{ fontSize: 13, color: 'var(--color-ink-muted)' }}>
+                        agent systems, MCP servers, multi-model routing (Vora, this site's assistant)
+                      </div>
+                    </div>
+                    <div className="p-3" style={{ borderRight: '1px solid var(--color-hairline)', borderBottom: '1px solid var(--color-hairline)' }}>
+                      <div className="anno">process</div>
+                    </div>
+                    <div className="p-3" style={{ borderRight: '1px solid var(--color-hairline)', borderBottom: '1px solid var(--color-hairline)' }}>
+                      <div style={{ fontSize: 13, color: 'var(--color-ink-muted)' }}>
+                        value stream mapping, lean and six sigma
+                      </div>
+                    </div>
+                    <div className="p-3" style={{ borderRight: '1px solid var(--color-hairline)', borderBottom: '1px solid var(--color-hairline)' }}>
+                      <div className="anno">full stack</div>
+                    </div>
+                    <div className="p-3" style={{ borderRight: '1px solid var(--color-hairline)', borderBottom: '1px solid var(--color-hairline)' }}>
+                      <div style={{ fontSize: 13, color: 'var(--color-ink-muted)' }}>
+                        Next.js, SvelteKit, Postgres (this site, ChapterHQ)
+                      </div>
+                    </div>
+                    <div className="p-3" style={{ borderRight: '1px solid var(--color-hairline)', borderBottom: '1px solid var(--color-hairline)' }}>
+                      <div className="anno">infra</div>
+                    </div>
+                    <div className="p-3" style={{ borderRight: '1px solid var(--color-hairline)', borderBottom: '1px solid var(--color-hairline)' }}>
+                      <div style={{ fontSize: 13, color: 'var(--color-ink-muted)' }}>
+                        Docker, self-hosted, Caddy, CI
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        <section className="py-14" style={{ borderTop: '1px solid var(--color-hairline)' }}>
+          <div className="mx-auto w-[90%] max-w-[1200px]">
+            <Reveal>
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-12 sm:gap-6">
                 <p className="anno anno-blue sm:col-span-2">the method</p>
                 <div className="sm:col-span-8 sm:col-start-4">
                   <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
