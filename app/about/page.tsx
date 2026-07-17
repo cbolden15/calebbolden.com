@@ -159,6 +159,10 @@ export default function AboutPage() {
                 </div>
               </div>
             </Reveal>
+            <div className="mt-8 flex flex-wrap gap-6">
+              <a href="https://github.com/cbolden15" target="_blank" rel="noopener noreferrer" className="link-draw" style={{ fontSize: 14, color: 'var(--color-blue)' }}>GitHub</a>
+              <a href="https://www.linkedin.com/in/calebbolden" target="_blank" rel="noopener noreferrer" className="link-draw" style={{ fontSize: 14, color: 'var(--color-blue)' }}>LinkedIn</a>
+            </div>
           </div>
         </section>
       </main>
