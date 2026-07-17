@@ -6,7 +6,7 @@ import Reveal from '@/components/Reveal';
 
 export const metadata = {
   title: 'Blog | Caleb Bolden',
-  description: 'Insights on AI automation, process improvement, and blockchain technology.',
+  description: 'Notes on AI, automation, and mapping a business before you build.',
 };
 
 export default function BlogPage() {
@@ -23,7 +23,7 @@ export default function BlogPage() {
                 Blog
               </h1>
               <p className="mt-6 max-w-xl" style={{ fontSize: 17, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
-                Insights on AI automation, process improvement, and blockchain technology
+                Notes on AI, automation, and mapping a business before you build
               </p>
             </Reveal>
           </div>
