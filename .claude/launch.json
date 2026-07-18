@@ -4,7 +4,19 @@
     {
       "name": "dev",
       "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "unset GOOGLE_GENERATIVE_AI_API_KEY && npm run dev"],
+      "runtimeArgs": [
+        "-c",
+        "unset GOOGLE_GENERATIVE_AI_API_KEY && npm run dev"
+      ],
+      "port": 3000
+    },
+    {
+      "name": "prod",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "unset GOOGLE_GENERATIVE_AI_API_KEY && npm start"
+      ],
       "port": 3000
     }
   ]
