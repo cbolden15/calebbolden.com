@@ -36,6 +36,8 @@ export default function Footer() {
               { label: 'SEO', href: '/services/seo' },
               { label: 'Marketing', href: '/services/marketing' },
               { label: 'Resources', href: '/resources' },
+              { label: 'Privacy', href: '/privacy' },
+              { label: 'Terms', href: '/terms' },
             ].map((l) => (
               <a
                 key={l.href}

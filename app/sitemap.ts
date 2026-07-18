@@ -26,6 +26,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/work/site-assistant`, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${BASE}/work/open-source`, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${BASE}/how-i-build`, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${BASE}/privacy`, changeFrequency: 'yearly', priority: 0.2 },
+    { url: `${BASE}/terms`, changeFrequency: 'yearly', priority: 0.2 },
     { url: `${BASE}/blog`, changeFrequency: 'weekly', priority: 0.6 },
     ...posts,
   ];
