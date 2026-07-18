@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 
 type NavLink = { label: string; href: string };
@@ -48,7 +49,9 @@ export default function MobileNav({ links }: { links: NavLink[] }) {
         </svg>
       </button>
 
-      {open && (
+      {/* Portal to body: escapes the header's z-20 stacking context so the
+          overlay actually sits above the chat FAB (z-[190]). */}
+      {open && createPortal(
         <div
           id="mobile-nav-overlay"
           role="dialog"
@@ -106,7 +109,8 @@ export default function MobileNav({ links }: { links: NavLink[] }) {
               Let&apos;s talk
             </Link>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
