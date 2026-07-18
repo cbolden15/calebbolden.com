@@ -1,0 +1,162 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
+import { initHeroEngine } from './hero/heroEngine';
+
+// The hero instrument: a scroll-driven canvas (Task 18's heroEngine) plus two
+// copy clusters that crossfade as the canvas sweeps from the paper map to the
+// live system. Desktop gets the full 280vh scroll choreography; mobile and
+// prefers-reduced-motion get a single static viewport with the engine pinned
+// to the midpoint split. DOM shape ported from
+// docs/design/hero-prototype-2026-07-14.html. Styles land in Task 22.
+
+function openChat() {
+  window.dispatchEvent(new Event('open-chat'));
+}
+
+function ClusterCtas() {
+  return (
+    <div className="ctas">
+      <button onClick={openChat} className="btn primary">
+        Analyze my business
+      </button>
+      <Link href="/work" className="btn ghost">
+        See my work
+      </Link>
+    </div>
+  );
+}
+
+function PaperCluster() {
+  return (
+    <div className="cluster paper-c" id="paperC">
+      <div className="micro">Caleb Bolden · Vora Technologies · sheet 1 / the map</div>
+      <h1>
+        <strong>AI agents</strong> that answer your calls, chase your leads, and clear your paperwork
+      </h1>
+      <p className="sub">
+        I&apos;m Caleb Bolden. I find where your business loses time, then build AI to take that work
+        over. Every engagement starts with this map: a fixed-scope audit of how your business actually
+        runs.
+      </p>
+      <ClusterCtas />
+    </div>
+  );
+}
+
+function LiveCluster() {
+  return (
+    <div className="cluster live-c" id="liveC">
+      <div className="micro">sheet 2 / live system · same map, same boxes</div>
+      <h1>
+        This is one of my systems, <strong>running right now</strong>
+      </h1>
+      <p className="sub">
+        A voice agent answering, a docs agent filing, a campaign agent sending. I build and run these
+        for my own companies first, then for yours. The counter is real work.
+      </p>
+      <ClusterCtas />
+    </div>
+  );
+}
+
+function SpecBar() {
+  return (
+    <div className="specbar">
+      <div className="pills">
+        <span className="pill">
+          <span className="dot" />
+          Vora · live
+        </span>
+        <span className="pill">
+          <span className="dot" />
+          ChapterHQ · live
+        </span>
+        <span className="pill">
+          <span className="dot amber" />
+          Agents 05 · running
+        </span>
+      </div>
+      <div className="readout">
+        <span id="readoutLine">scroll · the audit becomes the build</span>
+        <br />
+        jobs completed · <span id="doneCount">0</span>
+      </div>
+    </div>
+  );
+}
+
+export default function HeroInstrument() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const progressRef = useRef(0);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [isStatic, setIsStatic] = useState(false);
+
+  // Detect mobile viewport or reduced-motion preference; re-check on change
+  // (viewport resize across the breakpoint, or the OS preference flipping).
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px), (prefers-reduced-motion: reduce)');
+    setIsStatic(mq.matches);
+    const onChange = () => setIsStatic(mq.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
+  // Mount the canvas engine. Static path pins progress at the midpoint split
+  // and skips the scroll listener entirely; the scroll-driven path computes
+  // progress from the track's position each scroll tick.
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    if (isStatic) {
+      const engine = initHeroEngine(canvas, () => 0.5);
+      return () => engine.destroy();
+    }
+
+    const track = trackRef.current;
+    if (!track) return;
+
+    const onScroll = () => {
+      const rect = track.getBoundingClientRect();
+      const total = rect.height - window.innerHeight;
+      progressRef.current = Math.min(1, Math.max(0, -rect.top / total));
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    const engine = initHeroEngine(canvas, () => progressRef.current);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      engine.destroy();
+    };
+  }, [isStatic]);
+
+  const instrument = (
+    <div className="hero-sticky">
+      <div id="stage">
+        <canvas ref={canvasRef} id="cv" />
+      </div>
+      <section id="hero">
+        <div className="viewport">
+          <div className="cluster-wrap">
+            <PaperCluster />
+            <LiveCluster />
+          </div>
+          <SpecBar />
+        </div>
+      </section>
+    </div>
+  );
+
+  if (isStatic) {
+    return instrument;
+  }
+
+  return (
+    <div ref={trackRef} className="hero-track" style={{ height: '280vh' }}>
+      {instrument}
+    </div>
+  );
+}
