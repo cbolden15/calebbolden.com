@@ -471,7 +471,17 @@ export function initHeroEngine(
     if (!reduced) rafId = requestAnimationFrame(frame);
   }
 
-  size(); addEventListener('resize', size);
+  // The resize event can fire while the canvas box is mid-layout (observed a
+  // 30px-wide read on a breakpoint crossing), which would stick a stretched
+  // backing store until the next resize. Re-measure on the next frame too,
+  // when layout has settled.
+  let sizeRaf = 0;
+  function onResize() {
+    size();
+    cancelAnimationFrame(sizeRaf);
+    sizeRaf = requestAnimationFrame(size);
+  }
+  size(); addEventListener('resize', onResize);
   rafId = requestAnimationFrame(frame);
   if (reduced) {
     smooth = 0.5;
@@ -481,7 +491,8 @@ export function initHeroEngine(
   return {
     destroy() {
       cancelAnimationFrame(rafId);
-      removeEventListener('resize', size);
+      cancelAnimationFrame(sizeRaf);
+      removeEventListener('resize', onResize);
       // Drop the stage class so no global state lingers after the hero
       // unmounts (e.g. client-side navigation away from the homepage).
       document.body.classList.remove('stage-dark');
