@@ -6,10 +6,11 @@ import { initHeroEngine } from './hero/heroEngine';
 
 // The hero instrument: a scroll-driven canvas (Task 18's heroEngine) plus two
 // copy clusters that crossfade as the canvas sweeps from the paper map to the
-// live system. Desktop gets the full 280vh scroll choreography; mobile and
-// prefers-reduced-motion get a single static viewport with the engine pinned
-// to the midpoint split. DOM shape ported from
-// docs/design/hero-prototype-2026-07-14.html. Styles land in Task 22.
+// live system. Every viewport gets the scroll choreography (desktop 280vh,
+// mobile 200vh); only prefers-reduced-motion falls back to a single static
+// viewport with the engine pinned to the midpoint split. The engine composes
+// its map into a desktop or mobile band from the canvas box width. DOM shape
+// ported from docs/design/hero-prototype-2026-07-14.html.
 
 function openChat() {
   window.dispatchEvent(new Event('open-chat'));
@@ -91,13 +92,24 @@ export default function HeroInstrument() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [isStatic, setIsStatic] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Detect mobile viewport or reduced-motion preference; re-check on change
-  // (viewport resize across the breakpoint, or the OS preference flipping).
+  // Static (single-viewport) path is reduced-motion only now; mobile keeps the
+  // scroll choreography. Re-check on change (the OS preference flipping).
   useEffect(() => {
-    const mq = window.matchMedia('(max-width: 767px), (prefers-reduced-motion: reduce)');
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     setIsStatic(mq.matches);
     const onChange = () => setIsStatic(mq.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
+  // Track height: shorten the pinned scroll section on phones so it doesn't
+  // feel endless. Re-check on resize across the 768px breakpoint.
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)');
+    setIsMobile(mq.matches);
+    const onChange = () => setIsMobile(mq.matches);
     mq.addEventListener('change', onChange);
     return () => mq.removeEventListener('change', onChange);
   }, []);
@@ -155,7 +167,7 @@ export default function HeroInstrument() {
   }
 
   return (
-    <div ref={trackRef} className="hero-track" style={{ height: '280vh' }}>
+    <div ref={trackRef} className="hero-track" style={{ height: isMobile ? '200vh' : '280vh' }}>
       {instrument}
     </div>
   );
