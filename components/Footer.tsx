@@ -31,6 +31,7 @@ export default function Footer() {
           </span>
           <nav aria-label="Services" className="flex gap-5">
             {[
+              { label: 'Work', href: '/work' },
               { label: 'Web development', href: '/services/web-development' },
               { label: 'SEO', href: '/services/seo' },
               { label: 'Marketing', href: '/services/marketing' },
