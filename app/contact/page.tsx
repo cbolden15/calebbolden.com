@@ -6,7 +6,7 @@ import Reveal from '@/components/Reveal';
 
 export const metadata: Metadata = {
   title: 'Contact | Caleb Bolden',
-  description: 'Three ways to start: describe your business to the assistant, email me directly, or book a call.',
+  description: 'Describe your business to the assistant, email me directly, or book a call.',
 };
 
 export default function ContactPage() {
@@ -66,11 +66,11 @@ export default function ContactPage() {
                   </p>
                 </div>
                 <div className="flex sm:col-span-4 sm:justify-end">
-                  <a href="mailto:cbolden15@gmail.com" className="btn-hairline btn-roll max-w-full">
+                  <a href="mailto:caleb@calebbolden.com" className="btn-hairline btn-roll max-w-full">
                     <span className="roll-box">
-                      <span className="roll-a">cbolden15@gmail.com</span>
+                      <span className="roll-a">caleb@calebbolden.com</span>
                       <span className="roll-b" aria-hidden="true">
-                        cbolden15@gmail.com
+                        caleb@calebbolden.com
                       </span>
                     </span>
                   </a>
@@ -78,22 +78,22 @@ export default function ContactPage() {
               </div>
             </Reveal>
 
-            <Reveal delay={140}>
-              <div
-                className="grid grid-cols-1 gap-4 py-8 sm:grid-cols-12 sm:items-center sm:gap-6"
-                style={{ borderTop: '1px solid var(--color-hairline)' }}
-              >
-                <p className="anno anno-blue sm:col-span-2">route 3 / calendar</p>
-                <div className="sm:col-span-6">
-                  <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 650, color: 'var(--color-ink)' }}>
-                    Book a call
-                  </h2>
-                  <p className="mt-2" style={{ fontSize: 14.5, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
-                    Twenty minutes, no deck, no pitch. We talk through your process and what I would map first.
-                  </p>
-                </div>
-                <div className="flex sm:col-span-4 sm:justify-end">
-                  {bookingUrl ? (
+            {bookingUrl && (
+              <Reveal delay={140}>
+                <div
+                  className="grid grid-cols-1 gap-4 py-8 sm:grid-cols-12 sm:items-center sm:gap-6"
+                  style={{ borderTop: '1px solid var(--color-hairline)' }}
+                >
+                  <p className="anno anno-blue sm:col-span-2">route 3 / calendar</p>
+                  <div className="sm:col-span-6">
+                    <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 650, color: 'var(--color-ink)' }}>
+                      Book a call
+                    </h2>
+                    <p className="mt-2" style={{ fontSize: 14.5, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
+                      Twenty minutes, no deck, no pitch. We talk through your process and what I would map first.
+                    </p>
+                  </div>
+                  <div className="flex sm:col-span-4 sm:justify-end">
                     <a href={bookingUrl} target="_blank" rel="noopener" className="btn-hairline btn-roll">
                       <span className="roll-box">
                         <span className="roll-a">Pick a time</span>
@@ -102,14 +102,10 @@ export default function ContactPage() {
                         </span>
                       </span>
                     </a>
-                  ) : (
-                    <p className="sm:text-right" style={{ fontSize: 14, color: 'var(--color-ink-faint)' }}>
-                      Booking link coming soon. Route 1 and 2 work today.
-                    </p>
-                  )}
+                  </div>
                 </div>
-              </div>
-            </Reveal>
+              </Reveal>
+            )}
           </div>
         </section>
       </main>
