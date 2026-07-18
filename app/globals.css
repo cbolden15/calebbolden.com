@@ -733,6 +733,46 @@
   @media (max-width: 860px) {
     .hero-sticky .readout { display: none; }
   }
+
+  /* Mobile hero: copy stacks in the top half at a reduced type scale; the map
+     band (heroEngine mobile layout) owns the bottom half. The spec bar keeps
+     just its pills at a compact size (the two-line readout is already hidden
+     below 860px), anchored at the bottom under the map band. */
+  @media (max-width: 767px) {
+    .hero-sticky .viewport {
+      padding: 60px 6% 24px;
+    }
+    .hero-sticky .cluster-wrap {
+      max-width: none;
+    }
+    .hero-sticky h1 {
+      margin-top: 14px;
+      font-size: clamp(1.5rem, 6vw, 1.9rem);
+    }
+    .hero-sticky .sub {
+      margin-top: 14px;
+      max-width: none;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    .hero-sticky .ctas {
+      margin-top: 20px;
+      gap: 10px;
+    }
+    .hero-sticky .btn {
+      padding: 12px 18px;
+      font-size: 10.5px;
+    }
+    .hero-sticky .pills {
+      gap: 6px;
+    }
+    .hero-sticky .pill {
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      padding: 7px 11px;
+      gap: 6px;
+    }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
