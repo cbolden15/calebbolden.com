@@ -24,14 +24,14 @@ const martian = Martian_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Caleb Bolden | AI Consulting for Small Business",
+  title: "Caleb Bolden | AI systems, process consulting, and writing",
   description:
-    "I map how your business actually works, then build the AI that gives you your time back. Process-first AI consulting for small businesses.",
-  keywords: ["AI consultant", "small business automation", "process improvement", "AI readiness audit", "workflow automation"],
+    "I find where a business loses time, then build the AI that takes that work over. Every engagement starts with a map of how the business actually runs.",
+  keywords: ["AI consultant", "small business automation", "process improvement", "AI readiness audit", "workflow automation", "AI systems", "agent systems", "process consulting"],
   authors: [{ name: "Caleb Bolden" }],
   openGraph: {
-    title: "Caleb Bolden | AI Consulting for Small Business",
-    description: "I map how your business actually works, then build the AI that gives you your time back.",
+    title: "Caleb Bolden | AI systems, process consulting, and writing",
+    description: "I find where a business loses time, then build the AI that takes that work over. Every engagement starts with a map of how the business actually runs.",
     url: process.env.NEXT_PUBLIC_SITE_URL,
     siteName: "Caleb Bolden",
     locale: "en_US",
