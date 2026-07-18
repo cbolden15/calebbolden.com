@@ -520,6 +520,218 @@
   }
 }
 
+/*
+  Hero instrument (dark stage) — ported from
+  docs/design/hero-prototype-2026-07-14.html (Task 22, "map becomes the
+  machine"). Everything here is scoped under .hero-track / .hero-sticky and
+  the component's own cluster/specbar classes (see HeroInstrument.tsx). The
+  dark palette lives as custom properties on .hero-sticky, not on :root —
+  the rest of the site (PainSolution onward) stays on the light "working
+  wall" theme untouched.
+*/
+@layer utilities {
+  .hero-track {
+    position: relative;
+  }
+
+  .hero-sticky {
+    --hero-black: #05070c;
+    --hero-paper: oklch(0.985 0.002 230);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--hero-black);
+    color: var(--hero-paper);
+    font-family: var(--font-body);
+  }
+
+  .hero-sticky #stage {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .hero-sticky #stage canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-sticky #hero {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+  }
+  .hero-sticky .viewport {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 96px 5% 34px;
+  }
+
+  /* two copy clusters, same slot, crossfaded by scroll (heroEngine sets
+     opacity/transform inline as scroll progress changes) */
+  .hero-sticky .cluster-wrap {
+    position: relative;
+    max-width: 700px;
+  }
+  .hero-sticky .cluster {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    will-change: opacity, transform;
+  }
+  .hero-sticky .cluster.paper-c {
+    position: relative;
+  }
+  .hero-sticky .micro {
+    font-family: var(--font-anno);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+  .hero-sticky h1 {
+    margin-top: 18px;
+    font-family: var(--font-display);
+    font-weight: 200;
+    font-stretch: 88%;
+    font-size: clamp(2.3rem, 4.8vw, 4rem);
+    line-height: 0.98;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .hero-sticky h1 strong {
+    font-weight: 750;
+    font-stretch: 78%;
+  }
+  .hero-sticky .sub {
+    margin-top: 24px;
+    max-width: 440px;
+    font-size: 16.5px;
+    line-height: 1.75;
+  }
+
+  /* paper cluster: ink on paper (reuses the site's own light tokens) */
+  .hero-sticky .paper-c .micro { color: var(--color-ink-faint); }
+  .hero-sticky .paper-c h1 { color: var(--color-ink); }
+  .hero-sticky .paper-c h1 strong { color: var(--color-blue); }
+  .hero-sticky .paper-c .sub { color: var(--color-ink-muted); }
+
+  /* live cluster: light on dark, gradient text reveal */
+  .hero-sticky .live-c .micro { color: rgba(255, 255, 255, 0.5); }
+  .hero-sticky .live-c h1 {
+    background: linear-gradient(100deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.75) 45%, #fff 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero-sticky .live-c .sub { color: rgba(255, 255, 255, 0.6); }
+
+  .hero-sticky .ctas {
+    margin-top: 34px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+  .hero-sticky .btn {
+    display: inline-block;
+    appearance: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-anno);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 14px 26px;
+    text-decoration: none;
+    border-radius: 999px;
+    transition: background 0.3s ease;
+  }
+  .hero-sticky .paper-c .btn.primary { background: var(--color-ink); color: oklch(1 0 0); }
+  .hero-sticky .paper-c .btn.ghost { border: 1.5px solid var(--color-ink); color: var(--color-ink); background: transparent; }
+  .hero-sticky .live-c .btn.primary { background: var(--hero-paper); color: #0a0d14; }
+  .hero-sticky .live-c .btn.ghost {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  }
+
+  /* spec bar swaps style with the stage (paper vs. live) */
+  .hero-sticky .specbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 5;
+  }
+  .hero-sticky .pills { display: flex; gap: 10px; flex-wrap: wrap; }
+  .hero-sticky .pill {
+    font-family: var(--font-anno);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding: 9px 16px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.5s ease, border-color 0.5s ease, background 0.5s ease;
+  }
+  .hero-sticky .readout {
+    font-family: var(--font-anno);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    text-align: right;
+    line-height: 2;
+    transition: color 0.5s ease;
+  }
+  body:not(.stage-dark) .hero-sticky .pill {
+    color: var(--color-ink-muted);
+    border: 1px solid var(--color-hairline);
+    background: oklch(1 0 0 / 0.5);
+  }
+  body:not(.stage-dark) .hero-sticky .readout { color: var(--color-ink-faint); }
+  body.stage-dark .hero-sticky .pill {
+    color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.05);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+  body.stage-dark .hero-sticky .readout { color: rgba(255, 255, 255, 0.35); }
+  .hero-sticky .pill .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--color-pos);
+  }
+  .hero-sticky .pill .dot.amber { background: var(--color-sticky-edge); }
+  .hero-sticky #doneCount { color: inherit; font-weight: 500; }
+
+  @media (max-width: 860px) {
+    .hero-sticky .readout { display: none; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-sticky .cluster,
+  .hero-sticky .btn,
+  .hero-sticky .pill,
+  .hero-sticky .readout {
+    transition: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .draw-line { animation: none; stroke-dashoffset: 0; }
   .draw-on-reveal,

@@ -1,5 +1,5 @@
 import Header from '@/components/Header';
-import Hero from '@/components/Hero';
+import HeroInstrument from '@/components/HeroInstrument';
 import PainSolution from '@/components/PainSolution';
 import Process from '@/components/Process';
 import AISystems from '@/components/AISystems';
@@ -15,7 +15,7 @@ export default function Home() {
     <>
       <Header />
       <main className="chat-offset">
-        <Hero />
+        <HeroInstrument />
         <PainSolution />
         <Process />
         <AISystems />
