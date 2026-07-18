@@ -421,12 +421,14 @@ export function initHeroEngine(
     smooth = 0.5;
     rafId = requestAnimationFrame(() => frame(9000));
   }
-  requestAnimationFrame(() => document.body.classList.add('play'));
 
   return {
     destroy() {
       cancelAnimationFrame(rafId);
       removeEventListener('resize', size);
+      // Drop the stage class so no global state lingers after the hero
+      // unmounts (e.g. client-side navigation away from the homepage).
+      document.body.classList.remove('stage-dark');
     },
   };
 }
