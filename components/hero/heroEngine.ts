@@ -471,17 +471,14 @@ export function initHeroEngine(
     if (!reduced) rafId = requestAnimationFrame(frame);
   }
 
-  // The resize event can fire while the canvas box is mid-layout (observed a
-  // 30px-wide read on a breakpoint crossing), which would stick a stretched
-  // backing store until the next resize. Re-measure on the next frame too,
-  // when layout has settled.
-  let sizeRaf = 0;
-  function onResize() {
-    size();
-    cancelAnimationFrame(sizeRaf);
-    sizeRaf = requestAnimationFrame(size);
-  }
-  size(); addEventListener('resize', onResize);
+  // The canvas box animates through breakpoint crossings (the layout runs CSS
+  // transitions), so event-time and next-frame measurements can both catch it
+  // mid-transition. A ResizeObserver fires on every settled box change,
+  // including the final frame of a transition, so the backing store always
+  // converges to the real size.
+  size();
+  const ro = new ResizeObserver(() => size());
+  ro.observe(cv);
   rafId = requestAnimationFrame(frame);
   if (reduced) {
     smooth = 0.5;
@@ -491,8 +488,7 @@ export function initHeroEngine(
   return {
     destroy() {
       cancelAnimationFrame(rafId);
-      cancelAnimationFrame(sizeRaf);
-      removeEventListener('resize', onResize);
+      ro.disconnect();
       // Drop the stage class so no global state lingers after the hero
       // unmounts (e.g. client-side navigation away from the homepage).
       document.body.classList.remove('stage-dark');
