@@ -50,7 +50,7 @@ export default function MobileNav({ links }: { links: NavLink[] }) {
       </button>
 
       {/* Portal to body: escapes the header's z-20 stacking context so the
-          overlay actually sits above the chat FAB (z-[190]). */}
+          overlay (z-[300]) clears the chat FAB (z-50) and chat surfaces (z-[190]/z-[200]). */}
       {open && createPortal(
         <div
           id="mobile-nav-overlay"

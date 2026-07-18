@@ -404,7 +404,10 @@ export function initHeroEngine(
     const rect = cv.getBoundingClientRect();
     W = rect.width || innerWidth;
     H = rect.height || innerHeight;
-    cv.width = W * DPR; cv.height = H * DPR;
+    // Round to match the ResizeObserver guard's Math.round comparison (the
+    // canvas setter would otherwise truncate and the guard would never match
+    // on fractional box widths).
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     buildGraph();
   }
