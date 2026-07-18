@@ -42,7 +42,7 @@ export default function WorkPage() {
                 Work
               </h1>
               <p className="mt-6 max-w-xl" style={{ fontSize: 17, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
-                The systems I have built and run, the code I publish, and how I build. I recommend what I have already shipped.
+                The systems I have built and run, the code I publish, and how I build. I recommend what I build and run myself.
               </p>
             </Reveal>
           </div>

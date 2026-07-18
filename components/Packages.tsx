@@ -56,7 +56,8 @@ export default function Packages() {
           </h2>
           <p className="mb-12 max-w-lg" style={{ fontSize: 16, color: 'var(--color-ink-muted)' }}>
             Fixed scope, plain deliverables, and nothing gets built before the audit
-            says it&apos;s worth building.
+            says it&apos;s worth building. Every engagement is a fixed fee, quoted before
+            we start. No hourly billing, no surprise scope.
           </p>
         </Reveal>
 
@@ -100,7 +101,11 @@ export default function Packages() {
                 ))}
               </ul>
 
-              <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
+              <p className="mt-6" style={{ fontSize: 13.5, color: 'var(--color-ink-faint)' }}>
+                You&apos;ll know the exact cost after one short call, before anything begins.
+              </p>
+
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
                 <span className="anno anno-blue">{audit.meta}</span>
                 <Link href="/contact" className="btn-ink btn-roll">
                   <span className="roll-box">

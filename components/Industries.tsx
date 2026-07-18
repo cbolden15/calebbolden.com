@@ -1,17 +1,8 @@
 import Reveal from './Reveal';
 
-// Industry index: a plain annotated line, not a pill wall. The list reads like
-// a drawing's reference key.
-
-const industries = [
-  'Home services',
-  'Salon & spa',
-  'Fitness',
-  'Healthcare',
-  'Pet services',
-  'Property management',
-  'Professional services',
-];
+// Audience index: a plain annotated line, not a pill wall. Deliberately not a
+// vertical list (that's Vora's positioning) — two buckets that together cover
+// every small business.
 
 export default function Industries() {
   return (
@@ -25,9 +16,10 @@ export default function Industries() {
         </Reveal>
         <Reveal delay={80}>
           <p style={{ fontSize: 15, lineHeight: 1.9, color: 'var(--color-ink-muted)' }}>
-            {industries.join(', ')}
+            Small businesses of every kind. Service businesses that run on calls, crews, and
+            schedules. Office and professional firms that run on clients, documents, and billing.
             <span style={{ color: 'var(--color-ink-faint)' }}>
-              {', '}and any business where the owner does work a system should.
+              {' '}Any business where the owner does work a system should.
             </span>
           </p>
         </Reveal>

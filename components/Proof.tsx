@@ -47,10 +47,10 @@ export default function Proof() {
       <div className="mx-auto w-[90%] max-w-[1200px]">
         <Reveal>
           <h2 className="type-display mb-4" style={{ fontSize: 'clamp(2.1rem, 4.2vw, 3.4rem)' }}>
-            The systems I recommend are ones I&apos;ve already shipped
+            The systems I recommend are ones I build and run
           </h2>
           <p className="mb-10 max-w-lg" style={{ fontSize: 16, color: 'var(--color-ink-muted)' }}>
-            I&apos;m a builder first. These are live products I designed, built, and run.
+            I&apos;m a builder first. These are my own products, designed, built, and run day to day.
           </p>
         </Reveal>
 
