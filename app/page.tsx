@@ -2,6 +2,7 @@ import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import PainSolution from '@/components/PainSolution';
 import Process from '@/components/Process';
+import AISystems from '@/components/AISystems';
 import Packages from '@/components/Packages';
 import Proof from '@/components/Proof';
 import NowStrip from '@/components/NowStrip';
@@ -17,6 +18,7 @@ export default function Home() {
         <Hero />
         <PainSolution />
         <Process />
+        <AISystems />
         <Packages />
         <Proof />
         <NowStrip />
