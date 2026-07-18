@@ -9,7 +9,7 @@ export default function Footer() {
 
   return (
     <footer className="chat-offset" style={{ borderTop: '1px solid var(--color-hairline)' }}>
-      <div className="mx-auto w-[90%] max-w-[1200px] py-8">
+      <div className="mx-auto w-[90%] max-w-[1200px] pt-8 pb-[calc(6rem+env(safe-area-inset-bottom))] md:pb-8">
         <div
           className="grid grid-cols-2 lg:grid-cols-5"
           style={{ border: '1px solid var(--color-hairline)' }}
