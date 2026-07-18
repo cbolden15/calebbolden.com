@@ -213,7 +213,7 @@ export default function RevenueLeakCalculator() {
         <LeakBlock
           number="3"
           title="The no-shows"
-          evidence="A five-year study covering 1.6 million appointments found automated reminders cut no-shows by 23%. A peer-reviewed study found SMS reminders brought no-shows down to 1.9%, the lowest of any channel tested."
+          evidence="A five-year Sesame Communications study covering 1.6 million appointments across 64 practices found automated reminders cut no-shows by 23%. A PMC-indexed orthodontic study of 1,193 appointments found SMS reminders brought no-shows down to 1.9%, the lowest of any channel tested."
           result={`No-show leak: ${formatCurrency(noShowLeak)} per month`}
           note="the share reminders would recover"
         >

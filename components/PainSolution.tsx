@@ -26,7 +26,7 @@ const rows = [
     pain: 'Drowning in admin',
     painDesc: "An hour a day on invoices, calendar updates, data entry. It's the work you hate most and it never ends.",
     fix: 'Admin runs itself',
-    fixDesc: 'Invoices auto-generate from completed jobs. Calendar syncs from the booking agent. Data entry eliminated.',
+    fixDesc: 'Invoices auto-generate from completed work. Calendar syncs from the booking agent. Data entry eliminated.',
     tag: 'workflow',
   },
   {

@@ -55,7 +55,7 @@ function LiveCluster() {
       </h1>
       <p className="sub">
         A voice agent answering, a docs agent filing, a campaign agent sending. I build and run these
-        for my own companies first, then for yours. The counter is real work.
+        for my own companies first, then for yours.
       </p>
       <ClusterCtas />
     </div>
@@ -82,7 +82,7 @@ function SpecBar() {
       <div className="readout">
         <span id="readoutLine">scroll · the audit becomes the build</span>
         <br />
-        jobs completed · <span id="doneCount">0</span>
+        boxes routed · <span id="doneCount">0</span>
       </div>
     </div>
   );
