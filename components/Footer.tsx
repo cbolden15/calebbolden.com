@@ -9,7 +9,7 @@ export default function Footer() {
 
   return (
     <footer className="chat-offset" style={{ borderTop: '1px solid var(--color-hairline)' }}>
-      <div className="mx-auto w-[90%] max-w-[1200px] py-8">
+      <div className="mx-auto w-[90%] max-w-[1200px] pt-8 pb-[calc(6rem+env(safe-area-inset-bottom))] md:pb-8">
         <div
           className="grid grid-cols-2 lg:grid-cols-5"
           style={{ border: '1px solid var(--color-hairline)' }}
@@ -29,7 +29,7 @@ export default function Footer() {
           <span style={{ fontSize: 13, color: 'var(--color-ink-faint)' }}>
             &copy; 2026 Caleb Bolden. Services provided by Vora Technologies LLC.
           </span>
-          <nav aria-label="Services" className="flex gap-5">
+          <nav aria-label="Services" className="flex flex-wrap gap-x-5 gap-y-1">
             {[
               { label: 'Work', href: '/work' },
               { label: 'Web development', href: '/services/web-development' },
@@ -40,7 +40,7 @@ export default function Footer() {
               <a
                 key={l.href}
                 href={l.href}
-                className="link-draw"
+                className="link-draw whitespace-nowrap"
                 style={{ fontSize: 13, color: 'var(--color-ink-faint)' }}
               >
                 {l.label}
