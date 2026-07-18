@@ -40,6 +40,22 @@ interface Packet {
   hold: number;
 }
 
+interface Layout {
+  left: number;
+  right: number;
+  cy: number;
+  rowGap: number;
+  memGap: number;
+  cw: number;
+  headerY: number;
+  laneTop: number;
+  laneBottom: number;
+  focalX: number;
+  focalY: number;
+  labelScale: number;
+  mobile: boolean;
+}
+
 export function initHeroEngine(
   canvas: HTMLCanvasElement,
   getProgress: () => number
@@ -53,11 +69,43 @@ export function initHeroEngine(
   let nodes: Record<string, HeroNode>;
   let edges: Edge[];
   let cols: Col[];
+  let layout!: Layout;
+
+  // Layout band the map is composed into. Desktop (>= 768px canvas width) keeps
+  // the original composition: text owns the left ~40%, the map lives in the
+  // right band. Mobile (< 768px) drops the same map full-width into the bottom
+  // band (y ~50%-90%) so it sits under the stacked copy instead of on top of it.
+  // A zero-width box (W falls back to innerWidth in size(); if that is 0 too)
+  // resolves to the desktop band.
+  function computeLayout(): Layout {
+    const mobile = W > 0 && W < 768;
+    if (!mobile) {
+      const left = W * 0.42, right = W * 0.955, span = right - left;
+      return {
+        left, right,
+        cy: H * 0.52, rowGap: H * 0.16, memGap: H * 0.27,
+        cw: Math.min(132, span * 0.20),
+        headerY: H * 0.155, laneTop: H * 0.175, laneBottom: H * 0.84,
+        focalX: W * 0.68, focalY: H * 0.52,
+        labelScale: 1, mobile: false,
+      };
+    }
+    const left = W * 0.05, right = W * 0.95, span = right - left;
+    return {
+      left, right,
+      cy: H * 0.71, rowGap: H * 0.075, memGap: H * 0.15,
+      cw: span * 0.18,
+      headerY: H * 0.50, laneTop: H * 0.52, laneBottom: H * 0.90,
+      focalX: W * 0.50, focalY: H * 0.71,
+      labelScale: 0.72, mobile: true,
+    };
+  }
+
   function buildGraph() {
-    const right = W * 0.955, left = W * 0.42;
-    const span = right - left;
-    const cy = H * 0.52;
-    const CW = Math.min(132, span * 0.20), CH = 42;
+    layout = computeLayout();
+    const { left, cy, rowGap, memGap } = layout;
+    const CW = layout.cw, CH = 42;
+    const span = layout.right - left;
     cols = [
       { x: left + span * 0.00, label: '01 / INTAKE' },
       { x: left + span * 0.30, label: '02 / TRIAGE' },
@@ -67,13 +115,13 @@ export function initHeroEngine(
     const N = (col: number, y: number, label: string, paperLabel: string, opts: Partial<HeroNode> = {}): HeroNode =>
       ({ x: cols[col].x, y: y - CH / 2, w: CW, h: CH, label, paperLabel, busy: -9, ...opts });
     nodes = {
-      intake: N(0, cy,        'INTAKE',        'call comes in'),
-      triage: N(1, cy,        'TRIAGE',        'front desk sorts'),
-      voice:  N(2, cy - H * 0.16, 'VOICE AGENT',   'phone tag'),
-      docs:   N(2, cy,        'DOCS AGENT',    'paperwork pile'),
-      camp:   N(2, cy + H * 0.16, 'CAMPAIGN AGENT','marketing? later'),
-      done:   N(3, cy,        'DONE',          'invoice sent', { counter: true }),
-      memory: N(2, cy - H * 0.27, 'MEMORY',        'sticky notes', { dashed: true, small: true }),
+      intake: N(0, cy,          'INTAKE',        'call comes in'),
+      triage: N(1, cy,          'TRIAGE',        'front desk sorts'),
+      voice:  N(2, cy - rowGap, 'VOICE AGENT',   'phone tag'),
+      docs:   N(2, cy,          'DOCS AGENT',    'paperwork pile'),
+      camp:   N(2, cy + rowGap, 'CAMPAIGN AGENT','marketing? later'),
+      done:   N(3, cy,          'DONE',          'invoice sent', { counter: true }),
+      memory: N(2, cy - memGap, 'MEMORY',        'sticky notes', { dashed: true, small: true }),
     };
     nodes.memory.w = CW * 0.78; nodes.memory.h = 34;
     edges = ([
@@ -126,10 +174,10 @@ export function initHeroEngine(
 
     const inkCol = 'rgba(40,52,64,0.9)', blueCol = 'rgba(43,94,133,0.9)';
     // column headers
-    ctx.font = `${9 * S}px "Martian Mono", monospace`;
+    ctx.font = `${9 * S * layout.labelScale}px "Martian Mono", monospace`;
     ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
     ctx.fillStyle = 'rgba(40,52,64,0.45)';
-    for (const c of cols) ctx.fillText(c.label, c.x * S + OX, H * 0.155 * S + OY);
+    for (const c of cols) ctx.fillText(c.label, c.x * S + OX, layout.headerY * S + OY);
 
     // edges: thin ink w/ arrowheads
     for (const e of edges) {
@@ -155,12 +203,14 @@ export function initHeroEngine(
       if (nd.dashed) ctx.setLineDash([3, 4]);
       ctx.strokeStyle = blueCol; ctx.lineWidth = 1.4;
       ctx.stroke(); ctx.setLineDash([]);
-      ctx.font = `${(nd.small ? 8.5 : 9.5) * S}px "Martian Mono", monospace`;
+      ctx.font = `${(nd.small ? 8.5 : 9.5) * S * layout.labelScale}px "Martian Mono", monospace`;
       ctx.fillStyle = inkCol; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(nd.paperLabel, x + w / 2, y + h / 2 + 0.5);
     }
     ctx.textBaseline = 'alphabetic';
 
+    // Margin notes + amber sticky can't fit legibly at 375px — drop on mobile.
+    if (layout.mobile) return;
     // pain annotations (the audit's red pen, in ink)
     ctx.font = `${9.5 * S}px "Martian Mono", monospace`;
     ctx.fillStyle = 'rgba(140,60,50,0.85)';
@@ -226,15 +276,15 @@ export function initHeroEngine(
     ctx.globalAlpha = 1;
 
     // column headers + lanes
-    ctx.font = `${9 * S}px "Martian Mono", monospace`;
+    ctx.font = `${9 * S * layout.labelScale}px "Martian Mono", monospace`;
     ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
     for (const c of cols) {
       const x = c.x * S + OX;
       ctx.fillStyle = 'rgba(255,255,255,0.28)';
-      ctx.fillText(c.label, x, H * 0.155 * S + OY);
+      ctx.fillText(c.label, x, layout.headerY * S + OY);
       ctx.strokeStyle = 'rgba(150,200,250,0.07)';
       ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(x, H * 0.175 * S + OY); ctx.lineTo(x, H * 0.84 * S + OY); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x, layout.laneTop * S + OY); ctx.lineTo(x, layout.laneBottom * S + OY); ctx.stroke();
     }
     // edges
     for (const e of edges) {
@@ -310,7 +360,7 @@ export function initHeroEngine(
       if (nd.dashed) ctx.setLineDash([3, 4]);
       ctx.strokeStyle = `rgba(150,200,250,${0.28 + (active ? glow * 0.5 : 0)})`; ctx.lineWidth = 1; ctx.stroke();
       ctx.setLineDash([]);
-      const fs = (nd.small ? 8.5 : 9.5) * S;
+      const fs = (nd.small ? 8.5 : 9.5) * S * layout.labelScale;
       ctx.font = `${fs}px "Martian Mono", monospace`;
       ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
       const dotX = x + 12 * S, cyy = y + h / 2;
@@ -367,8 +417,8 @@ export function initHeroEngine(
     // camera push only in live phase
     const push = Math.max(0, (smooth - 0.62) / 0.38);
     const S = 1 + push * 0.4;
-    const OX = -W * 0.68 * (S - 1) - push * W * 0.04;
-    const OY = -H * 0.52 * (S - 1) + push * H * 0.02;
+    const OX = -layout.focalX * (S - 1) - push * W * 0.04;
+    const OY = -layout.focalY * (S - 1) + push * H * 0.02;
 
     ctx.clearRect(0, 0, W, H);
     // live world clipped to left of scan
