@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import MobileNav from './MobileNav';
 
 // Hairline three-zone nav: brand / links / CTA. Built from rules, not chips
 // (working-wall direction, DESIGN.md). Offset right for the chat sidebar.
@@ -53,6 +54,7 @@ export default function Header() {
         <span className="anno hidden lg:block" style={{ color: 'var(--color-ink-faint)' }}>
           sht 1 / rev b
         </span>
+        <MobileNav links={links} />
       </div>
     </nav>
   );
