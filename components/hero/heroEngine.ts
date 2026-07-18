@@ -477,7 +477,16 @@ export function initHeroEngine(
   // including the final frame of a transition, so the backing store always
   // converges to the real size.
   size();
-  const ro = new ResizeObserver(() => size());
+  const ro = new ResizeObserver(() => {
+    // ResizeObserver fires once on observe(); reassigning cv.width in size()
+    // clears the canvas, which would wipe the reduced-motion one-shot render.
+    // Skip when the backing store already matches the box, and re-render the
+    // static frame after any real resize in reduced mode.
+    const rect = cv.getBoundingClientRect();
+    if (Math.round(rect.width * DPR) === cv.width && Math.round(rect.height * DPR) === cv.height) return;
+    size();
+    if (reduced) rafId = requestAnimationFrame(() => frame(9000));
+  });
   ro.observe(cv);
   rafId = requestAnimationFrame(frame);
   if (reduced) {
