@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import Reveal from './Reveal';
 
 // Spec-sheet proof: shipped products as divided rows with mono status labels.
@@ -9,12 +10,14 @@ const products = [
     name: 'Vora',
     desc: 'An AI-powered CRM platform for service businesses: missed-call text-back, lead follow-up, campaigns, and scheduling in one system.',
     href: 'https://voratechnology.com',
+    detail: '/work/vora',
     status: 'live',
   },
   {
     name: 'ChapterHQ',
     desc: "Management platform for clubs, chapters, and nonprofits: members, dues, events, and an AI assistant that answers from the org's own records.",
     href: 'https://chapterhq.ai',
+    detail: '/work/chapterhq',
     status: 'live',
   },
   {
@@ -28,6 +31,13 @@ const products = [
     desc: 'An autonomous crew of software agents that plans, writes, reviews, and ships code on its own infrastructure.',
     href: null,
     status: 'running',
+  },
+  {
+    name: 'Open source',
+    desc: 'Tooling I publish on GitHub.',
+    href: null,
+    detail: '/work/open-source',
+    status: 'live',
   },
 ];
 
@@ -72,6 +82,15 @@ export default function Proof() {
                     )}
                     <span className="anno">{p.status}</span>
                   </span>
+                  {p.detail && (
+                    <Link
+                      href={p.detail}
+                      className="link-draw transition-colors"
+                      style={{ fontSize: 14, fontWeight: 500, color: 'var(--color-blue)' }}
+                    >
+                      Details
+                    </Link>
+                  )}
                   {p.href && (
                     <a
                       href={p.href}
