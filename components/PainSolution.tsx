@@ -50,6 +50,27 @@ const rows = [
     fixDesc: 'AI categorizes, auto-replies to common questions, flags what actually needs you. 3 items, not 47.',
     tag: 'workflow',
   },
+  {
+    pain: 'Documents pile up waiting to be processed',
+    painDesc: 'Intake forms, contracts, and PDFs sit in a queue. Someone has to read each one, pull the fields, and file it. That someone is expensive and slow.',
+    fix: 'Documents processed on arrival',
+    fixDesc: 'An agent reads each document, extracts the fields, and files it to the right record. A person reviews the exceptions, not the whole stack.',
+    tag: 'docs',
+  },
+  {
+    pain: 'Client onboarding takes a week of back-and-forth',
+    painDesc: 'Every new client means the same emails, the same forms, the same chasing for missing information. It stalls the work and it looks unpolished.',
+    fix: 'Onboarding that runs itself',
+    fixDesc: 'The system collects intake, checks it for gaps, chases what is missing, and sets up the account, so the first real conversation is about the work.',
+    tag: 'workflow',
+  },
+  {
+    pain: 'The answer is buried in old files',
+    painDesc: 'A client asks a question and the answer is in a file from two years ago that nobody can find. So it gets re-answered from scratch, sometimes wrong.',
+    fix: 'Answers from your own records',
+    fixDesc: 'A knowledge assistant searches your documents and answers with the source attached, so the team stops re-deriving what the firm already knew.',
+    tag: 'knowledge',
+  },
 ];
 
 export default function PainSolution() {
