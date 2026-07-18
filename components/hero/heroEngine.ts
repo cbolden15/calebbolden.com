@@ -368,11 +368,17 @@ export function initHeroEngine(
       ctx.fillStyle = active ? 'rgba(160,220,255,1)' : (nd.counter ? 'rgba(237,217,183,0.9)' : 'rgba(120,170,220,0.55)');
       ctx.fill();
       ctx.fillStyle = active ? 'rgba(220,240,255,0.95)' : 'rgba(255,255,255,0.6)';
-      ctx.fillText(nd.label, dotX + 10, cyy + 0.5);
+      ctx.fillText(nd.label, dotX + 10, nd.counter && layout.mobile ? cyy - 7 : cyy + 0.5);
       if (nd.counter) {
-        ctx.textAlign = 'right';
         ctx.fillStyle = 'rgba(237,217,183,0.9)';
-        ctx.fillText(String(doneCount).padStart(3, '0'), x + w - 10, cyy + 0.5);
+        if (layout.mobile) {
+          // Narrow mobile box: right-aligning the counter collides with the
+          // label, so stack it under the label instead.
+          ctx.fillText(String(doneCount).padStart(3, '0'), dotX + 10, cyy + 7);
+        } else {
+          ctx.textAlign = 'right';
+          ctx.fillText(String(doneCount).padStart(3, '0'), x + w - 10, cyy + 0.5);
+        }
       }
       if (active && !nd.counter) {
         const bw = (w - 20) * busyP;
