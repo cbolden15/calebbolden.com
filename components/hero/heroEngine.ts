@@ -342,7 +342,12 @@ export function initHeroEngine(
   const readoutLine = document.getElementById('readoutLine') as HTMLElement;
 
   function size() {
-    W = innerWidth; H = innerHeight;
+    // Size the drawing surface to the canvas's own rendered box, not the
+    // window: the hero lives inside the site's layout and its box can be
+    // narrower than innerWidth (falls back to the window before first layout).
+    const rect = cv.getBoundingClientRect();
+    W = rect.width || innerWidth;
+    H = rect.height || innerHeight;
     cv.width = W * DPR; cv.height = H * DPR;
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     buildGraph();

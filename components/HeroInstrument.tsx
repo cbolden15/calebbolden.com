@@ -89,7 +89,6 @@ function SpecBar() {
 
 export default function HeroInstrument() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const progressRef = useRef(0);
   const trackRef = useRef<HTMLDivElement>(null);
   const [isStatic, setIsStatic] = useState(false);
 
@@ -118,17 +117,18 @@ export default function HeroInstrument() {
     const track = trackRef.current;
     if (!track) return;
 
-    const onScroll = () => {
+    // Read progress from the track's live position every frame (the engine
+    // calls this inside its rAF loop). Computing it here rather than from a
+    // scroll event means it can never desync or miss an event, whatever the
+    // page's scroll container is.
+    const getProgress = () => {
       const rect = track.getBoundingClientRect();
       const total = rect.height - window.innerHeight;
-      progressRef.current = Math.min(1, Math.max(0, -rect.top / total));
+      return total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
     };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
 
-    const engine = initHeroEngine(canvas, () => progressRef.current);
+    const engine = initHeroEngine(canvas, getProgress);
     return () => {
-      window.removeEventListener('scroll', onScroll);
       engine.destroy();
     };
   }, [isStatic]);

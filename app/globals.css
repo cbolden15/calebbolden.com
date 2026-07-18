@@ -533,6 +533,18 @@
   .hero-track {
     position: relative;
   }
+  /* Full-bleed: cancel the chat-offset reserve so the hero spans the whole
+     viewport (the prototype was designed edge to edge). The negative margin
+     mirrors .chat-offset exactly, so the hero stays full width whether the
+     chat rail is expanded or collapsed. */
+  @media (min-width: 768px) {
+    .hero-track {
+      margin-right: -360px;
+    }
+    html[data-chat="collapsed"] .hero-track {
+      margin-right: 0;
+    }
+  }
 
   .hero-sticky {
     --hero-black: #05070c;
