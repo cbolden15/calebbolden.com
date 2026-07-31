@@ -3,7 +3,7 @@ import Reveal from './Reveal';
 
 // Offer ladder: audit featured with the sticky note (the one amber mark in
 // this section), follow-ons as hairline panels. No public pricing (quoted
-// live, docs/consulting/launch-roadmap.md).
+// live, consulting/launch-roadmap.md).
 
 const audit = {
   name: 'Process & AI audit',
