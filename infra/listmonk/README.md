@@ -73,11 +73,9 @@ ssh root@5.78.121.71 "cd /opt/listmonk && LISTMONK_DB_PASSWORD='<value>' LISTMON
 ssh root@5.78.121.71 "cd /opt/listmonk && LISTMONK_DB_PASSWORD='<value>' LISTMONK_ADMIN_USER='admin' LISTMONK_ADMIN_PASSWORD='<value>' docker compose run --rm listmonk ./listmonk --install --yes"
 ssh root@5.78.121.71 "cd /opt/listmonk && LISTMONK_DB_PASSWORD='<value>' LISTMONK_ADMIN_USER='admin' LISTMONK_ADMIN_PASSWORD='<value>' docker compose up -d"
 
-# 5. Wire shared Caddy — append to /opt/caddy/Caddyfile:
-#    lists.calebbolden.com {
-#        reverse_proxy listmonk-listmonk-1:9000
-#        ...
-#    }
+# 5. Wire shared Caddy — append this exact block to /opt/caddy/Caddyfile
+#    (verbatim from the deployed production Caddyfile, so a disaster-recovery
+#    rebuild reproduces it exactly — see the block below the shell commands).
 #    Add listmonk_public as an external network in /opt/caddy/docker-compose.yml
 #    (same pattern as vora_vora-public / chapterhq_chapterhq), then:
 ssh root@5.78.121.71 'cd /opt/caddy && docker compose up -d'
@@ -85,6 +83,23 @@ ssh root@5.78.121.71 'docker exec shared-caddy caddy reload --config /etc/caddy/
 
 # 6. Verify
 curl -s -o /dev/null -w "%{http_code}" https://lists.calebbolden.com/admin/login   # expect 200
+```
+
+The `lists.calebbolden.com` block to append to `/opt/caddy/Caddyfile` (verbatim,
+matches the existing `calebbolden.com` block's security-header pattern):
+
+```caddyfile
+lists.calebbolden.com {
+	reverse_proxy listmonk-listmonk-1:9000
+	encode gzip zstd
+	header {
+		X-Content-Type-Options nosniff
+		X-Frame-Options DENY
+		Referrer-Policy strict-origin-when-cross-origin
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		-Server
+	}
+}
 ```
 
 Confirm the real listmonk container name with `docker ps` after `docker compose up -d`
