@@ -20,8 +20,9 @@ routed through the shared Caddy instance at `/opt/caddy`.
 
 ## Secrets
 
-`LISTMONK_DB_PASSWORD`, `LISTMONK_ADMIN_USER`, and `LISTMONK_ADMIN_PASSWORD` live
-in `~/.dev-secrets.env` locally. They are **not** committed anywhere. `config.toml`
+`LISTMONK_DB_PASSWORD`, `LISTMONK_ADMIN_USER`, `LISTMONK_ADMIN_PASSWORD`,
+`LISTMONK_API_USER`, and `LISTMONK_API_TOKEN` live in `~/.dev-secrets.env`
+locally. They are **not** committed anywhere. `config.toml`
 (the real one, built from `config.toml.example` with secrets filled in) lives only
 on the server at `/opt/listmonk/config.toml` — never commit it.
 
@@ -125,6 +126,68 @@ scp root@5.78.121.71:/opt/listmonk/backup.sql ./listmonk-backup-$(date +%Y%m%d).
 Restore with `psql -U listmonk listmonk < backup.sql` against a running
 `listmonk-db` container.
 
+## SMTP relay, API user, and lists (Task 2)
+
+SMTP is configured entirely through `GET`/`PUT /api/settings` (no admin UI —
+see the auth gotcha below). Current SMTP relay: **SendGrid**
+(`smtp.sendgrid.net:587`, STARTTLS, user `apikey`, password `SENDGRID_API_KEY`),
+default from-address `Caleb Bolden <caleb@calebbolden.com>`.
+
+### MAIL DELIVERY PENDING FOUNDER ACTION
+
+As of 2026-08-01, SMTP relay is fully configured and auth-verified against
+both providers, but **neither can currently deliver mail** — both are blocked
+on an action only the founder can take:
+
+- **Resend** (the originally specced relay) — `RESEND_API_KEY` in
+  `~/.dev-secrets.env` is a send-only restricted key (`GET
+  https://api.resend.com/domains` → 401 `restricted_api_key`), so the domain
+  cannot be verified via API. `calebbolden.com` has never been added in the
+  Resend dashboard (Cloudflare has no Resend DNS records — only Google
+  Workspace SPF/DKIM/DMARC). A tx smoke test through Resend SMTP got a clean
+  `550 The calebbolden.com domain is not verified` — auth/STARTTLS work fine,
+  it's purely the unverified domain. **Founder to-do**: add + verify
+  `calebbolden.com` in the Resend dashboard (~10 min, already tracked in the
+  project's root `CLAUDE.md`), then swap `smtp[0]` back to
+  `smtp.resend.com:587` / user `resend` / password `RESEND_API_KEY`.
+- **SendGrid** (fallback, this shared Vora account) — `SENDGRID_API_KEY` has
+  full domain-management scope. Domain-authenticated `calebbolden.com` via
+  `POST /v3/whitelabel/domains` (id `32174450`, `automatic_security: true`),
+  added the 3 returned CNAMEs (`mail_cname`, `dkim1`, `dkim2`) to Cloudflare,
+  polled `/v3/whitelabel/domains/32174450/validate` → `valid: true` within
+  ~20s. SMTP auth against `smtp.sendgrid.net` succeeds, but the account has
+  **zero send credits**: `GET /v3/user/credits` → `{"remain":0,"total":0,
+  "used":0,"is_hard_limit":true}`, `GET /v3/user/account` → `{"type":"free"}`.
+  Tx smoke test got `451 Authentication failed: Maximum credits exceeded`.
+  **Founder to-do**: upgrade/refill this SendGrid account's plan, or provide a
+  different key with quota.
+
+Whichever provider gets unblocked first, the fix is a `smtp[0]` field swap via
+the same GET/PUT pattern used above — no code change needed.
+
+### API user
+
+`api-bot` (id 2, type `api`) has user role `api-bot-role` (id 2) with
+permissions `lists:get_all`, `lists:manage_all`, `subscribers:get_all`,
+`subscribers:manage`, `subscribers:import`, `tx:send`. Created via
+`POST /api/roles/users` then `POST /api/users` with `user_role_id`. Credentials
+in `~/.dev-secrets.env` as `LISTMONK_API_USER=api-bot` /
+`LISTMONK_API_TOKEN=<token>`. Verified with
+`curl -u "$LISTMONK_API_USER:$LISTMONK_API_TOKEN" https://lists.calebbolden.com/api/lists` → 200.
+
+### Lists
+
+Created by `infra/listmonk/bootstrap.sh` (idempotent — re-running skips
+already-present lists by name):
+
+| ID | Name | Tag | Opt-in |
+|----|------|-----|--------|
+| 3 | The Missed Call | owners | double |
+| 4 | The Workflow Brief | operators | double |
+
+(IDs 1 and 2 are Listmonk's own demo seed data — "Default list" and "Opt-in
+list" — left untouched.)
+
 ## Gotchas
 
 - **Zero-downtime Caddy changes**: prefer `docker exec shared-caddy caddy reload
@@ -153,3 +216,30 @@ Restore with `psql -U listmonk listmonk < backup.sql` against a running
   refuses to remove the network ("resource is still in use") and leaves it
   intact, so Caddy's connection survives. `docker compose up -d` afterward
   rejoins the same network by name — no need to touch `/opt/caddy` in that case.
+- **`admin`'s HTTP Basic Auth on `/api/*` is unreliable — use a session cookie
+  instead.** `curl -u "admin:$LISTMONK_ADMIN_PASSWORD"` worked once right after
+  install, then started returning `403 {"message":"invalid API credentials"}`
+  on every subsequent call, even verified directly against the container
+  (bypassing Caddy/Cloudflare) and with the password confirmed correct via
+  `bcrypt.checkpw` against the DB hash. The reliable path for admin-privileged
+  API calls (e.g. `PUT /api/settings`) is a session cookie: `curl -c
+  cookies.txt -X POST https://lists.calebbolden.com/admin/login
+  --data-urlencode "username=admin" --data-urlencode "password=$LISTMONK_ADMIN_PASSWORD"`
+  (expect `302`), then pass `-b cookies.txt` on subsequent calls. The session
+  is short-lived (observed expiring within roughly a minute of inactivity) —
+  re-login immediately before each admin-privileged call rather than reusing
+  an older cookie jar. `api-bot`-type users are unaffected — their Basic Auth
+  token works consistently.
+- **Roles endpoints are at `/api/roles/users` and `/api/roles/lists`**, not
+  `/api/roles` (404) — undocumented in the brief, discovered by probing.
+- **`POST /api/tx` requires the subscriber to already exist** — sending to an
+  address with no subscriber record 400s with `Subscriber (0: ...) not found`.
+  For a one-off smoke-test address, `POST /api/subscribers` first (status
+  `enabled`, empty `lists`) then retry the tx send.
+- **Shared third-party sender accounts can silently have zero quota.** The
+  Vora SendGrid account used as the SMTP fallback here is on the `free` plan
+  with `remain: 0, total: 0` send credits (`GET
+  https://api.sendgrid.com/v3/user/credits`) — domain authentication and SMTP
+  auth both succeed, but every send 451s with "Maximum credits exceeded".
+  Check `/v3/user/credits` before assuming a shared relay account has
+  headroom.
