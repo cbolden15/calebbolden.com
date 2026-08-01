@@ -16,6 +16,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/services/seo`, changeFrequency: 'monthly', priority: 0.9 },
     { url: `${BASE}/services/marketing`, changeFrequency: 'monthly', priority: 0.9 },
     { url: `${BASE}/resources`, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${BASE}/owners`, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${BASE}/operators`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE}/tools/ai-readiness`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE}/tools/revenue-leak`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE}/about`, changeFrequency: 'yearly', priority: 0.5 },
