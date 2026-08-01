@@ -162,12 +162,18 @@ on an action only the founder can take:
   **Founder to-do**: upgrade/refill this SendGrid account's plan, or provide a
   different key with quota.
 
+SPF/DKIM header proof + confirmed delivery verification happens in Task 7
+once a relay is unblocked.
+
 Whichever provider gets unblocked first, the fix is a `smtp[0]` field swap via
 the same GET/PUT pattern used above — no code change needed.
 
 ### API user
 
-`api-bot` (id 2, type `api`) has user role `api-bot-role` (id 2) with
+`api-bot` (id 3 — recreated once, post-review, to rotate a token that had
+leaked into a report; Listmonk v6.2.0 has no in-place token-regenerate
+endpoint, so rotation is delete `/api/users/{id}` + recreate) has user role
+`api-bot-role` (id 2) with
 permissions `lists:get_all`, `lists:manage_all`, `subscribers:get_all`,
 `subscribers:manage`, `subscribers:import`, `tx:send`. Created via
 `POST /api/roles/users` then `POST /api/users` with `user_role_id`. Credentials
