@@ -20,6 +20,9 @@ services:
     depends_on:
       listmonk-db:
         condition: service_healthy
+    environment:
+      LISTMONK_ADMIN_USER: ${LISTMONK_ADMIN_USER}
+      LISTMONK_ADMIN_PASSWORD: ${LISTMONK_ADMIN_PASSWORD}
     volumes:
       - ./config.toml:/listmonk/config.toml
     networks:

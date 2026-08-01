@@ -20,19 +20,27 @@ routed through the shared Caddy instance at `/opt/caddy`.
 
 ## Secrets
 
-`LISTMONK_DB_PASSWORD` and `LISTMONK_ADMIN_PASSWORD` live in `~/.dev-secrets.env`
-locally. They are **not** committed anywhere. `config.toml` (the real one, built
-from `config.toml.example` with secrets filled in) lives only on the server at
-`/opt/listmonk/config.toml` — never commit it.
+`LISTMONK_DB_PASSWORD`, `LISTMONK_ADMIN_USER`, and `LISTMONK_ADMIN_PASSWORD` live
+in `~/.dev-secrets.env` locally. They are **not** committed anywhere. `config.toml`
+(the real one, built from `config.toml.example` with secrets filled in) lives only
+on the server at `/opt/listmonk/config.toml` — never commit it.
 
 > Note: as of Listmonk v6.2.0, `admin_username`/`admin_password` in `config.toml`
-> are deprecated. Listmonk logs a warning on startup and ignores those fields.
-> The first admin (superadmin) user must be created through the web setup wizard
-> the first time you visit `https://lists.calebbolden.com/admin/`. After that,
-> additional users are managed under Admin → Settings → Users. Keep
-> `LISTMONK_ADMIN_PASSWORD` in `~/.dev-secrets.env` and use it as the superadmin
-> password when running the setup wizard, so the value stays the source of truth
-> even though Listmonk itself no longer reads it from config.toml.
+> are deprecated and ignored (Listmonk logs a warning on startup). The superadmin
+> user is instead seeded **headlessly at install time** via the `LISTMONK_ADMIN_USER`
+> / `LISTMONK_ADMIN_PASSWORD` **process environment variables** read by
+> `cmd/install.go` (`os.Getenv`, not the config file) — this only runs during
+> `--install`, not on normal startup. `infra/listmonk/docker-compose.yml` passes
+> these through to the `listmonk` service via `${LISTMONK_ADMIN_USER}` /
+> `${LISTMONK_ADMIN_PASSWORD}` interpolation, so they must be exported in the shell
+> that runs `docker compose up` / `docker compose run` (e.g. `source
+> ~/.dev-secrets.env` first). If the instance was already installed without these
+> set (no superadmin exists), re-seed by wiping and reinstalling — safe only if
+> there is no real subscriber/campaign data to lose:
+> `docker compose down -v && docker compose up -d`, then re-run the install step
+> below with `LISTMONK_ADMIN_USER`/`LISTMONK_ADMIN_PASSWORD` exported. Verify
+> headlessly with `curl -u "admin:$LISTMONK_ADMIN_PASSWORD"
+> https://lists.calebbolden.com/api/settings` (expect `200` + JSON, not `401`).
 
 ## Fresh deploy
 
@@ -40,7 +48,7 @@ from `config.toml.example` with secrets filled in) lives only on the server at
 # 1. Generate secrets (only if not already in ~/.dev-secrets.env)
 openssl rand -hex 24   # LISTMONK_DB_PASSWORD
 openssl rand -hex 24   # LISTMONK_ADMIN_PASSWORD
-# append both to ~/.dev-secrets.env
+# append both, plus LISTMONK_ADMIN_USER=admin, to ~/.dev-secrets.env
 
 # 2. DNS (Cloudflare, proxied:false so Caddy can issue TLS-ALPN/HTTP-01 certs directly)
 source ~/.dev-secrets.env
@@ -57,12 +65,13 @@ rsync -az infra/listmonk/docker-compose.yml root@5.78.121.71:/opt/listmonk/
 rsync -az /tmp/listmonk-config.toml root@5.78.121.71:/opt/listmonk/config.toml
 rm -f /tmp/listmonk-config.toml   # delete the local temp copy with real secrets
 
-# 4. Bring the stack up and install the schema
-ssh root@5.78.121.71 "cd /opt/listmonk && LISTMONK_DB_PASSWORD='<value>' docker compose up -d"
+# 4. Bring the stack up and install the schema (all three env vars must be set —
+#    LISTMONK_ADMIN_USER/PASSWORD seed the superadmin headlessly at install time)
+ssh root@5.78.121.71 "cd /opt/listmonk && LISTMONK_DB_PASSWORD='<value>' LISTMONK_ADMIN_USER='admin' LISTMONK_ADMIN_PASSWORD='<value>' docker compose up -d"
 # schema install must run via 'compose run', not 'compose exec' — the listmonk
 # service crash-loops until the schema exists, so exec can race a restarting container:
-ssh root@5.78.121.71 "cd /opt/listmonk && LISTMONK_DB_PASSWORD='<value>' docker compose run --rm listmonk ./listmonk --install --yes"
-ssh root@5.78.121.71 "cd /opt/listmonk && LISTMONK_DB_PASSWORD='<value>' docker compose up -d"
+ssh root@5.78.121.71 "cd /opt/listmonk && LISTMONK_DB_PASSWORD='<value>' LISTMONK_ADMIN_USER='admin' LISTMONK_ADMIN_PASSWORD='<value>' docker compose run --rm listmonk ./listmonk --install --yes"
+ssh root@5.78.121.71 "cd /opt/listmonk && LISTMONK_DB_PASSWORD='<value>' LISTMONK_ADMIN_USER='admin' LISTMONK_ADMIN_PASSWORD='<value>' docker compose up -d"
 
 # 5. Wire shared Caddy — append to /opt/caddy/Caddyfile:
 #    lists.calebbolden.com {
@@ -118,4 +127,14 @@ Restore with `psql -U listmonk listmonk < backup.sql` against a running
   `docker compose run --rm listmonk ./listmonk --install --yes` instead — it runs
   in a fresh, non-restarting container.
 - **admin_username / admin_password are deprecated** in config.toml as of
-  Listmonk v6.2.0 — see the Secrets section above.
+  Listmonk v6.2.0; use the `LISTMONK_ADMIN_USER` / `LISTMONK_ADMIN_PASSWORD`
+  process env vars instead — see the Secrets section above.
+- **Superadmin seeding only happens during `--install`**: if you bring the stack
+  up without those env vars set, no admin user is created and there is no
+  in-place way to seed one afterward — you must wipe (`down -v`) and reinstall
+  with the env vars set. Only do this when there's no real data to lose.
+  `docker compose down -v` on `/opt/listmonk` also removes the (non-external)
+  `listmonk_public` network; if shared Caddy is still attached to it, Docker
+  refuses to remove the network ("resource is still in use") and leaves it
+  intact, so Caddy's connection survives. `docker compose up -d` afterward
+  rejoins the same network by name — no need to touch `/opt/caddy` in that case.
