@@ -90,10 +90,10 @@ Each community launches alone. The builders' third community additionally requir
 
 ## Open items
 
-1. Stand up Listmonk + n8n welcome-sequence flow (implementation plan to follow).
-2. Name the two newsletters; write the two hub pages.
-3. Build the intake questionnaire, pre-work packet, opportunity-matrix template, and deck skeleton (§4) — each paired with its newsletter essay.
-4. Refresh the Perplexity MCP API key (dead, 401 — found during platform research).
+1. ~~Stand up Listmonk + n8n welcome-sequence flow (implementation plan to follow).~~ **Done.** Built across Tasks 1–6 of `docs/superpowers/plans/2026-08-01-founder-brand-engine-infra.md`; verified end to end (cold-path signup through confirmed welcome-1 delivery, backup/restore, scorecard automation) in Task 7. See `.superpowers/sdd/task-7-report.md`.
+2. ~~Name the two newsletters; write the two hub pages.~~ **Done.** "The Missed Call" (owners) and "The Workflow Brief" (operators) — Task 4.
+3. Build the intake questionnaire, pre-work packet, opportunity-matrix template, and deck skeleton (§4) — each paired with its newsletter essay. **Becomes the follow-on content plan** — this is content/template production, not infra, and is out of scope for the engine plan that closed with Task 7. Needs its own plan doc when picked up.
+4. Refresh the Perplexity MCP API key (dead, 401 — found during platform research). **Remains founder-owned** — no API automation exists for Perplexity key rotation; the founder mints and replaces the key manually.
 
 ## Decisions log
 

@@ -1,0 +1,13 @@
+[app]
+address = "0.0.0.0:9000"
+# deprecated in v6.2.0, ignored — see README Secrets section
+admin_username = "admin"
+admin_password = "CHANGE_ME"   # real value in ~/.dev-secrets.env as LISTMONK_ADMIN_PASSWORD
+
+[db]
+host = "listmonk-db"
+port = 5432
+user = "listmonk"
+password = "CHANGE_ME"          # matches LISTMONK_DB_PASSWORD
+database = "listmonk"
+ssl_mode = "disable"

@@ -4,7 +4,7 @@
 
 **Goal:** Stand up the two-newsletter engine: self-hosted Listmonk on the Hetzner server behind shared Caddy, two lists with double opt-in, signup hub pages on calebbolden.com, and n8n-driven 3-email welcome sequences relayed through Resend.
 
-**Architecture:** Listmonk (Docker + Postgres) runs at `/opt/listmonk` on Hetzner (5.78.121.71), exposed as `lists.calebbolden.com` via the shared Caddy at `/opt/caddy`. calebbolden.com (Next.js on Vercel) gets two hub pages whose forms POST to a Next.js API route that calls the Listmonk API server-side (credentials never reach the browser). n8n (already running on the homelab for AI Life Agent) polls Listmonk outbound every 15 minutes and fires welcome emails via Listmonk's transactional API, tracking progress in subscriber attributes — no inbound webhook to the homelab needed. All mail relays through Resend SMTP; deliverability reputation is Resend's.
+**Architecture:** Listmonk (Docker + Postgres) runs at `/opt/listmonk` on Hetzner (5.78.121.71), exposed as `lists.calebbolden.com` via the shared Caddy at `/opt/caddy`. calebbolden.com (Next.js, self-hosted at /opt/calebbolden on the same Hetzner server, container calebbolden-site behind the shared Caddy; deployed via git archive | ssh tar + docker compose build — see repo README) gets two hub pages whose forms POST to a Next.js API route that calls the Listmonk API server-side (credentials never reach the browser). n8n (already running on the homelab for AI Life Agent) polls Listmonk outbound every 15 minutes and fires welcome emails via Listmonk's transactional API, tracking progress in subscriber attributes — no inbound webhook to the homelab needed. All mail relays through Resend SMTP; deliverability reputation is Resend's.
 
 **Tech Stack:** Listmonk (latest stable), PostgreSQL 16, Caddy 2 (existing shared instance), Next.js (existing calebbolden.com), n8n (existing homelab instance), Resend SMTP, Cloudflare DNS API.
 
@@ -200,7 +200,7 @@ curl -su "$AUTH" "$BASE/lists?per_page=100" | python3 -c "import sys,json; [prin
 - Test: `scripts/test-subscribe.sh` (integration check against local dev)
 
 **Interfaces:**
-- Consumes: Listmonk API + token (Task 2). Env vars on Vercel AND `.env.local`: `LISTMONK_API_URL=https://lists.calebbolden.com`, `LISTMONK_API_USER`, `LISTMONK_API_TOKEN`, `LISTMONK_LIST_ID_OWNERS`, `LISTMONK_LIST_ID_OPERATORS`.
+- Consumes: Listmonk API + token (Task 2). Env vars in the server's /opt/calebbolden/.env (env_file of the compose service) AND `.env.local`: `LISTMONK_API_URL=https://lists.calebbolden.com`, `LISTMONK_API_USER`, `LISTMONK_API_TOKEN`, `LISTMONK_LIST_ID_OWNERS`, `LISTMONK_LIST_ID_OPERATORS`.
 - Produces: `POST /api/subscribe` accepting `{email: string, list: "owners"|"operators"}` → `200 {ok:true}` | `400 {ok:false,error}` — consumed by Task 4's forms.
 
 - [ ] **Step 1: Write the integration test first**
@@ -252,7 +252,7 @@ export async function POST(req: Request) {
 
 - [ ] **Step 3: Run the test again** with env vars set in `.env.local`. Expected: `{"ok":true}`, `400`, `400`. Confirm the probe address appears in Listmonk as unconfirmed (double opt-in pending) with `attribs.welcome_step = 0`.
 
-- [ ] **Step 4: Add the four env vars in Vercel** (project settings, production + preview). Delete the probe subscriber in Listmonk admin.
+- [ ] **Step 4: Add the five env vars to /opt/calebbolden/.env on the server** (compose `env_file`). Delete the probe subscriber in Listmonk admin. [CORRECTED 2026-08-01: site is self-hosted, not Vercel — vars added directly by controller.]
 
 - [ ] **Step 5: Commit** — `feat: subscribe API route bridging to listmonk`.
 
@@ -306,7 +306,7 @@ export function NewsletterSignup({ list }: { list: "owners" | "operators" }) {
 
 - [ ] **Step 4: Verify locally** — `npm run dev`, submit each form with a probe address, see the confirm state, verify the subscriber lands in the right Listmonk list. Then `npm run build` must pass.
 
-- [ ] **Step 5: Commit + deploy** — `feat: owners and operators hub pages` — push to main (Vercel auto-deploys), verify both live URLs return 200 and the form round-trips in production. Delete probe subscribers.
+- [ ] **Step 5: Commit + deploy** — `feat: owners and operators hub pages` — deploy happens at branch merge via the repo README's git-archive procedure to /opt/calebbolden; verify both live URLs return 200 and the form round-trips in production. Delete probe subscribers.
 
 ---
 
@@ -376,7 +376,7 @@ Week-over-week delta: store last week's counts in n8n static data. Manual fields
 
 - [ ] **Step 1: Full cold-path test, both lists** — new probe address → hub page form → confirm-email arrives (double opt-in) → confirm → welcome-1 arrives within 15 min. Check Resend dashboard: no bounces/blocks; SPF+DKIM pass on received headers.
 - [ ] **Step 2: Backup test** — run the pg_dump backup from the Task 1 runbook, restore it into a scratch Postgres container locally, confirm both lists and templates exist in the restore. (A backup that's never been restored doesn't exist.)
-- [ ] **Step 3: Failure-mode note** — document in README: what happens if Listmonk is down (forms return 502; Vercel route already handles it), how to pause sequences (disable the n8n workflow), how to swap Resend→SendGrid (SMTP settings only).
+- [ ] **Step 3: Failure-mode note** — document in README: what happens if Listmonk is down (forms return 502; the subscribe route already handles it), how to pause sequences (disable the n8n workflow), how to swap Resend→SendGrid (SMTP settings only).
 - [ ] **Step 4: Final commit** — `docs: complete engine runbook` — and update the spec's Open Items: items 1 and 2 done; item 3 (consulting template kit) becomes the follow-on plan; item 4 (Perplexity key) remains founder-owned.
 
 ---
