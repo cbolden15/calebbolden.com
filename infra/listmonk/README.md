@@ -152,9 +152,11 @@ verbatim against Docker Desktop or any other local Docker host.
 ## SMTP relay, API user, and lists (Task 2)
 
 SMTP is configured entirely through `GET`/`PUT /api/settings` (no admin UI —
-see the auth gotcha below). Current SMTP relay: **SendGrid**
-(`smtp.sendgrid.net:587`, STARTTLS, user `apikey`, password `SENDGRID_API_KEY`),
-default from-address `Caleb Bolden <caleb@calebbolden.com>`.
+see the auth gotcha below). Current SMTP relay: **Resend**
+(`smtp.resend.com:587`, STARTTLS, user `resend`, password `RESEND_API_KEY`),
+default from-address `Caleb Bolden <caleb@calebbolden.com>`. SendGrid remains
+configured on the account as an unfunded fallback — see the mail-delivery
+history section below.
 
 ### Mail delivery: resolved, Resend live (history)
 
