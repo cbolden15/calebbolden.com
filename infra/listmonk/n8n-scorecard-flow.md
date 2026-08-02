@@ -127,6 +127,28 @@ ever looks up ids `3` and `4`.
    `https://lists.calebbolden.com/api/tx`, `jsonBody: "={{ JSON.stringify($json) }}"`,
    same `listmonk-api-bot` credential.
 
+## Connections
+
+Pulled from `GET /api/v1/workflows/aVqZwXSmwzBhw6lu` for ground truth (live
+workflow, not a paraphrase). `Merge 3 branches` is `mode: append`,
+`numberInputs: 3` — the three fan-out branches land on inputs 0/1/2
+respectively, in the order listed below.
+
+```
+Weekly Monday 07:00 CT
+  -> GET lists (owners+operators) -> Merge 3 branches (input 0)
+  -> GET campaigns (recent)       -> Merge 3 branches (input 1)
+  -> Manual scorecard inputs      -> Merge 3 branches (input 2)
+Merge 3 branches -> Format scorecard + tx payload -> POST tx send
+```
+
+Note: as documented in node 6 above, `Format scorecard + tx payload` doesn't
+actually consume `Merge 3 branches`'s combined item list — it reads each
+upstream branch directly by node name (`$('GET lists (owners+operators)')`,
+etc.) to avoid depending on append ordering. The Merge node exists only to
+give the Code node a single upstream dependency to run after all three
+branches finish, not as a data source.
+
 ## Manual verification (Step 3)
 
 n8n's public API has no "run now" endpoint for schedule-only workflows

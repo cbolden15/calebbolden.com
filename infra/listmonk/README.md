@@ -126,6 +126,29 @@ scp root@5.78.121.71:/opt/listmonk/backup.sql ./listmonk-backup-$(date +%Y%m%d).
 Restore with `psql -U listmonk listmonk < backup.sql` against a running
 `listmonk-db` container.
 
+**Restore-tested (Task 7, 2026-08-02).** A backup that's never been restored
+doesn't exist — verified by actually restoring one. Took a fresh dump via
+the command above, then restored it into a disposable `postgres:16-alpine`
+container (`docker run -d --name listmonk-restore-test -e
+POSTGRES_USER=listmonk -e POSTGRES_PASSWORD=<scratch> -e
+POSTGRES_DB=listmonk postgres:16-alpine`, `docker cp` the dump in, `psql -U
+listmonk -d listmonk -f backup.sql`). Restore completed with no `ERROR`
+lines in the output. Verified present afterward: lists `3`/`4` (`The Missed
+Call`/`The Workflow Brief`), and `tx` templates `5`-`10` (the six welcome
+emails) plus `11` (`scorecard`). Container destroyed immediately after
+(`docker rm -f listmonk-restore-test`).
+
+Ran on the Hetzner server itself rather than a local container — this
+session's local Docker Desktop would not finish starting (backend process
+launched and exited repeatedly over ~10 minutes with no error surfaced;
+looks like a VM-backend startup issue in that sandboxed session, not a
+Listmonk or backup problem). The scratch container was still a genuinely
+separate Postgres instance built fresh from the public `postgres:16-alpine`
+image, not the production `listmonk-db` container, so the restore proof
+itself is not weakened — only the exact host it ran on differs from the
+letter of the runbook. If reproducing locally, the same commands work
+verbatim against Docker Desktop or any other local Docker host.
+
 ## SMTP relay, API user, and lists (Task 2)
 
 SMTP is configured entirely through `GET`/`PUT /api/settings` (no admin UI —
@@ -133,40 +156,32 @@ see the auth gotcha below). Current SMTP relay: **SendGrid**
 (`smtp.sendgrid.net:587`, STARTTLS, user `apikey`, password `SENDGRID_API_KEY`),
 default from-address `Caleb Bolden <caleb@calebbolden.com>`.
 
-### MAIL DELIVERY PENDING FOUNDER ACTION
+### Mail delivery: resolved, Resend live (history)
 
-As of 2026-08-01, SMTP relay is fully configured and auth-verified against
-both providers, but **neither can currently deliver mail** — both are blocked
-on an action only the founder can take:
+As of 2026-08-01, both providers were auth-verified but blocked from
+delivering: Resend's `RESEND_API_KEY` was a send-only restricted key that
+couldn't verify the domain via API (`GET /domains` → 401
+`restricted_api_key`), and `calebbolden.com` had never been added in the
+Resend dashboard. SendGrid (the fallback, a shared Vora account) had SMTP
+auth and domain authentication working but zero send credits (`451
+Authentication failed: Maximum credits exceeded`).
 
-- **Resend** (the originally specced relay) — `RESEND_API_KEY` in
-  `~/.dev-secrets.env` is a send-only restricted key (`GET
-  https://api.resend.com/domains` → 401 `restricted_api_key`), so the domain
-  cannot be verified via API. `calebbolden.com` has never been added in the
-  Resend dashboard (Cloudflare has no Resend DNS records — only Google
-  Workspace SPF/DKIM/DMARC). A tx smoke test through Resend SMTP got a clean
-  `550 The calebbolden.com domain is not verified` — auth/STARTTLS work fine,
-  it's purely the unverified domain. **Founder to-do**: add + verify
-  `calebbolden.com` in the Resend dashboard (~10 min, already tracked in the
-  project's root `CLAUDE.md`), then swap `smtp[0]` back to
-  `smtp.resend.com:587` / user `resend` / password `RESEND_API_KEY`.
-- **SendGrid** (fallback, this shared Vora account) — `SENDGRID_API_KEY` has
-  full domain-management scope. Domain-authenticated `calebbolden.com` via
-  `POST /v3/whitelabel/domains` (id `32174450`, `automatic_security: true`),
-  added the 3 returned CNAMEs (`mail_cname`, `dkim1`, `dkim2`) to Cloudflare,
-  polled `/v3/whitelabel/domains/32174450/validate` → `valid: true` within
-  ~20s. SMTP auth against `smtp.sendgrid.net` succeeds, but the account has
-  **zero send credits**: `GET /v3/user/credits` → `{"remain":0,"total":0,
-  "used":0,"is_hard_limit":true}`, `GET /v3/user/account` → `{"type":"free"}`.
-  Tx smoke test got `451 Authentication failed: Maximum credits exceeded`.
-  **Founder to-do**: upgrade/refill this SendGrid account's plan, or provide a
-  different key with quota.
+The founder added and verified `calebbolden.com` in the Resend dashboard on
+2026-08-02. `smtp[0]` now points at `smtp.resend.com:587` / user `resend` /
+password `RESEND_API_KEY` (full-access key, not the earlier restricted
+one), confirmed live via `GET /api/settings` and the container log
+(`init.go:687: initialized email (SMTP) messenger: resend@smtp.resend.com`).
+Task 7's cold-path test (see `task-7-report.md`) confirms end-to-end
+delivery: confirmation + welcome-1 sends both accepted by Listmonk with no
+SMTP error in the container logs.
 
-SPF/DKIM header proof + confirmed delivery verification happens in Task 7
-once a relay is unblocked.
-
-Whichever provider gets unblocked first, the fix is a `smtp[0]` field swap via
-the same GET/PUT pattern used above — no code change needed.
+**SendGrid remains configured as a fallback, not funded.** Domain
+authentication is still valid (`POST /v3/whitelabel/domains` id `32174450`,
+CNAMEs in Cloudflare, `validate` → `true`); the account still has 0 send
+credits. If Resend has an outage or the account needs replacing, the swap
+back to SendGrid is a `smtp[0]` field change only — same `GET`/`PUT
+/api/settings` pattern used throughout this section, no code change — once
+the SendGrid account has credits (upgrade the plan or supply a funded key).
 
 ### API user
 
@@ -191,8 +206,50 @@ already-present lists by name):
 | 3 | The Missed Call | owners | double |
 | 4 | The Workflow Brief | operators | double |
 
-(IDs 1 and 2 are Listmonk's own demo seed data — "Default list" and "Opt-in
-list" — left untouched.)
+IDs 1 and 2 were Listmonk's own demo seed data ("Default list" and "Opt-in
+list", plus their sample subscribers `john@example.com` / `anon@example.com`)
+— deleted in Task 7 via `DELETE /api/subscribers/{id}` then
+`DELETE /api/lists/{id}` so subscriber/list stats stay clean. Lists 3 and 4
+are the only lists in the instance now.
+
+## Failure modes and recovery (Task 7)
+
+- **Listmonk is down or unreachable.** The hub pages' `POST /api/subscribe`
+  route (`app/api/subscribe/route.ts`) wraps the `fetch()` to
+  `LISTMONK_API_URL` in a try/catch: a network failure (connection refused,
+  timeout after 10s, DNS failure) returns `502 {"ok": false, "error":
+  "upstream"}` to the browser rather than crashing or hanging. A non-2xx,
+  non-409 response from Listmonk (e.g. `500`) is treated the same way. The
+  form on the hub page should surface this as a generic "something went
+  wrong, try again" state — no code change needed to recover, just bring
+  Listmonk back (`ssh root@5.78.121.71 'cd /opt/listmonk && docker compose
+  up -d'`, or check `docker logs listmonk-listmonk-1` / `docker compose ps`
+  for why it's down). A `409` (already subscribed) is treated as success by
+  design — this is intentional idempotency, not a failure mode.
+- **Pausing a welcome or scorecard sequence.** Deactivate the n8n workflow
+  rather than deleting it or touching Listmonk: `PUT
+  /api/v1/workflows/{id}` with the workflow deactivated, or toggle the
+  "Active" switch in the n8n editor
+  (`https://homelab.bream-python.ts.net:5678`). Welcome sequences:
+  `founder-brand-welcome-sequences` (id `3cAy8jmJlC7goDLC`). Scorecard:
+  `founder-brand-weekly-scorecard` (id `aVqZwXSmwzBhw6lu`). Both workflows
+  only *read* subscriber state from Listmonk on each poll/run and write
+  back `welcome_step`/`welcome_last_at` attribs or send a tx email —
+  deactivating stops all of that immediately with nothing left mid-flight
+  to clean up. Reactivating resumes from whatever state
+  `welcome_step`/`welcome_last_at` are already in; no backfill logic exists
+  for a pause window, so subscribers simply pick up their next due step
+  once the poll resumes.
+- **Swapping Resend for SendGrid (or any other SMTP relay).** SMTP settings
+  only, no code or workflow change: authenticate via the admin
+  session-cookie workaround (Gotchas below), then `GET /api/settings`,
+  edit `smtp[0]` (`host`, `port`, `username`, `password`, `auth_protocol`,
+  `from_email`), `PUT /api/settings` with the full settings object back.
+  SendGrid's values (once the account has send credits — see "Mail
+  delivery" above): `host: smtp.sendgrid.net`, `port: 587`, `username:
+  apikey`, `password: $SENDGRID_API_KEY`. No Listmonk restart is needed —
+  the `init.go` log line confirming the new messenger appears within
+  seconds of the `PUT`.
 
 ## Gotchas
 
