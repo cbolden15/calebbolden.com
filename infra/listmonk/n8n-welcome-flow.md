@@ -13,7 +13,9 @@ the JSON from this doc (or `GET /api/v1/workflows/{id}`) if the two disagree.
   don't confuse the two.)
 - **Workflow ID:** `3cAy8jmJlC7goDLC`
 - **Workflow name:** `founder-brand-welcome-sequences`
-- **Status:** active, production delays (2d / 5d)
+- **Status:** active, production delays: step 2 at 2 days since step 1, step 3
+  at 3 more days after step 2 (day 5 since step 1 overall). See node 5 below
+  for why the constant reads "3 days," not "5."
 - **Credential:** `listmonk-api-bot` (id `hBvoOrVMOmeEw4xe`), type `httpBasicAuth`,
   created via `POST /api/v1/credentials` with `LISTMONK_API_USER` /
   `LISTMONK_API_TOKEN`. Stored in n8n's credential store, referenced by id from
@@ -85,26 +87,101 @@ Call"), `operators` = list `4` ("The Workflow Brief").
    `sub.lists[].id` + `.subscription_status`, not which HTTP branch it arrived
    on, so it's robust either way) and computes the due step:
    - `welcome_step == 0` → due step 1 (fires next poll after confirmation,
-     i.e., within ~15 min).
+     i.e., within ~15 min). Day 0 since confirmation.
    - `welcome_step == 1` and `now - welcome_last_at >= 2 days` → due step 2.
-   - `welcome_step == 2` and `now - welcome_last_at >= 5 days` → due step 3.
+     Day 2 since confirmation (`welcome_last_at` holds step 1's send time).
+   - `welcome_step == 2` and `now - welcome_last_at >= 3 days` → due step 3.
+     `welcome_last_at` now holds step 2's send time (roughly day 2), so a
+     3-day gap here lands step 3 at roughly day 5 since confirmation, not
+     day 7. See "Delay semantics" below for why the constant is 3 days, not 5.
 
    Emits `{subscriber_id, email, list, due_step, template_id}` per due
    subscriber, looking `template_id` up from the table above.
 
-   **Delay interpretation (a brief ambiguity, resolved and documented here):**
-   the brief phrases the step-3 condition as "`>= 5d` since step 1," which
-   read literally would mean 5 days after the *first* email, not after the
-   second. But the workflow's own update mechanism (node 9 below) overwrites
-   `welcome_last_at` at *every* step transition, and the step-2 condition is
-   explicitly `now - welcome_last_at >= 2d` off that same field. Those two
-   things can't both be true unless the delays chain relative to the
-   *immediately preceding* send: 2 days after step 1, then 5 days after step
-   2, so roughly 7 days total from confirmation to email 3, not 5. That's
-   what's implemented. If the actual intent was 5 days total from
-   confirmation (i.e., only 3 days between email 2 and email 3), the fix is a
-   one-line change to the `STEP3_DELAY_MS` comparison in this node. Flagging
-   for founder sign-off rather than guessing further.
+   **Delay semantics (resolved; brief text was ambiguous, decision recorded
+   here):** the brief phrases the step-3 condition as "`>= 5d` since step 1,"
+   i.e., the target schedule is day 0 / day 2 / day 5 since confirmation, not
+   a chain of independent 2-day and 5-day gaps (which would land step 3 at
+   day 7). The wrinkle: the workflow's own update mechanism (node 9 below)
+   overwrites `welcome_last_at` at *every* step transition, so by the time
+   step 3's condition runs, `welcome_last_at` no longer holds step 1's
+   timestamp, it holds step 2's. There's no second field tracking "time of
+   step 1" separately. Resolution: `STEP3_DELAY_MS` is set to the *gap*
+   between step 2 and the day-5 target (2 + 3 = 5 days total), not to 5 days
+   outright. This reaches the brief's intended day-5 mark using only the one
+   `welcome_last_at` field the fetch-merge-put pattern already maintains,
+   with no schema change. (An earlier version of this workflow read the
+   constant literally as 5 days *after step 2*, landing step 3 around day 7;
+   that was a bug in interpretation, caught in review, and is fixed as of
+   this doc.)
+
+   **Live source** (pulled from `GET /api/v1/workflows/3cAy8jmJlC7goDLC` after
+   the delay-semantics fix, so this reflects the corrected constants):
+
+   ```javascript
+   const TEMPLATE_IDS = {
+     owners: { 1: 5, 2: 6, 3: 7 },
+     operators: { 1: 8, 2: 9, 3: 10 }
+   };
+   const LIST_SLUG = { '3': 'owners', '4': 'operators' };
+   // Resolved delay semantics (documented in n8n-welcome-flow.md): the target
+   // schedule is day 0 / day 2 / day 5 since confirmation (step 1 immediately,
+   // step 2 two days later, step 3 five days after step 1). welcome_last_at is
+   // overwritten at every step (see the fetch-merge-put node), so STEP3_DELAY_MS
+   // is the GAP from step 2's send to the day-5 mark (3 days), not 5 days
+   // outright -- 2 (step1->step2) + 3 (step2->step3) = 5 days total.
+   const STEP2_DELAY_MS = 2 * 24 * 60 * 60 * 1000 // 2 days after step 1;
+   const STEP3_DELAY_MS = 3 * 24 * 60 * 60 * 1000 // 3 more days after step 2, landing on day 5 since step 1;
+
+   const out = [];
+   const now = Date.now();
+
+   for (const item of $input.all()) {
+     const body = item.json;
+     const results = (body && body.data && body.data.results) || [];
+     for (const sub of results) {
+       const attribs = sub.attribs || {};
+       const rawStep = attribs.welcome_step;
+       if (rawStep === undefined || rawStep === null) continue;
+       const step = Number(rawStep);
+       if (!Number.isFinite(step) || step < 0 || step >= 3) continue; // done or invalid
+
+       // Confirm which of the two lists this subscriber is confirmed on. A
+       // subscriber double-subscribed+confirmed to BOTH owners and operators
+       // will be processed once per list here (known limitation: welcome_step
+       // is a subscriber-level, not list-level, attribute upstream from Task 3 —
+       // see n8n-welcome-flow.md "Known limitations").
+       let listSlug = null;
+       for (const ls of sub.lists || []) {
+         const slug = LIST_SLUG[String(ls.id)];
+         if (slug && ls.subscription_status === 'confirmed') { listSlug = slug; break; }
+       }
+       if (!listSlug) continue;
+
+       const lastAt = attribs.welcome_last_at ? Date.parse(attribs.welcome_last_at) : null;
+       let dueStep = null;
+       if (step === 0) {
+         dueStep = 1;
+       } else if (step === 1 && lastAt !== null && (now - lastAt) >= STEP2_DELAY_MS) {
+         dueStep = 2;
+       } else if (step === 2 && lastAt !== null && (now - lastAt) >= STEP3_DELAY_MS) {
+         dueStep = 3;
+       }
+       if (dueStep === null) continue;
+
+       out.push({
+         json: {
+           subscriber_id: sub.id,
+           email: sub.email,
+           list: listSlug,
+           due_step: dueStep,
+           template_id: TEMPLATE_IDS[listSlug][dueStep],
+         }
+       });
+     }
+   }
+   return out;
+   ```
 
    **Known limitation:** a subscriber confirmed on *both* lists (rare, since
    the two hub-page forms are separate, but nothing stops the same email
@@ -152,6 +229,28 @@ Call"), `operators` = list `4` ("The Workflow Brief").
    Listmonk's `PUT /api/subscribers/{id}` expects (`email`, `name`, `status`,
    `lists` as an id array, `attribs`). Listmonk's update endpoint takes the
    whole record, not a partial patch, hence the fetch-first.
+
+   **Live source** (pulled from `GET /api/v1/workflows/3cAy8jmJlC7goDLC`):
+
+   ```javascript
+   const sub = $json.data;
+   const due = $('Compute due steps').item.json;
+   const nowIso = new Date().toISOString();
+   const mergedAttribs = Object.assign({}, sub.attribs, {
+     welcome_step: due.due_step,
+     welcome_last_at: nowIso,
+   });
+   return {
+     json: {
+       id: sub.id,
+       email: sub.email,
+       name: sub.name,
+       status: sub.status,
+       lists: (sub.lists || []).map(l => l.id),
+       attribs: mergedAttribs,
+     }
+   };
+   ```
 
 9. **`PUT update subscriber`**: PUT
    `https://lists.calebbolden.com/api/subscribers/{{id}}` with the merged
@@ -259,6 +358,19 @@ around the delivery blocker.
 Net result: the full three-email sequence was verified end to end for both
 lists, delays restored to production values, workflow left active, no test
 data left behind.
+
+**Note on delay semantics at the time of this test:** Run 2 above tested the
+workflow's step timing as it existed then, chained 2-day and 5-day gaps
+(step 3 landing around day 7 since confirmation). Post-review, the delay
+semantics were corrected to the brief's actual intent, day 0 / day 2 / day 5
+since confirmation, by changing `STEP3_DELAY_MS` from "5 days after step 2"
+to "3 days after step 2" (see node 5's "Delay semantics" section above). That
+fix was verified by re-deploying and confirming the live workflow's source
+carries the corrected constant (`GET /api/v1/workflows/3cAy8jmJlC7goDLC`,
+reproduced in node 5 above); it was not re-run through a second
+compressed-clock pass, since Run 2 already proved the polling mechanics,
+tx-send, and attrib-update chain work correctly end to end, and the only
+change is which numeric constant the same code path compares against.
 
 ## Failure modes / operating notes
 
