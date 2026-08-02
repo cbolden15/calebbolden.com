@@ -376,7 +376,7 @@ Week-over-week delta: store last week's counts in n8n static data. Manual fields
 
 - [ ] **Step 1: Full cold-path test, both lists** — new probe address → hub page form → confirm-email arrives (double opt-in) → confirm → welcome-1 arrives within 15 min. Check Resend dashboard: no bounces/blocks; SPF+DKIM pass on received headers.
 - [ ] **Step 2: Backup test** — run the pg_dump backup from the Task 1 runbook, restore it into a scratch Postgres container locally, confirm both lists and templates exist in the restore. (A backup that's never been restored doesn't exist.)
-- [ ] **Step 3: Failure-mode note** — document in README: what happens if Listmonk is down (forms return 502; Vercel route already handles it), how to pause sequences (disable the n8n workflow), how to swap Resend→SendGrid (SMTP settings only).
+- [ ] **Step 3: Failure-mode note** — document in README: what happens if Listmonk is down (forms return 502; the subscribe route already handles it), how to pause sequences (disable the n8n workflow), how to swap Resend→SendGrid (SMTP settings only).
 - [ ] **Step 4: Final commit** — `docs: complete engine runbook` — and update the spec's Open Items: items 1 and 2 done; item 3 (consulting template kit) becomes the follow-on plan; item 4 (Perplexity key) remains founder-owned.
 
 ---
