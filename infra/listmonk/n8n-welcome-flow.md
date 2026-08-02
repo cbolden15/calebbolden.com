@@ -291,8 +291,10 @@ Merge error branches -> Format Telegram error message -> Telegram sendMessage
 ## Verification
 
 Mail delivery was blocked upstream for most of this build (see
-`infra/listmonk/README.md` § "MAIL DELIVERY PENDING FOUNDER ACTION": neither
-Resend nor the SendGrid fallback could send at build start). The relay went
+`infra/listmonk/README.md` § "Mail delivery: resolved, Resend live
+(history)" — that section originally documented neither Resend nor the
+SendGrid fallback able to send at build start; the founder action + relay
+fix it now records happened after this doc was first written). The relay went
 live mid-task: the founder fixed the Resend account mismatch and the
 controller flipped Listmonk's SMTP settings to `smtp.resend.com` and
 verified a standalone tx send end-to-end (`200`, messenger reinitialized, no

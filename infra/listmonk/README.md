@@ -227,10 +227,16 @@ are the only lists in the instance now.
   for why it's down). A `409` (already subscribed) is treated as success by
   design — this is intentional idempotency, not a failure mode.
 - **Pausing a welcome or scorecard sequence.** Deactivate the n8n workflow
-  rather than deleting it or touching Listmonk: `PUT
-  /api/v1/workflows/{id}` with the workflow deactivated, or toggle the
-  "Active" switch in the n8n editor
-  (`https://homelab.bream-python.ts.net:5678`). Welcome sequences:
+  rather than deleting it or touching Listmonk: `POST
+  /api/v1/workflows/{id}/deactivate` (resume with `POST
+  /api/v1/workflows/{id}/activate`), or toggle the "Active" switch in the
+  n8n editor (`https://homelab.bream-python.ts.net:5678`). A plain `PUT
+  /api/v1/workflows/{id}` with `active: false` in the body does **not**
+  reliably take effect on this n8n version — both `n8n-welcome-flow.md` and
+  `n8n-scorecard-flow.md` record that deactivating first (via the dedicated
+  endpoint) was required before a `PUT` would re-register the schedule;
+  use the `/deactivate` and `/activate` endpoints directly instead of a
+  `PUT` toggle. Welcome sequences:
   `founder-brand-welcome-sequences` (id `3cAy8jmJlC7goDLC`). Scorecard:
   `founder-brand-weekly-scorecard` (id `aVqZwXSmwzBhw6lu`). Both workflows
   only *read* subscriber state from Listmonk on each poll/run and write

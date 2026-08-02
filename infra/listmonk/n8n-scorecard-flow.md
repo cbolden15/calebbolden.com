@@ -181,9 +181,10 @@ open rate is `N/A` on both lines because no real campaign has been sent to
 list 3 or 4 yet (Listmonk currently has one seed "Test campaign" targeting
 list 1, `sent: 0`) — expected given where the project is, not a bug.
 
-**Mail relay:** `infra/listmonk/README.md`'s "MAIL DELIVERY PENDING FOUNDER
-ACTION" section (written earlier in this same build) says neither Resend nor
-SendGrid could deliver as of the time it was written. That's now stale —
+**Mail relay:** `infra/listmonk/README.md`'s "Mail delivery: resolved,
+Resend live (history)" section (originally written, and titled
+differently, earlier in this same build) recorded that neither Resend nor
+SendGrid could deliver as of the time it was written. That's now resolved —
 `GET /api/settings` shows `smtp[0]` active and pointed at
 `smtp.resend.com:587` / user `resend`, and the container log confirms it
 reloaded onto that config at `2026/08/02 01:53:10`
