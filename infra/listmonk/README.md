@@ -191,8 +191,11 @@ the SendGrid account has credits (upgrade the plan or supply a funded key).
 leaked into a report; Listmonk v6.2.0 has no in-place token-regenerate
 endpoint, so rotation is delete `/api/users/{id}` + recreate) has user role
 `api-bot-role` (id 2) with
-permissions `lists:get_all`, `lists:manage_all`, `subscribers:get_all`,
-`subscribers:manage`, `subscribers:import`, `tx:send`. Created via
+permissions `campaigns:get`, `lists:get_all`, `lists:manage_all`,
+`subscribers:get_all`, `subscribers:import`, `subscribers:manage`,
+`subscribers:sql_query`, `tx:send`. `subscribers:sql_query` was added on
+2026-08-03 to support the subscribe route's 409 cross-list path and the
+assessment-completions scorecard metric. Created via
 `POST /api/roles/users` then `POST /api/users` with `user_role_id`. Credentials
 in `~/.dev-secrets.env` as `LISTMONK_API_USER=api-bot` /
 `LISTMONK_API_TOKEN=<token>`. Verified with
@@ -293,7 +296,8 @@ are the only lists in the instance now.
   on every subsequent call, even verified directly against the container
   (bypassing Caddy/Cloudflare) and with the password confirmed correct via
   `bcrypt.checkpw` against the DB hash. The reliable path for admin-privileged
-  API calls (e.g. `PUT /api/settings`) is a session cookie: `curl -c
+  API calls (e.g. `PUT /api/settings`, `GET /api/roles/users`) is a session
+  cookie: `curl -c
   cookies.txt -X POST https://lists.calebbolden.com/admin/login
   --data-urlencode "username=admin" --data-urlencode "password=$LISTMONK_ADMIN_PASSWORD"`
   (expect `302`), then pass `-b cookies.txt` on subsequent calls. The session

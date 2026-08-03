@@ -239,7 +239,8 @@ Per-band split (one call per band, substituting the value):
 query=subscribers.attribs->>'source' = 'ai-readiness' AND subscribers.attribs->>'band' = 'foundations' AND subscribers.created_at >= now() - interval '7 days'
 ```
 
-**Unverified against live Listmonk.** Attempted:
+**Verified against live Listmonk on 2026-08-03.** `subscribers:sql_query` has
+been granted to `api-bot-role` (id 2). The query below now returns `200`:
 
 ```bash
 source ~/.dev-secrets.env
@@ -248,14 +249,9 @@ curl -s -u "$LISTMONK_API_USER:$LISTMONK_API_TOKEN" \
   -G "https://lists.calebbolden.com/api/subscribers?per_page=1"
 ```
 
-Response: `403`, body `{"message":"Permission denied: subscribers:sql_query"}`.
-This is the same permission gap `n8n-welcome-flow.md` recorded for Task 5's
-original design: `api-bot-role` (id 2) does not include
-`subscribers:sql_query` in its permission list. This line stays unverified
-until `subscribers:sql_query` is granted to `api-bot-role`, using the same
-admin session-cookie workaround (`infra/listmonk/README.md` gotchas) this
-doc used above to grant `campaigns:get`. Granting it is a decision for
-whoever owns the live Listmonk instance to make.
+Response: `200`, with `data.total` at `0` (no subscribers carry this
+attribute yet). This response shape matches what the code and this
+scorecard document expect.
 
 ## Follower count metric (Task 8)
 
