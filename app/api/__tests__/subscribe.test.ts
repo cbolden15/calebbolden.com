@@ -151,7 +151,7 @@ describe('POST /api/subscribe rate-limit key derivation', () => {
 });
 
 describe('POST /api/subscribe 409 cross-list', () => {
-  it('adds an existing subscriber to the target list as unconfirmed', async () => {
+  it('adds an existing subscriber to the target list without sending a status', async () => {
     const fetchMock = vi
       .fn()
       .mockResolvedValueOnce(new Response('conflict', { status: 409 }))
@@ -170,12 +170,18 @@ describe('POST /api/subscribe 409 cross-list', () => {
     const [listsUrl, listsInit] = fetchMock.mock.calls[2];
     expect(listsUrl).toContain('/api/subscribers/lists');
     expect(listsInit.method).toBe('PUT');
-    expect(JSON.parse(listsInit.body)).toEqual({
+    const sent = JSON.parse(listsInit.body);
+    expect(sent).toEqual({
       ids: [77],
       action: 'add',
       target_list_ids: [4],
-      status: 'unconfirmed',
     });
+    // No `status` key: Listmonk's ON CONFLICT clause only overwrites an
+    // existing subscriber_lists.status when $3 != '', so sending an explicit
+    // status here would downgrade an already-confirmed membership back to
+    // unconfirmed. Omitting the key leaves existing rows alone while new
+    // rows still default to unconfirmed.
+    expect('status' in sent).toBe(false);
   });
 
   // Listmonk v6.2.0's PUT /api/subscribers/lists is a bare SQL upsert

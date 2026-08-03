@@ -196,7 +196,6 @@ async function addExistingSubscriberToList(
         ids: [id],
         action: 'add',
         target_list_ids: [listId],
-        status: 'unconfirmed',
       }),
       signal: AbortSignal.timeout(10000),
     });
