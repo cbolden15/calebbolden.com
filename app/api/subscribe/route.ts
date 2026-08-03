@@ -96,11 +96,17 @@ async function addExistingSubscriberToList(
       headers,
       signal: AbortSignal.timeout(10000),
     });
-    if (!lookup.ok) return false;
+    if (!lookup.ok) {
+      console.error('Listmonk subscriber lookup failed:', lookup.status, await lookup.text());
+      return false;
+    }
 
     const found = await lookup.json();
     const id = found?.data?.results?.[0]?.id;
-    if (typeof id !== 'number') return false;
+    if (typeof id !== 'number') {
+      console.error('Listmonk subscriber lookup returned no matching subscriber for email');
+      return false;
+    }
 
     const update = await fetch(`${base}/api/subscribers/lists`, {
       method: 'PUT',
@@ -113,6 +119,9 @@ async function addExistingSubscriberToList(
       }),
       signal: AbortSignal.timeout(10000),
     });
+    if (!update.ok) {
+      console.error('Listmonk add existing subscriber to list failed:', update.status, await update.text());
+    }
     return update.ok;
   } catch (err) {
     console.error('Failed to add existing subscriber to list:', err);

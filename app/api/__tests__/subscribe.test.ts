@@ -80,6 +80,17 @@ describe('POST /api/subscribe 409 cross-list', () => {
     });
   });
 
+  it('returns 502 when the subscriber lookup itself fails', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(new Response('conflict', { status: 409 }))
+      .mockResolvedValueOnce(new Response('forbidden', { status: 403 }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    const res = await POST(req({ email: 'a@b.com', list: 'operators' }));
+    expect(res.status).toBe(502);
+  });
+
   it('returns 502 when the subscriber lookup finds nobody', async () => {
     const fetchMock = vi
       .fn()
