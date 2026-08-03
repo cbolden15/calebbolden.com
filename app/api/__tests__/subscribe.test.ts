@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { POST } from '../subscribe/route';
+import { __resetRateLimit } from '../../../lib/rate-limit';
 
 function req(body: unknown, ip = '203.0.113.1') {
   return new Request('http://localhost/api/subscribe', {
@@ -15,6 +16,7 @@ beforeEach(() => {
   vi.stubEnv('LISTMONK_API_URL', 'http://listmonk.test');
   vi.stubEnv('LISTMONK_API_USER', 'user');
   vi.stubEnv('LISTMONK_API_TOKEN', 'token');
+  __resetRateLimit();
 });
 
 afterEach(() => {
@@ -102,5 +104,32 @@ describe('POST /api/subscribe 409 cross-list', () => {
 
     const res = await POST(req({ email: 'a@b.com', list: 'operators' }));
     expect(res.status).toBe(502);
+  });
+});
+
+describe('POST /api/subscribe rate limiting', () => {
+  it('returns 429 after 5 requests from one IP', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response('{}', { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    for (let i = 0; i < 5; i += 1) {
+      const ok = await POST(req({ email: `a${i}@b.com`, list: 'owners' }, '198.51.100.7'));
+      expect(ok.status).toBe(200);
+    }
+
+    const blocked = await POST(req({ email: 'a6@b.com', list: 'owners' }, '198.51.100.7'));
+    expect(blocked.status).toBe(429);
+  });
+
+  it('does not limit a different IP', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response('{}', { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    for (let i = 0; i < 5; i += 1) {
+      await POST(req({ email: `c${i}@b.com`, list: 'owners' }, '198.51.100.8'));
+    }
+
+    const other = await POST(req({ email: 'd@b.com', list: 'owners' }, '198.51.100.9'));
+    expect(other.status).toBe(200);
   });
 });

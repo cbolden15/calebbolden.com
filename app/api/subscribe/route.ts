@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { rateLimit } from '../../../lib/rate-limit';
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -18,6 +19,12 @@ function listIdFor(list: 'owners' | 'operators'): string | undefined {
 }
 
 export async function POST(req: Request) {
+  const ip = (req.headers.get('x-forwarded-for') ?? '').split(',')[0].trim() || 'unknown';
+
+  if (!rateLimit(`subscribe:${ip}`, 5, 10 * 60 * 1000).allowed) {
+    return Response.json({ ok: false, error: 'rate limited' }, { status: 429 });
+  }
+
   let body: unknown;
 
   try {
