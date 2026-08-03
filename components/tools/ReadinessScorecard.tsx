@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import type { FormEvent } from 'react';
 import { useMemo, useRef, useState } from 'react';
+import { bandToList } from '@/lib/social/band-list';
 
 type Answer = 'yes' | 'sometimes' | 'no';
 type BandKey = 'foundations' | 'pilot' | 'sequence';
@@ -157,6 +158,21 @@ export default function ReadinessScorecard() {
 
       if (!response.ok) {
         console.error('Lead magnet capture failed:', response.status);
+      }
+
+      const subscribeResponse = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          list: bandToList(getBand(total)),
+          source: 'ai-readiness',
+          band: getBand(total),
+        }),
+      });
+
+      if (!subscribeResponse.ok) {
+        console.error('List subscribe failed:', subscribeResponse.status);
       }
     } catch (err) {
       console.error('Lead magnet capture failed:', err);
