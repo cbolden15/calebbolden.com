@@ -26,18 +26,24 @@ describe('syllabus', () => {
     expect(syllabus).not.toMatch(/Vora Technologies/i);
   });
 
-  it('has the final sentence of every essay section reference the assessment as its closing call to action', () => {
+  it('has the final sentence of every essay section direct the reader to the assessment, not just mention it', () => {
     const essaySections = [...syllabus.matchAll(/\*\*Essay:\*\*([\s\S]*?)(?=\n\n###|\n\n##|$)/g)].map(
       (m) => m[1].trim(),
     );
     expect(essaySections).toHaveLength(18);
+    // Directive shape: an imperative verb or a second-person construction, followed
+    // somewhere in the same sentence by a reference to the assessment. A purely
+    // descriptive sentence like "The assessment measures whether you are ready."
+    // starts with neither and must fail this check.
+    const directive =
+      /^(take|run|find|use|catch|price|send|check|bring|worth running|you can|you'll want to)\b[\s\S]*\bassessment\b/;
     essaySections.forEach((essay, i) => {
       const sentences = essay.split(/(?<=[.?!])\s+/).filter(Boolean);
       const lastSentence = sentences[sentences.length - 1] ?? '';
       expect(
         lastSentence.toLowerCase(),
-        `Week ${i + 1} essay's final sentence should reference the assessment, got: "${lastSentence}"`,
-      ).toMatch(/assessment/);
+        `Week ${i + 1} essay's final sentence should direct the reader to the assessment, got: "${lastSentence}"`,
+      ).toMatch(directive);
     });
   });
 });
