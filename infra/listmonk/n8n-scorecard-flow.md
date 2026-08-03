@@ -284,8 +284,8 @@ the monthly rollup of the assessment completions metric above:
   content for that channel is better spent elsewhere. Instagram is the
   channel most likely to hit this first. If it does, removing it is the
   gate working as intended.
-- **Whole-effort kill criterion.** If the monthly filming batch gets
-  skipped four or more times within the first three months, the response
-  is to cut the whole effort down to LinkedIn text-only.
+- **Whole-effort kill criterion.** If 2 of the first 3 monthly filming
+  batches are skipped, the response is to cut the whole effort down to
+  LinkedIn text-only.
 - **Pressure valve.** In a week where a Vora sprint overloads the founder's
   time, video is the first thing cut and the LinkedIn essay is the last.
