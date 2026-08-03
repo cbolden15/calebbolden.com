@@ -1,0 +1,54 @@
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { POST } from '../subscribe/route';
+
+function req(body: unknown, ip = '203.0.113.1') {
+  return new Request('http://localhost/api/subscribe', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-forwarded-for': ip },
+    body: JSON.stringify(body),
+  });
+}
+
+beforeEach(() => {
+  vi.stubEnv('LISTMONK_LIST_ID_OWNERS', '3');
+  vi.stubEnv('LISTMONK_LIST_ID_OPERATORS', '4');
+  vi.stubEnv('LISTMONK_API_URL', 'http://listmonk.test');
+  vi.stubEnv('LISTMONK_API_USER', 'user');
+  vi.stubEnv('LISTMONK_API_TOKEN', 'token');
+});
+
+afterEach(() => {
+  vi.unstubAllEnvs();
+  vi.unstubAllGlobals();
+});
+
+describe('POST /api/subscribe attribution', () => {
+  it('sends source and band into Listmonk attribs', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response('{}', { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    const res = await POST(
+      req({ email: 'a@b.com', list: 'operators', source: 'ai-readiness', band: 'sequence' })
+    );
+
+    expect(res.status).toBe(200);
+    const sent = JSON.parse(fetchMock.mock.calls[0][1].body);
+    expect(sent.lists).toEqual([4]);
+    expect(sent.attribs).toEqual({ welcome_step: 0, source: 'ai-readiness', band: 'sequence' });
+  });
+
+  it('omits absent optional fields from attribs', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response('{}', { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    await POST(req({ email: 'a@b.com', list: 'owners' }));
+
+    const sent = JSON.parse(fetchMock.mock.calls[0][1].body);
+    expect(sent.attribs).toEqual({ welcome_step: 0 });
+  });
+
+  it('rejects an unknown band', async () => {
+    const res = await POST(req({ email: 'a@b.com', list: 'owners', band: 'nope' }));
+    expect(res.status).toBe(400);
+  });
+});

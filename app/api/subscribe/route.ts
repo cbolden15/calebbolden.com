@@ -6,13 +6,16 @@ const subscribeSchema = z
   .object({
     email: z.string().regex(emailPattern),
     list: z.enum(['owners', 'operators']),
+    source: z.string().max(64).optional(),
+    band: z.enum(['foundations', 'pilot', 'sequence']).optional(),
   })
   .strict();
 
-const LISTS: Record<string, string | undefined> = {
-  owners: process.env.LISTMONK_LIST_ID_OWNERS,
-  operators: process.env.LISTMONK_LIST_ID_OPERATORS,
-};
+function listIdFor(list: 'owners' | 'operators'): string | undefined {
+  return list === 'owners'
+    ? process.env.LISTMONK_LIST_ID_OWNERS
+    : process.env.LISTMONK_LIST_ID_OPERATORS;
+}
 
 export async function POST(req: Request) {
   let body: unknown;
@@ -29,8 +32,8 @@ export async function POST(req: Request) {
     return Response.json({ ok: false, error: 'invalid request' }, { status: 400 });
   }
 
-  const { email, list } = result.data;
-  const listId = LISTS[list];
+  const { email, list, source, band } = result.data;
+  const listId = listIdFor(list);
 
   if (!listId) {
     return Response.json({ ok: false, error: 'unknown list' }, { status: 400 });
@@ -50,7 +53,11 @@ export async function POST(req: Request) {
         name: '',
         status: 'enabled',
         lists: [Number(listId)],
-        attribs: { welcome_step: 0 },
+        attribs: {
+          welcome_step: 0,
+          ...(source ? { source } : {}),
+          ...(band ? { band } : {}),
+        },
       }),
       signal: AbortSignal.timeout(10000),
     });
