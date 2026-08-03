@@ -2,6 +2,19 @@ type Bucket = { count: number; resetAt: number };
 
 const buckets = new Map<string, Bucket>();
 
+/**
+ * Drop buckets whose window has already closed. Without this the map grows
+ * once per distinct key for the life of the process, and the keys are client
+ * IPs, so the ceiling is "every address that ever hit the route".
+ */
+function sweepExpired(now: number): void {
+  for (const [key, bucket] of buckets) {
+    if (now >= bucket.resetAt) {
+      buckets.delete(key);
+    }
+  }
+}
+
 export function rateLimit(
   key: string,
   limit: number,
@@ -11,6 +24,8 @@ export function rateLimit(
   const bucket = buckets.get(key);
 
   if (!bucket || now >= bucket.resetAt) {
+    // Sweep before the write so the bucket we are about to set survives it.
+    sweepExpired(now);
     buckets.set(key, { count: 1, resetAt: now + windowMs });
     return { allowed: true, remaining: limit - 1 };
   }
@@ -25,4 +40,9 @@ export function rateLimit(
 
 export function __resetRateLimit(): void {
   buckets.clear();
+}
+
+/** Test-only: lets the eviction sweep be observed. */
+export function __rateLimitSize(): number {
+  return buckets.size;
 }

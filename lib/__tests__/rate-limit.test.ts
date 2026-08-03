@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { rateLimit, __resetRateLimit } from '../rate-limit';
+import { rateLimit, __resetRateLimit, __rateLimitSize } from '../rate-limit';
 
 beforeEach(() => __resetRateLimit());
 
@@ -25,5 +25,24 @@ describe('rateLimit', () => {
   it('tracks keys independently', () => {
     rateLimit('a', 1, 1000, 0);
     expect(rateLimit('b', 1, 1000, 0).allowed).toBe(true);
+  });
+
+  it('evicts expired buckets on write so the map does not grow unbounded', () => {
+    for (let i = 0; i < 50; i += 1) {
+      rateLimit(`ip-${i}`, 5, 1000, 0);
+    }
+    expect(__rateLimitSize()).toBe(50);
+
+    // One write past every existing window sweeps them all.
+    rateLimit('later', 5, 1000, 5000);
+    expect(__rateLimitSize()).toBe(1);
+  });
+
+  it('does not evict buckets whose window is still open', () => {
+    rateLimit('live', 5, 10_000, 0);
+    rateLimit('other', 5, 1000, 500);
+
+    expect(__rateLimitSize()).toBe(2);
+    expect(rateLimit('live', 5, 10_000, 600).allowed).toBe(true);
   });
 });

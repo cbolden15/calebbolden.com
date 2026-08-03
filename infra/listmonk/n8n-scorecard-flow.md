@@ -221,37 +221,50 @@ node to call Vora's `social/analytics`, is follow-up work.
 
 ## Assessment completions metric (Task 8)
 
-Counts subscribers with `attribs.source = 'ai-readiness'`, created in the
-trailing 7 days, split by `attribs.band` (`foundations`, `pilot`,
-`sequence`). Reported weekly on the Monday scorecard line, and rolled up
-into a monthly total for the gates below.
+Counts subscribers with `attribs.source = 'ai-readiness'` whose
+`attribs.assessment_at` falls in the trailing 7 days, split by `attribs.band`
+(`foundations`, `pilot`, `sequence`). Reported weekly on the Monday scorecard
+line, and rolled up into a monthly total for the gates below.
+
+The window reads `attribs.assessment_at`, not `subscribers.created_at`.
+`created_at` is when the *subscriber record* was first created, so an existing
+subscriber who completes the assessment today — anyone who joined via the
+newsletter form first, and anyone retaking the quiz — would fall outside a
+`created_at` window and go uncounted. `POST /api/subscribe` writes
+`assessment_at` as an ISO timestamp on both its paths (new subscriber, and the
+409 cross-list path, where it is merged into the existing `attribs` alongside
+`source` and `band`), so both are countable the same way.
 
 Query form, using the same JSONB attribute path Task 2 wrote the attributes
-with:
+with. `->>` yields text, hence the `::timestamptz` cast before comparing:
 
 ```
-query=subscribers.attribs->>'source' = 'ai-readiness' AND subscribers.created_at >= now() - interval '7 days'
+query=subscribers.attribs->>'source' = 'ai-readiness' AND (subscribers.attribs->>'assessment_at')::timestamptz >= now() - interval '7 days'
 ```
 
 Per-band split (one call per band, substituting the value):
 
 ```
-query=subscribers.attribs->>'source' = 'ai-readiness' AND subscribers.attribs->>'band' = 'foundations' AND subscribers.created_at >= now() - interval '7 days'
+query=subscribers.attribs->>'source' = 'ai-readiness' AND subscribers.attribs->>'band' = 'foundations' AND (subscribers.attribs->>'assessment_at')::timestamptz >= now() - interval '7 days'
 ```
 
 **Verified against live Listmonk on 2026-08-03.** `subscribers:sql_query` has
-been granted to `api-bot-role` (id 2). The query below now returns `200`:
+been granted to `api-bot-role` (id 2). Both query forms above return `200`:
 
 ```bash
 source ~/.dev-secrets.env
 curl -s -u "$LISTMONK_API_USER:$LISTMONK_API_TOKEN" \
-  --data-urlencode "query=subscribers.attribs->>'source' = 'ai-readiness'" \
+  --data-urlencode "query=subscribers.attribs->>'source' = 'ai-readiness' AND (subscribers.attribs->>'assessment_at')::timestamptz >= now() - interval '7 days'" \
   -G "https://lists.calebbolden.com/api/subscribers?per_page=1"
 ```
 
 Response: `200`, with `data.total` at `0` (no subscribers carry this
 attribute yet). This response shape matches what the code and this
 scorecard document expect.
+
+Note the cast raises on malformed data: any subscriber carrying a
+non-timestamp `assessment_at` would fail the whole query. Only this route
+writes the attribute, and it writes `new Date().toISOString()`.
 
 ## Follower count metric (Task 8)
 
