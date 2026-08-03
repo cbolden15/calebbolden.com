@@ -805,7 +805,7 @@ Create `consulting/social/account-setup.md` with these sections, in order:
 
 **8. Guardrails and approvals.** Enable guardrails so nothing auto-publishes unreviewed. Enable comment classification with the Telegram approval path, which is what collapses four comment inboxes into one phone prompt.
 
-**9. First batch.** Film the `data and systems` dimension, which is weeks 1 through 3 of the syllabus, in one 30-minute session.
+**9. First batch.** Film the `data and systems` dimension, which is weeks 1 through 4 of the syllabus, in one 30-minute session.
 
 Close with a checklist of the two facts that must be recorded once known: the handle actually used, and the Vora org ID.
 
@@ -864,7 +864,7 @@ The gates are only enforceable if they sit beside the numbers that trigger them.
 
 - A channel earns continued investment at 10 or more assessment completions per month for two consecutive months.
 - A channel producing fewer than 3 per month for three consecutive months is dropped, not optimized. Instagram is the likeliest casualty and dropping it is a success condition, not a failure.
-- Whole-effort kill criterion: if the monthly filming batch is skipped four or more times in the first three months, cut to LinkedIn text-only rather than sustaining a missed cadence.
+- Whole-effort kill criterion: if 2 of the first 3 monthly filming batches are skipped, cut to LinkedIn text-only rather than sustaining a missed cadence.
 - Pressure valve: when a Vora sprint week overloads, video drops first and the LinkedIn essay is last to cut.
 
 - [ ] **Step 5: Commit**
@@ -883,3 +883,19 @@ Not in this plan, recorded so they are not silently lost:
 - **Site changes** (link-in-bio page, social links on `/owners` and `/operators`, social proof modules). The spec sequences these after accounts exist and have something to link to.
 - **Back-publishing prior clinic recordings** to the new YouTube channel. Open item 5 in the spec; needs the channel to exist first.
 - **Spine upgrade from curriculum to proof-of-work** as real installs accumulate. Explicitly designed to need no new plan.
+
+## Amendments
+
+**2026-08-03, post-execution.** All 8 tasks completed, reviewed, merged, and deployed. Two errors in this plan were caught during execution and corrected in place:
+
+| Was | Now | Why |
+|---|---|---|
+| Task 7 §9: first filming batch is "weeks 1 through 3" | weeks 1 through 4 | The `data and systems` dimension holds four questions, not three. The syllabus governs; this was arithmetic error at authoring time. |
+| Task 8: kill criterion "skipped four or more times in the first three months" | 2 of the first 3 monthly batches skipped | A monthly batch offers at most 3 chances to skip in 3 months, so the original could never fire. |
+
+Two further corrections were made to the fix instructions during the final review, both of which would have caused production failures had this plan's assumptions been followed literally:
+
+- Listmonk v6.2.0 has no `PUT /api/subscribers/query/optin`. The real endpoint is `POST /api/subscribers/{id}/optin`, single id, no body.
+- `PUT /api/subscribers/{id}` deletes every list membership when no `lists` key is sent. The attribs merge must use `PATCH`.
+
+Task 5's manual round trip was performed on 2026-08-03 and passed, including the 409 cross-list path. Inbox delivery of the opt-in confirmation remains the one link verified only by the founder.

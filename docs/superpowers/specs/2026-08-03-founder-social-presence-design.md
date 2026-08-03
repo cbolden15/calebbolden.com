@@ -1,7 +1,7 @@
 # Founder social presence: four accounts, one curriculum, run on Vora
 
 **Date:** 2026-08-03
-**Status:** Approved design, pre-implementation
+**Status:** Implemented and deployed to production 2026-08-03. Account creation and the first filming batch remain with the founder.
 **Owner:** Caleb Bolden
 **Relates to:** `docs/superpowers/specs/2026-08-01-founder-brand-engine-design.md` (this extends it), `docs/superpowers/plans/2026-08-01-founder-brand-engine-infra.md`, `~/Projects/vora-technologies-llc/operating-doc.md`
 
@@ -46,7 +46,7 @@ Bands: Foundations first, Ready for one pilot, Ready to sequence.
 
 A generic AI curriculum is the most commoditized content in the category. This one is not copyable, because the syllabus is an instrument the site already ships and the content terminates in taking it.
 
-**Schedule:** one question per week, worked through one dimension at a time. At 16 to 18 questions that is four to five months of pre-scheduled content, depending on the count reconciled in open item 2.
+**Schedule:** one question per week, worked through one dimension at a time. The assessment holds 18 questions across the five dimensions, grouped 4/4/3/3/4, so that is 18 weeks of pre-scheduled content and five monthly filming sessions.
 
 **Weekly unit, two cuts of one idea:**
 
@@ -128,15 +128,15 @@ Explicitly not tracked: views, likes, impressions, engagement rate. None route t
 
 - A channel earns continued investment at 10 or more assessment completions per month for two consecutive months.
 - A channel producing fewer than 3 per month for three consecutive months is dropped, not optimized. Instagram is the likeliest casualty, having been the marginal addition, and dropping it is an acceptable outcome rather than a failure.
-- Whole-effort kill criterion: if the monthly batch is skipped four or more times in the first three months, cut to LinkedIn text-only rather than sustaining a cadence being missed.
+- Whole-effort kill criterion: if 2 of the first 3 monthly filming batches are skipped, cut to LinkedIn text-only rather than sustaining a cadence being missed.
 
 **Pressure valve**, consistent with the engine spec's: when a Vora sprint week overloads, video drops first. The LinkedIn essay is last to cut, being the cheapest unit and the one serving the buyer who writes the $6,000 check.
 
 ## Open items
 
 1. Handle availability across four platforms. Founder-only; requires logins. First checklist item.
-2. Reconcile the assessment question count. `/resources` describes 18 questions; 16 question stems were read out of `ReadinessScorecard.tsx`. Affects the schedule by at most one week.
-3. `harden-subscribe-route` chip must land before the band router goes live (see §2.1).
+2. ~~Reconcile the assessment question count.~~ **Resolved 2026-08-03.** The count is 18. `ReadinessScorecard.tsx` gates submission on `allAnswered = answeredCount === 18`, and all 18 were transcribed verbatim into the syllabus. The earlier reading of 16 was a grep artifact, not a discrepancy.
+3. ~~`harden-subscribe-route` chip must land before the band router goes live.~~ **Resolved 2026-08-03.** Shipped as Tasks 3 and 4 (409 cross-list resolution, rate limiting), then extended after final review: the limiter now keys on `CF-Connecting-IP` because Cloudflare appends to `X-Forwarded-For`, and the cross-list path sends a real opt-in confirmation because Listmonk's list-add does not. Verified in production.
 4. Brand-voice profile copy for the founder brand, authored rather than inherited (§3 step 3).
 5. Clinic recordings as YouTube long-form: the first clinic predates the channel, so back-publishing order needs deciding when the channel exists.
 
@@ -152,3 +152,18 @@ Explicitly not tracked: views, likes, impressions, engagement rate. None route t
 | Audience routing | Assessment band routes to list at capture | Segmenting within the feeds |
 | Publishing stack | Vora social layer (dogfood) | Late API plus n8n; manual posting |
 | Scope | Setup kit, content system, and automation | Setup kit only; adding site changes now |
+
+## Amendments
+
+**2026-08-03, post-implementation.** Three numbers in this document were wrong when written and have been corrected in place. Recorded here so the corrections are visible rather than silent.
+
+| Was | Now | Why |
+|---|---|---|
+| "16 to 18 questions", schedule "four to five months" (§2) | 18 questions, 18 weeks, five monthly sessions | `ReadinessScorecard.tsx` gates on `answeredCount === 18`. Dimensions group 4/4/3/3/4. |
+| Kill criterion: batch skipped "four or more times in the first three months" (§4) | 2 of the first 3 monthly batches skipped | A monthly batch offers at most 3 chances to skip in 3 months, so the original could never fire. Founder set the replacement threshold. |
+| Status: "Approved design, pre-implementation" | Implemented and deployed | Built, reviewed, merged, and deployed on 2026-08-03. |
+
+Two findings from the final review changed the design rather than just the numbers, and are folded into §2.1 and §3:
+
+- The rate limiter must key on `CF-Connecting-IP`. Cloudflare appends to `X-Forwarded-For` rather than replacing it, so the leftmost entry is client-forgeable and the limit was bypassable.
+- The 409 cross-list path must send an opt-in confirmation explicitly. Listmonk's list-add endpoint performs a bare SQL upsert and sends nothing, so cross-listed subscribers would have sat unconfirmed forever and been skipped by the welcome sequence.
