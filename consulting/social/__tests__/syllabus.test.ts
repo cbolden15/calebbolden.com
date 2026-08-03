@@ -26,15 +26,18 @@ describe('syllabus', () => {
     expect(syllabus).not.toMatch(/Vora Technologies/i);
   });
 
-  it('has every essay section reference the assessment as its closing call to action', () => {
+  it('has the final sentence of every essay section reference the assessment as its closing call to action', () => {
     const essaySections = [...syllabus.matchAll(/\*\*Essay:\*\*([\s\S]*?)(?=\n\n###|\n\n##|$)/g)].map(
-      (m) => m[1],
+      (m) => m[1].trim(),
     );
     expect(essaySections).toHaveLength(18);
     essaySections.forEach((essay, i) => {
-      expect(essay.toLowerCase(), `Week ${i + 1} essay should reference the assessment`).toMatch(
-        /assessment/,
-      );
+      const sentences = essay.split(/(?<=[.?!])\s+/).filter(Boolean);
+      const lastSentence = sentences[sentences.length - 1] ?? '';
+      expect(
+        lastSentence.toLowerCase(),
+        `Week ${i + 1} essay's final sentence should reference the assessment, got: "${lastSentence}"`,
+      ).toMatch(/assessment/);
     });
   });
 });
