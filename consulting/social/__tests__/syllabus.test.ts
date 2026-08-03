@@ -25,4 +25,16 @@ describe('syllabus', () => {
   it('never names the LLC in feed-facing copy', () => {
     expect(syllabus).not.toMatch(/Vora Technologies/i);
   });
+
+  it('has every essay section reference the assessment as its closing call to action', () => {
+    const essaySections = [...syllabus.matchAll(/\*\*Essay:\*\*([\s\S]*?)(?=\n\n###|\n\n##|$)/g)].map(
+      (m) => m[1],
+    );
+    expect(essaySections).toHaveLength(18);
+    essaySections.forEach((essay, i) => {
+      expect(essay.toLowerCase(), `Week ${i + 1} essay should reference the assessment`).toMatch(
+        /assessment/,
+      );
+    });
+  });
 });
