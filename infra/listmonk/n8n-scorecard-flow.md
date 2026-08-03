@@ -210,3 +210,82 @@ worktree — flagging rather than editing to avoid a merge collision).
 - **Manual lines are truly manual** — `clinics_line` and `quote_log_line`
   need a human to update the `Manual scorecard inputs` node in the n8n
   editor each week. By design, per the brief (three lines, not a dashboard).
+
+## Scorecard additions (Task 8)
+
+Two new lines, documented here so they can be wired into the workflow once
+the query below is verified. This section records what the lines compute
+and where the numbers come from. No n8n nodes were built for this task;
+adding the actual `Format scorecard + tx payload` Code node logic, and a
+node to call Vora's `social/analytics`, is follow-up work.
+
+## Assessment completions metric (Task 8)
+
+Counts subscribers with `attribs.source = 'ai-readiness'`, created in the
+trailing 7 days, split by `attribs.band` (`foundations`, `pilot`,
+`sequence`). Reported weekly on the Monday scorecard line, and rolled up
+into a monthly total for the gates below.
+
+Query form, using the same JSONB attribute path Task 2 wrote the attributes
+with:
+
+```
+query=subscribers.attribs->>'source' = 'ai-readiness' AND subscribers.created_at >= now() - interval '7 days'
+```
+
+Per-band split (one call per band, substituting the value):
+
+```
+query=subscribers.attribs->>'source' = 'ai-readiness' AND subscribers.attribs->>'band' = 'foundations' AND subscribers.created_at >= now() - interval '7 days'
+```
+
+**Unverified against live Listmonk.** Attempted:
+
+```bash
+source ~/.dev-secrets.env
+curl -s -u "$LISTMONK_API_USER:$LISTMONK_API_TOKEN" \
+  --data-urlencode "query=subscribers.attribs->>'source' = 'ai-readiness'" \
+  -G "https://lists.calebbolden.com/api/subscribers?per_page=1"
+```
+
+Response: `403`, body `{"message":"Permission denied: subscribers:sql_query"}`.
+This is the same permission gap `n8n-welcome-flow.md` recorded for Task 5's
+original design: `api-bot-role` (id 2) does not include
+`subscribers:sql_query` in its permission list. This line stays unverified
+until `subscribers:sql_query` is granted to `api-bot-role`, using the same
+admin session-cookie workaround (`infra/listmonk/README.md` gotchas) this
+doc used above to grant `campaigns:get`. Granting it is a decision for
+whoever owns the live Listmonk instance to make.
+
+## Follower count metric (Task 8)
+
+One count per channel (LinkedIn, Instagram, YouTube, and the fourth channel
+from the account-setup runbook), pulled from Vora's `social/analytics`
+endpoint. Reported monthly on the scorecard. The assessment completions
+line above is reported weekly. This line does not read from Listmonk.
+
+## Metrics excluded from this scorecard (Task 8)
+
+Views, likes, impressions, and engagement rate are deliberately left off.
+The two tracked metrics are assessment completions and channel follower
+counts, above. This exclusion was a decision made when the metrics were
+chosen. Keep it in place; do not add those lines back.
+
+## Gates
+
+Recorded next to the metrics that trigger them, evaluated per channel from
+the monthly rollup of the assessment completions metric above:
+
+- **Continued investment.** 10 or more assessment completions per month,
+  for two consecutive months, earns a channel continued investment.
+- **Drop.** Fewer than 3 assessment completions per month, for three
+  consecutive months, means the channel gets dropped from the rotation.
+  Below this threshold the correct response is removal; time spent tuning
+  content for that channel is better spent elsewhere. Instagram is the
+  channel most likely to hit this first. If it does, removing it is the
+  gate working as intended.
+- **Whole-effort kill criterion.** If the monthly filming batch gets
+  skipped four or more times within the first three months, the response
+  is to cut the whole effort down to LinkedIn text-only.
+- **Pressure valve.** In a week where a Vora sprint overloads the founder's
+  time, video is the first thing cut and the LinkedIn essay is the last.
