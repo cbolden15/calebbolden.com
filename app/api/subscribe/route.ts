@@ -66,11 +66,56 @@ export async function POST(req: Request) {
     return Response.json({ ok: false, error: 'upstream' }, { status: 502 });
   }
 
-  // 409 = already subscribed: treat as success (idempotent signup)
-  if (!res.ok && res.status !== 409) {
+  if (res.status === 409) {
+    const added = await addExistingSubscriberToList(email, Number(listId), auth);
+    if (!added) {
+      return Response.json({ ok: false, error: 'upstream' }, { status: 502 });
+    }
+    return Response.json({ ok: true });
+  }
+
+  if (!res.ok) {
     console.error('Listmonk subscribe failed:', res.status, await res.text());
     return Response.json({ ok: false, error: 'upstream' }, { status: 502 });
   }
 
   return Response.json({ ok: true });
+}
+
+async function addExistingSubscriberToList(
+  email: string,
+  listId: number,
+  auth: string
+): Promise<boolean> {
+  const base = process.env.LISTMONK_API_URL;
+  const headers = { 'Content-Type': 'application/json', Authorization: `Basic ${auth}` };
+
+  try {
+    const query = encodeURIComponent(`subscribers.email='${email.replace(/'/g, "''")}'`);
+    const lookup = await fetch(`${base}/api/subscribers?query=${query}&per_page=1`, {
+      headers,
+      signal: AbortSignal.timeout(10000),
+    });
+    if (!lookup.ok) return false;
+
+    const found = await lookup.json();
+    const id = found?.data?.results?.[0]?.id;
+    if (typeof id !== 'number') return false;
+
+    const update = await fetch(`${base}/api/subscribers/lists`, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({
+        ids: [id],
+        action: 'add',
+        target_list_ids: [listId],
+        status: 'unconfirmed',
+      }),
+      signal: AbortSignal.timeout(10000),
+    });
+    return update.ok;
+  } catch (err) {
+    console.error('Failed to add existing subscriber to list:', err);
+    return false;
+  }
 }

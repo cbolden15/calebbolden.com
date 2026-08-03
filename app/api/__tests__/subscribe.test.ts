@@ -52,3 +52,44 @@ describe('POST /api/subscribe attribution', () => {
     expect(res.status).toBe(400);
   });
 });
+
+describe('POST /api/subscribe 409 cross-list', () => {
+  it('adds an existing subscriber to the target list as unconfirmed', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(new Response('conflict', { status: 409 }))
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ data: { results: [{ id: 77 }] } }), { status: 200 })
+      )
+      .mockResolvedValueOnce(new Response('{}', { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    const res = await POST(req({ email: 'a@b.com', list: 'operators' }));
+
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ ok: true });
+
+    const [listsUrl, listsInit] = fetchMock.mock.calls[2];
+    expect(listsUrl).toContain('/api/subscribers/lists');
+    expect(listsInit.method).toBe('PUT');
+    expect(JSON.parse(listsInit.body)).toEqual({
+      ids: [77],
+      action: 'add',
+      target_list_ids: [4],
+      status: 'unconfirmed',
+    });
+  });
+
+  it('returns 502 when the subscriber lookup finds nobody', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(new Response('conflict', { status: 409 }))
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ data: { results: [] } }), { status: 200 })
+      );
+    vi.stubGlobal('fetch', fetchMock);
+
+    const res = await POST(req({ email: 'a@b.com', list: 'operators' }));
+    expect(res.status).toBe(502);
+  });
+});
