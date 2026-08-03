@@ -3,9 +3,9 @@
 import Link from 'next/link';
 import type { FormEvent } from 'react';
 import { useMemo, useRef, useState } from 'react';
+import { bandToList, type BandKey } from '@/lib/social/band-list';
 
 type Answer = 'yes' | 'sometimes' | 'no';
-type BandKey = 'foundations' | 'pilot' | 'sequence';
 
 type Question = {
   id: number;
@@ -143,6 +143,10 @@ export default function ReadinessScorecard() {
     event.preventDefault();
     setIsSending(true);
 
+    // Tracks which of the two fetches below is in flight, so the shared catch
+    // can name the one that threw.
+    let subscribeStarted = false;
+
     try {
       const response = await fetch('/api/lead-magnet', {
         method: 'POST',
@@ -158,8 +162,28 @@ export default function ReadinessScorecard() {
       if (!response.ok) {
         console.error('Lead magnet capture failed:', response.status);
       }
+
+      const bandKey = getBand(total);
+
+      subscribeStarted = true;
+      const subscribeResponse = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          list: bandToList(bandKey),
+          source: 'ai-readiness',
+          band: bandKey,
+        }),
+      });
+
+      if (!subscribeResponse.ok) {
+        console.error('List subscribe failed:', subscribeResponse.status);
+      }
     } catch (err) {
-      console.error('Lead magnet capture failed:', err);
+      // Either fetch above can throw, so name which one actually did.
+      const failed = subscribeStarted ? 'List subscribe' : 'Lead magnet capture';
+      console.error(`${failed} threw:`, err);
     } finally {
       setIsSending(false);
       setShowGuidance(true);

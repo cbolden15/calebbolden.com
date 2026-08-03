@@ -210,3 +210,91 @@ worktree — flagging rather than editing to avoid a merge collision).
 - **Manual lines are truly manual** — `clinics_line` and `quote_log_line`
   need a human to update the `Manual scorecard inputs` node in the n8n
   editor each week. By design, per the brief (three lines, not a dashboard).
+
+## Scorecard additions (Task 8)
+
+Two new lines, documented here so they can be wired into the workflow once
+the query below is verified. This section records what the lines compute
+and where the numbers come from. No n8n nodes were built for this task;
+adding the actual `Format scorecard + tx payload` Code node logic, and a
+node to call Vora's `social/analytics`, is follow-up work.
+
+## Assessment completions metric (Task 8)
+
+Counts subscribers with `attribs.source = 'ai-readiness'` whose
+`attribs.assessment_at` falls in the trailing 7 days, split by `attribs.band`
+(`foundations`, `pilot`, `sequence`). Reported weekly on the Monday scorecard
+line, and rolled up into a monthly total for the gates below.
+
+The window reads `attribs.assessment_at`, not `subscribers.created_at`.
+`created_at` is when the *subscriber record* was first created, so an existing
+subscriber who completes the assessment today — anyone who joined via the
+newsletter form first, and anyone retaking the quiz — would fall outside a
+`created_at` window and go uncounted. `POST /api/subscribe` writes
+`assessment_at` as an ISO timestamp on both its paths (new subscriber, and the
+409 cross-list path, where it is merged into the existing `attribs` alongside
+`source` and `band`), so both are countable the same way.
+
+Query form, using the same JSONB attribute path Task 2 wrote the attributes
+with. `->>` yields text, hence the `::timestamptz` cast before comparing:
+
+```
+query=subscribers.attribs->>'source' = 'ai-readiness' AND (subscribers.attribs->>'assessment_at')::timestamptz >= now() - interval '7 days'
+```
+
+Per-band split (one call per band, substituting the value):
+
+```
+query=subscribers.attribs->>'source' = 'ai-readiness' AND subscribers.attribs->>'band' = 'foundations' AND (subscribers.attribs->>'assessment_at')::timestamptz >= now() - interval '7 days'
+```
+
+**Verified against live Listmonk on 2026-08-03.** `subscribers:sql_query` has
+been granted to `api-bot-role` (id 2). Both query forms above return `200`:
+
+```bash
+source ~/.dev-secrets.env
+curl -s -u "$LISTMONK_API_USER:$LISTMONK_API_TOKEN" \
+  --data-urlencode "query=subscribers.attribs->>'source' = 'ai-readiness' AND (subscribers.attribs->>'assessment_at')::timestamptz >= now() - interval '7 days'" \
+  -G "https://lists.calebbolden.com/api/subscribers?per_page=1"
+```
+
+Response: `200`, with `data.total` at `0` (no subscribers carry this
+attribute yet). This response shape matches what the code and this
+scorecard document expect.
+
+Note the cast raises on malformed data: any subscriber carrying a
+non-timestamp `assessment_at` would fail the whole query. Only this route
+writes the attribute, and it writes `new Date().toISOString()`.
+
+## Follower count metric (Task 8)
+
+One count per channel (LinkedIn, Instagram, YouTube, and the fourth channel
+from the account-setup runbook), pulled from Vora's `social/analytics`
+endpoint. Reported monthly on the scorecard. The assessment completions
+line above is reported weekly. This line does not read from Listmonk.
+
+## Metrics excluded from this scorecard (Task 8)
+
+Views, likes, impressions, and engagement rate are deliberately left off.
+The two tracked metrics are assessment completions and channel follower
+counts, above. This exclusion was a decision made when the metrics were
+chosen. Keep it in place; do not add those lines back.
+
+## Gates
+
+Recorded next to the metrics that trigger them, evaluated per channel from
+the monthly rollup of the assessment completions metric above:
+
+- **Continued investment.** 10 or more assessment completions per month,
+  for two consecutive months, earns a channel continued investment.
+- **Drop.** Fewer than 3 assessment completions per month, for three
+  consecutive months, means the channel gets dropped from the rotation.
+  Below this threshold the correct response is removal; time spent tuning
+  content for that channel is better spent elsewhere. Instagram is the
+  channel most likely to hit this first. If it does, removing it is the
+  gate working as intended.
+- **Whole-effort kill criterion.** If 2 of the first 3 monthly filming
+  batches are skipped, the response is to cut the whole effort down to
+  LinkedIn text-only.
+- **Pressure valve.** In a week where a Vora sprint overloads the founder's
+  time, video is the first thing cut and the LinkedIn essay is the last.
