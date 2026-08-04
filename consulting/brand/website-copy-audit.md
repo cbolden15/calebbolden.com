@@ -7,6 +7,13 @@ and terms excluded. This is a punch list, not a rewrite — no copy changes were
 
 Severity key: **high** = costs conversions, **medium** = weakens the page, **low** = polish.
 
+**Status (2026-08-03):** all high and medium findings fixed in two passes (commits on main:
+top-5, then the remainder). Deliberately left as-is: the generic H1s on Work / How I Build /
+Blog, the "What's in the weekly issue" labels, Blog's no-CTA design, the email-address
+button on Contact, and the Resources email-expectation line (all flagged acceptable below).
+The assessment link was deliberately NOT added to Owners/Operators to preserve the
+single-CTA discipline this audit praises on those pages.
+
 ---
 
 ## Home (`app/page.tsx`)

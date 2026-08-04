@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 const sections = [
   {
     heading: 'The manual-work tax',
-    body: "Somewhere in your business, someone is copying numbers from one spreadsheet into another, or chasing an approval through four Slack threads because the tool that's supposed to handle it doesn't talk to the other tool. None of it shows up on a line in the P&L. It shows up as hours nobody has left over for anything else.",
+    body: "Somewhere in your business, someone is copying numbers from one spreadsheet into another because the tools don't talk to each other. None of it shows up on a line in the P&L. It shows up as hours nobody has left over for anything else.",
   },
   {
     heading: "What's in the weekly issue",

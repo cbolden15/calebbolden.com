@@ -124,6 +124,12 @@ export default function HowIBuildPage() {
                     </span>
                   </Link>
                 </div>
+                <p className="mt-5" style={{ fontSize: 14, color: 'var(--color-ink-muted)' }}>
+                  Not ready to talk?{' '}
+                  <Link href="/tools/ai-readiness" className="link-draw" style={{ color: 'var(--color-blue)' }}>
+                    Take the free AI readiness assessment
+                  </Link>
+                </p>
               </div>
             </Reveal>
           </div>

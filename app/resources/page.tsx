@@ -121,6 +121,34 @@ export default function ResourcesPage() {
             </div>
           </div>
         </section>
+
+        <section className="py-16" style={{ borderTop: '1px solid var(--color-hairline)' }}>
+          <div className="mx-auto w-[90%] max-w-[1200px]">
+            <Reveal>
+              <div
+                className="max-w-2xl rounded-[2px] p-8 sm:p-10"
+                style={{ background: 'var(--color-bg)', border: '1.5px solid var(--color-blue)' }}
+              >
+                <h2 className="type-display mb-5" style={{ fontSize: 'clamp(1.6rem, 2.6vw, 2.1rem)' }}>
+                  Worked through these and want a second set of eyes?
+                </h2>
+                <p className="max-w-xl" style={{ fontSize: 15, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
+                  These tools are the first mile of the audit. If your results raised more questions than they answered, the next step is a conversation about your specific numbers.
+                </p>
+                <div className="mt-7">
+                  <Link href="/contact" className="btn-ink btn-roll">
+                    <span className="roll-box">
+                      <span className="roll-a">Let's talk</span>
+                      <span className="roll-b" aria-hidden="true">
+                        Let's talk
+                      </span>
+                    </span>
+                  </Link>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
       </main>
       <Footer />
     </>

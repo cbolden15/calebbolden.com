@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import OpenChatButton from '@/components/OpenChatButton';
@@ -96,9 +97,9 @@ export default function ContactPage() {
                   <div className="flex sm:col-span-4 sm:justify-end">
                     <a href={bookingUrl} target="_blank" rel="noopener" className="btn-hairline btn-roll">
                       <span className="roll-box">
-                        <span className="roll-a">Pick a time</span>
+                        <span className="roll-a">Book a call</span>
                         <span className="roll-b" aria-hidden="true">
-                          Pick a time
+                          Book a call
                         </span>
                       </span>
                     </a>
@@ -106,6 +107,19 @@ export default function ContactPage() {
                 </div>
               </Reveal>
             )}
+
+            <Reveal delay={200}>
+              <p
+                className="py-8"
+                style={{ fontSize: 14.5, color: 'var(--color-ink-muted)', borderTop: '1px solid var(--color-hairline)' }}
+              >
+                Not sure what you would even ask about?{' '}
+                <Link href="/tools/ai-readiness" className="link-draw" style={{ color: 'var(--color-blue)' }}>
+                  Take the free AI readiness assessment
+                </Link>{' '}
+                and bring your score.
+              </p>
+            </Reveal>
           </div>
         </section>
       </main>
