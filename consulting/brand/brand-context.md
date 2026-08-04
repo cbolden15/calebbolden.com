@@ -60,7 +60,7 @@ Palette (canonical OKLCH in app/globals.css; sRGB hex computed 2026-08-03):
 | blue | oklch(0.48 0.10 210) | #006C7D | Blueprint blue. Marks, links, buttons. |
 | blue-deep | oklch(0.36 0.08 220) | #00465A | Hover, strong strokes. |
 | blue-wash | oklch(0.94 0.02 210) | #DDEFF3 | Soft fills, tags, selection. |
-| sticky | oklch(0.88 0.115 85) | #FAD27B | Amber sticky note. Ink text on it. Max one per surface. |
+| sticky | oklch(0.88 0.115 85) | #FAD27B | Amber sticky note. Ink text on it. Max one per section. |
 | sticky-edge | oklch(0.78 0.13 80) | #E3AD4B | Sticky shadow edge, small amber marks. |
 | pos | oklch(0.52 0.13 150) | #1D7D3E | Confirmations only. |
 | neg | oklch(0.5 0.16 25) | #AC3031 | Errors only. |
