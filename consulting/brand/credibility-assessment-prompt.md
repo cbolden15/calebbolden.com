@@ -47,15 +47,31 @@ The site is deliberately spare, and the spareness is part of the brand. Your job
 3. For each spot where a visual would raise credibility, specify: what the visual shows, which pipeline builds it, and how it renders in the working-wall language (e.g. a real Vora screenshot mounted like a taped-on print with a mono annotation and dimension lines, not a floating drop-shadowed browser mockup).
 4. Flag any spot where adding a visual would *hurt*: pages whose single-column austerity is doing persuasion work (check the prior assessment's do-not-touch reasoning before proposing changes there).
 
-## Pass 3: the industry-credibility bar
+## Pass 3: the industry-credibility bar, researched
 
-Briefly benchmark against what established solo consultants and studios show that this site does not. Consider: a real headshot and workspace photography; annotated product screenshots; a public methodology artifact (a real value-stream map, anonymized); talk/workshop footage or a clinic recording; press or directory listings; certifications; a visible client pipeline ("currently: 2 of 3 founding slots open"); video presence (a 60-90 second "how I work" clip). For each, say whether it applies to a local-SMB audience (some enterprise signals do not) and where it would live on this site.
+Do not benchmark from memory. Research the people actually winning trust in these lanes today, then derive the bar from what they demonstrably do.
+
+**3a. Find the experts.** Using live web research (in this environment: the perplexity tools or WebSearch; never WebFetch), identify 6 to 10 named practitioners with real public footprints across these lanes:
+
+1. AI consulting for small and mid-size businesses (not enterprise AI strategy).
+2. Small business operations consulting and fractional COO work.
+3. Automation and systems consultants (the Zapier/Make/agents-for-SMB crowd).
+4. Lean/six-sigma or process-improvement consultants with a modern public presence.
+5. Adjacent solo authorities whose model translates: productized-service consultants, the build-in-public solo founders who consult on the side.
+
+Prefer practitioners a local-SMB owner or a referral partner might actually encounter (LinkedIn, YouTube, newsletters, chamber and trade-association circuits) over famous names owners never see. Name each person, their lane, and their primary surface, with URLs.
+
+**3b. Extract the credibility anatomy.** For each expert, record what their public presence shows that earns trust: headshot and photography style, case study format and whether numbers are named, certifications displayed, speaking or workshop footage, newsletter and cadence, video presence and production level, how they handle pricing visibility, how they display client proof before they had much of it. Note patterns that recur across most of them; those recurring patterns are the actual industry bar.
+
+**3c. Translate to this site.** For each recurring pattern: does it apply to a local-SMB audience (some signals are enterprise theater that would hurt here), where would it live on this site, and which pipeline builds it. Also name the one or two things NONE of the researched experts do that Caleb already does (the working-wall system, the measure-before-publishing stance, the live assistant demo) so differentiation is protected, not homogenized away. Established-consultant polish is the bar to clear, not the personality to adopt.
+
+Candidate signals to look for while researching, beyond whatever you find: a real headshot and workspace photography; annotated product screenshots; a public methodology artifact (a real value-stream map, anonymized); talk/workshop footage or a clinic recording; press or directory listings; certifications; a visible client pipeline ("currently: 2 of 3 founding slots open"); video presence (a 60-90 second "how I work" clip).
 
 ## Deliverable
 
 One document, in this order:
 
-1. **Credibility scorecard**: per page, a 1-5 credibility score with the two strongest signals present and the two most damaging absences, cited.
+1. **Credibility scorecard**: per page, a 1-5 credibility score with the two strongest signals present and the two most damaging absences, cited. Precede it with the expert benchmark table from Pass 3 (name, lane, primary surface, URL, the two or three credibility signals worth learning from), so every later recommendation can cite which expert pattern it borrows.
 2. **Ranked recommendations, maximum 12**, ordered by credibility gained per unit effort for the primary audience (the skeptical owner and the referral partner attaching their name). Each recommendation: title, page(s), what changes, `cosmetic` or `content` or both, pipeline tag, effort (hours/days), and one sentence on which fear it disarms.
 3. **Do-now five**: the top five of those twelve, with enough spec detail (placement, working-wall treatment, copy angle) that an implementer needs no follow-up questions.
 4. **The don't list**: changes that would raise visual density but lower credibility (stock-photo energy, fake-evidence risks, motif violations), stated so they stay off the roadmap.
