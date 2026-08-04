@@ -83,7 +83,8 @@
     text-transform: uppercase;
     color: var(--color-ink-faint);
   }
-  .anno-blue { color: var(--color-blue); }
+  /* fill mirrors color so the class also works on SVG <text>, which ignores color */
+  .anno-blue { color: var(--color-blue); fill: var(--color-blue); }
 
   /* Graph-paper field: hero + section margins only, never behind paragraphs */
   .graph-field {
