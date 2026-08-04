@@ -86,7 +86,7 @@ export default function HowIBuildPage() {
                 <p className="anno anno-blue sm:col-span-2">what this means for clients</p>
                 <div className="space-y-5 sm:col-span-8 sm:col-start-4">
                   <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
-                    Two things. Speed: I ship in days what used to take weeks. And judgment: because I run these systems on my own revenue, I know where they break, so I can tell you where AI will not pay before you spend on it.
+                    Two things. Speed: agents take the first pass on most of a build in parallel while I review and correct, so the work is not gated on one person typing. And judgment: because I run these systems on my own revenue, I know where they break, so I can tell you where AI will not pay before you spend on it.
                   </p>
                   <Link
                     href="/work"
@@ -112,7 +112,7 @@ export default function HowIBuildPage() {
                   Start with the audit
                 </h2>
                 <p className="max-w-xl" style={{ fontSize: 15, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
-                  The audit is where every engagement starts. Two to three weeks inside your business, and you end up with a map, a scored shortlist, and one recommended pilot, whether or not you hire me to build it.
+                  Audits start at $750, fixed scope. Every engagement begins here. Two to three weeks inside your business, and you end up with a map, a scored shortlist, and one recommended pilot, whether or not you hire me to build it.
                 </p>
                 <div className="mt-7">
                   <Link href="/contact" className="btn-ink btn-roll">

@@ -31,16 +31,13 @@ export default function AboutPage() {
           <div className="mx-auto w-[90%] max-w-[1200px]">
             <Reveal>
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-12 sm:gap-6">
-                <p className="anno anno-blue sm:col-span-2">the background</p>
+                <p className="anno anno-blue sm:col-span-2">who i work with</p>
                 <div className="space-y-5 sm:col-span-8 sm:col-start-4">
                   <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
-                    I came up through payments and fintech, working with US Bank, Elavon, and TSYS, then moved into product management in crypto infrastructure at Blockdaemon.
+                    Local small businesses that are busy and short-handed at the same time. Trades, professional offices, anyone whose work arrives as phone calls and forms and then sits in a queue somebody has to clear by hand.
                   </p>
                   <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
-                    Big companies are a masterclass in process: thousands of people moving work between them, and every improvement starts with someone mapping how the work moves today.
-                  </p>
-                  <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
-                    Along the way I picked up lean and six sigma the working way: value stream maps on real walls, timing real handoffs, sitting in the kaizen meetings where the map gets argued into the truth. That habit stuck harder than any job title.
+                    The pattern is usually the same. The business grew, the process never got written down, and the people became the glue. So I map the work first: how a job actually moves through your shop, where it waits, and what the waiting costs you every week. Some of that gets automated. Some of it just needs to stop being done twice.
                   </p>
                 </div>
               </div>
@@ -52,14 +49,17 @@ export default function AboutPage() {
           <div className="mx-auto w-[90%] max-w-[1200px]">
             <Reveal>
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-12 sm:gap-6">
-                <p className="anno anno-blue sm:col-span-2">the products</p>
-                <div className="sm:col-span-8 sm:col-start-4">
+                <p className="anno anno-blue sm:col-span-2">the background</p>
+                <div className="space-y-5 sm:col-span-8 sm:col-start-4">
                   <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
-                    Nights and weekends I built software, and the side projects became the main event. Vora is an AI CRM platform for service businesses. ChapterHQ runs clubs and nonprofits. Real Estate Maite and an autonomous Agent Team are the newest builds. The assistant in the corner of this site is one of those systems, live, not a demo reel. When I recommend something to a client, it is because I have already run it myself.
+                    I came up through payments and fintech, working with US Bank, Elavon, and TSYS, then moved into product management in crypto infrastructure at Blockdaemon.
                   </p>
-                  <Link href="/work" className="link-draw mt-5 inline-block" style={{ fontSize: 14.5, color: 'var(--color-blue)' }}>
-                    See all the work
-                  </Link>
+                  <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
+                    Big companies are a masterclass in process: thousands of people moving work between them, and every improvement starts with someone mapping how the work moves today.
+                  </p>
+                  <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
+                    Along the way I picked up lean and six sigma the working way: value stream maps on real walls, timing real handoffs, sitting in the kaizen meetings where the map gets argued into the truth. That habit stuck harder than any job title.
+                  </p>
                 </div>
               </div>
             </Reveal>
@@ -143,6 +143,24 @@ export default function AboutPage() {
           </div>
         </section>
 
+        <section className="py-14" style={{ borderTop: '1px solid var(--color-hairline)' }}>
+          <div className="mx-auto w-[90%] max-w-[1200px]">
+            <Reveal>
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-12 sm:gap-6">
+                <p className="anno anno-blue sm:col-span-2">the products</p>
+                <div className="sm:col-span-8 sm:col-start-4">
+                  <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
+                    Nights and weekends I built software, and the side projects became the main event. Vora is an AI CRM platform for service businesses. ChapterHQ runs clubs and nonprofits. Real Estate Maite and an autonomous Agent Team are the newest builds. The assistant in the corner of this site is one of those systems, live, not a demo reel. When I recommend something to a client, it is because I have already run it myself.
+                  </p>
+                  <Link href="/work" className="link-draw mt-5 inline-block" style={{ fontSize: 14.5, color: 'var(--color-blue)' }}>
+                    See all the work
+                  </Link>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
         <section className="py-16">
           <div className="mx-auto w-[90%] max-w-[1200px]">
             <Reveal>
@@ -154,7 +172,7 @@ export default function AboutPage() {
                   Start with the audit
                 </h2>
                 <p className="max-w-xl" style={{ fontSize: 15, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
-                  The audit is where every engagement starts. Two to three weeks inside your business, and you end up with a map, a scored shortlist, and one recommended pilot, whether or not you hire me to build it.
+                  Audits start at $750, fixed scope. Every engagement begins here. Two to three weeks inside your business, and you end up with a map, a scored shortlist, and one recommended pilot, whether or not you hire me to build it.
                 </p>
                 <div className="mt-7">
                   <Link href="/contact" className="btn-ink btn-roll">

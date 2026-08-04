@@ -11,6 +11,7 @@ const links = [
   { label: 'Packages', href: '/#packages' },
   { label: 'Resources', href: '/resources' },
   { label: 'Work', href: '/work' },
+  { label: 'Results', href: '/results' },
   { label: 'Blog', href: '/blog' },
 ];
 
@@ -51,9 +52,6 @@ export default function Header() {
           </span>
         </span>
       </Link>
-        <span className="anno hidden lg:block" style={{ color: 'var(--color-ink-faint)' }}>
-          sht 1 / rev b
-        </span>
         <MobileNav links={links} />
       </div>
     </nav>

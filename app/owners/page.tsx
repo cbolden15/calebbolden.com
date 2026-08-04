@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 const sections = [
   {
     heading: 'The after-hours call problem',
-    body: "A customer calls at 6:40 on a Tuesday because their water heater just went out. Nobody picks up, so they call the next name on the list, and that name wins the job. That's not a phone problem. It's a business you already built losing work it already earned.",
+    body: "A customer calls at 6:40 on a Tuesday because their water heater just went out. Nobody picks up, so they call the next name on the list, and that name wins the job. You already did the hard part. You built the business, earned the reputation, and got the call. Then the work went to whoever answered.",
   },
   {
     heading: "What's in the weekly issue",

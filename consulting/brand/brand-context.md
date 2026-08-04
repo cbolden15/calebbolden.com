@@ -15,7 +15,7 @@ disagree, those win; fix this file.
 
 AI consulting for local small businesses, delivered in person, part-time capacity, industry-agnostic but ops-pain focused. The differentiator is lean/six-sigma process discipline: **map and fix the process first, then automate it**. Validated white space; no US firm found combining kaizen-event facilitation with AI-candidate identification.
 
-Three packages (names/scope public, prices quoted live, never published):
+Three packages (names/scope public; pricing policy updated 2026-08-03: the audit price is published on the site, "Audits start at $750, fixed scope", with a $500 founding-client rate for the first three clients; Build Sprint and Fractional prices are still quoted live from the map, never published):
 
 1. **Process & AI Readiness Audit**: 2-3 weeks. VSM of 2-3 core workflows, data-readiness check, scored opportunity matrix, 90-day roadmap.
 2. **Build Sprint**: 4-8 weeks. Implement the top 1-2 roadmap items with a defined success metric, training, 30-day tuning.

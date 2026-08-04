@@ -117,7 +117,7 @@ function MethodFigure() {
       </span>
 
       <p className="anno mt-3" style={{ color: 'oklch(1 0 0 / 0.5)' }}>
-        fig. 2 / the method, drawn to scale: none
+        the method: map it, score it, then automate what pays
       </p>
     </div>
   );

@@ -39,7 +39,7 @@ const rows = [
   {
     pain: "Can't afford to hire",
     painDesc: "You need a receptionist, a marketing person, someone to chase invoices. But payroll for three people isn't realistic.",
-    fix: 'AI staff at a fraction of payroll',
+    fix: 'Coverage without a new hire',
     fixDesc: 'Virtual staff for front desk, social media, collections, customer service. They work 24/7 and never call in sick.',
     tag: 'agents',
   },

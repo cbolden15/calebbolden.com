@@ -1,10 +1,10 @@
 export default function Footer() {
   const titleBlockCells = [
-    { label: 'project', value: 'The working wall', className: 'border-r border-b lg:border-b-0' },
-    { label: 'drawn by', value: 'Caleb Bolden', className: 'border-b lg:border-r lg:border-b-0' },
-    { label: 'sheet', value: '1 of 1', className: 'border-r border-b lg:border-b-0' },
-    { label: 'scale', value: 'none', className: 'border-b lg:border-r lg:border-b-0' },
-    { label: 'rev', value: 'B / 2026', className: 'col-span-2 lg:col-span-1' },
+    { label: 'drawn by', value: 'Caleb Bolden', className: 'border-r border-b lg:border-b-0' },
+    { label: 'based in', value: 'Dallas-Fort Worth', className: 'border-b lg:border-r lg:border-b-0' },
+    { label: 'the work', value: 'AI systems for small businesses', className: 'border-r border-b lg:border-b-0' },
+    { label: 'start with', value: 'A 2-3 week audit', className: 'border-b lg:border-r lg:border-b-0' },
+    { label: 'email', value: 'caleb@calebbolden.com', className: 'col-span-2 lg:col-span-1' },
   ];
 
   return (
@@ -32,12 +32,13 @@ export default function Footer() {
           <nav aria-label="Services" className="flex flex-wrap gap-x-5 gap-y-1">
             {[
               { label: 'Work', href: '/work' },
+              { label: 'Results', href: '/results' },
               { label: 'Web development', href: '/services/web-development' },
               { label: 'SEO', href: '/services/seo' },
               { label: 'Marketing', href: '/services/marketing' },
               { label: 'Resources', href: '/resources' },
-              { label: 'The Missed Call', href: '/owners' },
-              { label: 'The Workflow Brief', href: '/operators' },
+              { label: 'The Missed Call · newsletter for owners', href: '/owners' },
+              { label: 'The Workflow Brief · newsletter for operators', href: '/operators' },
               { label: 'Privacy', href: '/privacy' },
               { label: 'Terms', href: '/terms' },
             ].map((l) => (

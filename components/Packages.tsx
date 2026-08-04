@@ -2,8 +2,8 @@ import Link from 'next/link';
 import Reveal from './Reveal';
 
 // Offer ladder: audit featured with the sticky note (the one amber mark in
-// this section), follow-ons as hairline panels. No public pricing (quoted
-// live, consulting/launch-roadmap.md).
+// this section), follow-ons as hairline panels. Audit price is published;
+// sprint and retainer are quoted off the map.
 
 const audit = {
   name: 'Process & AI audit',
@@ -102,7 +102,8 @@ export default function Packages() {
               </ul>
 
               <p className="mt-6" style={{ fontSize: 13.5, color: 'var(--color-ink-faint)' }}>
-                You&apos;ll know the exact cost after one short call, before anything begins.
+                Audits start at $750, fixed scope. You have the number before the call,
+                and build pricing comes from what the map finds.
               </p>
 
               <div className="mt-6 flex flex-wrap items-center justify-between gap-4">

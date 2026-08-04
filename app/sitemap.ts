@@ -22,6 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/tools/revenue-leak`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE}/about`, changeFrequency: 'yearly', priority: 0.5 },
     { url: `${BASE}/contact`, changeFrequency: 'yearly', priority: 0.7 },
+    { url: `${BASE}/results`, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${BASE}/work`, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${BASE}/work/vora`, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${BASE}/work/chapterhq`, changeFrequency: 'monthly', priority: 0.6 },
