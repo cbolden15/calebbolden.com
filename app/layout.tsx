@@ -24,6 +24,7 @@ const martian = Martian_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://calebbolden.com"),
   title: "Caleb Bolden | AI systems, process consulting, and writing",
   description:
     "I find where a business loses time, then build the AI that takes that work over. Every engagement starts with a map of how the business actually runs.",

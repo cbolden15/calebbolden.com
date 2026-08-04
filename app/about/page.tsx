@@ -39,6 +39,12 @@ export default function AboutPage() {
                   <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
                     The pattern is usually the same. The business grew, the process never got written down, and the people became the glue. So I map the work first: how a job actually moves through your shop, where it waits, and what the waiting costs you every week. Some of that gets automated. Some of it just needs to stop being done twice.
                   </p>
+                  <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
+                    Bookkeepers, CPAs, and MSPs usually spot the mess before the owner names it, so I wrote a page for them.{' '}
+                    <Link href="/partners" className="link-draw" style={{ color: 'var(--color-blue)' }}>
+                      What happens to a client you send me
+                    </Link>
+                  </p>
                 </div>
               </div>
             </Reveal>
@@ -161,6 +167,61 @@ export default function AboutPage() {
           </div>
         </section>
 
+        <section className="py-14" style={{ borderTop: '1px solid var(--color-hairline)' }}>
+          <div className="mx-auto w-[90%] max-w-[1200px]">
+            <Reveal>
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-12 sm:gap-6">
+                <p className="anno anno-blue sm:col-span-2">check it yourself</p>
+                <div className="sm:col-span-8 sm:col-start-4">
+                  <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
+                    Two places where the record is not mine to edit.
+                  </p>
+                  <div className="mt-6" style={{ borderTop: '1px solid var(--color-hairline)' }}>
+                    <div
+                      className="grid grid-cols-1 gap-2 py-5 sm:grid-cols-12 sm:items-baseline sm:gap-6"
+                      style={{ borderBottom: '1px solid var(--color-hairline)' }}
+                    >
+                      <div className="sm:col-span-3">
+                        <a
+                          href="https://www.linkedin.com/in/calebbolden"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="link-draw"
+                          style={{ fontSize: 15.5, fontWeight: 600, color: 'var(--color-blue)' }}
+                        >
+                          LinkedIn
+                        </a>
+                      </div>
+                      <p className="sm:col-span-9" style={{ fontSize: 15, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
+                        Verifies the work history above: US Bank, Elavon, TSYS, then Blockdaemon. Same dates, same titles.
+                      </p>
+                    </div>
+                    <div
+                      className="grid grid-cols-1 gap-2 py-5 sm:grid-cols-12 sm:items-baseline sm:gap-6"
+                      style={{ borderBottom: '1px solid var(--color-hairline)' }}
+                    >
+                      <div className="sm:col-span-3">
+                        <a
+                          href="https://github.com/cbolden15"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="link-draw"
+                          style={{ fontSize: 15.5, fontWeight: 600, color: 'var(--color-blue)' }}
+                        >
+                          GitHub
+                        </a>
+                      </div>
+                      <p className="sm:col-span-9" style={{ fontSize: 15, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
+                        The code I ship, with commit dates you can read. Nothing there is a case study I wrote about myself.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
         <section className="py-16">
           <div className="mx-auto w-[90%] max-w-[1200px]">
             <Reveal>
@@ -192,10 +253,6 @@ export default function AboutPage() {
                 </p>
               </div>
             </Reveal>
-            <div className="mt-8 flex flex-wrap gap-6">
-              <a href="https://github.com/cbolden15" target="_blank" rel="noopener noreferrer" className="link-draw" style={{ fontSize: 14, color: 'var(--color-blue)' }}>GitHub</a>
-              <a href="https://www.linkedin.com/in/calebbolden" target="_blank" rel="noopener noreferrer" className="link-draw" style={{ fontSize: 14, color: 'var(--color-blue)' }}>LinkedIn</a>
-            </div>
           </div>
         </section>
       </main>

@@ -22,6 +22,7 @@ interface WorkDetailProps {
   stackLine: string;
   href?: string | null;
   sheet: string;
+  media?: React.ReactNode;
 }
 
 export default function WorkDetail({
@@ -34,6 +35,7 @@ export default function WorkDetail({
   stackLine,
   href,
   sheet,
+  media,
 }: WorkDetailProps) {
   return (
     <>
@@ -147,6 +149,19 @@ export default function WorkDetail({
             </Reveal>
           </div>
         </section>
+
+        {media && (
+          <section className="py-14" style={{ borderTop: '1px solid var(--color-hairline)' }}>
+            <div className="mx-auto w-[90%] max-w-[1200px]">
+              <Reveal>
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-12 sm:gap-6">
+                  <p className="anno anno-blue sm:col-span-2">what it looks like</p>
+                  <div className="sm:col-span-8 sm:col-start-4">{media}</div>
+                </div>
+              </Reveal>
+            </div>
+          </section>
+        )}
       </main>
       <Footer />
     </>

@@ -7,6 +7,22 @@ export default function Footer() {
     { label: 'email', value: 'caleb@calebbolden.com', className: 'col-span-2 lg:col-span-1' },
   ];
 
+  const navLinks: { label: string; href: string; external?: boolean }[] = [
+    { label: 'Work', href: '/work' },
+    { label: 'Results', href: '/results' },
+    { label: 'Web development', href: '/services/web-development' },
+    { label: 'SEO', href: '/services/seo' },
+    { label: 'Marketing', href: '/services/marketing' },
+    { label: 'Resources', href: '/resources' },
+    { label: 'The Missed Call · newsletter for owners', href: '/owners' },
+    { label: 'The Workflow Brief · newsletter for operators', href: '/operators' },
+    { label: 'For bookkeepers, CPAs, and MSPs', href: '/partners' },
+    { label: 'GitHub · the code I ship', href: 'https://github.com/cbolden15', external: true },
+    { label: 'LinkedIn · the work history', href: 'https://www.linkedin.com/in/calebbolden', external: true },
+    { label: 'Privacy', href: '/privacy' },
+    { label: 'Terms', href: '/terms' },
+  ];
+
   return (
     <footer className="chat-offset" style={{ borderTop: '1px solid var(--color-hairline)' }}>
       <div className="mx-auto w-[90%] max-w-[1200px] pt-8 pb-[calc(6rem+env(safe-area-inset-bottom))] md:pb-8">
@@ -29,22 +45,12 @@ export default function Footer() {
           <span style={{ fontSize: 13, color: 'var(--color-ink-faint)' }}>
             &copy; 2026 Caleb Bolden. Services provided by Vora Technologies LLC.
           </span>
-          <nav aria-label="Services" className="flex flex-wrap gap-x-5 gap-y-1">
-            {[
-              { label: 'Work', href: '/work' },
-              { label: 'Results', href: '/results' },
-              { label: 'Web development', href: '/services/web-development' },
-              { label: 'SEO', href: '/services/seo' },
-              { label: 'Marketing', href: '/services/marketing' },
-              { label: 'Resources', href: '/resources' },
-              { label: 'The Missed Call · newsletter for owners', href: '/owners' },
-              { label: 'The Workflow Brief · newsletter for operators', href: '/operators' },
-              { label: 'Privacy', href: '/privacy' },
-              { label: 'Terms', href: '/terms' },
-            ].map((l) => (
+          <nav aria-label="Footer" className="flex flex-wrap gap-x-5 gap-y-1">
+            {navLinks.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
+                {...(l.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                 className="link-draw whitespace-nowrap"
                 style={{ fontSize: 13, color: 'var(--color-ink-faint)' }}
               >

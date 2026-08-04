@@ -22,6 +22,29 @@ export default function SiteAssistantPage() {
       ]}
       stackLine="Next.js · Vercel AI SDK · Gemini · Zod tools"
       href={null}
+      media={
+        <div>
+          <video
+            src="/video/assistant-demo.mp4"
+            poster="/video/assistant-demo-poster.jpg"
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full motion-reduce:hidden"
+            style={{ border: '1px solid var(--color-hairline)', borderRadius: 2 }}
+            aria-label="Screen recording of a test conversation with the site assistant: an HVAC owner asks about missed after-hours calls, and the agent explains voice agents that answer the phone, book appointments, and route emergency calls"
+          />
+          {/* Reduced-motion fallback: the final frame of the same conversation */}
+          <img
+            src="/video/assistant-demo-poster.jpg"
+            alt="The end of a test conversation with the site assistant, showing its answer about voice agents that handle missed after-hours calls"
+            className="hidden w-full motion-reduce:block"
+            style={{ border: '1px solid var(--color-hairline)', borderRadius: 2 }}
+          />
+          <p className="anno mt-3">a test conversation with the live assistant, recorded in real time · nothing staged beyond the question</p>
+        </div>
+      }
     />
   );
 }

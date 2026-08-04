@@ -10,6 +10,13 @@ export const metadata: Metadata = {
     'Case studies in four parts: the problem, the map, the build, and the numbers. The first entry is my own operation, labeled as exactly that.',
 };
 
+// Value stream of case 001's own week, drawn only from the prose in "the problem" below.
+const vsmLanes = [
+  { label: 'the phone', from: 'Call arrives', wait: 'waits until night', to: 'I return it' },
+  { label: 'paperwork', from: 'PDF lands in email', wait: 'waits until Sunday', to: 'I type it in' },
+  { label: 'build queue', from: 'Dev work', wait: 'waits behind both', to: 'I ship it' },
+];
+
 const numberRows = [
   {
     label: 'the phone',
@@ -53,7 +60,7 @@ export default function ResultsPage() {
                     A page like this is usually logos and testimonials. I would rather show you the anatomy of an engagement. Four parts, same four every time: what was broken, what the map turned up, what got built, and what the numbers did afterward.
                   </p>
                   <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
-                    Today there is one entry and it is mine. I run my own companies on these systems, so that is the honest place to start, and it is marked as my own operation rather than dressed up as a client. Client studies go here as they land, with names attached and numbers I did not choose.
+                    Today there is one entry and it is mine. I run my own companies on these systems, so that is the honest place to start, and it is marked as my own operation rather than dressed up as a client. Client studies go here as they land, with names attached and numbers I did not choose. One engagement is in progress now, and its write-up publishes when it wraps and the client has approved it.
                   </p>
                 </div>
               </div>
@@ -109,6 +116,86 @@ export default function ResultsPage() {
                     <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
                       The waiting was the cost, not the working. Returning a missed call is quick once I know about it. Noticing it was the slow part. The paperwork had the same shape: the typing was never the expensive bit, the pile waiting to be typed was. That reordered the list. The thing I automated first was not the thing that annoyed me most.
                     </p>
+                    <div>
+                      <p className="anno mb-4">my week, before any of it was automated</p>
+                      <div className="overflow-x-auto pb-1">
+                        <svg
+                          role="img"
+                          aria-label="A value stream map of my own week in three lanes. A call arrives and waits until night before I return it. A PDF lands in email and waits until Sunday before I type it in. Development work waits behind both before I ship it."
+                          viewBox="0 0 580 236"
+                          className="h-auto w-full"
+                          style={{ minWidth: 520 }}
+                        >
+                          {vsmLanes.map((lane, i) => {
+                            const top = 20 + i * 78;
+                            const mid = top + 23;
+                            return (
+                              <g key={lane.label}>
+                                <text className="anno" x={0} y={mid + 4} fill="var(--color-ink-faint)">
+                                  {lane.label}
+                                </text>
+                                <rect
+                                  x={92}
+                                  y={top}
+                                  width={160}
+                                  height={46}
+                                  rx="2"
+                                  fill="var(--color-bg)"
+                                  stroke="var(--color-blue)"
+                                  strokeWidth="1.5"
+                                />
+                                <text
+                                  x={172}
+                                  y={mid + 5}
+                                  textAnchor="middle"
+                                  fill="var(--color-ink)"
+                                  style={{ fontFamily: 'var(--font-body)', fontSize: 13.5, fontWeight: 600 }}
+                                >
+                                  {lane.from}
+                                </text>
+                                <line
+                                  x1={252}
+                                  y1={mid}
+                                  x2={405}
+                                  y2={mid}
+                                  stroke="var(--color-blue)"
+                                  strokeWidth="1.5"
+                                  strokeDasharray="2 4"
+                                />
+                                <path
+                                  d={`M ${405} ${mid - 4} L ${412} ${mid} L ${405} ${mid + 4}`}
+                                  fill="none"
+                                  stroke="var(--color-blue)"
+                                  strokeWidth="1.5"
+                                />
+                                <text className="anno" x={330} y={mid - 10} textAnchor="middle" fill="var(--color-blue)">
+                                  {lane.wait}
+                                </text>
+                                <rect
+                                  x={412}
+                                  y={top}
+                                  width={160}
+                                  height={46}
+                                  rx="2"
+                                  fill="var(--color-bg)"
+                                  stroke="var(--color-blue)"
+                                  strokeWidth="1.5"
+                                />
+                                <text
+                                  x={492}
+                                  y={mid + 5}
+                                  textAnchor="middle"
+                                  fill="var(--color-ink)"
+                                  style={{ fontFamily: 'var(--font-body)', fontSize: 13.5, fontWeight: 600 }}
+                                >
+                                  {lane.to}
+                                </text>
+                              </g>
+                            );
+                          })}
+                        </svg>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </Reveal>

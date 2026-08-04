@@ -127,7 +127,7 @@ export default function WorkPage() {
                 <p className="anno anno-blue sm:col-span-2">client work</p>
                 <div className="sm:col-span-8 sm:col-start-4">
                   <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
-                    Everything above is mine. Client engagements are the newer half of this practice, and the first case studies are being earned right now, so there is nothing on this page yet with someone else&apos;s name and numbers on it. When there is, it goes here.
+                    Everything above is mine. Client engagements are the newer half of this practice, and one is in progress right now. Nothing on this page carries someone else&apos;s name yet. The named case study goes here when that engagement wraps and the client has approved what it says.
                   </p>
                   <Link href="/results" className="link-draw mt-5 inline-block" style={{ fontSize: 14.5, color: 'var(--color-blue)' }}>
                     See how engagements are structured and what the founding-client offer includes
