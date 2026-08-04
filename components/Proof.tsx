@@ -8,7 +8,7 @@ import Reveal from './Reveal';
 const products = [
   {
     name: 'Vora',
-    desc: 'An AI-powered CRM platform for service businesses: missed-call text-back, lead follow-up, campaigns, and scheduling in one system.',
+    desc: 'An AI CRM platform for service businesses: missed-call text-back, lead follow-up, campaigns, and scheduling in one system.',
     href: 'https://voratechnology.com',
     detail: '/work/vora',
     status: 'live',

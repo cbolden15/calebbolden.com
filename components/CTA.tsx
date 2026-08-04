@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import Reveal from './Reveal';
 
 // Closing move: the page's one drenched moment. The mat board flips to deep
@@ -176,6 +177,20 @@ export default function CTA() {
                 </span>
               </button>
             </form>
+
+            <p
+              className="mt-6"
+              style={{ '--i': 3, fontSize: 14.5, color: 'oklch(0.82 0.015 230)' } as React.CSSProperties}
+            >
+              Rather talk to me directly?{' '}
+              <Link href="/contact" className="link-draw" style={{ color: 'oklch(0.9 0.03 210)' }}>
+                Let&apos;s talk
+              </Link>
+              {' '}· or{' '}
+              <Link href="/tools/ai-readiness" className="link-draw" style={{ color: 'oklch(0.9 0.03 210)' }}>
+                take the free AI readiness assessment
+              </Link>
+            </p>
           </Reveal>
         </div>
 

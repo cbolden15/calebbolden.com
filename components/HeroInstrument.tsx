@@ -12,16 +12,12 @@ import { initHeroEngine } from './hero/heroEngine';
 // its map into a desktop or mobile band from the canvas box width. DOM shape
 // ported from docs/design/hero-prototype-2026-07-14.html.
 
-function openChat() {
-  window.dispatchEvent(new Event('open-chat'));
-}
-
 function ClusterCtas() {
   return (
     <div className="ctas">
-      <button onClick={openChat} className="btn primary">
-        Analyze my business
-      </button>
+      <Link href="/contact" className="btn primary">
+        Let&apos;s talk
+      </Link>
       <Link href="/work" className="btn ghost">
         See my work
       </Link>
@@ -34,7 +30,7 @@ function PaperCluster() {
     <div className="cluster paper-c" id="paperC">
       <div className="micro">Caleb Bolden · Vora Technologies · sheet 1 / the map</div>
       <h1>
-        <strong>AI agents</strong> that answer your calls, chase your leads, and clear your paperwork
+        I automate <strong>the work you shouldn&apos;t be doing</strong>
       </h1>
       <p className="sub">
         I&apos;m Caleb Bolden. I find where your business loses time, then build AI to take that work

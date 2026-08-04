@@ -14,7 +14,7 @@ const systems = [
   {
     name: 'Vora',
     href: '/work/vora',
-    desc: 'A CRM platform for service businesses: missed-call text-back, lead follow-up, campaigns, and scheduling in one system.',
+    desc: 'An AI CRM platform for service businesses: missed-call text-back, lead follow-up, campaigns, and scheduling in one system.',
   },
   {
     name: 'ChapterHQ',
@@ -167,6 +167,40 @@ export default function WorkPage() {
                 </Reveal>
               ))}
             </div>
+          </div>
+        </section>
+
+        <section className="py-16" style={{ borderTop: '1px solid var(--color-hairline)' }}>
+          <div className="mx-auto w-[90%] max-w-[1200px]">
+            <Reveal>
+              <div
+                className="max-w-2xl rounded-[2px] p-8 sm:p-10"
+                style={{ background: 'var(--color-bg)', border: '1.5px solid var(--color-blue)' }}
+              >
+                <h2 className="type-display mb-5" style={{ fontSize: 'clamp(1.6rem, 2.6vw, 2.1rem)' }}>
+                  Start with the audit
+                </h2>
+                <p className="max-w-xl" style={{ fontSize: 15, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
+                  The audit is where every engagement starts. Two to three weeks inside your business, and you end up with a map, a scored shortlist, and one recommended pilot, whether or not you hire me to build it.
+                </p>
+                <div className="mt-7">
+                  <Link href="/contact" className="btn-ink btn-roll">
+                    <span className="roll-box">
+                      <span className="roll-a">Let's talk</span>
+                      <span className="roll-b" aria-hidden="true">
+                        Let's talk
+                      </span>
+                    </span>
+                  </Link>
+                </div>
+                <p className="mt-5" style={{ fontSize: 14, color: 'var(--color-ink-muted)' }}>
+                  Not ready to talk?{' '}
+                  <Link href="/tools/ai-readiness" className="link-draw" style={{ color: 'var(--color-blue)' }}>
+                    Take the free AI readiness assessment
+                  </Link>
+                </p>
+              </div>
+            </Reveal>
           </div>
         </section>
       </main>
