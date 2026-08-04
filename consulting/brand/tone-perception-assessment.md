@@ -112,3 +112,27 @@ These are doing the most perception work right now. Future edits should protect 
 3. The concrete scenario copy: "$3K lead who booked with a competitor by lunch," the water-heater Tuesday, the spreadsheet-copying afternoon. Each persona quoted one of these as the moment they felt addressed.
 4. "About half the issues ship with the template, so you can build it yourself before we ever talk." The fastest trust builder for the operator persona.
 5. "I read everything myself. Two sentences about your business is plenty." The warmth anchor.
+
+---
+
+## Target perception
+
+What the blind read should say once the site is doing its sales job. Same four paragraphs as the Pass 1c perception summary, so the two can be diffed line by line.
+
+**Implicit promise.** If you let this person map how your business actually works before he touches anything, he will either build the automation that pays for itself or tell you honestly that none will. Businesses like mine have already been through this with him and can say what it cost and what it returned, and even the first step is worth the money on its own, whether or not I hire him to build anything.
+
+**The person behind it.** Someone who has clearly spent real time inside businesses like mine, not just inside software. He knows what a dispatch board, an intake call, and a Friday invoice run actually look like, and he translates between the shop floor and the tooling in both directions. The technical depth is obvious but it sits behind the trade fluency, not in front of it. Calm, process-minded, and the first question he asks is about my business, not a description of his.
+
+**What it thinks the visitor fears.** Two fears, both named. The first: quietly losing money to a broken process you can't see, answered by the tools and the map. The second: that "AI consultant" is the new word for the agency that burned me, answered head-on rather than left hanging. The site knows I've been pitched before, tells me what things cost before I have to get on a phone, shows me a business like mine that came out ahead, and gives me a first step small enough that being wrong doesn't hurt.
+
+**At a chamber mixer.** Still the guy in the corner with the napkin, that part is an asset, but the sketch is of *your* intake process, and he asked three questions about your business before he said a word about his. You walk away having learned something about your own operation for free, which is exactly why you mention his name to the next owner who complains about missed calls.
+
+### The gap and what closes it
+
+Current perception: a trustworthy but unproven builder who leads with himself. Target: a proven, trade-fluent diagnostician who leads with your business and has receipts. Three deltas carry all of it:
+
+1. "His own products as proof" becomes "a business like mine, with numbers." Maps to fix #1. Not solvable with copy; requires a first client result, even a discounted pilot.
+2. "Cost after a call" becomes "I knew the audit price before I picked up the phone." Maps to fix #2, pending Caleb's decision on the unpublished-prices policy.
+3. "Describes his own software first" becomes "asks about my business first." Cheap copy reordering on Home, About, and Work: lead sections with the visitor's operation, move the product roster later.
+
+Everything else the blind read found (tone, map-first positioning, the honesty line, the free tools) is already at target and is covered by the do-not-touch list.
