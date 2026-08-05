@@ -1,5 +1,9 @@
 import Link from 'next/link';
 import Reveal from './Reveal';
+import TapedPrint, { PrintStrip } from './TapedPrint';
+import auditMap from '@/public/images/audit-map-template.webp';
+import auditScoring from '@/public/images/audit-scoring-template.webp';
+import auditRoadmap from '@/public/images/audit-roadmap-template.webp';
 
 // Offer ladder: audit featured with the sticky note (the one amber mark in
 // this section), follow-ons as hairline panels. Audit price is published;
@@ -139,6 +143,38 @@ export default function Packages() {
             ))}
           </div>
         </div>
+
+        <Reveal delay={150}>
+          <div className="mt-14">
+            <p className="anno anno-blue mb-5">what the audit produces</p>
+            <PrintStrip>
+              <TapedPrint
+                className="min-w-[240px] snap-start sm:min-w-0"
+                src={auditMap}
+                alt="The blank value stream mapping sheet used in the audit workshop: lanes for each process step with wait-time and handoff fields"
+                caption="the map"
+                sizes="(max-width: 640px) 240px, 30vw"
+              />
+              <TapedPrint
+                className="min-w-[240px] snap-start sm:min-w-0"
+                src={auditScoring}
+                alt="The blank opportunity scoring matrix: impact, feasibility, data readiness, and risk columns for each automation candidate"
+                caption="the scored shortlist"
+                sizes="(max-width: 640px) 240px, 30vw"
+              />
+              <TapedPrint
+                className="min-w-[240px] snap-start sm:min-w-0"
+                src={auditRoadmap}
+                alt="The blank 90-day roadmap page: sequenced builds with an owner, a success metric, and a stop-or-scale checkpoint"
+                caption="the 90-day roadmap"
+                sizes="(max-width: 640px) 240px, 30vw"
+              />
+            </PrintStrip>
+            <p className="mt-4" style={{ fontSize: 13.5, color: 'var(--color-ink-faint)' }}>
+              The three templates your audit fills in. You keep all of them, whether or not I build anything.
+            </p>
+          </div>
+        </Reveal>
 
         <Reveal delay={200}>
           <p className="mt-8" style={{ fontSize: 14, color: 'var(--color-ink-faint)' }}>
