@@ -36,7 +36,7 @@ function MethodFigure() {
       >
         {!videoFailed && (
           <video
-            className="absolute inset-0 hidden h-full w-full object-cover motion-reduce:hidden lg:block"
+            className="absolute inset-0 hidden h-full w-full object-cover motion-safe:lg:block"
             src="/video/method-loop.mp4"
             autoPlay
             muted
