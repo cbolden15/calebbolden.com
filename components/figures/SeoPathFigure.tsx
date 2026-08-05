@@ -1,5 +1,6 @@
 // Local search: the customer path runs through the map pack. Generic teaching
 // figure; depicts no specific engagement.
+// Contract: stamp/draw-on-reveal elements render only inside a <Reveal> (.reveal.in ancestor). This figure relies on ServicePage's Reveal.
 
 export default function SeoPathFigure() {
   return (
@@ -57,7 +58,7 @@ export default function SeoPathFigure() {
             strokeWidth="1.5"
             strokeDasharray="5 4"
           />
-          <text className="anno" x={150} y={186} fill="var(--color-ink-faint)">outside the top three: never seen</text>
+          <text className="anno" x={150} y={186} textAnchor="middle" fill="var(--color-ink-faint)">outside the top three: never seen</text>
         </svg>
       </div>
     </div>

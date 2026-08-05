@@ -1,5 +1,6 @@
 // Follow-up marketing: speed to first reply, then persistence. Generic
 // teaching figure; depicts no specific engagement.
+// Contract: stamp/draw-on-reveal elements render only inside a <Reveal> (.reveal.in ancestor). This figure relies on ServicePage's Reveal.
 
 export default function MarketingPathFigure() {
   return (

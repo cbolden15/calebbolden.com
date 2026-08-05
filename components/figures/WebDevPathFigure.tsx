@@ -1,5 +1,6 @@
 // The path a customer takes to hire you, and where it leaks. Generic teaching
 // figure in the site's drafting vocabulary; depicts no specific engagement.
+// Contract: stamp/draw-on-reveal elements render only inside a <Reveal> (.reveal.in ancestor). This figure relies on ServicePage's Reveal.
 
 const boxes = [
   { x: 8, label: 'they search' },

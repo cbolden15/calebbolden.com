@@ -1,5 +1,9 @@
 // A generic value stream map for the blog: short touches, long waits, one
 // rework loop. Teaching figure only; depicts no specific engagement.
+// Self-wraps in Reveal: MDX blog posts render with no ancestor Reveal, so this
+// figure supplies its own .reveal.in trigger instead of relying on one.
+
+import Reveal from '@/components/Reveal';
 
 export default function BlogVsmFigure() {
   const boxes = [
@@ -13,7 +17,8 @@ export default function BlogVsmFigure() {
     { from: 370, to: 420, label: 'waits till friday' },
   ];
   return (
-    <figure style={{ margin: '2.5rem 0' }}>
+    <Reveal>
+      <figure style={{ margin: '2.5rem 0' }}>
       <p className="anno mb-4">the shape of most back-office work: short touches, long waits</p>
       <div className="overflow-x-auto pb-1">
         <svg
@@ -79,6 +84,7 @@ export default function BlogVsmFigure() {
           </text>
         </svg>
       </div>
-    </figure>
+      </figure>
+    </Reveal>
   );
 }

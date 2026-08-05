@@ -8,6 +8,7 @@ interface TapedPrintProps {
   src: StaticImageData | string;
   alt: string;
   caption?: string;
+  // string src requires explicit width+height (next/image throws at runtime otherwise); static imports carry their own.
   width?: number;
   height?: number;
   priority?: boolean;
