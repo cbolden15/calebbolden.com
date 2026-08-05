@@ -61,7 +61,7 @@ export default function BlogVsmFigure() {
                 strokeDasharray="2 4"
               />
               <path d={`M ${w.to - 7} 111 L ${w.to} 115 L ${w.to - 7} 119`} fill="none" stroke="var(--color-blue)" strokeWidth="1.5" />
-              <text className="anno" x={(w.from + w.to) / 2} y={100} textAnchor="middle" fill="var(--color-blue)">
+              <text className="anno" x={(w.from + w.to) / 2} y={84} textAnchor="middle" fill="var(--color-blue)">
                 {w.label}
               </text>
             </g>
