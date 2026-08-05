@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import ServicePage, { type ServicePageContent } from '@/components/ServicePage';
+import WebDevPathFigure from '@/components/figures/WebDevPathFigure';
 
 export const metadata: Metadata = {
   title: 'Website development for small businesses | Caleb Bolden',
@@ -11,6 +12,7 @@ const content: ServicePageContent = {
   h1: 'Your website is a step in your sales process',
   intro: "Most small-business sites are brochures. They look fine and do nothing. I build websites as working parts of the operation: they catch the customers you'd miss, book the jobs, and hand every lead to follow-up that happens.",
   method: 'Before I build a page, I map the path a customer takes to hire you: how they find you, what they check, where they hesitate, who they compare you against. The site gets built where that path leaks. It is the same process mapping that drives my AI work, applied to your storefront.',
+  figure: <WebDevPathFigure />,
   deliverables: [
     {
       title: 'Fast by default',

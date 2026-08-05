@@ -8,6 +8,7 @@ export type ServicePageContent = {
   h1: string;
   intro: string;
   method: string;
+  figure?: React.ReactNode;
   deliverables: {
     title: string;
     detail: string;
@@ -23,6 +24,7 @@ export default function ServicePage({
   h1,
   intro,
   method,
+  figure,
   deliverables,
   proof,
   cta,
@@ -75,6 +77,7 @@ export default function ServicePage({
               >
                 See the five phases
               </Link>
+              {figure && <div className="mt-10 max-w-2xl">{figure}</div>}
             </Reveal>
           </div>
         </section>
