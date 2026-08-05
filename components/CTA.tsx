@@ -36,7 +36,7 @@ function MethodFigure() {
       >
         {!videoFailed && (
           <video
-            className="absolute inset-0 h-full w-full object-cover motion-reduce:hidden"
+            className="absolute inset-0 hidden h-full w-full object-cover motion-reduce:hidden lg:block"
             src="/video/method-loop.mp4"
             autoPlay
             muted
@@ -194,7 +194,7 @@ export default function CTA() {
           </Reveal>
         </div>
 
-        <Reveal className="hidden lg:col-span-5 lg:block" delay={150}>
+        <Reveal className="lg:col-span-5" delay={150}>
           <MethodFigure />
         </Reveal>
       </div>
