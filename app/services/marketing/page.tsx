@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import ServicePage, { type ServicePageContent } from '@/components/ServicePage';
+import MarketingPathFigure from '@/components/figures/MarketingPathFigure';
 
 export const metadata: Metadata = {
   title: 'Online marketing for small businesses | Caleb Bolden',
@@ -11,6 +12,7 @@ const content: ServicePageContent = {
   h1: "Marketing that follows up so you don't have to",
   intro: 'Most local businesses do not need more leads. They need to stop losing the ones they have. I build the follow-up machine first: replies, reminders, reviews, reactivation. Then, if the numbers say so, we buy traffic.',
   method: 'The audit maps what happens to a lead after it arrives: who answers, how fast, what happens on a missed call, who follows up and when. Marketing gets built where leads leak, which is almost never where the ad budget goes.',
+  figure: <MarketingPathFigure />,
   deliverables: [
     {
       title: 'Speed to lead',

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import ServicePage, { type ServicePageContent } from '@/components/ServicePage';
+import SeoPathFigure from '@/components/figures/SeoPathFigure';
 
 export const metadata: Metadata = {
   title: 'SEO for small businesses | Caleb Bolden',
@@ -11,6 +12,7 @@ const content: ServicePageContent = {
   h1: 'Show up when your customers go looking',
   intro: 'SEO for a local business is not a mystery and not a monthly mystery invoice. It is a finite list of fixes and a steady publishing habit. I do the fixes, set up the habit, and show you the numbers.',
   method: 'The audit maps how customers find you today: search, referrals, reviews, word of mouth. SEO work starts where that map shows you losing people to competitors, not with a generic checklist.',
+  figure: <SeoPathFigure />,
   deliverables: [
     {
       title: 'The technical pass',
