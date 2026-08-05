@@ -24,6 +24,8 @@ That's the gap a value stream map closes. It's not a new philosophy about AI. It
 
 If you've never heard the term, here's the plain version: a value stream map is a picture of everything that happens to a piece of work, from the moment a customer asks for it to the moment you get paid for it. Not what you assume happens. What actually happens, including the parts nobody likes to admit.
 
+<BlogVsmFigure />
+
 Three things go on the map that a mental model of "how we do things" almost always leaves out:
 
 **Steps.** Every discrete thing a person or system does. Not "we handle the quote," but the six or seven separate actions buried inside that sentence.

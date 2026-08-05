@@ -4,6 +4,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import BlogVsmFigure from '@/components/figures/BlogVsmFigure';
 
 export async function generateStaticParams() {
   const posts = getAllBlogPosts();
@@ -74,7 +75,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <section className="py-14" style={{ borderTop: '1px solid var(--color-hairline)' }}>
             <div className="mx-auto w-[90%] max-w-[1200px]">
               <div className="prose-wall">
-                <MDXRemote source={post.content} />
+                <MDXRemote source={post.content} components={{ BlogVsmFigure }} />
               </div>
 
               <div className="mt-12 flex flex-wrap gap-x-5 gap-y-2 pt-8" style={{ borderTop: '1px solid var(--color-hairline)' }}>
