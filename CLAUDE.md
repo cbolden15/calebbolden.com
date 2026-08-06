@@ -13,6 +13,20 @@ Production is the Hetzner server (5.78.121.71), NOT Vercel and NOT the homelab. 
 - Interactive tools: app/tools/ai-readiness, app/tools/revenue-leak; capture route app/api/lead-magnet
 - Gated PDFs: public/downloads/ (print HTML sources live in session scratchpad; regenerate via headless Chrome)
 
+## Visual-system rollout — partially implemented, resume here (as of 2026-08-05)
+
+**At session start in this repo, tell Caleb this rollout is partial and state the next steps below.** Remove this section when the rollout finishes.
+
+State: 8 of 15 plan tasks merged to main at `114e52f` (image pipeline, TapedPrint/PrintStrip, mobile MethodFigure fix, three service path figures, blog VSM figure, audit template renders, Packages artifact strip). Merged but NOT deployed to Hetzner. Full history in `.superpowers/sdd/progress.md`; plan (with complete mount code for the remaining tasks) in `docs/plans/2026-08-04-visual-system-rollout.md`; audit in `consulting/brand/visual-audit-2026-08-04.md`; cross-session detail (test line, creds pointers) in auto-memory `visual-rollout-state`.
+
+Next steps, in order:
+1. Deploy the merged work to Hetzner (needs per-session approval, procedure in README.md).
+2. Vora captures (plan tasks 5–6): waiting on the Vora fix deploy (13 local commits in ~/Projects/vora-technology, `/deploy-prod` there with Caleb present). Then: text the armed test line, verify the receptionist-grade reply in vora-mcp logs, capture the phone thread + dashboard views, run the mounts.
+3. Portrait mounts (task 8): waiting on Caleb's portrait shoot.
+4. /how-i-build mount (task 15): waiting on a scrubbed fleet capture (no tokens, hostnames, client names, or emails) and a ChapterHQ test login (Clerk) for its capture.
+
+Gotcha for any figure work: `stamp-on-reveal`/`draw-on-reveal` SVGs are invisible without a `.reveal.in` ancestor (`components/Reveal.tsx`); BlogVsmFigure self-wraps for MDX.
+
 ## Next up (as of 2026-07-07)
 
 Claude-side (in priority order):
