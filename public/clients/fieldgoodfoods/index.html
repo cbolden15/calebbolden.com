@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Field Good Foods — Design Directions</title>
+  <link rel="stylesheet" href="shared/reset.css">
+  <style>
+    :root {
+      --paper: #f6f5f3;
+      --card: #ffffff;
+      --ink: #1c1c1c;
+      --ink-soft: #55534f;
+      --rule: rgba(28, 28, 28, 0.14);
+      --wrap: 1080px;
+    }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      width: min(100% - 48px, var(--wrap));
+      margin-inline: auto;
+    }
+
+    .masthead {
+      padding-block: 56px 32px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .masthead h1 {
+      font-size: clamp(26px, 3.2vw, 34px);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .masthead p {
+      margin-top: 10px;
+      max-width: 62ch;
+      color: var(--ink-soft);
+    }
+
+    .directions {
+      padding-block: 40px 72px;
+      display: grid;
+      gap: 40px;
+    }
+
+    .direction {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+      gap: 32px;
+      align-items: start;
+      background: var(--card);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 20px;
+    }
+
+    .direction__shot {
+      display: block;
+      overflow: hidden;
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      background: var(--paper);
+    }
+
+    .direction__shot img {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .direction__name {
+      font-size: 21px;
+      font-weight: 600;
+      letter-spacing: -0.005em;
+    }
+
+    .direction__note {
+      margin-top: 12px;
+      color: var(--ink-soft);
+    }
+
+    .direction__link {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: 1px solid var(--ink);
+      border-radius: 2px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    .direction__link:hover { background: var(--ink); color: var(--paper); }
+
+    .direction__link--secondary {
+      margin-left: 10px;
+      padding: 10px 16px;
+      border-color: var(--rule);
+      color: var(--ink-soft);
+      text-transform: none;
+      letter-spacing: normal;
+      font-weight: 500;
+    }
+
+    .direction__link--secondary:hover { background: var(--paper); color: var(--ink); }
+
+    .foot {
+      padding-bottom: 56px;
+      color: var(--ink-soft);
+      font-size: 14px;
+    }
+
+    @media (max-width: 760px) {
+      .wrap { width: min(100% - 32px, var(--wrap)); }
+      .masthead { padding-block: 40px 24px; }
+      .direction {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .direction__shot img { height: 240px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="wrap">
+      <h1>Field Good Foods — Design Directions</h1>
+      <p>Three homepage directions, same copy and same photography. Previews are full-page desktop screenshots; open each one live to see the motion and the mobile layout.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="directions">
+
+      <article class="direction">
+        <a class="direction__shot" href="legacy-prime/index.html">
+          <img src="_shots/legacy-prime-desktop.png" width="1440" height="4287"
+               alt="Legacy Prime direction, full-page desktop screenshot" decoding="async">
+        </a>
+        <div>
+          <h2 class="direction__name">Legacy Prime</h2>
+          <p class="direction__note">Dark and cinematic, a premium steakhouse read with the beef lit against near-black and the type kept restrained. This is the closest of the three to 1855beef.com, the reference Travis liked.</p>
+          <a class="direction__link" href="legacy-prime/index.html">View live</a>
+          <a class="direction__link direction__link--secondary" href="_shots/legacy-prime-mobile.png">Mobile view</a>
+        </div>
+      </article>
+
+      <article class="direction">
+        <a class="direction__shot" href="backyard-sunday/index.html">
+          <img src="_shots/backyard-sunday-desktop.png" width="1440" height="4042"
+               alt="Backyard Sunday direction, full-page desktop screenshot" loading="lazy" decoding="async">
+        </a>
+        <div>
+          <h2 class="direction__name">Backyard Sunday</h2>
+          <p class="direction__note">Warm and sunlit, a family-BBQ feel built on pasture greens, wood tones and open daylight. It matches the Field Good Foods brand language and the tone of the approved trailer.</p>
+          <a class="direction__link" href="backyard-sunday/index.html">View live</a>
+          <a class="direction__link direction__link--secondary" href="_shots/backyard-sunday-mobile.png">Mobile view</a>
+        </div>
+      </article>
+
+      <article class="direction">
+        <a class="direction__shot" href="modern-ranch/index.html">
+          <img src="_shots/modern-ranch-desktop.png" width="1440" height="4324"
+               alt="Modern Ranch direction, full-page desktop screenshot" loading="lazy" decoding="async">
+        </a>
+        <div>
+          <h2 class="direction__name">Modern Ranch</h2>
+          <p class="direction__note">Light and editorial, a food-magazine layout with big display type, hairline rules and plenty of whitespace. The photography carries the page instead of the background.</p>
+          <a class="direction__link" href="modern-ranch/index.html">View live</a>
+          <a class="direction__link direction__link--secondary" href="_shots/modern-ranch-mobile.png">Mobile view</a>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <footer class="wrap foot">
+    <p>Made by Nature, Not by Man!</p>
+  </footer>
+</body>
+</html>

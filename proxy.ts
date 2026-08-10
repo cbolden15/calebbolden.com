@@ -1,13 +1,32 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-const PREVIEW_PATH = "/clients/brittany-lyons";
-const REALM = "Brittany Lyons preview";
+type PreviewSite = {
+  path: string;
+  realm: string;
+  userEnv: string;
+  passwordEnv: string;
+};
 
-function unauthorized() {
+const PREVIEW_SITES: PreviewSite[] = [
+  {
+    path: "/clients/brittany-lyons",
+    realm: "Brittany Lyons preview",
+    userEnv: "BRITTANY_PREVIEW_USER",
+    passwordEnv: "BRITTANY_PREVIEW_PASSWORD",
+  },
+  {
+    path: "/clients/fieldgoodfoods",
+    realm: "Field Good Foods preview",
+    userEnv: "FIELDGOOD_PREVIEW_USER",
+    passwordEnv: "FIELDGOOD_PREVIEW_PASSWORD",
+  },
+];
+
+function unauthorized(realm: string) {
   return new NextResponse("Authentication required", {
     status: 401,
     headers: {
-      "WWW-Authenticate": `Basic realm="${REALM}", charset="UTF-8"`,
+      "WWW-Authenticate": `Basic realm="${realm}", charset="UTF-8"`,
       "X-Robots-Tag": "noindex, nofollow",
     },
   });
@@ -34,12 +53,16 @@ function parseBasicAuth(header: string | null) {
 }
 
 export function proxy(request: NextRequest) {
-  if (!request.nextUrl.pathname.startsWith(PREVIEW_PATH)) {
+  const site = PREVIEW_SITES.find((s) =>
+    request.nextUrl.pathname.startsWith(s.path),
+  );
+
+  if (!site) {
     return NextResponse.next();
   }
 
-  const expectedUsername = process.env.BRITTANY_PREVIEW_USER;
-  const expectedPassword = process.env.BRITTANY_PREVIEW_PASSWORD;
+  const expectedUsername = process.env[site.userEnv];
+  const expectedPassword = process.env[site.passwordEnv];
 
   if (!expectedUsername || !expectedPassword) {
     return new NextResponse("Preview password not configured", {
@@ -57,12 +80,12 @@ export function proxy(request: NextRequest) {
     credentials.username !== expectedUsername ||
     credentials.password !== expectedPassword
   ) {
-    return unauthorized();
+    return unauthorized(site.realm);
   }
 
   const response =
-    request.nextUrl.pathname === PREVIEW_PATH
-      ? NextResponse.rewrite(new URL(`${PREVIEW_PATH}/index.html`, request.url))
+    request.nextUrl.pathname === site.path
+      ? NextResponse.rewrite(new URL(`${site.path}/index.html`, request.url))
       : NextResponse.next();
 
   response.headers.set("X-Robots-Tag", "noindex, nofollow");
@@ -70,5 +93,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/clients/brittany-lyons/:path*"],
+  matcher: ["/clients/brittany-lyons/:path*", "/clients/fieldgoodfoods/:path*"],
 };

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Field Good Foods — Legacy Prime</title>
+  <script>document.documentElement.className += ' js';</script>
+  <link rel="stylesheet" href="../shared/reset.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <symbol id="arrow" viewBox="0 0 24 12">
+      <path d="M0 6h21M16.5 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+  </svg>
+
+  <!-- 1. Hero -->
+  <header class="hero">
+    <video class="hero__video" autoplay muted loop playsinline preload="auto" poster="../shared/hero-poster.jpg">
+      <source src="../shared/hero-15s.mp4" type="video/mp4">
+    </video>
+    <nav class="hero__nav rise" style="--d:.08s" aria-label="Primary">
+      <a class="hero__brand" href="#" aria-label="Field Good Foods">
+        <img src="../shared/wordmark-light.svg" alt="" data-fgf-alt="brand">
+      </a>
+      <a href="#">Home</a>
+      <a href="#packages">Packages</a>
+      <a href="#">Price List</a>
+      <a href="#">Our Story</a>
+      <a href="#">Gallery</a>
+      <a href="#">Wholesale</a>
+      <a href="#">Contact</a>
+    </nav>
+    <div class="hero__inner">
+      <span class="eyebrow hero__eyebrow rise" style="--d:0s">Fifth-generation family farm</span>
+      <h1 class="hero__tagline" data-fgf-hero-lines></h1>
+      <p class="hero__sub rise" style="--d:.44s" data-fgf-hero-sub></p>
+      <div class="hero__cta rise" style="--d:.6s">
+        <a class="pill" href="#packages">
+          Shop Our Packages
+          <svg class="arrow" aria-hidden="true"><use href="#arrow"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="hero__cue rise" style="--d:.9s" aria-hidden="true"></div>
+  </header>
+
+  <main>
+
+    <!-- 2. Differentiators -->
+    <section class="diff">
+      <ul class="diff__list" data-fgf-list="differentiators"></ul>
+    </section>
+
+    <!-- 3. Packages -->
+    <section class="packages" id="packages">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="rule-mark reveal" aria-hidden="true"></span>
+          <h2 class="section-title reveal" style="--d:.08s">The <em>Packages</em></h2>
+        </div>
+        <div class="cards" data-fgf-cards></div>
+        <p class="packages__more reveal">
+          <a class="textlink" href="#">
+            View all nine packages
+            <svg class="arrow" aria-hidden="true"><use href="#arrow"/></svg>
+          </a>
+        </p>
+      </div>
+    </section>
+
+    <!-- 4. Story teaser -->
+    <section class="story">
+      <div class="wrap story__grid">
+        <figure class="story__media reveal">
+          <img src="../shared/img/rancher-golden.jpg" alt="Rancher walking through pasture at golden hour" loading="lazy">
+        </figure>
+        <div class="story__body">
+          <span class="eyebrow reveal" style="--d:.12s">Our Story</span>
+          <blockquote class="story__quote reveal" style="--d:.2s" data-fgf="storyExcerpt"></blockquote>
+          <div class="reveal" style="--d:.3s">
+            <a class="textlink" href="#">
+              Read Our Story
+              <svg class="arrow" aria-hidden="true"><use href="#arrow"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Promise band -->
+    <section class="promise">
+      <div class="wrap promise__inner">
+        <p class="promise__text reveal" data-fgf="promise"></p>
+        <p class="promise__tagline reveal" style="--d:.18s" data-fgf="tagline"></p>
+      </div>
+    </section>
+
+    <!-- 6. Newsletter CTA -->
+    <section class="signup-band">
+      <div class="wrap signup-band__inner">
+        <h2 class="signup-band__title reveal">
+          <span>Monthly</span>
+          <span class="accent">Specials</span>
+        </h2>
+        <form class="signup reveal" style="--d:.18s" onsubmit="return false;">
+          <div class="signup__field">
+            <input type="email" placeholder="Email address" aria-label="Email address">
+            <button class="signup__submit" type="submit">
+              Get Monthly Specials
+              <svg class="arrow" aria-hidden="true"><use href="#arrow"/></svg>
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 7. Footer -->
+  <footer class="footer">
+    <div class="wrap footer__grid">
+      <img class="footer__wordmark" src="../shared/wordmark-light.svg" alt="">
+      <nav class="footer__nav" aria-label="Footer">
+        <a href="#">Home</a>
+        <a href="#">Packages</a>
+        <a href="#">Price List</a>
+        <a href="#">Our Story</a>
+        <a href="#">Gallery</a>
+        <a href="#">Wholesale</a>
+        <a href="#">Contact</a>
+      </nav>
+    </div>
+    <div class="wrap footer__base">
+      <small data-fgf-copyright></small>
+    </div>
+  </footer>
+
+  <script src="../shared/content.js"></script>
+  <script>
+    (function (FGF) {
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Plain text nodes
+      document.querySelectorAll('[data-fgf]').forEach(function (el) {
+        el.textContent = FGF[el.dataset.fgf];
+      });
+      document.querySelectorAll('[data-fgf-alt]').forEach(function (el) {
+        el.alt = FGF[el.dataset.fgfAlt];
+      });
+
+      // Hero headline — same words, re-split into display lines + a sub-line.
+      // Line 1 roman, line 2 italic gold; remaining sentences become the sub-line.
+      var tagline = FGF.heroTagline;
+      var cut = tagline.indexOf('.') + 1;
+      var lead = (cut > 0 ? tagline.slice(0, cut) : tagline).trim();
+      var rest = (cut > 0 ? tagline.slice(cut) : '').trim();
+      var words = lead.split(/\s+/);
+      var split = words.length > 3 ? 2 : 1;
+
+      var h1 = document.querySelector('[data-fgf-hero-lines]');
+      h1.innerHTML =
+        '<span class="rise" style="--d:.14s">' + words.slice(0, split).join(' ') + '</span>' +
+        '<span class="rise accent" style="--d:.28s">' + words.slice(split).join(' ') + '</span>';
+      document.querySelector('[data-fgf-hero-sub]').textContent = rest;
+
+      // Differentiators strip
+      document.querySelector('[data-fgf-list="differentiators"]').innerHTML =
+        FGF.differentiators.map(function (item, i) {
+          return '<li class="diff__item reveal" style="--d:' + (i * 0.1).toFixed(2) + 's">' +
+            '<span class="diff__index" aria-hidden="true">' + ('0' + (i + 1)) + '</span>' +
+            '<span class="diff__text">' + item + '</span>' +
+          '</li>';
+        }).join('');
+
+      // Package cards — first three, in content order
+      var cardImages = [
+        { src: 'family-table.jpg', alt: 'Family gathered around an outdoor table' },
+        { src: 'pasture-wide.jpg', alt: 'Black Angus cattle grazing on open pasture' },
+        { src: 'steak-sear.jpg', alt: 'Steak searing in a cast-iron skillet' }
+      ];
+      document.querySelector('[data-fgf-cards]').innerHTML = FGF.packages.slice(0, 3).map(function (pkg, i) {
+        return '<div class="card-slot reveal" style="--d:' + (i * 0.12).toFixed(2) + 's"><article class="card">' +
+          '<div class="card__media"><img src="../shared/img/' + cardImages[i].src + '" alt="' + cardImages[i].alt + '" loading="lazy"></div>' +
+          '<div class="card__body">' +
+            '<span class="card__weight">' + pkg.weight + '</span>' +
+            '<h3 class="card__name">' + pkg.name + '</h3>' +
+            '<p class="card__blurb">' + pkg.blurb + '</p>' +
+            '<p class="card__price">' + pkg.price + '</p>' +
+            '<a class="textlink card__cta" href="#">Reserve Your Box' +
+              '<svg class="arrow" aria-hidden="true"><use href="#arrow"/></svg>' +
+            '</a>' +
+          '</div>' +
+        '</article></div>';
+      }).join('');
+
+      document.querySelector('[data-fgf-copyright]').textContent =
+        '© ' + new Date().getFullYear() + ' ' + FGF.brand;
+
+      // In-view reveals (run after injection so generated nodes are included)
+      var reveals = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+
+      if (reduced || !('IntersectionObserver' in window)) {
+        reveals.forEach(function (el) { el.classList.add('is-in'); });
+      } else {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-in');
+            io.unobserve(entry.target);
+          });
+        }, { threshold: 0, rootMargin: '0px 0px -12% 0px' });
+        reveals.forEach(function (el) { io.observe(el); });
+
+        // Safety sweep: a fast fling can carry an element past the viewport
+        // between observer callbacks. Nothing may stay invisible once it has
+        // crossed the trigger line.
+        var pending = reveals.slice();
+        var queued = false;
+
+        function sweep() {
+          queued = false;
+          for (var i = pending.length - 1; i >= 0; i--) {
+            var el = pending[i];
+            if (!el.classList.contains('is-in')) {
+              if (el.getBoundingClientRect().top >= window.innerHeight * 0.88) continue;
+              el.classList.add('is-in');
+              io.unobserve(el);
+            }
+            pending.splice(i, 1);
+          }
+          if (!pending.length) window.removeEventListener('scroll', onScroll);
+        }
+
+        function onScroll() {
+          if (queued) return;
+          queued = true;
+          requestAnimationFrame(sweep);
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll, { passive: true });
+        sweep();
+      }
+
+      if (reduced) {
+        var v = document.querySelector('video');
+        if (v) { v.removeAttribute('autoplay'); v.pause(); }
+      }
+    })(window.FGF);
+  </script>
+</body>
+</html>
