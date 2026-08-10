@@ -83,10 +83,19 @@ export function proxy(request: NextRequest) {
     return unauthorized(site.realm);
   }
 
-  const response =
-    request.nextUrl.pathname === site.path
-      ? NextResponse.rewrite(new URL(`${site.path}/index.html`, request.url))
-      : NextResponse.next();
+  const { pathname } = request.nextUrl;
+
+  // The bare site path must redirect to the trailing-slash URL: the gallery's
+  // relative links (legacy-prime/index.html, shared/...) only resolve against
+  // a directory-style base. Directory paths then rewrite to their index.html.
+  let response: NextResponse;
+  if (pathname === site.path) {
+    response = NextResponse.redirect(new URL(`${site.path}/`, request.url), 308);
+  } else if (pathname.endsWith("/")) {
+    response = NextResponse.rewrite(new URL(`${pathname}index.html`, request.url));
+  } else {
+    response = NextResponse.next();
+  }
 
   response.headers.set("X-Robots-Tag", "noindex, nofollow");
   return response;
