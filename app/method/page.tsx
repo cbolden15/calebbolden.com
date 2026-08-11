@@ -244,9 +244,8 @@ export default function MethodPage() {
                     runs at 65 small businesses today, with these gates and checks
                     built in, because I needed them before I named them. And the
                     mapping discipline comes from a decade in enterprise financial
-                    services and infrastructure, including product management at
-                    Blockdaemon, where I used the same approach to cut node delivery
-                    times by 29% before AI was part of the toolkit.
+                    services and infrastructure, where I used the same approach to
+                    cut delivery times by 29% before AI was part of the toolkit.
                   </p>
                   <Link
                     href="/how-i-build"
