@@ -27,6 +27,10 @@ Next steps, in order:
 
 Gotcha for any figure work: `stamp-on-reveal`/`draw-on-reveal` SVGs are invisible without a `.reveal.in` ancestor (`components/Reveal.tsx`); BlogVsmFigure self-wraps for MDX.
 
+## Go-live program (as of 2026-08-11) — supersedes the list below for sequencing
+
+Public launch targeted **Sat 2026-08-22**. The authoritative plan is `docs/plans/2026-08-11-consulting-go-live.md` (day-1 clock starters, $2k budget allocation, 5 decisions for Caleb, 4 workstreams, day-by-day schedule). Research backing it: `consulting/research/go-live-2026-08/` (marketing-sales, legal-finance, ops-IT, brain-learning mining, package readiness audit). The "Next up" items below are folded into that plan where still relevant.
+
 ## Next up (as of 2026-07-07)
 
 Claude-side (in priority order):
