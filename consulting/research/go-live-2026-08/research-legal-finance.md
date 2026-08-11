@@ -178,7 +178,7 @@ If cold email volume is meaningful, budget an unsubscribe-compliant sending tool
 - DBA filing (item 7) — only if branding diverges from "Vora Technologies LLC"
 - Data processing one-pager (item 12) — build it when a prospect's procurement team asks
 - Pricing floor formalization (item 18) — do before quoting, not before launching outreach
-- CPA consult on estimated taxes (item 17) — before the first quarterly deadline (April 15, 2026 has already passed for 2026; next is June 15, 2026), not before outreach
+- CPA consult on estimated taxes (item 17) — before the next quarterly deadline (September 15, 2026, as of this research date; the April 15 and June 15 dates have passed), not before outreach
 
 ---
 
