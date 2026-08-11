@@ -3,6 +3,26 @@
 My framework for AI implementations, built on lean six sigma principles.
 Working name; v0.3, 2026-08-11. Caleb Bolden.
 
+## Two names for the same method
+
+This document uses five internal phases (Map, Gate, Pilot, Chart, Compound) plus a
+cross-cutting Adoption track. The public site (`/method`) uses six phases (Discover,
+Map, Prioritize, Pilot, Scale, Assure). Same method, different audience: the table
+below maps one onto the other.
+
+| Internal phase | Public phase(s) | Why they don't line up one to one |
+|---|---|---|
+| Map | Discover, Map, Prioritize | Internal Map covers interviewing, drawing the value stream, and scoring candidates as one continuous phase. The public site splits that into three because a client experiences them as three separate weeks with three separate deliverables. |
+| Gate | Prioritize (end), Pilot (start) | Future-state design and the gate register get built before a pilot goes live, so the work spans the boundary between the public Prioritize and Pilot phases. |
+| Pilot | Pilot | Shadow, canary, and limited rollout are what the public Pilot phase describes. |
+| Chart | Assure | The monthly assurance report is Chart's sampling and control-chart discipline, renamed for a client. |
+| Compound | Scale, and ongoing beyond Assure | The runbook, training, and ownership transfer that close a build happen at Scale. The redeployment and standard-work half of Compound keeps running after that, under whatever name the engagement is in. |
+| Adoption track | Runs under all six | Cross-cutting in both models; it isn't its own phase in either one. |
+
+Internal phase names are for me: analysis, gate design, and talking to another
+practitioner. Public phase names are for the client: what happens in which week, in
+the words the roadmap deck uses. Same method, two registers.
+
 ## Where this comes from
 
 I've never been formally trained in lean six sigma and I don't hold any certifications.

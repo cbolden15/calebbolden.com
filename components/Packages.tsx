@@ -61,7 +61,8 @@ export default function Packages() {
           <p className="mb-12 max-w-lg" style={{ fontSize: 16, color: 'var(--color-ink-muted)' }}>
             Fixed scope, plain deliverables, and nothing gets built before the audit
             says it&apos;s worth building. Every engagement is a fixed fee, quoted before
-            we start. No hourly billing, no surprise scope.
+            we start. No hourly billing, no surprise scope. If the scope changes once
+            we&apos;re underway, that gets re-quoted and agreed before work continues.
           </p>
         </Reveal>
 

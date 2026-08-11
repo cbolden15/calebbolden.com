@@ -56,7 +56,7 @@ const guarantees = [
   {
     label: 'gated',
     title: 'Nothing risky runs without your approval',
-    desc: 'The systems I build cannot take a dangerous action on their own. In my own products, an agent literally cannot charge a customer for work that failed. The billing only fires after success. Your build gets the same kind of gates.',
+    desc: 'The systems I build are designed so they cannot take a dangerous action on their own. In my own products, billing fires only after success, so an agent has no path to charging a customer for work that failed. Your build gets the same kind of gates.',
   },
   {
     label: 'supervised',
@@ -240,13 +240,13 @@ export default function MethodPage() {
                 <p className="anno anno-blue sm:col-span-2">where this comes from</p>
                 <div className="space-y-4 sm:col-span-8 sm:col-start-4">
                   <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
-                    This is not a framework I read about. My own AI platform runs at 65
-                    small businesses today, with these gates and checks built in,
-                    because I needed them before I named them. And the mapping
-                    discipline comes from a decade in enterprise financial services
-                    and infrastructure, where I used the same approach to cut delivery
-                    times by double-digit percentages before AI was part of the
-                    toolkit.
+                    This is not a framework I read about. My own AI platform, Vora,
+                    runs at 65 small businesses today, with these gates and checks
+                    built in, because I needed them before I named them. And the
+                    mapping discipline comes from a decade in enterprise financial
+                    services and infrastructure, including product management at
+                    Blockdaemon, where I used the same approach to cut node delivery
+                    times by 29% before AI was part of the toolkit.
                   </p>
                   <Link
                     href="/how-i-build"
