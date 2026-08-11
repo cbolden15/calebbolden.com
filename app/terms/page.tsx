@@ -12,13 +12,19 @@ const sections = [
   {
     heading: 'What this site is',
     body: [
-      'This site describes the consulting and build work I do, and offers free tools and downloads. Everything on it is provided for general information. Actual engagements are governed by a separate written agreement with Vora Technologies LLC, not by this page.',
+      'This site describes the consulting and build work I do, and offers free tools and downloads. Everything on it, including the chat assistant, is provided for general information only. Using the site, the tools, or the chat does not create a consulting engagement or any obligation on either side. Actual engagements are governed by a separate written agreement, a Master Service Agreement and Statement of Work, with Vora Technologies LLC, not by this page.',
     ],
   },
   {
     heading: 'The free tools',
     body: [
-      'The AI readiness scorecard, the revenue leak calculator, and the chat assistant produce estimates and general suggestions based on what you enter. They are starting points for a conversation, not financial, legal, or professional advice. Decisions about your business remain yours.',
+      'The AI readiness scorecard, the revenue leak calculator, and the chat assistant produce estimates and general suggestions based on what you enter. They are starting points for a conversation, not financial, legal, or professional advice, and no engagement is formed by using them. Decisions about your business remain yours.',
+    ],
+  },
+  {
+    heading: 'Acceptable use',
+    body: [
+      "Use this site the way it's meant to be used. Don't scrape it at scale, try to break or overload it, attempt to extract the chat assistant's underlying prompts or bypass its guardrails, or use the chat or contact forms to send spam, malware, or abusive content. I can block access for anyone who does.",
     ],
   },
   {
@@ -30,13 +36,13 @@ const sections = [
   {
     heading: 'Content and links',
     body: [
-      'The content and design of this site belong to Caleb Bolden and Vora Technologies LLC. Cited statistics belong to their sources. Links to other sites are provided for convenience; I do not control what is on them.',
+      'The content and design of this site belong to Vora Technologies LLC. Cited statistics belong to their sources. Links to other sites are provided for convenience; I do not control what is on them.',
     ],
   },
   {
     heading: 'Changes and contact',
     body: [
-      'These terms may change as the site does; the date below is the current version. Questions: caleb@calebbolden.com. Last updated July 2026.',
+      'These terms take effect when posted and may change as the site does; the date below is the current version. Questions: caleb@calebbolden.com. Effective August 22, 2026.',
     ],
   },
 ];
@@ -84,6 +90,9 @@ export default function TermsPage() {
                 </div>
               </Reveal>
             ))}
+            <p className="mt-4 max-w-2xl" style={{ fontSize: 13, lineHeight: 1.6, color: 'var(--color-ink-faint)' }}>
+              This page was prepared without attorney review and will be updated if counsel requires changes.
+            </p>
           </div>
         </section>
       </main>
