@@ -137,11 +137,11 @@ export default function AboutPage() {
                     Interviews first, a value stream on the wall, honest scoring, then one build with one success metric. If the map says AI will not pay, I say that instead.
                   </p>
                   <Link
-                    href="/#method"
+                    href="/method"
                     className="link-draw mt-5 inline-block"
                     style={{ fontSize: 14.5, color: 'var(--color-blue)' }}
                   >
-                    See the five phases
+                    See the method: Assured AI
                   </Link>
                 </div>
               </div>

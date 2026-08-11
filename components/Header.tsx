@@ -7,7 +7,7 @@ import MobileNav from './MobileNav';
 // Hash links are rooted so they resolve from any route (/services/*, /blog).
 const links = [
   { label: 'Services', href: '/#services' },
-  { label: 'Method', href: '/#method' },
+  { label: 'Method', href: '/method' },
   { label: 'Packages', href: '/#packages' },
   { label: 'Resources', href: '/resources' },
   { label: 'Work', href: '/work' },

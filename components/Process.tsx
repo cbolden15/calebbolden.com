@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import Reveal from './Reveal';
 
 // The method, drawn in the same process-box vocabulary as the hero map.
@@ -23,12 +24,17 @@ const steps = [
   {
     title: 'Pilot',
     time: '4-8 wks',
-    desc: 'I build the winner with one success metric attached. We agree up front what scale, fix, or stop looks like.',
+    desc: 'I build the winner with one success metric and guardrails attached: anything risky waits for your approval before it runs. We agree up front what scale, fix, or stop looks like.',
   },
   {
     title: 'Scale',
     time: '1-2 wks',
     desc: 'Your team gets trained, the runbook gets written, and the system becomes yours to keep.',
+  },
+  {
+    title: 'Assure',
+    time: 'monthly',
+    desc: 'I keep checking the work. Every month I sample what the AI produced, score it against the standard we set, and send a one-page report. Drift gets caught before you feel it.',
   },
 ];
 
@@ -46,13 +52,15 @@ export default function Process() {
           </h2>
           <p className="mb-14 max-w-xl" style={{ fontSize: 16, color: 'var(--color-ink-muted)' }}>
             Most AI projects fail because they automate a process nobody understood.
-            Mine start with lean process mapping, so the AI lands where it pays.
+            Mine start with lean process mapping, so the AI lands where it pays. I call
+            the method <Link href="/method" className="link-draw" style={{ color: 'var(--color-blue)', fontWeight: 500 }}>Assured AI</Link>:
+            map the work, gate the risky parts, and keep checking the output after it ships.
           </p>
         </Reveal>
 
         {/* The flow: boxes joined by connectors, exactly like the map on the wall */}
         <Reveal>
-          <ol className="grid list-none grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5 lg:gap-0">
+          <ol className="grid list-none grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-6 lg:gap-0">
             {steps.map((step, i) => (
               <li key={step.title} className="relative flex lg:block">
                 {/* Connector to the next box (desktop) */}
@@ -137,7 +145,9 @@ export default function Process() {
 
         <Reveal delay={450}>
           <p className="mt-8" style={{ fontSize: 14, color: 'var(--color-ink-faint)' }}>
-            Phases 1 to 3 are the audit. Phase 4 is the build sprint. Phase 5 closes either one.
+            Phases 1 to 3 are the audit. Phase 4 is the build sprint. Phase 5 closes
+            either one. Phase 6 is the retainer, and it&apos;s optional: the system is
+            yours either way.
           </p>
         </Reveal>
       </div>

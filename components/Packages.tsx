@@ -27,8 +27,8 @@ const followOns = [
     meta: '4-8 wks',
   },
   {
-    name: 'Fractional AI operator',
-    desc: 'I stay on to run what we built: monitoring, tuning, and one new automation a month. Capacity is capped at a few clients at a time.',
+    name: 'Assurance retainer',
+    desc: 'I stay on to check the work. Every month I sample what the AI produced, score it against the standard we set in the pilot, and send you a one-page report. Drift gets caught before you feel it, and you still get tuning and one new automation a month. Capacity is capped at a few clients at a time.',
     meta: 'monthly',
   },
 ];
