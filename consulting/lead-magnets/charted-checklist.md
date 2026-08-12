@@ -1,4 +1,4 @@
-# The Assured AI checklist
+# The Charted checklist
 
 *Twenty checks before, during, and after you put AI into your business. Most AI projects don't fail because the AI was dumb. They fail because nobody did these.*
 

@@ -99,7 +99,7 @@ faster; the decisions on the map stay disciplined and human.
    credibility here, I'll formalize it quickly — the practice already exists, only the
    certificate is missing."
 3. **Adoption = parallel track across the whole lifecycle**, not a phase. Duke: adoption transforms, not technology. LSS grounding: eighth waste (skills) + respect for people. Jevons = the redeployment story (freed hours → advisory expansion, not headcount cuts) — the only efficiency framing that doesn't terrify a partnership.
-4. **Naming direction:** use assurance vocabulary (candidates: "Assured AI", "AI Assurance Loop"; phases Map → Gate → Chart). Avoid "Sigma"/"DMAIC" in the name — invites the credential question on bad terms. Final name: Caleb's call.
+4. **Naming direction:** considered assurance vocabulary (candidates included "AI Assurance Loop"; phases Map → Gate → Chart) and mapping vocabulary. Avoided "Sigma"/"DMAIC" in the name — invites the credential question on bad terms. Final name: Charted, decided 2026-08-11.
 
 ## AutoResearch → auto-kaizen (added 2026-08-11)
 
@@ -107,7 +107,7 @@ Karpathy's AutoResearch (2026-03, github.com/karpathy/autoresearch): an agent ed
 bounded file, runs an experiment, keeps the change only if it beats the current best on
 one held-out validation metric. Principles mapped into the framework:
 
-| AutoResearch principle | Assured AI counterpart |
+| AutoResearch principle | Charted counterpart |
 |---|---|
 | One held-out metric decides survival | Chart's eval pass-rate becomes a fitness function, not just a monitor |
 | Baseline-and-keep loop | The Pilot exit test ("beat the baseline or die") made continuous |
@@ -128,5 +128,5 @@ hook (not yet on the site): assurance retainer gains overnight tuning runs.
 
 ## Open
 
-- Framework skeleton: named phases, artifacts per phase, one-page interview sketch — DONE (assured-ai-framework.md v0.3, approved v0.2 2026-08-11).
+- Framework skeleton: named phases, artifacts per phase, one-page interview sketch — DONE (charted-framework.md v0.3, approved v0.2 2026-08-11).
 - Site incorporation of auto-kaizen (retainer copy, monthly report line) — pending Caleb's call; site currently reflects v0.2.

@@ -1,4 +1,4 @@
-# Assured AI
+# Charted
 
 My framework for AI implementations, built on lean six sigma principles.
 Working name; v0.3, 2026-08-11. Caleb Bolden.

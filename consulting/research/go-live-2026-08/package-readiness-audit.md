@@ -34,7 +34,7 @@ Minor gap: "capacity is capped at a few clients" is an unquantified public claim
 ## Gap list
 
 1. Build sprint has no build/runbook methodology asset (biggest day-one-readiness gap).
-2. Two non-identical phase models for the same method: public `/method` uses 6 phases (Discover/Map/Prioritize/Pilot/Scale/Assure); internal `consulting/framework/assured-ai-framework.md` (v0.3) uses 5 phases (Map/Gate/Pilot/Chart/Compound) plus a cross-cutting Adoption track. Substantively aligned, structurally different. Reconcile before a client reads both.
+2. Two non-identical phase models for the same method: public `/method` uses 6 phases (Discover/Map/Prioritize/Pilot/Scale/Assure); internal `consulting/framework/charted-framework.md` (v0.3) uses 5 phases (Map/Gate/Pilot/Chart/Compound) plus a cross-cutting Adoption track. Substantively aligned, structurally different. Reconcile before a client reads both.
 3. Pricing inconsistency: the $500 founding-client offer appears only on `app/results/page.tsx:270-276`; homepage Packages and `/method` state $750 flatly with no cross-link.
 4. Calendly booking advertised but not configured: `app/contact/page.tsx` and `components/AIChat.tsx` reference `NEXT_PUBLIC_CALENDLY_CLIENT_URL`, unset in `.env`/`.env.local`. Code defensively hides the button, so nothing is broken, but "book a call" isn't live.
 5. No E&O/cyber policy in force. `consulting/research/eo-insurance-options.md` (2026-07-06) is research only.

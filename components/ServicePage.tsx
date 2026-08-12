@@ -75,7 +75,7 @@ export default function ServicePage({
                 className="link-draw mt-5 inline-block"
                 style={{ fontSize: 14.5, color: 'var(--color-blue)' }}
               >
-                See the method: Assured AI
+                See the method: Charted
               </Link>
               {figure && <div className="mt-10 max-w-2xl">{figure}</div>}
             </Reveal>

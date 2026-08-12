@@ -2,13 +2,13 @@
 title: "Map it, gate it, check it"
 date: "2026-08-11"
 category: "Process"
-excerpt: "My method for putting AI into a business finally has a name: Assured AI. Map the work, gate the risky parts, and keep checking the output after it ships."
-tags: ["assured ai", "process mapping", "ai", "small business"]
+excerpt: "My method for putting AI into a business finally has a name: Charted. Map the work, gate the risky parts, and keep checking the output after it ships."
+tags: ["charted", "process mapping", "ai", "small business"]
 ---
 
 A few months ago an owner told me about the AI tool his company had bought the year before. It drafted customer emails, and for a while it was great. Then a customer called about a quote the system had sent with last spring's pricing. Nobody knew how long it had been doing that, because nobody had looked at its output since the week it launched. The tool hadn't broken. It had drifted, quietly, the way AI does, and there was no check in place to catch it.
 
-I've been doing the same things on every engagement to prevent exactly that story, and I finally gave the method a name: Assured AI. The whole thing fits in six words. Map it, gate it, check it.
+I've been doing the same things on every engagement to prevent exactly that story, and I finally gave the method a name: Charted. The whole thing fits in six words. Map it, gate it, check it.
 
 ## Map it
 

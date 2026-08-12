@@ -53,7 +53,7 @@ export default function Process() {
           <p className="mb-14 max-w-xl" style={{ fontSize: 16, color: 'var(--color-ink-muted)' }}>
             Most AI projects fail because they automate a process nobody understood.
             Mine start with lean process mapping, so the AI lands where it pays. I call
-            the method <Link href="/method" className="link-draw" style={{ color: 'var(--color-blue)', fontWeight: 500 }}>Assured AI</Link>:
+            the method <Link href="/method" className="link-draw" style={{ color: 'var(--color-blue)', fontWeight: 500 }}>Charted</Link>:
             map the work, gate the risky parts, and keep checking the output after it ships.
           </p>
         </Reveal>

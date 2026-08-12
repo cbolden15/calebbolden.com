@@ -6,7 +6,7 @@ opener, cold-email templates. Pick one, or edit one, by Thursday 8/13. Whatever 
 replaces the placeholder framing across the site verbatim, not paraphrased per page.
 
 Each option passes the "I help X achieve Y by doing Z" test. Each is grounded in claims the
-site already makes (the Assured AI method, the audit-first package structure, the map/gate/
+site already makes (the Charted method, the audit-first package structure, the map/gate/
 check guarantees on `/method`). No new proof points, numbers, or claims are introduced here.
 
 ---

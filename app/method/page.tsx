@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import Reveal from '@/components/Reveal';
 
 export const metadata: Metadata = {
-  title: 'Assured AI: the method | Caleb Bolden',
+  title: 'Charted: the method | Caleb Bolden',
   description:
     'My method for putting AI into a business without breaking it. Map the work, gate the risky parts, and keep checking the output after it ships.',
 };
@@ -87,7 +87,7 @@ export default function MethodPage() {
             <Reveal>
               <p className="anno anno-blue mb-4">the method</p>
               <h1 className="type-display max-w-[16ch]" style={{ fontSize: 'clamp(2.2rem, 4.4vw, 3.6rem)' }}>
-                Assured AI
+                Charted
               </h1>
               <p className="mt-6 max-w-xl" style={{ fontSize: 17, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
                 My method for putting AI into a business without breaking it. Map the
