@@ -47,7 +47,7 @@ const phases = [
 
 export default function ShotMakersLeaguePage() {
   return (
-    <main className="min-h-screen bg-[#141412] font-[family-name:var(--font-schibsted)] text-[#F5F1E8]">
+    <main className="chat-offset min-h-screen bg-[#141412] font-[family-name:var(--font-schibsted)] text-[#F5F1E8]">
       <div className="mx-auto max-w-3xl px-5 py-16 sm:py-24">
         {/* 1. Hero */}
         <header>
@@ -77,8 +77,8 @@ export default function ShotMakersLeaguePage() {
         <section className="mt-16">
           <SiteMockup />
           <p className="mt-3 text-center font-[family-name:var(--font-martian)] text-xs text-[#B9B3A4]">
-            A rough sketch of what shotmakersleague.com could be. We shape the
-            real thing together.
+            A rough sketch of what shotmakersleague.com could be. We&apos;d
+            shape the real thing together.
           </p>
         </section>
 
@@ -127,8 +127,8 @@ export default function ShotMakersLeaguePage() {
           </h2>
           <div className="mt-6 space-y-4 text-[#B9B3A4]">
             <p>
-              The leaderboard comes first because it turns one-off events into a
-            season. Shooters come back to defend a ranking.
+              The leaderboard comes first because it turns one-off events into
+              a season. Shooters come back to defend a ranking.
             </p>
             <p>
               The contact list comes second because right now the audience
@@ -149,8 +149,14 @@ export default function ShotMakersLeaguePage() {
           </h2>
           <p className="mt-6 text-[#B9B3A4]">
             I&apos;m Caleb Bolden. I build websites and the systems behind them
-            for small businesses, including the CRM platform that would power
-            your phase two. You can see how I work at{" "}
+            for small businesses, including{" "}
+            <Link
+              href="/work/vora"
+              className="text-[#E8833A] underline underline-offset-4"
+            >
+              the CRM platform that would power your phase two
+            </Link>
+            . You can see how I work at{" "}
             <Link href="/" className="text-[#E8833A] underline underline-offset-4">
               calebbolden.com
             </Link>{" "}
@@ -171,14 +177,14 @@ export default function ShotMakersLeaguePage() {
             Ready when you are, Rob
           </h2>
           <p className="mt-4 text-[#B9B3A4]">
-            Text me, or grab a time and we&apos;ll walk through it together.
+            Text me, or send an email and we&apos;ll walk through it together.
           </p>
-          <Link
-            href="/contact"
+          <a
+            href="mailto:caleb@calebbolden.com?subject=Shot%20Makers%20League%20relaunch"
             className="mt-6 inline-block rounded-md bg-[#E8833A] px-8 py-3 font-[family-name:var(--font-archivo)] font-bold uppercase tracking-wide text-[#141412]"
           >
-            Book a call
-          </Link>
+            Email me
+          </a>
         </section>
       </div>
     </main>

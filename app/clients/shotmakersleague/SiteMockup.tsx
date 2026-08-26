@@ -13,9 +13,9 @@ export default function SiteMockup() {
     <div className="overflow-hidden rounded-xl border border-white/10 bg-[#1E1E1C] shadow-2xl">
       {/* Browser chrome */}
       <div className="flex items-center gap-2 border-b border-white/10 bg-[#141412] px-4 py-3">
-        <span className="h-3 w-3 rounded-full bg-white/15" />
-        <span className="h-3 w-3 rounded-full bg-white/15" />
-        <span className="h-3 w-3 rounded-full bg-white/15" />
+        <span aria-hidden className="h-3 w-3 rounded-full bg-white/15" />
+        <span aria-hidden className="h-3 w-3 rounded-full bg-white/15" />
+        <span aria-hidden className="h-3 w-3 rounded-full bg-white/15" />
         <span className="ml-3 flex-1 rounded-md bg-white/5 px-3 py-1 font-[family-name:var(--font-martian)] text-xs text-[#B9B3A4]">
           shotmakersleague.com
         </span>
@@ -49,13 +49,13 @@ export default function SiteMockup() {
         <p className="font-[family-name:var(--font-martian)] text-[10px] uppercase tracking-[0.2em] text-[#E8833A]">
           Next event · Saturday, Oct 3
         </p>
-        <h3 className="mt-3 font-[family-name:var(--font-archivo)] text-2xl font-black uppercase leading-tight text-[#F5F1E8] sm:text-3xl">
+        <p className="mt-3 font-[family-name:var(--font-archivo)] text-2xl font-black uppercase leading-tight text-[#F5F1E8] sm:text-3xl">
           Who&apos;s the best shooter
           <br />
           in the city?
-        </h3>
+        </p>
         <div className="mt-4 flex items-center justify-center gap-2 font-[family-name:var(--font-martian)] text-xs text-[#B9B3A4]">
-          <span className="rounded bg-white/5 px-2 py-1">12 days</span>
+          <span className="rounded bg-white/5 px-2 py-1">38 days</span>
           <span className="rounded bg-white/5 px-2 py-1">06 hrs</span>
           <span className="rounded bg-white/5 px-2 py-1">31 min</span>
         </div>
