@@ -93,7 +93,7 @@ export default function ShotMakersLeaguePage() {
                 key={phase.number}
                 className="rounded-xl border border-white/10 bg-[#1E1E1C] p-6 sm:p-8"
               >
-                <div className="flex items-baseline justify-between gap-4">
+                <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
                   <h3 className="font-[family-name:var(--font-archivo)] text-xl font-bold uppercase">
                     <span className="mr-3 font-[family-name:var(--font-martian)] text-base font-normal text-[#E8833A]">
                       {phase.number}
