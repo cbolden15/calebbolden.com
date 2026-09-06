@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Field Good Foods | Harvest Gold</title>
+  <script>document.documentElement.classList.add('js');</script>
+  <link rel="stylesheet" href="../shared/reset.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="brand-seal.css">
+</head>
+<body>
+  <svg width="0" height="0" aria-hidden="true" focusable="false" class="symbol-defs">
+    <symbol id="arrow" viewBox="0 0 24 12">
+      <path d="M0 6h21M16.5 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+  </svg>
+
+  <aside class="journey-rail" aria-hidden="true">
+    <span class="journey-rail__track"><span class="journey-rail__fill"></span></span>
+    <span class="journey-rail__mark journey-rail__mark--one">I</span>
+    <span class="journey-rail__mark journey-rail__mark--two">II</span>
+    <span class="journey-rail__mark journey-rail__mark--three">III</span>
+    <span class="journey-rail__mark journey-rail__mark--four">IV</span>
+  </aside>
+
+  <header class="hero" id="home">
+    <video class="hero__video media-grade" autoplay muted loop playsinline preload="metadata"
+      poster="../shared/farmlife/morning-mist.webp">
+      <source src="../shared/pasture-dawn.mp4" type="video/mp4">
+    </video>
+
+    <nav class="hero__nav rise" style="--d:.08s" aria-label="Primary">
+      <a class="hero__brand" href="#home" aria-label="Field Good Foods">
+        <img src="../shared/wordmark-light.svg" alt="" data-fgf-alt="brand">
+      </a>
+
+      <details class="nav-menu">
+        <summary aria-label="Open navigation"><span></span><span></span></summary>
+        <div class="nav-menu__links">
+          <a href="#home"><span class="nav__name">Home</span></a>
+          <a href="#pasture"><span class="nav__chapter" aria-hidden="true">I</span><span class="nav__name">Our Story</span></a>
+          <a href="#craft"><span class="nav__chapter" aria-hidden="true">II</span><span class="nav__name">Price List</span></a>
+          <a href="#box"><span class="nav__chapter" aria-hidden="true">III</span><span class="nav__name">Shop Packages</span></a>
+          <a href="#kitchen"><span class="nav__chapter" aria-hidden="true">IV</span><span class="nav__name">Gallery</span></a>
+          <a href="#footer"><span class="nav__name">Wholesale</span></a>
+          <a href="#signup"><span class="nav__name">Contact</span></a>
+        </div>
+      </details>
+    </nav>
+
+    <div class="hero__inner">
+      <p class="hero__eyebrow rise" style="--d:.12s" data-fgf-differentiator="3"></p>
+      <h1 class="hero__headline rise" style="--d:.24s" data-fgf-hero-lead></h1>
+      <p class="hero__sub rise" style="--d:.36s" data-fgf-hero-rest></p>
+      <p class="hero__tagline rise" style="--d:.48s" data-fgf="tagline"></p>
+    </div>
+  </header>
+
+  <main class="journey">
+    <section class="chapter chapter--pasture" id="pasture" data-chapter="I" data-chapter-label="Pasture">
+      <div class="wrap chapter__wrap">
+        <header class="chapter-heading reveal">
+          <span class="chapter-heading__number" aria-hidden="true">I</span>
+          <h2 class="chapter-heading__label">Pasture</h2>
+        </header>
+
+        <div class="pasture-story">
+          <figure class="pasture-story__hero reveal" style="--d:.08s">
+            <img class="media-grade" src="../shared/farmlife/morning-mist.webp" alt="Black Angus cattle crossing a misty pasture at sunrise" loading="lazy">
+          </figure>
+          <figure class="pasture-story__detail reveal" style="--d:.16s">
+            <img class="media-grade" src="../shared/farmlife/rope-swing.webp" alt="A rope swing hanging from an oak tree on the family farm" loading="lazy">
+          </figure>
+          <ul class="diff-list" data-fgf-list="differentiators"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter chapter--craft" id="craft" data-chapter="II" data-chapter-label="The Craft">
+      <div class="wrap chapter__wrap">
+        <header class="chapter-heading reveal">
+          <span class="chapter-heading__number" aria-hidden="true">II</span>
+          <h2 class="chapter-heading__label">The Craft</h2>
+        </header>
+
+        <div class="craft-story">
+          <blockquote class="craft-story__statement reveal" style="--d:.08s" data-fgf="heroTagline"></blockquote>
+          <figure class="craft-story__primary reveal" style="--d:.16s">
+            <img class="media-grade" src="../shared/img/vacuum-pack-hands.webp" alt="A vacuum-packed marbled steak held above a beef box" loading="lazy">
+          </figure>
+          <figure class="craft-story__cut reveal" style="--d:.24s">
+            <img class="media-grade media-grade--raw" src="../shared/img/cowboy-ribeye.webp" alt="A raw USDA Prime bone-in ribeye" loading="lazy">
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter chapter--box" id="box" data-chapter="III" data-chapter-label="The Box">
+      <div class="wrap chapter__wrap">
+        <header class="chapter-heading reveal">
+          <span class="chapter-heading__number" aria-hidden="true">III</span>
+          <h2 class="chapter-heading__label">The Box</h2>
+        </header>
+
+        <div class="package-grid" data-fgf-packages></div>
+        <a class="all-packages reveal" href="#footer" style="--d:.24s">
+          <span class="all-packages__count" aria-hidden="true">09</span>
+          <span>Shop Packages</span>
+          <svg class="arrow" aria-hidden="true"><use href="#arrow"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <section class="chapter chapter--kitchen" id="kitchen" data-chapter="IV" data-chapter-label="Your Kitchen">
+      <div class="wrap chapter__wrap">
+        <header class="chapter-heading reveal">
+          <span class="chapter-heading__number" aria-hidden="true">IV</span>
+          <h2 class="chapter-heading__label">Your Kitchen</h2>
+        </header>
+
+        <div class="kitchen-gallery">
+          <figure class="kitchen-gallery__table reveal" style="--d:.08s">
+            <img class="media-grade" src="../shared/img/family-cookout-table.webp" alt="A family sharing dinner around an outdoor table" loading="lazy">
+          </figure>
+          <figure class="kitchen-gallery__pan reveal" style="--d:.16s">
+            <img class="media-grade" src="../shared/img/butter-basting.webp" alt="Steak butter-basting in a cast-iron skillet" loading="lazy">
+          </figure>
+        </div>
+
+        <div class="story-teaser">
+          <figure class="story-teaser__media reveal">
+            <img class="media-grade" src="../shared/img/rancher-golden.webp" alt="A rancher walking through pasture at golden hour" loading="lazy">
+          </figure>
+          <blockquote class="story-teaser__quote reveal" style="--d:.12s" data-fgf="storyExcerpt"></blockquote>
+          <img class="brand-seal story-teaser__seal reveal" style="--d:.2s" src="../shared/logos/sunrise-farm-seal-a.svg" alt="" aria-hidden="true">
+        </div>
+
+        <section class="promise" aria-label="Field Good Foods promise">
+          <div class="promise__inner reveal">
+            <img class="brand-seal" src="../shared/logos/sunrise-farm-seal-a.svg" alt="" aria-hidden="true">
+            <p class="promise__text" data-fgf="promise"></p>
+            <p class="promise__tagline" data-fgf="tagline"></p>
+          </div>
+        </section>
+
+        <section class="signup-band" id="signup">
+          <div class="signup-band__inner">
+            <p class="signup-band__title reveal" data-fgf="tagline"></p>
+            <form class="signup reveal" style="--d:.12s" onsubmit="return false;">
+              <label class="sr-only" for="signup-email">Email address</label>
+              <input id="signup-email" type="email" autocomplete="email" placeholder="Email address">
+              <button type="submit" aria-label="Submit email address">
+                <svg class="arrow" aria-hidden="true"><use href="#arrow"/></svg>
+              </button>
+            </form>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="footer">
+    <div class="wrap footer__grid">
+      <img class="footer__wordmark" src="../shared/wordmark-light.svg" alt="">
+      <nav class="footer__nav" aria-label="Footer">
+        <a href="#home">Home</a>
+        <a href="#pasture"><span aria-hidden="true">I</span><span>Our Story</span></a>
+        <a href="#craft"><span aria-hidden="true">II</span><span>Price List</span></a>
+        <a href="#box"><span aria-hidden="true">III</span><span>Shop Packages</span></a>
+        <a href="#kitchen"><span aria-hidden="true">IV</span><span>Gallery</span></a>
+        <a href="#footer">Wholesale</a>
+        <a href="#signup">Contact</a>
+      </nav>
+    </div>
+    <div class="wrap footer__base"><small data-fgf-copyright></small></div>
+  </footer>
+
+  <script src="../shared/content.js"></script>
+  <script>
+    (function (FGF) {
+      'use strict';
+
+      var root = document.documentElement;
+      var reducedQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      var reduced = reducedQuery.matches;
+      var navMenu = document.querySelector('.nav-menu');
+      var desktopNavQuery = window.matchMedia('(min-width: 901px)');
+      var green = [149, 196, 107];
+      var yellow = [242, 200, 75];
+
+      function syncNavState() {
+        navMenu.open = desktopNavQuery.matches;
+      }
+
+      syncNavState();
+      desktopNavQuery.addEventListener('change', syncNavState);
+      navMenu.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          if (!desktopNavQuery.matches) navMenu.open = false;
+        });
+      });
+
+      document.querySelectorAll('[data-fgf]').forEach(function (el) {
+        el.textContent = FGF[el.dataset.fgf];
+      });
+      document.querySelectorAll('[data-fgf-alt]').forEach(function (el) {
+        el.alt = FGF[el.dataset.fgfAlt];
+      });
+      document.querySelectorAll('[data-fgf-differentiator]').forEach(function (el) {
+        el.textContent = FGF.differentiators[Number(el.dataset.fgfDifferentiator)];
+      });
+
+      var sentences = FGF.heroTagline.match(/[^.]+\./g) || [FGF.heroTagline];
+      document.querySelector('[data-fgf-hero-lead]').textContent = sentences[0].trim();
+      document.querySelector('[data-fgf-hero-rest]').textContent = sentences.slice(1).join(' ').trim();
+
+      document.querySelector('[data-fgf-list="differentiators"]').innerHTML =
+        FGF.differentiators.map(function (item, index) {
+          return '<li class="diff-item reveal" style="--d:' + (index * 0.08).toFixed(2) + 's">' +
+            '<span class="diff-item__number" aria-hidden="true">' + String(index + 1).padStart(2, '0') + '</span>' +
+            '<span class="diff-item__text">' + item + '</span>' +
+          '</li>';
+        }).join('');
+
+      function slugify(value) {
+        return value.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      }
+
+      var packageImages = {
+        'the-family-farm-starter-box': {
+          src: '../shared/boxes/family-farm-starter.webp',
+          alt: 'Raw cuts arranged for The Family Farm Starter Box'
+        },
+        'the-family-freezer-box': {
+          src: '../shared/boxes/family-freezer.webp',
+          alt: 'Raw cuts arranged for The Family Freezer Box'
+        },
+        'the-premium-steak-box': {
+          src: '../shared/boxes/premium-steak.webp',
+          alt: 'Raw cuts arranged for The Premium Steak Box'
+        }
+      };
+
+      document.querySelector('[data-fgf-packages]').innerHTML = FGF.packages.slice(0, 3).map(function (pkg, index) {
+        var slug = slugify(pkg.name);
+        var image = packageImages[slug];
+        if (!image) throw new Error('Missing Harvest Gold package image for ' + slug);
+        return '<article class="package-card reveal" data-package-slug="' + slug + '" style="--d:' + (index * 0.1).toFixed(2) + 's">' +
+          '<div class="card__media package-card__media"><img class="media-grade media-grade--raw" src="' + image.src + '" alt="' + image.alt + '" loading="lazy"></div>' +
+          '<div class="package-card__body">' +
+            '<p class="package-card__weight">' + pkg.weight + '</p>' +
+            '<h3 class="package-card__name">' + pkg.name + '</h3>' +
+            '<p class="package-card__blurb">' + pkg.blurb + '</p>' +
+            '<p class="package-card__price">' + pkg.price + '</p>' +
+          '</div>' +
+        '</article>';
+      }).join('');
+
+      document.querySelector('[data-fgf-copyright]').textContent =
+        '© ' + new Date().getFullYear() + ' ' + FGF.brand;
+
+      function revealOnce(el) {
+        if (el.classList.contains('is-in')) return;
+        el.classList.add('is-in');
+        el.dataset.revealCount = String(Number(el.dataset.revealCount || 0) + 1);
+      }
+
+      var reveals = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+      if (reduced || !('IntersectionObserver' in window)) {
+        reveals.forEach(revealOnce);
+      } else {
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            revealOnce(entry.target);
+            observer.unobserve(entry.target);
+          });
+        }, { threshold: 0.08, rootMargin: '0px 0px -8% 0px' });
+        reveals.forEach(function (el) { observer.observe(el); });
+      }
+
+      var supportsNativeTimeline = window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()');
+      var forceFallback = new URLSearchParams(window.location.search).has('force-scroll-fallback');
+      var fallback = !supportsNativeTimeline || forceFallback;
+      var frame = 0;
+
+      function paintScrollProgress() {
+        var scrollRange = root.scrollHeight - window.innerHeight;
+        var progress = scrollRange > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollRange)) : 0;
+        root.style.setProperty('--scroll-progress', progress.toFixed(5));
+        root.style.setProperty('--accent-r', (green[0] + (yellow[0] - green[0]) * progress).toFixed(3));
+        root.style.setProperty('--accent-g', (green[1] + (yellow[1] - green[1]) * progress).toFixed(3));
+        root.style.setProperty('--accent-b', (green[2] + (yellow[2] - green[2]) * progress).toFixed(3));
+        frame = 0;
+      }
+
+      function queueScrollPaint() {
+        if (frame) return;
+        frame = window.requestAnimationFrame(paintScrollProgress);
+      }
+
+      if (reduced) {
+        root.dataset.motion = 'reduced';
+        root.style.setProperty('--accent-r', green[0]);
+        root.style.setProperty('--accent-g', green[1]);
+        root.style.setProperty('--accent-b', green[2]);
+      } else if (fallback) {
+        root.dataset.scrollDriver = 'javascript';
+        window.addEventListener('scroll', queueScrollPaint, { passive: true });
+        window.addEventListener('resize', queueScrollPaint, { passive: true });
+        paintScrollProgress();
+      } else {
+        root.dataset.scrollDriver = 'css';
+      }
+
+      if (reduced) {
+        var heroVideo = document.querySelector('.hero__video');
+        heroVideo.removeAttribute('autoplay');
+        heroVideo.pause();
+      }
+
+      window.__FGF_JOURNEY__ = {
+        green: green.slice(),
+        yellow: yellow.slice(),
+        packageImages: Object.assign({}, packageImages),
+        revealCount: function (el) { return Number(el.dataset.revealCount || 0); }
+      };
+    })(window.FGF);
+  </script>
+</body>
+</html>

@@ -4,7 +4,7 @@ AI consulting site for local small businesses (Caleb Bolden, Vora Technologies L
 
 ## Deployment
 
-Production is the Hetzner server (5.78.121.71), NOT Vercel and NOT the homelab. Full procedure and gotchas in README.md (Deployment section). Production deploys and writes need per-session user approval. Lead capture (chat + lead magnets) emails via Resend and logs `[lead]` / `[lead-magnet]` JSON in container logs.
+Production is the Hetzner server (5.78.121.71), NOT Vercel and NOT the homelab. Full procedure and gotchas in README.md (Deployment section). Production deploys and writes need per-session user approval. Lead capture (chat + lead magnets) emails via Resend and logs `[lead]` / `[lead-magnet]` JSON in container logs. The Brittany Lyons preview uses a private URL token from `BRITTANY_PREVIEW_TOKEN`; requests without its token cookie return 404, and every response carries `X-Robots-Tag` noindex directives. Never commit the token.
 
 ## Key paths
 
@@ -12,6 +12,7 @@ Production is the Hetzner server (5.78.121.71), NOT Vercel and NOT the homelab. 
 - Business docs (MSA draft, outreach templates, E&O research): consulting/
 - Interactive tools: app/tools/ai-readiness, app/tools/revenue-leak; capture route app/api/lead-magnet
 - Gated PDFs: public/downloads/ (print HTML sources live in session scratchpad; regenerate via headless Chrome)
+- Brittany Lyons mockups: public/clients/brittany-lyons/; chooser at index.html, existing design in classic/, R2 in r2/, access gate in proxy.ts
 
 ## Visual-system rollout — partially implemented, resume here (as of 2026-08-05)
 

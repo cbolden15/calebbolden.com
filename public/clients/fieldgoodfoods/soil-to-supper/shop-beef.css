@@ -1,0 +1,373 @@
+/* shop-beef.html: page-specific styles. Reuses tokens and shared classes from style.css. */
+
+.shop-hero {
+  position: relative;
+  min-height: 34rem;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: var(--ink);
+  color: #fff;
+  padding-top: 7rem;
+}
+
+.shop-hero__media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.shop-hero__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(16, 20, 15, 0.55) 0%, rgba(16, 20, 15, 0.72) 55%, rgba(16, 20, 15, 0.92) 100%);
+}
+
+.shop-hero__content {
+  position: relative;
+  padding-block: 3.5rem 4rem;
+  max-width: 40rem;
+}
+
+.shop-hero__content .eyebrow {
+  color: var(--straw);
+}
+
+.shop-hero__content h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.25rem, 4vw + 1rem, 3.25rem);
+  line-height: 1.1;
+  margin: 0.75rem 0 1rem;
+}
+
+.shop-hero__content p {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.86);
+  max-width: 34rem;
+}
+
+.shop-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  align-items: center;
+  margin-top: 1.75rem;
+}
+
+/* Packages */
+
+.packages {
+  padding-block: var(--section-space);
+  background: var(--paper);
+}
+
+.packages__heading {
+  max-width: 38rem;
+  margin-bottom: 2.5rem;
+}
+
+.packages__heading .eyebrow {
+  color: var(--moss);
+}
+
+.packages__heading h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.75rem, 2.5vw + 1rem, 2.5rem);
+  margin: 0.5rem 0 0.75rem;
+  color: var(--ink);
+}
+
+.packages__heading p:not(.eyebrow) {
+  color: var(--moss);
+}
+
+.packages__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+}
+
+.package-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid rgba(16, 20, 15, 0.14);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.package-card__media {
+  margin: 0;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--shell);
+}
+
+.package-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.package-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.5rem;
+  flex: 1;
+}
+
+.package-card__weight {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--moss);
+}
+
+.package-card__body h3 {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  margin: 0;
+  color: var(--ink);
+}
+
+.package-card__body p {
+  color: var(--moss);
+  line-height: 1.55;
+  flex: 1;
+}
+
+.package-card__buy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(16, 20, 15, 0.14);
+}
+
+.package-card__buy strong {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  color: var(--forest-deep);
+}
+
+.packages__footnote {
+  margin-top: 2.5rem;
+  font-size: 0.85rem;
+  color: var(--moss);
+  max-width: 44rem;
+}
+
+/* Reserve form */
+
+.reserve {
+  padding-block: var(--section-space);
+  background: var(--forest-deep);
+  color: #fff;
+}
+
+.reserve__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 3rem;
+  align-items: start;
+}
+
+.reserve__intro .eyebrow {
+  color: var(--straw);
+}
+
+.reserve__intro h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.75rem, 2.5vw + 1rem, 2.5rem);
+  margin: 0.5rem 0 0.75rem;
+}
+
+.reserve__intro p {
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.6;
+  max-width: 26rem;
+}
+
+.reserve__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.reserve__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.reserve .field label {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.reserve .field select,
+.reserve .field textarea {
+  width: 100%;
+  font: inherit;
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.35rem;
+  border: 1px solid var(--line-strong);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.reserve .field select option {
+  color: var(--ink);
+}
+
+.reserve .field textarea {
+  resize: vertical;
+}
+
+.reserve .field select:focus-visible,
+.reserve .field textarea:focus-visible {
+  outline: 2px solid var(--straw);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Price list */
+
+.price-list {
+  padding-block: var(--section-space);
+  background: var(--ink);
+  color: #fff;
+}
+
+.price-list__heading {
+  max-width: 34rem;
+  margin-bottom: 2.5rem;
+}
+
+.price-list__heading .eyebrow {
+  color: var(--straw);
+}
+
+.price-list__heading h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.75rem, 2.5vw + 1rem, 2.5rem);
+  margin: 0.5rem 0 0;
+  color: #fff;
+}
+
+.price-list__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem 3rem;
+}
+
+.price-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.price-table--wide {
+  grid-column: 1 / -1;
+  column-count: 2;
+  column-gap: 3rem;
+}
+
+.price-table caption {
+  text-align: left;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--straw);
+  margin-bottom: 0.75rem;
+}
+
+.price-table tr {
+  break-inside: avoid;
+}
+
+.price-table td {
+  padding: 0.55rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.price-table td:last-child {
+  text-align: right;
+  white-space: nowrap;
+  color: #fff;
+  font-weight: 600;
+}
+
+.price-list__footnote {
+  margin-top: 2.5rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 44rem;
+}
+
+/* Responsive */
+
+@media (max-width: 68rem) {
+  .packages__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .reserve__grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 52rem) {
+  .shop-hero {
+    min-height: 28rem;
+  }
+
+  .price-list__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .price-table--wide {
+    column-count: 1;
+  }
+}
+
+@media (max-width: 38rem) {
+  .packages__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reserve__row {
+    grid-template-columns: 1fr;
+  }
+
+  .package-card__buy {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .package-card,
+  .shop-hero__media {
+    transition: none;
+  }
+}

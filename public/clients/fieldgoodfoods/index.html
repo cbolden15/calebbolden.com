@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <base href="/clients/fieldgoodfoods/">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Field Good Foods — Design Directions</title>
@@ -118,6 +117,26 @@
 
     .direction__link--secondary:hover { background: var(--paper); color: var(--ink); }
 
+    .logo-candidates {
+      padding: 8px 20px 28px;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      background: var(--card);
+    }
+
+    .logo-candidates h2 { margin-top: 10px; font-size: 21px; font-weight: 600; }
+
+    .logo-candidates__grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .logo-candidate { margin: 0; }
+    .logo-candidate img { display: block; width: 100%; background: #f5ebd8; border: 1px solid var(--rule); }
+    .logo-candidate figcaption { margin-top: 8px; color: var(--ink-soft); font-size: 14px; }
+
     .foot {
       padding-bottom: 56px;
       color: var(--ink-soft);
@@ -132,6 +151,7 @@
         gap: 20px;
       }
       .direction__shot img { height: 240px; }
+      .logo-candidates__grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -139,12 +159,37 @@
   <header class="masthead">
     <div class="wrap">
       <h1>Field Good Foods — Design Directions</h1>
-      <p>Three homepage directions, same copy and same photography. Previews are full-page desktop screenshots; open each one live to see the motion and the mobile layout.</p>
+      <p>Five homepage directions, built from the same farm story. The latest revision is first; open it live to see the motion and the mobile layout.</p>
     </div>
   </header>
 
   <main class="wrap">
     <div class="directions">
+
+      <article class="direction">
+        <a class="direction__shot" href="soil-to-supper/index.html">
+          <img src="_shots/soil-to-supper-desktop.png" width="1440" height="8184"
+               alt="Soil to Supper direction, full-page desktop screenshot" decoding="async">
+        </a>
+        <div>
+          <h2 class="direction__name">Soil to Supper</h2>
+          <p class="direction__note">A dark, cinematic farm story that moves from pasture and working hands into real cuts, freezer boxes, and a multigenerational family table.</p>
+          <a class="direction__link" href="soil-to-supper/index.html">View live</a>
+          <a class="direction__link direction__link--secondary" href="_shots/soil-to-supper-mobile.png">Mobile view</a>
+        </div>
+      </article>
+
+      <article class="direction">
+        <a class="direction__shot" href="harvest-gold/index.html">
+          <img src="shared/farmlife/morning-mist.webp" width="1600" height="1073"
+               alt="Harvest Gold revision, cattle crossing a misty pasture at sunrise" decoding="async">
+        </a>
+        <div>
+          <h2 class="direction__name">Revision — Aug 24</h2>
+          <p class="direction__note">The revised homepage turns the farm-to-kitchen journey into four scroll chapters, with the yellow, green and black palette Travis requested.</p>
+          <a class="direction__link" href="harvest-gold/index.html">View live</a>
+        </div>
+      </article>
 
       <article class="direction">
         <a class="direction__shot" href="legacy-prime/index.html">
@@ -184,6 +229,24 @@
           <a class="direction__link direction__link--secondary" href="_shots/modern-ranch-mobile.png">Mobile view</a>
         </div>
       </article>
+
+      <section class="logo-candidates" aria-labelledby="logo-candidates-title">
+        <h2 id="logo-candidates-title">Logo candidates</h2>
+        <div class="logo-candidates__grid">
+          <figure class="logo-candidate">
+            <img src="shared/logos/sunrise-farm-seal-a.svg" alt="Field Good Foods sunrise seal with a ribbon" loading="lazy">
+            <figcaption>Ribbon (selected)</figcaption>
+          </figure>
+          <figure class="logo-candidate">
+            <img src="shared/logos/sunrise-farm-seal-b.svg" alt="Field Good Foods sunrise seal with a ring" loading="lazy">
+            <figcaption>Ring</figcaption>
+          </figure>
+          <figure class="logo-candidate">
+            <img src="shared/logos/sunrise-farm-seal-c.svg" alt="Field Good Foods sunrise seal with a cartouche" loading="lazy">
+            <figcaption>Cartouche</figcaption>
+          </figure>
+        </div>
+      </section>
 
     </div>
   </main>

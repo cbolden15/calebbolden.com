@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="description" content="Field Good Foods grass-fed Black Angus beef, raised with care by a fifth-generation African American family farm.">
+  <meta name="theme-color" content="#10140f">
+  <title>Raised from good ground | Field Good Foods</title>
+  <script>document.documentElement.classList.add('js');</script>
+  <link rel="preload" as="image" href="assets/hero-ads/hero-montage-poster-desktop.webp" type="image/webp" media="(min-width: 833px)" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/hero-ads/hero-montage-poster-mobile.webp" type="image/webp" media="(max-width: 832px)" fetchpriority="high">
+  <link rel="icon" href="../shared/wordmark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../shared/reset.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" data-header>
+    <a class="brand" href="#top" aria-label="Field Good Foods home">
+      <strong>Field Good</strong>
+      <span>Foods / Family Farm</span>
+    </a>
+
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+      <span>Menu</span>
+      <span class="menu-toggle__mark" aria-hidden="true"></span>
+    </button>
+
+    <nav class="primary-nav" id="primary-nav" aria-label="Primary">
+      <a href="our-story.html">Our story</a>
+      <a href="shop-beef.html">Shop beef</a>
+      <a href="steak-finder.html">Steak finder</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <a class="header-cta" href="shop-beef.html">Shop beef</a>
+  </header>
+
+  <!-- Review-only panel: media candidates for the client to choose from. Remove once approved. -->
+  <aside class="review-panel" data-review-panel aria-label="Media options under review">
+    <button type="button" class="review-panel__toggle" data-review-toggle aria-expanded="true">Media options</button>
+    <div class="review-panel__rows">
+      <div class="review-panel__row" data-hero-switcher role="group" aria-label="Hero video">
+        <a href="#top">Hero</a>
+        <button type="button" data-hero-pick="a" aria-pressed="true">A</button>
+        <button type="button" data-hero-pick="b" aria-pressed="false">B</button>
+        <button type="button" data-hero-pick="c" aria-pressed="false">C</button>
+      </div>
+      <div class="review-panel__row" role="group" aria-label="Herd photo" data-still-row="herd">
+        <a href="#farm">Herd</a>
+        <button type="button" data-still-pick="herd:1" aria-pressed="false">1</button>
+        <button type="button" data-still-pick="herd:2" aria-pressed="false">2</button>
+        <button type="button" data-still-pick="herd:3" aria-pressed="false">3</button>
+      </div>
+      <div class="review-panel__row" role="group" aria-label="Soil photo" data-still-row="soil">
+        <a href="#farm">Soil</a>
+        <button type="button" data-still-pick="soil:1" aria-pressed="false">1</button>
+        <button type="button" data-still-pick="soil:2" aria-pressed="false">2</button>
+        <button type="button" data-still-pick="soil:3" aria-pressed="false">3</button>
+      </div>
+      <div class="review-panel__row" role="group" aria-label="Pasture check photo" data-still-row="check">
+        <a href="#responsibility-title">Check</a>
+        <button type="button" data-still-pick="check:1" aria-pressed="false">1</button>
+        <button type="button" data-still-pick="check:2" aria-pressed="false">2</button>
+        <button type="button" data-still-pick="check:3" aria-pressed="false">3</button>
+      </div>
+      <div class="review-panel__row" role="group" aria-label="Cuts photo" data-still-row="cuts">
+        <a href="#shop">Cuts</a>
+        <button type="button" data-still-pick="cuts:1" aria-pressed="false">1</button>
+        <button type="button" data-still-pick="cuts:2" aria-pressed="false">2</button>
+        <button type="button" data-still-pick="cuts:3" aria-pressed="false">3</button>
+      </div>
+      <div class="review-panel__row" role="group" aria-label="Family table photo" data-still-row="table">
+        <a href="#table-title">Table</a>
+        <button type="button" data-still-pick="table:1" aria-pressed="false">1</button>
+        <button type="button" data-still-pick="table:2" aria-pressed="false">2</button>
+        <button type="button" data-still-pick="table:3" aria-pressed="false">3</button>
+      </div>
+      <div class="review-panel__row review-panel__row--actions">
+        <button type="button" data-review-copy>Copy link to these picks</button>
+      </div>
+    </div>
+  </aside>
+
+  <main id="main">
+    <section class="hero" id="top" data-hero aria-labelledby="hero-title" style="--hero-poster: url('assets/hero-ads/hero-montage-poster-desktop.webp'); --hero-poster-mobile: url('assets/hero-ads/hero-montage-poster-mobile.webp');">
+      <!-- Hero video candidates under review (A/B/C). app.js sets the sources; the second video holds the seamless loop that takes over after the first plays once. -->
+      <video
+        class="hero__media"
+        muted
+        playsinline
+        preload="none"
+        width="1920"
+        height="1080"
+        aria-hidden="true"
+        data-hero-video
+      ></video>
+      <video
+        class="hero__media"
+        muted
+        playsinline
+        loop
+        preload="none"
+        width="1920"
+        height="1080"
+        aria-hidden="true"
+        data-hero-loop
+      ></video>
+      <div class="hero__scrim" aria-hidden="true"></div>
+      <div class="shell hero__content">
+        <h1 id="hero-title"><span>Raised from</span><span>good ground.</span></h1>
+        <p>Grass-fed Black Angus beef, raised by our family for five generations and shipped to yours.</p>
+        <div class="hero__actions">
+          <a class="button button--straw" href="shop-beef.html">Shop beef</a>
+          <a class="text-link text-link--light" href="our-story.html">Our story</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="standards" aria-label="Field Good Foods standards">
+      <div class="shell standards__grid">
+        <p data-reveal><strong>USDA</strong><span>certified</span></p>
+        <p data-reveal style="--delay: 70ms"><strong>Grass-fed</strong><span>start to finish</span></p>
+        <p data-reveal style="--delay: 140ms"><strong>No added</strong><span>hormones or steroids</span></p>
+        <p data-reveal style="--delay: 210ms"><strong>Farm packed</strong><span>shipped to your door</span></p>
+      </div>
+    </section>
+
+    <section class="origin" id="farm" aria-labelledby="origin-title">
+      <div class="shell origin__grid">
+        <div class="origin__copy" data-reveal>
+          <p class="eyebrow">Five generations</p>
+          <h2 id="origin-title">The land is part of the family.</h2>
+          <p>Our family has cared for this ground across five generations. What we raise today carries the lessons, labor, and responsibility passed down to us.</p>
+          <p>That means giving cattle room to graze, tending the soil beneath them, and staying close to every part of the work.</p>
+          <a class="text-link" href="our-story.html">Our story</a>
+        </div>
+
+        <div class="origin__gallery" data-reveal>
+          <figure class="origin__herd">
+            <img
+              src="assets/final-v3/herd-under-oaks.webp"
+              data-still="herd"
+              alt="Black Angus cattle grazing between mature oak trees"
+              loading="lazy"
+              width="1800"
+              height="1347"
+            >
+          </figure>
+          <figure class="origin__soil">
+            <img
+              src="assets/final-v3/pasture-soil-cut.webp"
+              data-still="soil"
+              alt="A fresh pasture soil cut showing roots beside a worn spade and work boot"
+              loading="lazy"
+              width="1200"
+              height="1604"
+            >
+          </figure>
+          <blockquote>Care for it. Protect it. Pass it on.</blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section class="responsibility" aria-labelledby="responsibility-title">
+      <img
+        class="responsibility__media"
+        src="assets/final-v3/pasture-check.webp"
+        data-still="check"
+        alt="A Black cattle farmer checking grass and soil along a pasture fence"
+        loading="lazy"
+        width="1920"
+        height="1437"
+      >
+      <div class="responsibility__scrim" aria-hidden="true"></div>
+      <div class="shell responsibility__content">
+        <div class="responsibility__statement" data-reveal>
+          <h2 id="responsibility-title">Every cut carries our name.</h2>
+          <p>We raise our cattle with the same standard we use for our own table: natural practices, daily care, and no shortcuts.</p>
+        </div>
+        <dl class="responsibility__proof" data-reveal>
+          <div>
+            <dt>How they are fed</dt>
+            <dd>Grass-fed from start to finish.</dd>
+          </div>
+          <div>
+            <dt>What stays out</dt>
+            <dd>No added hormones, steroids, preservatives, or GMOs.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="cuts" id="shop" aria-labelledby="cuts-title">
+      <div class="shell">
+        <div class="cuts__heading" data-reveal>
+          <h2 id="cuts-title">Pick your cut. Taste the difference.</h2>
+          <p>Rich marbling, clean flavor, and cuts made for weeknights, cookouts, and the meals people remember.</p>
+        </div>
+
+        <figure class="cuts__visual" data-reveal>
+          <img
+            src="assets/final-v3/fresh-cuts-counter.webp"
+            data-still="cuts"
+            alt="T-bone, porterhouse, and sirloin steaks resting on butcher paper over dark wood"
+            loading="lazy"
+            width="1920"
+            height="1280"
+          >
+        </figure>
+
+        <div class="cut-list" data-reveal>
+          <article class="cut cut--lead">
+            <div>
+              <h3>Prime T-Bone</h3>
+              <p>Tenderloin on one side. New York strip on the other. Built for a hot grill.</p>
+            </div>
+            <strong>$34.99<span>/lb</span></strong>
+          </article>
+          <article class="cut">
+            <div>
+              <h3>Prime Porterhouse</h3>
+              <p>A generous steak with more tenderloin, made for sharing or showing off a little.</p>
+            </div>
+            <strong>$39.99<span>/lb</span></strong>
+          </article>
+          <article class="cut">
+            <div>
+              <h3>Prime Top Sirloin</h3>
+              <p>Lean, full of flavor, and easy to cook any night of the week.</p>
+            </div>
+            <strong>$22.99<span>/lb</span></strong>
+          </article>
+        </div>
+
+        <a class="button button--straw cuts__cta" href="shop-beef.html">Shop beef</a>
+      </div>
+    </section>
+
+    <section class="starter" aria-labelledby="starter-title">
+      <div class="shell">
+        <div class="starter__intro" data-reveal>
+          <h2 id="starter-title">Start with a box built for real life.</h2>
+          <p>A practical first order with steaks, roasts, and everyday cuts for the family freezer.</p>
+        </div>
+        <article class="starter__offer" data-reveal>
+          <div class="starter__name">
+            <span>Approx. 15 to 18 lbs</span>
+            <h3>The Family Farm Starter Box</h3>
+          </div>
+          <ul>
+            <li>4 lbs Prime Ground Beef</li>
+            <li>Ribeye, strip, and sirloin steaks</li>
+            <li>Chuck roast</li>
+            <li>Stew beef and cube steak</li>
+          </ul>
+          <div class="starter__buy">
+            <strong>$299</strong>
+            <a class="button button--outline" href="shop-beef.html">View starter box</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="table" aria-labelledby="table-title">
+      <img
+        class="table__media"
+        src="assets/final-v3/family-porch-supper.webp"
+        data-still="table"
+        alt="A multigenerational African American family sharing steak at a farm porch table"
+        loading="lazy"
+        width="1920"
+        height="1080"
+      >
+      <div class="shell table__content" data-reveal>
+        <h2 id="table-title">From our pasture to your people.</h2>
+        <p>Good beef becomes Sunday dinner, birthday candles, and the plate passed across the table.</p>
+      </div>
+    </section>
+
+    <section class="capture" aria-label="Find a steak and join the newsletter">
+      <div class="shell capture__grid">
+        <div class="finder" data-reveal>
+          <h2>Find the right steak for the night.</h2>
+          <form data-finder novalidate>
+            <fieldset>
+              <legend>What are you cooking for?</legend>
+              <div class="finder__choices">
+                <label><input type="radio" name="occasion" value="everyday"> <span>Everyday dinner</span></label>
+                <label><input type="radio" name="occasion" value="grill"> <span>Weekend grill</span></label>
+                <label><input type="radio" name="occasion" value="celebration"> <span>Celebration</span></label>
+              </div>
+            </fieldset>
+            <div class="field">
+              <label for="finder-email">Email address</label>
+              <input id="finder-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+            </div>
+            <button class="button button--straw" type="submit">Find my steak</button>
+            <p class="form-status" data-finder-status aria-live="polite"></p>
+          </form>
+        </div>
+
+        <div class="newsletter" data-reveal style="--delay: 100ms">
+          <h2>Keep up with the farm.</h2>
+          <p>Get monthly specials, new package releases, and a few good supper ideas.</p>
+          <form data-newsletter novalidate>
+            <div class="field">
+              <label for="newsletter-email">Email address</label>
+              <input id="newsletter-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+            </div>
+            <button class="text-button" type="submit">Join the list</button>
+            <p class="form-status" data-newsletter-status aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell footer__main">
+      <div>
+        <a class="brand brand--footer" href="#top" aria-label="Field Good Foods home">
+          <strong>Field Good</strong>
+          <span>Foods / Family Farm</span>
+        </a>
+        <p>Made by Nature, Not by Man!</p>
+      </div>
+      <nav class="footer__nav" aria-label="Footer">
+        <a href="our-story.html">Our story</a>
+        <a href="shop-beef.html">Shop beef</a>
+        <a href="contact.html#wholesale">Wholesale</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+    <div class="shell footer__bottom">
+      <p>Grass-fed Black Angus beef from a fifth-generation family farm.</p>
+      <p><span data-year>2026</span> Field Good Foods</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="referrer" content="no-referrer">
+  <title>The OJÄ Experience | Redesign Concepts</title>
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/playfair-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <style>
+    @font-face {
+      font-family: "Manrope";
+      src: url("assets/manrope-latin.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 400 600;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Playfair Display";
+      src: url("assets/playfair-normal-latin.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 600 700;
+      font-display: swap;
+    }
+    :root {
+      --ink: #0b0b0a;
+      --cream: #f4eee3;
+      --gold: #c9a227;
+      --line: rgba(244, 238, 227, .2);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      min-height: 100dvh;
+      display: grid;
+      background: var(--ink);
+      color: var(--cream);
+      font-family: Manrope, Arial, sans-serif;
+    }
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid var(--gold); outline-offset: 5px; }
+    main {
+      width: min(calc(100% - 48px), 1280px);
+      margin: auto;
+      padding: 48px 0;
+    }
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 32px;
+      align-items: end;
+      padding-bottom: 30px;
+      border-bottom: 1px solid var(--line);
+    }
+    h1 {
+      max-width: 760px;
+      margin: 0;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(3rem, 7vw, 7rem);
+      font-weight: 600;
+      line-height: .96;
+      letter-spacing: -.05em;
+    }
+    header p {
+      max-width: 310px;
+      margin: 0;
+      color: rgba(244,238,227,.68);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .concepts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      margin-top: 38px;
+      border: 1px solid var(--line);
+    }
+    .concept {
+      min-height: 390px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(28px, 4vw, 54px);
+      text-decoration: none;
+      transition: transform 300ms cubic-bezier(.16,1,.3,1), background-color 300ms ease;
+    }
+    .concept + .concept { border-left: 1px solid var(--line); }
+    .concept:hover { transform: translateY(-5px); }
+    .concept.dark {
+      background:
+        linear-gradient(rgba(11,11,10,.48), rgba(11,11,10,.83)),
+        url("assets/oja-hero-night.webp") center / cover no-repeat;
+    }
+    .concept.light {
+      background:
+        linear-gradient(rgba(244,238,227,.82), rgba(244,238,227,.96)),
+        url("assets/oja-curated-gifting.webp") center / cover no-repeat;
+      color: var(--ink);
+    }
+    .label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .17em;
+      text-transform: uppercase;
+    }
+    h2 {
+      max-width: 420px;
+      margin: 0 0 16px;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(2.4rem, 4.5vw, 5rem);
+      line-height: .98;
+      letter-spacing: -.045em;
+    }
+    .concept p { max-width: 390px; margin: 0; font-size: 14px; line-height: 1.7; }
+    .dark p { color: rgba(244,238,227,.72); }
+    .light p { color: #5c554d; }
+    @media (max-width: 760px) {
+      main { width: calc(100% - 32px); padding: 28px 0; }
+      header { grid-template-columns: 1fr; }
+      .concepts { grid-template-columns: 1fr; }
+      .concept { min-height: 330px; }
+      .concept + .concept { border-left: 0; border-top: 1px solid var(--line); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>The OJÄ Experience</h1>
+      <p>Two potential homepage directions, designed as sister experiences to the approved Madam Koverage concepts.</p>
+    </header>
+    <div class="concepts">
+      <a class="concept dark" href="a-house-of-oja.html">
+        <span class="label">Concept A</span>
+        <div>
+          <h2>House of OJÄ</h2>
+          <p>Cinematic, intimate, and grounded in black, ivory, and champagne gold.</p>
+        </div>
+      </a>
+      <a class="concept light" href="b-oja-edit.html">
+        <span class="label">Concept B</span>
+        <div>
+          <h2>The OJÄ Edit</h2>
+          <p>Warm editorial structure, image-led storytelling, and a fashion-minded point of view.</p>
+        </div>
+      </a>
+    </div>
+  </main>
+</body>
+</html>

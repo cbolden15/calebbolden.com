@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="description" content="Contact Field Good Foods about beef boxes, quarters and halves, wholesale orders, or visiting the family farm.">
+  <meta name="theme-color" content="#10140f">
+  <title>Contact | Field Good Foods</title>
+  <script>document.documentElement.classList.add('js');</script>
+  <link rel="preload" as="image" href="assets/hero-ads/hero-cinematic-poster-desktop.webp" fetchpriority="high">
+  <link rel="icon" href="../shared/wordmark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../shared/reset.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="contact.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" data-header>
+    <a class="brand" href="index.html" aria-label="Field Good Foods home">
+      <strong>Field Good</strong>
+      <span>Foods / Family Farm</span>
+    </a>
+
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+      <span>Menu</span>
+      <span class="menu-toggle__mark" aria-hidden="true"></span>
+    </button>
+
+    <nav class="primary-nav" id="primary-nav" aria-label="Primary">
+      <a href="our-story.html">Our story</a>
+      <a href="shop-beef.html">Shop beef</a>
+      <a href="steak-finder.html">Steak finder</a>
+      <a href="contact.html" aria-current="page">Contact</a>
+    </nav>
+
+    <a class="header-cta" href="shop-beef.html">Shop beef</a>
+  </header>
+
+  <main id="main">
+    <section class="contact-hero" id="top" data-hero aria-labelledby="hero-title">
+      <!-- media: existing farm fence and Black Angus herd at golden hour, 16:9, 1920x1080 -->
+      <img
+        class="contact-hero__media"
+        src="assets/hero-ads/hero-cinematic-poster-desktop.webp"
+        data-page-still="contact-opening"
+        alt="Black Angus cattle beside a weathered farm fence at golden hour"
+        width="1920"
+        height="1080"
+      >
+      <div class="contact-hero__scrim" aria-hidden="true"></div>
+      <div class="shell contact-hero__content">
+        <p class="eyebrow">Contact</p>
+        <h1 id="hero-title">Talk to the family.</h1>
+        <p>Reach out with questions about boxes, quarters and halves, wholesale orders, or visiting the farm.</p>
+      </div>
+    </section>
+
+    <section class="contact-main" aria-labelledby="contact-form-title">
+      <div class="shell contact-grid">
+        <div class="contact-form-col" data-reveal>
+          <h2 id="contact-form-title">Send us a message.</h2>
+          <form data-contact novalidate>
+            <div class="field">
+              <label for="contact-name">Name</label>
+              <input id="contact-name" name="name" type="text" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="contact-email">Email address</label>
+              <input id="contact-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+            </div>
+            <div class="field">
+              <label for="contact-message">Message</label>
+              <textarea id="contact-message" name="message" rows="5" required></textarea>
+            </div>
+            <div class="field field--hidden" aria-hidden="true">
+              <label for="contact-company">Company</label>
+              <input id="contact-company" name="company" type="text" tabindex="-1" autocomplete="off">
+            </div>
+            <button class="button button--straw" type="submit">Send message</button>
+            <p class="form-status" data-contact-status aria-live="polite"></p>
+          </form>
+        </div>
+
+        <aside class="contact-aside" data-reveal style="--delay: 100ms">
+          <div class="find-us">
+            <p class="eyebrow">Find us</p>
+            <h2>Where to reach the farm.</h2>
+            <ul class="find-us__list">
+              <li><span>Address</span>Farm address to be confirmed</li>
+              <li><span>Phone</span>Phone to be confirmed</li>
+              <li><span>Pickup hours</span>Pickup hours to be confirmed</li>
+              <li><span>Email</span>Email to be confirmed</li>
+            </ul>
+          </div>
+
+          <div class="wholesale-note" id="wholesale">
+            <h3>Wholesale and restaurants</h3>
+            <p>We work with a limited number of restaurants and retailers each season. Send your interest through the form above and we will follow up with details.</p>
+          </div>
+
+          <div class="newsletter">
+            <h2>Newsletter</h2>
+            <p>Get monthly specials, new package releases, and a few good supper ideas.</p>
+            <form data-newsletter novalidate>
+              <div class="field">
+                <label for="newsletter-email">Email address</label>
+                <input id="newsletter-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+              </div>
+              <button class="text-button" type="submit">Get monthly specials</button>
+              <p class="form-status" data-newsletter-status aria-live="polite"></p>
+            </form>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell footer__main">
+      <div>
+        <a class="brand brand--footer" href="index.html" aria-label="Field Good Foods home">
+          <strong>Field Good</strong>
+          <span>Foods / Family Farm</span>
+        </a>
+        <p>Made by Nature, Not by Man!</p>
+      </div>
+      <nav class="footer__nav" aria-label="Footer">
+        <a href="our-story.html">Our story</a>
+        <a href="shop-beef.html">Shop beef</a>
+        <a href="contact.html#wholesale">Wholesale</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+    <div class="shell footer__bottom">
+      <p>Grass-fed Black Angus beef from a fifth-generation family farm.</p>
+      <p><span data-year>2026</span> Field Good Foods</p>
+    </div>
+  </footer>
+
+  <script src="app.js" defer></script>
+  <script defer>
+    (function () {
+      var form = document.querySelector('[data-contact]');
+      if (!form) return;
+      var status = form.querySelector('[data-contact-status]');
+      var button = form.querySelector('button[type="submit"]');
+
+      function show(message, state) {
+        if (!status) return;
+        status.textContent = message;
+        status.dataset.state = state;
+      }
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        if (form.elements.company && form.elements.company.value) return;
+
+        var name = form.elements.name;
+        var email = form.elements.email;
+        var message = form.elements.message;
+
+        if (!name.value.trim()) {
+          show('Enter your name.', 'error');
+          name.focus();
+          return;
+        }
+        if (!email.checkValidity()) {
+          show('Enter a valid email address.', 'error');
+          email.focus();
+          return;
+        }
+        if (!message.value.trim()) {
+          show('Add a short message.', 'error');
+          message.focus();
+          return;
+        }
+
+        button.disabled = true;
+        button.textContent = 'Sending...';
+        form.setAttribute('aria-busy', 'true');
+
+        window.setTimeout(function () {
+          show('Message sent. We will get back to you soon.', 'success');
+          form.reset();
+          form.removeAttribute('aria-busy');
+          button.disabled = false;
+          button.textContent = 'Send message';
+        }, 350);
+      });
+    })();
+  </script>
+</body>
+</html>

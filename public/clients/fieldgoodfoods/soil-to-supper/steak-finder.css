@@ -1,0 +1,239 @@
+/* Steak finder: page-specific layout only. Reuses tokens and classes from style.css. */
+
+.finder-hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 34rem;
+  padding-top: 8rem;
+  color: var(--paper);
+  overflow: hidden;
+  background: var(--ink);
+}
+
+.finder-hero__media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.finder-hero__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(16, 20, 15, 0.55) 0%, rgba(16, 20, 15, 0.72) 55%, rgba(16, 20, 15, 0.92) 100%);
+}
+
+.finder-hero__content {
+  position: relative;
+  z-index: 1;
+  max-width: 42rem;
+  padding-block: 3.5rem;
+}
+
+.finder-hero__content h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.25rem, 4.5vw, 3.4rem);
+  line-height: 1.08;
+  margin: 0.75rem 0 1rem;
+}
+
+.finder-hero__content p {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--paper);
+  opacity: 0.9;
+  max-width: 34rem;
+}
+
+.quiz {
+  padding-block: var(--section-space);
+  background: var(--ink);
+}
+
+.quiz__intro h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.75rem, 3vw, 2.4rem);
+  line-height: 1.15;
+  color: var(--paper);
+  margin: 0.5rem 0 0.5rem;
+}
+
+.quiz__intro p {
+  color: var(--muted);
+  max-width: 36rem;
+  margin-bottom: 2.5rem;
+}
+
+.quiz__grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.quiz__card {
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  background: var(--paper);
+  margin: 0;
+}
+
+.quiz__card legend {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  line-height: 1.3;
+  color: var(--ink);
+  padding: 0 0.4rem;
+  background: var(--paper);
+}
+
+.quiz__choices {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.quiz__choices label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--ink);
+  transition: border-color 150ms ease, background 150ms ease;
+}
+
+.quiz__choices label:hover {
+  border-color: var(--line-strong);
+}
+
+.quiz__choices input {
+  accent-color: var(--forest);
+}
+
+.quiz__choices input:checked + span {
+  font-weight: 600;
+}
+
+.quiz__choices label:has(input:checked) {
+  border-color: var(--forest);
+  background: var(--straw-soft);
+}
+
+.quiz__action {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.quiz__action .form-status {
+  margin: 0;
+}
+
+.quiz__result {
+  margin-top: 3rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 2rem;
+  max-width: 40rem;
+}
+
+.quiz__result[hidden] {
+  display: none;
+}
+
+.result-card {
+  border: 1px solid var(--line-strong);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+}
+
+.result-card .eyebrow {
+  color: var(--moss);
+}
+
+.result-card h3 {
+  font-family: var(--serif);
+  font-size: 1.75rem;
+  color: var(--ink);
+  margin: 0.25rem 0 0.35rem;
+}
+
+.result-card strong {
+  display: inline-block;
+  font-size: 1.1rem;
+  color: var(--forest-deep);
+  margin-bottom: 0.85rem;
+}
+
+.result-card p {
+  color: var(--moss);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.result-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.result-email {
+  padding: 1.5rem;
+  border: 1px dashed var(--line);
+  border-radius: 0.75rem;
+}
+
+.result-email__lede {
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 0.85rem;
+}
+
+.result-email .field {
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 68rem) {
+  .quiz__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 52rem) {
+  .finder-hero {
+    min-height: 26rem;
+  }
+
+  .quiz__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 38rem) {
+  .finder-hero {
+    padding-top: 6.5rem;
+  }
+
+  .quiz__action {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .result-card {
+    padding: 1.5rem;
+  }
+}

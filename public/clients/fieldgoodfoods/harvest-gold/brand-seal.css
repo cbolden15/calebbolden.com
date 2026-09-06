@@ -1,0 +1,14 @@
+/* Phase 3 selected asset. Phase 4 places this seal in the promise and Chapter IV slots. */
+:root { --brand-seal: url('../shared/logos/sunrise-farm-seal-a.svg'); }
+.brand-seal {
+  display: block;
+  width: clamp(132px, 16vw, 224px);
+  aspect-ratio: 1;
+  object-fit: contain;
+  /* seal art is black-on-transparent: invert to warm cream so it reads on the dark ground */
+  filter: invert(0.92) sepia(0.18) saturate(0.55) brightness(1.02);
+  opacity: 0.85;
+}
+
+.promise .brand-seal { margin-inline: auto; }
+.chapter--kitchen .brand-seal { width: clamp(148px, 18vw, 248px); }

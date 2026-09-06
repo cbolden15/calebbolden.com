@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="description" content="Answer three quick questions and find the Field Good Foods steak that fits your night, priced from our real beef list.">
+  <meta name="theme-color" content="#10140f">
+  <title>Steak finder | Field Good Foods</title>
+  <script>document.documentElement.classList.add('js');</script>
+  <link rel="icon" href="../shared/wordmark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../shared/reset.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="steak-finder.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" data-header>
+    <a class="brand" href="index.html" aria-label="Field Good Foods home">
+      <strong>Field Good</strong>
+      <span>Foods / Family Farm</span>
+    </a>
+
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+      <span>Menu</span>
+      <span class="menu-toggle__mark" aria-hidden="true"></span>
+    </button>
+
+    <nav class="primary-nav" id="primary-nav" aria-label="Primary">
+      <a href="our-story.html">Our story</a>
+      <a href="shop-beef.html">Shop beef</a>
+      <a href="steak-finder.html" aria-current="page">Steak finder</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <a class="header-cta" href="shop-beef.html">Shop beef</a>
+  </header>
+
+  <main id="main">
+    <section class="finder-hero" id="top" aria-labelledby="finder-hero-title">
+      <!-- media: three raw steaks, T-bone, porterhouse, and sirloin, resting on butcher paper in soft window light, no text or props in frame, 16:9, 1920x1080 -->
+      <img
+        class="finder-hero__media"
+        src="assets/stills/cuts-board-1.webp"
+        data-page-still="finder-opening"
+        alt="Raw steaks resting on butcher paper in window light"
+        loading="eager"
+        width="1920"
+        height="1280"
+      >
+      <div class="finder-hero__scrim" aria-hidden="true"></div>
+      <div class="shell finder-hero__content">
+        <p class="eyebrow">Steak finder</p>
+        <h1 id="finder-hero-title">Find your perfect steak in 30 seconds.</h1>
+        <p>Answer three quick questions and we will point you to the right cut, priced straight from our beef list.</p>
+      </div>
+    </section>
+
+    <section class="quiz" aria-labelledby="quiz-title">
+      <div class="shell">
+        <div class="quiz__intro" data-reveal>
+          <h2 id="quiz-title">Three questions. One good steak.</h2>
+          <p>Pick one answer per question, then press Show my steak.</p>
+        </div>
+
+        <form data-quiz novalidate>
+          <div class="quiz__grid">
+            <fieldset class="quiz__card" data-reveal>
+              <legend>What is the occasion</legend>
+              <div class="quiz__choices">
+                <label><input type="radio" name="occasion" value="everyday"> <span>Everyday dinner</span></label>
+                <label><input type="radio" name="occasion" value="cookout"> <span>Weekend cookout</span></label>
+                <label><input type="radio" name="occasion" value="celebration"> <span>A celebration</span></label>
+                <label><input type="radio" name="occasion" value="crowd"> <span>Feeding a crowd</span></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="quiz__card" data-reveal style="--delay: 70ms">
+              <legend>How will you cook it</legend>
+              <div class="quiz__choices">
+                <label><input type="radio" name="method" value="sear"> <span>Cast iron or grill, hot and fast</span></label>
+                <label><input type="radio" name="method" value="smoke"> <span>Low and slow, smoker or oven</span></label>
+                <label><input type="radio" name="method" value="slice"> <span>Sliced for tacos or stir-fry</span></label>
+                <label><input type="radio" name="method" value="roast"> <span>A roast for the table</span></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="quiz__card" data-reveal style="--delay: 140ms">
+              <legend>How many are eating</legend>
+              <div class="quiz__choices quiz__choices--three">
+                <label><input type="radio" name="count" value="pair"> <span>One or two</span></label>
+                <label><input type="radio" name="count" value="small"> <span>Three to five</span></label>
+                <label><input type="radio" name="count" value="crowd"> <span>Six or more</span></label>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="quiz__action" data-reveal style="--delay: 200ms">
+            <button class="button button--straw" type="submit">Show my steak</button>
+            <p class="form-status" data-quiz-status aria-live="polite"></p>
+          </div>
+        </form>
+
+        <div class="quiz__result" data-quiz-result hidden>
+          <article class="result-card">
+            <p class="eyebrow">Your match</p>
+            <h3 data-result-cut></h3>
+            <strong data-result-price></strong>
+            <p data-result-why></p>
+            <div class="result-card__actions">
+              <a class="button button--straw" href="shop-beef.html#reserve">Reserve a box</a>
+              <a class="text-link" href="shop-beef.html#price-list">See the price list</a>
+            </div>
+          </article>
+
+          <form class="result-email" data-quiz-email novalidate>
+            <p class="result-email__lede">Want it saved for later</p>
+            <div class="field">
+              <label for="quiz-email">Email address</label>
+              <input id="quiz-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+            </div>
+            <button class="text-button" type="submit">Send me this recommendation</button>
+            <p class="form-status" data-quiz-email-status aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell footer__main">
+      <div>
+        <a class="brand brand--footer" href="index.html" aria-label="Field Good Foods home">
+          <strong>Field Good</strong>
+          <span>Foods / Family Farm</span>
+        </a>
+        <p>Made by Nature, Not by Man!</p>
+      </div>
+      <nav class="footer__nav" aria-label="Footer">
+        <a href="our-story.html">Our story</a>
+        <a href="shop-beef.html">Shop beef</a>
+        <a href="contact.html#wholesale">Wholesale</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+    <div class="shell footer__bottom">
+      <p>Grass-fed Black Angus beef from a fifth-generation family farm.</p>
+      <p><span data-year>2026</span> Field Good Foods</p>
+    </div>
+  </footer>
+
+  <script src="app.js" defer></script>
+  <script>
+    (function () {
+      var CUTS = {
+        ribeye: ['Prime Ribeye Steak', '$34.99/lb', 'Rich marbling that sears beautifully over hot cast iron or a hot grill.'],
+        strip: ['Prime New York Strip', '$32.99/lb', 'Lean but tender, ready in minutes on high heat for a weeknight that still feels special.'],
+        filet: ['Prime Filet Mignon / Tenderloin', '$44.99/lb', 'The most tender cut in the case, built for a celebration for two.'],
+        sirloin: ['Prime Top Sirloin', '$22.99/lb', 'Lean, full of flavor, and easy to cook well any night of the week.'],
+        flatiron: ['Prime Flat Iron Steak', '$24.99/lb', 'Tender and quick on the grill, with enough value to feed a full table.'],
+        flank: ['Prime Flank Steak', '$21.99/lb', 'Thin and lean, best sliced against the grain for tacos or a stir-fry.'],
+        skirt: ['Prime Skirt Steak', '$24.99/lb', 'Bold beefy flavor, the classic cut for fajitas, tacos, or a quick stir-fry.'],
+        tbone: ['Prime T-Bone Steak', '$34.99/lb', 'Tenderloin on one side and strip on the other, built for a hot grill and a few more plates.'],
+        porterhouse: ['Prime Porterhouse Steak', '$39.99/lb', 'A generous steak with more tenderloin, made for sharing or showing off a little.'],
+        tritip: ['Prime Tri-Tip', '$19.99/lb', 'A lean roast that grills like a steak, easy to slice thin for a crowd.'],
+        brisket: ['Prime Brisket', '$15.99/lb', 'Goes low and slow until it falls apart, the classic choice for feeding a crowd.'],
+        shortribs: ['Prime Short Ribs', '$19.99/lb', 'Rich and smoky after hours low and slow, a smaller batch with big flavor.'],
+        ribroast: ['Prime Rib Roast', '$29.99/lb', 'A showpiece roast that carves at the table for a celebration dinner.'],
+        chuckroast: ['Prime Chuck Roast', '$18.99/lb', 'An everyday roast that turns fork-tender after a few hours low and slow.']
+      };
+
+      function recommend(occasion, method, count) {
+        if (method === 'slice') return count === 'crowd' ? 'flank' : 'skirt';
+        if (method === 'roast') return occasion === 'celebration' ? 'ribroast' : 'chuckroast';
+        if (method === 'smoke') return count === 'crowd' ? 'brisket' : 'shortribs';
+        if (occasion === 'celebration') return count === 'pair' ? 'filet' : 'porterhouse';
+        if (occasion === 'cookout') {
+          if (count === 'pair') return 'ribeye';
+          if (count === 'small') return 'flatiron';
+          return 'tritip';
+        }
+        if (occasion === 'crowd') {
+          if (count === 'pair') return 'sirloin';
+          if (count === 'small') return 'tbone';
+          return 'tritip';
+        }
+        return count === 'pair' ? 'strip' : 'sirloin';
+      }
+
+      function showStatus(status, message, state) {
+        if (!status) return;
+        status.textContent = message;
+        if (state) status.dataset.state = state;
+        else delete status.dataset.state;
+      }
+
+      var quizForm = document.querySelector('[data-quiz]');
+      var resultBlock = document.querySelector('[data-quiz-result]');
+      var resultCut = document.querySelector('[data-result-cut]');
+      var resultPrice = document.querySelector('[data-result-price]');
+      var resultWhy = document.querySelector('[data-result-why]');
+
+      quizForm?.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var form = event.currentTarget;
+        var occasion = form.elements.occasion.value;
+        var method = form.elements.method.value;
+        var count = form.elements.count.value;
+        var status = form.querySelector('[data-quiz-status]');
+
+        if (!occasion || !method || !count) {
+          showStatus(status, 'Answer all three questions to see your match.', 'error');
+          return;
+        }
+
+        var cut = CUTS[recommend(occasion, method, count)];
+        resultCut.textContent = cut[0];
+        resultPrice.textContent = cut[1];
+        resultWhy.textContent = cut[2];
+        resultBlock.hidden = false;
+        showStatus(status, 'Here is your match below.', 'success');
+        resultBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      var emailForm = document.querySelector('[data-quiz-email]');
+      emailForm?.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var form = event.currentTarget;
+        var email = form.elements.email;
+        var status = form.querySelector('[data-quiz-email-status]');
+        var button = form.querySelector('button[type="submit"]');
+
+        if (!email.checkValidity()) {
+          showStatus(status, 'Enter a valid email address.', 'error');
+          email.focus();
+          return;
+        }
+
+        button.disabled = true;
+        button.textContent = 'Sending...';
+        window.setTimeout(function () {
+          showStatus(status, 'Sent. Check your inbox for your steak match.', 'success');
+          form.reset();
+          button.disabled = false;
+          button.textContent = 'Send me this recommendation';
+        }, 350);
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -109,6 +109,10 @@ A secondary Docker and Cloudflare Tunnel stack exists on the homelab server. It 
 ## Environment variables
 
 - `GOOGLE_GENERATIVE_AI_API_KEY`: Gemini chat key.
+- `BRITTANY_PREVIEW_TOKEN`: private-link token for the unindexed Brittany Lyons mockups. Keep it out of Git.
+- `FIELDGOOD_PREVIEW_USER` / `FIELDGOOD_PREVIEW_PASSWORD`: Basic Auth fallback for Field Good Foods previews.
+- `FIELDGOOD_SOIL_TO_SUPPER_TOKEN`: private-link token for the Soil to Supper review site.
+- `OJA_PREVIEW_PATH`: high-entropy public path that rewrites to the private OJÄ preview files.
 - `RESEND_API_KEY`: Resend key for lead notification emails.
 - `LEAD_EMAIL_TO`: optional lead email recipient.
 - `LEAD_EMAIL_FROM`: optional lead email sender.
