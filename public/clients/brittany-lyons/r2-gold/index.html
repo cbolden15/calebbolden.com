@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex"/>
+<title>Brittany Lyons Interiors — peaceful, functional interiors in Dallas</title>
+<meta name="description" content="Brittany Lyons Interiors is a boutique residential design studio in Dallas, Texas. Full home renovations, new construction, redesigns and selections since 2016.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%232E4A5E'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&amp;family=DM+Sans:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+/* ---------------------------------------------------------------
+   Brittany Lyons Interiors — "Still Water"
+   Palette: Mist #F5F7F8 · Sky #D9E5EC · Deep water #2E4A5E
+            Brass #B99760 (hairlines only) · White #FFFFFF
+   --------------------------------------------------------------- */
+
+:root{
+  --mist:#F5F7F8;
+  --sky:#D9E5EC;
+  --water:#2E4A5E;
+  --water-soft:#5A7284;
+  --brass:#B99760;
+  --white:#FFFFFF;
+
+  --f-13:13px;
+  --f-16:16px;
+  --f-19:19px;
+  --f-26:26px;
+  --f-40:clamp(28px,3.4vw,40px);
+  --f-display:clamp(56px,8vw,132px);
+
+  --gutter:clamp(20px,5vw,72px);
+  --hair:rgba(185,151,96,.55);
+  --rule:rgba(46,74,94,.14);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--mist);
+  color:var(--water);
+  font-family:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:var(--f-16);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+h1,h2,h3,p,figure,blockquote{margin:0}
+img,video{display:block;max-width:100%}
+a{color:inherit}
+
+#projects,#services,#about,#contact{scroll-margin-top:110px}
+
+.serif{
+  font-family:"Bodoni Moda",Georgia,"Times New Roman",serif;
+  font-weight:400;
+  font-optical-sizing:auto;
+}
+
+:focus-visible{
+  outline:2px solid var(--water);
+  outline-offset:4px;
+  border-radius:2px;
+}
+
+.skip{
+  position:absolute;left:-9999px;top:0;z-index:100;
+  background:var(--white);color:var(--water);
+  padding:12px 18px;font-size:var(--f-13);
+}
+.skip:focus{left:12px;top:12px}
+
+.wrap{
+  width:100%;
+  max-width:1500px;
+  margin:0 auto;
+  padding-inline:var(--gutter);
+}
+
+.measure{max-width:60ch}
+
+/* --- film grain ------------------------------------------------ */
+.grain{
+  position:fixed;inset:0;z-index:60;
+  pointer-events:none;
+  opacity:.035;
+  mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* --- nav ------------------------------------------------------- */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  display:flex;align-items:center;gap:24px;
+  padding:18px var(--gutter);
+  border-bottom:1px solid transparent;
+  color:var(--white);
+  transition:background-color .45s ease,color .45s ease,border-color .45s ease,backdrop-filter .45s ease;
+}
+.nav.is-scrolled{
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border-bottom-color:var(--rule);
+  color:var(--water);
+}
+.nav__mark{
+  font-family:"Bodoni Moda",Georgia,serif;
+  font-size:clamp(17px,1.6vw,21px);
+  letter-spacing:.005em;
+  text-decoration:none;
+  margin-right:auto;
+  white-space:nowrap;
+}
+.nav__links{
+  display:flex;gap:clamp(16px,2vw,30px);
+  list-style:none;margin:0;padding:0;
+  font-size:var(--f-13);
+  letter-spacing:.01em;
+}
+.nav__links a{
+  position:relative;
+  text-decoration:none;
+  padding-bottom:3px;
+}
+.nav__links a::after{
+  content:"";
+  position:absolute;left:0;bottom:0;
+  height:1px;width:100%;
+  background:var(--brass);
+  transform:scaleX(0);
+  transform-origin:left center;
+  transition:transform .4s cubic-bezier(.2,.7,.3,1);
+}
+.nav__links a:hover::after,
+.nav__links a:focus-visible::after{transform:scaleX(1)}
+
+.nav__cta{
+  font-size:var(--f-13);
+  text-decoration:none;
+  border:1px solid currentColor;
+  border-radius:999px;
+  padding:9px 18px;
+  white-space:nowrap;
+  transition:background-color .35s ease,color .35s ease;
+}
+.nav.is-scrolled .nav__cta:hover{background:var(--water);color:var(--white)}
+.nav__cta:hover{background:var(--white);color:var(--water)}
+
+@media(max-width:900px){
+  .nav{flex-wrap:wrap;gap:12px 20px;padding-block:14px}
+  .nav nav{width:100%;order:3}
+  .nav__links{gap:clamp(14px,4vw,22px);flex-wrap:wrap}
+}
+
+/* --- hero ------------------------------------------------------ */
+.hero{
+  position:relative;
+  height:250vh;
+}
+.hero__sticky{
+  position:sticky;top:0;
+  height:100vh;
+  overflow:hidden;
+  background:var(--water);
+}
+.hero__media{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  filter:saturate(1) brightness(1.02);
+}
+.hero__dusk{
+  position:absolute;inset:0;
+  background:#2E4A5E;
+  opacity:0;
+}
+.hero__veil{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(46,74,94,.34) 0%,rgba(46,74,94,.06) 34%,rgba(46,74,94,.10) 72%,rgba(46,74,94,.36) 100%);
+}
+.hero__content{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:0 var(--gutter);
+  color:var(--white);
+}
+.hero__title{
+  font-family:"Bodoni Moda",Georgia,serif;
+  font-weight:400;
+  font-size:var(--f-display);
+  line-height:1.02;
+  letter-spacing:-.02em;
+  text-shadow:0 2px 40px rgba(46,74,94,.42);
+}
+.hero__sub{
+  margin-top:22px;
+  font-size:var(--f-19);
+  letter-spacing:.01em;
+  text-shadow:0 1px 24px rgba(46,74,94,.5);
+}
+/* right-edge progress line */
+.progress{
+  position:fixed;
+  right:clamp(14px,2.2vw,30px);
+  top:50%;
+  transform:translateY(-50%);
+  width:1px;height:22vh;
+  background:rgba(255,255,255,.34);
+  z-index:45;
+  opacity:0;
+  transition:opacity .5s ease;
+  pointer-events:none;
+}
+.progress.is-live{opacity:1}
+.progress__fill{
+  display:block;
+  width:100%;height:100%;
+  background:var(--brass);
+  transform:scaleY(0);
+  transform-origin:top center;
+}
+
+/* --- intro ----------------------------------------------------- */
+.intro{
+  background:var(--mist);
+  padding:clamp(80px,11vw,150px) 0 clamp(70px,9vw,130px);
+}
+.intro__grid{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:clamp(28px,4vw,56px);
+  align-items:start;
+}
+.intro__statement{
+  grid-column:1 / span 6;
+  font-family:"Bodoni Moda",Georgia,serif;
+  font-size:var(--f-40);
+  line-height:1.22;
+  letter-spacing:-.005em;
+}
+.intro__body{grid-column:8 / span 5}
+.intro__body p{max-width:58ch;color:var(--water-soft)}
+.intro__tagline{
+  margin-top:26px;
+  padding-top:22px;
+  border-top:1px solid var(--hair);
+  font-size:var(--f-19);
+  color:var(--water);
+  max-width:52ch;
+}
+@media(max-width:900px){
+  .intro__statement,.intro__body{grid-column:1 / -1}
+}
+
+/* --- rooms (horizontal gallery) -------------------------------- */
+.rooms{background:var(--white)}
+.rooms__head{
+  padding:clamp(60px,8vw,110px) 0 clamp(26px,3vw,44px);
+  border-bottom:1px solid var(--rule);
+}
+.rooms__head h2{
+  font-family:"Bodoni Moda",Georgia,serif;
+  font-weight:400;
+  font-size:var(--f-40);
+  letter-spacing:-.01em;
+}
+.rooms__head p{margin-top:12px;color:var(--water-soft);font-size:var(--f-16);max-width:44ch}
+
+.rooms__pin{
+  height:100vh;
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+}
+.rooms__track{
+  display:flex;
+  align-items:center;
+  gap:clamp(28px,4vw,64px);
+  padding-inline:var(--gutter);
+  will-change:transform;
+}
+.frame{
+  position:relative;
+  flex:0 0 auto;
+  width:80vw;
+  max-width:1060px;
+  padding-top:clamp(46px,6vw,92px);
+}
+.frame__ghost{
+  position:absolute;
+  top:0;left:0;
+  font-family:"Bodoni Moda",Georgia,serif;
+  font-weight:400;
+  font-size:clamp(84px,13vw,208px);
+  line-height:.86;
+  letter-spacing:-.03em;
+  color:rgba(46,74,94,.08);
+  white-space:nowrap;
+  pointer-events:none;
+  user-select:none;
+  z-index:0;
+}
+.frame__shot{
+  position:relative;
+  z-index:1;
+  overflow:hidden;
+  aspect-ratio:16/10;
+  background:var(--sky);
+}
+.frame__shot img{
+  width:112%;
+  max-width:none;
+  height:100%;
+  object-fit:cover;
+  margin-left:-6%;
+  will-change:transform;
+}
+.frame__cap{
+  position:relative;z-index:1;
+  display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;
+  margin-top:16px;
+  padding-top:14px;
+  border-top:1px solid var(--hair);
+}
+.frame__name{
+  font-family:"Bodoni Moda",Georgia,serif;
+  font-size:var(--f-26);
+  line-height:1.2;
+}
+.frame__name a{text-decoration-color:transparent;text-underline-offset:5px;transition:text-decoration-color .3s ease,color .3s ease}
+.frame__name a:hover,.frame__name a:focus-visible{color:var(--water-soft);text-decoration-color:var(--brass)}
+.frame__desc{color:var(--water-soft);font-size:var(--f-16)}
+
+@media(max-width:900px){
+  .rooms__pin{height:auto;display:block;overflow:visible;padding-bottom:20px}
+  .rooms__track{
+    flex-direction:column;
+    align-items:stretch;
+    gap:clamp(46px,10vw,72px);
+    padding:clamp(40px,9vw,64px) var(--gutter) 0;
+    transform:none !important;
+  }
+  .frame{width:100%;max-width:none;padding-top:clamp(40px,13vw,72px)}
+  .frame__shot{aspect-ratio:4/3}
+  .frame__shot img{width:100%;margin-left:0;transform:none !important}
+}
+
+/* --- studio ---------------------------------------------------- */
+.studio{
+  background:var(--mist);
+  padding:clamp(80px,11vw,150px) 0;
+}
+.studio__grid{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:clamp(30px,5vw,70px);
+  align-items:center;
+}
+.studio__figure{
+  grid-column:1 / span 6;
+  position:relative;
+  padding:0 0 18px 18px;
+}
+.studio__figure::before{
+  content:"";
+  position:absolute;
+  left:0;bottom:0;
+  width:calc(100% - 18px);
+  height:calc(100% - 18px);
+  border:1px solid var(--brass);
+  pointer-events:none;
+}
+.studio__figure img{
+  position:relative;
+  width:100%;
+  aspect-ratio:4/3;
+  object-fit:cover;
+}
+.studio__text{grid-column:8 / span 5}
+.studio__text h2{
+  font-family:"Bodoni Moda",Georgia,serif;
+  font-weight:400;
+  font-size:var(--f-40);
+  letter-spacing:-.01em;
+  margin-bottom:22px;
+}
+.studio__text p{max-width:56ch;color:var(--water-soft)}
+.studio__text p + p{margin-top:16px}
+.studio__lead{font-size:var(--f-19);color:var(--water) !important}
+.textlink{
+  display:inline-block;
+  margin-top:26px;
+  font-size:var(--f-16);
+  color:var(--water);
+  text-decoration:none;
+  border-bottom:1px solid var(--brass);
+  padding-bottom:2px;
+  transition:border-color .35s ease;
+}
+.textlink:hover{border-color:var(--water)}
+@media(max-width:900px){
+  .studio__figure,.studio__text{grid-column:1 / -1}
+}
+
+/* --- services -------------------------------------------------- */
+.services{
+  background:var(--white);
+  padding:clamp(56px,7vw,96px) 0;
+}
+.services .wrap{
+  display:grid;
+  grid-template-columns:minmax(220px,4fr) minmax(0,8fr);
+  column-gap:clamp(48px,7vw,112px);
+  align-items:start;
+}
+.services h2{
+  font-family:"Bodoni Moda",Georgia,serif;
+  font-weight:400;
+  font-size:var(--f-40);
+  letter-spacing:-.01em;
+  grid-column:1;
+  grid-row:1 / span 3;
+  margin-bottom:0;
+}
+.svc{grid-column:2;border-top:1px solid var(--rule)}
+.svc:last-of-type{border-bottom:1px solid var(--rule)}
+.svc__btn{
+  width:100%;
+  display:flex;align-items:center;gap:20px;
+  background:none;border:0;
+  padding:clamp(18px,2vw,24px) 0;
+  font:inherit;
+  color:var(--water);
+  text-align:left;
+  cursor:pointer;
+}
+.svc__title{
+  font-family:"Bodoni Moda",Georgia,serif;
+  font-size:var(--f-26);
+  line-height:1.25;
+  flex:1;
+}
+.svc__sign{
+  position:relative;
+  flex:0 0 auto;
+  width:18px;height:18px;
+  transition:transform .45s cubic-bezier(.2,.7,.3,1);
+}
+.svc__sign::before,.svc__sign::after{
+  content:"";position:absolute;
+  background:var(--brass);
+}
+.svc__sign::before{left:0;top:8px;width:18px;height:1px}
+.svc__sign::after{left:8px;top:0;width:1px;height:18px;transition:opacity .3s ease}
+.svc__btn[aria-expanded="true"] .svc__sign{transform:rotate(90deg)}
+.svc__btn[aria-expanded="true"] .svc__sign::after{opacity:0}
+
+.svc__panel{
+  display:grid;
+  grid-template-rows:1fr;
+  transition:grid-template-rows .55s cubic-bezier(.2,.7,.3,1);
+}
+.svc__panel[data-collapsed]{grid-template-rows:0fr}
+.svc__panel > div{overflow:hidden}
+.svc__panel p{
+  max-width:68ch;
+  color:var(--water-soft);
+  padding-bottom:clamp(18px,2vw,26px);
+}
+.svc__panel p + p{margin-top:6px}
+.svc__price{
+  color:var(--water) !important;
+  border-left:1px solid var(--hair);
+  padding-left:16px;
+}
+
+/* --- voices ---------------------------------------------------- */
+.voices{
+  background:var(--sky);
+  padding:clamp(60px,7vw,100px) 0;
+}
+.voices .wrap{
+  display:grid;
+  grid-template-columns:minmax(220px,4fr) minmax(0,8fr);
+  grid-template-rows:auto 1fr;
+  column-gap:clamp(48px,7vw,112px);
+  align-items:start;
+}
+.voices h2{
+  font-family:"Bodoni Moda",Georgia,serif;
+  font-weight:400;
+  font-size:var(--f-40);
+  letter-spacing:-.01em;
+  grid-column:1;
+  grid-row:1;
+  margin-bottom:0;
+}
+.voices__stage{display:grid;grid-column:2;grid-row:1 / span 2}
+.voice{min-width:0}
+.voices.is-cycling .voice{grid-area:1 / 1}
+.voice blockquote{
+  font-family:"Bodoni Moda",Georgia,serif;
+  font-size:clamp(21px,2.4vw,28px);
+  line-height:1.42;
+  max-width:34ch;
+}
+.voice figcaption{
+  margin-top:22px;
+  font-size:var(--f-13);
+  letter-spacing:.05em;
+  color:var(--water-soft);
+}
+.voices.is-cycling .voice{
+  max-width:none;
+  opacity:0;
+  transition:opacity 1.3s ease;
+  pointer-events:none;
+}
+.voices.is-cycling .voice.is-on{opacity:1;pointer-events:auto}
+.voices .voice + .voice{margin-top:46px}
+.voices.is-cycling .voice + .voice{margin-top:0}
+
+.voices__dots{
+  display:none;
+  gap:12px;
+  grid-column:1;
+  grid-row:2;
+  align-self:end;
+  margin-top:36px;
+}
+.voices.is-cycling .voices__dots{display:flex}
+.dot{
+  width:9px;height:9px;padding:0;
+  border-radius:50%;
+  border:1px solid var(--water);
+  background:none;
+  cursor:pointer;
+  transition:background-color .35s ease;
+}
+.dot[aria-selected="true"]{background:var(--water)}
+
+@media(max-width:900px){
+  .services .wrap,.voices .wrap{display:block}
+  .services h2{margin-bottom:clamp(24px,6vw,34px)}
+  .voices h2{margin-bottom:clamp(24px,6vw,34px)}
+  .voices__dots{margin-top:clamp(26px,7vw,38px)}
+}
+
+/* --- invite ---------------------------------------------------- */
+.invite{
+  position:relative;
+  min-height:clamp(560px,84vh,860px);
+  display:flex;align-items:flex-end;
+  overflow:hidden;
+  background:var(--sky);
+}
+.invite__bg{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+}
+.invite__scrim{
+  position:absolute;inset:0;
+  background:linear-gradient(0deg,#FFFFFF 4%,rgba(255,255,255,.92) 26%,rgba(255,255,255,.55) 52%,rgba(255,255,255,0) 82%);
+}
+.invite__inner{
+  position:relative;
+  width:100%;
+  padding-bottom:clamp(48px,7vw,96px);
+}
+.invite h2{
+  font-family:"Bodoni Moda",Georgia,serif;
+  font-weight:400;
+  font-size:clamp(38px,5.6vw,84px);
+  line-height:1.05;
+  letter-spacing:-.02em;
+  max-width:14ch;
+}
+.invite p{
+  margin-top:18px;
+  max-width:48ch;
+  color:var(--water-soft);
+}
+.btn{
+  display:inline-block;
+  margin-top:32px;
+  background:var(--water);
+  color:var(--white);
+  text-decoration:none;
+  font-size:var(--f-16);
+  letter-spacing:.01em;
+  padding:15px 30px;
+  border-radius:999px;
+  transition:background-color .35s ease,transform .35s ease;
+}
+.btn:hover{background:#223A4A}
+.invite__contact{
+  margin-top:26px;
+  font-size:var(--f-16);
+  color:var(--water);
+}
+.invite__contact a{text-decoration:none;border-bottom:1px solid var(--hair)}
+
+/* --- footer ---------------------------------------------------- */
+.foot{
+  background:var(--mist);
+  border-top:1px solid var(--hair);
+  padding:clamp(52px,7vw,90px) 0 40px;
+  font-size:var(--f-16);
+}
+.foot__grid{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:clamp(28px,4vw,56px);
+}
+.foot__mark{
+  grid-column:1 / span 4;
+  font-family:"Bodoni Moda",Georgia,serif;
+  font-size:var(--f-26);
+  line-height:1.3;
+}
+.foot__col{grid-column:span 3;color:var(--water-soft)}
+.foot__col h3{
+  font-size:var(--f-13);
+  font-weight:500;
+  letter-spacing:.05em;
+  color:var(--water);
+  margin-bottom:12px;
+}
+.foot__col a{text-decoration:none;border-bottom:1px solid transparent;transition:border-color .3s ease}
+.foot__col a:hover{border-bottom-color:var(--hair)}
+.foot__base{
+  margin-top:clamp(40px,6vw,74px);
+  padding-top:22px;
+  border-top:1px solid var(--rule);
+  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  font-size:var(--f-13);
+  color:var(--water-soft);
+}
+@media(max-width:900px){
+  .foot__mark{grid-column:1 / -1}
+  .foot__col{grid-column:span 6}
+}
+@media(max-width:520px){
+  .foot__col{grid-column:1 / -1}
+  .nav__cta{display:none}
+  .hero__title{font-size:clamp(44px,13vw,56px);max-width:92vw;margin-inline:auto}
+  .rooms__pin,.frame{overflow:hidden}
+  .frame__ghost{font-size:clamp(64px,22vw,84px);max-width:100%;overflow:hidden}
+}
+
+/* --- reduced motion -------------------------------------------- */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+    scroll-behavior:auto !important;
+  }
+  .hero{height:100vh}
+  .hero__sticky{position:relative}
+  .hero__dusk{opacity:0 !important}
+  .progress{display:none}
+  .rooms__pin{height:auto;display:block;overflow:visible}
+  .rooms__track{
+    flex-direction:column;align-items:stretch;
+    gap:64px;padding:56px var(--gutter) 40px;
+    transform:none !important;
+  }
+  .frame{width:100%;max-width:none}
+  .frame__shot img{width:100%;margin-left:0;transform:none !important}
+  .svc__panel[data-collapsed]{grid-template-rows:1fr}
+}
+</style>
+<link rel="stylesheet" href="r2-gold.css?v=20260906">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <a class="nav__mark" href="index.html">Brittany Lyons Interiors</a>
+  <nav aria-label="Primary">
+    <ul class="nav__links">
+      <li><a href="portfolio.html">Projects</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="journal.html">Journal</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+  <a class="nav__cta" href="contact.html">Book a discovery call</a>
+</header>
+
+<div class="progress" id="progress" aria-hidden="true"><span class="progress__fill" id="progressFill"></span></div>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="top" aria-label="Introduction">
+    <div class="hero__sticky">
+      <video class="hero__media" id="heroMedia"
+             poster="r2-assets/misc/hero-film-poster.jpg"
+             preload="metadata" autoplay muted loop playsinline
+             aria-label="A bright living room with blue built-ins and brass globe lights">
+        <source src="r2-assets/misc/hero-film.mp4" type="video/mp4">
+      </video>
+      <div class="hero__dusk" id="heroDusk"></div>
+      <div class="hero__veil"></div>
+      <div class="hero__content">
+        <h1 class="hero__title" id="heroTitle">Let the light in.</h1>
+        <p class="hero__sub">Peaceful, functional interiors in Dallas.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INTRO ============ -->
+  <section class="intro">
+    <div class="wrap intro__grid">
+      <p class="intro__statement">Every room should give something back: quiet, order, and a little joy.</p>
+      <div class="intro__body">
+        <p>Brittany Lyons Interiors is a boutique residential studio working across
+           Dallas–Fort Worth since 2016. We start with how you actually want to live in
+           a house, then build the rooms around it. White walls, real daylight, and
+           color that arrives through cabinetry, fabric and brass.</p>
+        <p class="intro__tagline">Helping clients experience self-care through peaceful functional design.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ROOMS ============ -->
+  <section class="rooms" id="projects" aria-label="Selected projects">
+    <div class="wrap rooms__head">
+      <h2>Rooms</h2>
+      <p>A few of the homes we have finished across Dallas–Fort Worth.</p>
+    </div>
+
+    <div class="rooms__pin" id="roomsPin">
+      <div class="rooms__track" id="roomsTrack">
+
+        <article class="frame">
+          <span class="frame__ghost serif" aria-hidden="true">Cavender</span>
+          <div class="frame__shot">
+            <img src="r2-assets/misc/cavender-living-wide.jpg" alt="Cavender living room with a fireplace, blue built-ins and layered daylight" loading="lazy" decoding="async">
+          </div>
+          <div class="frame__cap">
+            <h3 class="frame__name"><a href="project-cavender-oak-cliff.html">Cavender</a></h3>
+            <p class="frame__desc">Oak Cliff, Dallas. Full home renovation and addition.</p>
+          </div>
+        </article>
+
+        <article class="frame">
+          <span class="frame__ghost serif" aria-hidden="true">Haskell</span>
+          <div class="frame__shot">
+            <img src="r2-assets/haskell/kitchen.jpg" alt="Haskell kitchen with pale cabinetry and brass fixtures" loading="lazy" decoding="async">
+          </div>
+          <div class="frame__cap">
+            <h3 class="frame__name"><a href="project-haskell.html">Haskell</a></h3>
+            <p class="frame__desc">Kitchen, bar and living.</p>
+          </div>
+        </article>
+
+        <article class="frame">
+          <span class="frame__ghost serif" aria-hidden="true">Vickery</span>
+          <div class="frame__shot">
+            <img src="r2-assets/misc/vickery-kitchen.jpg" alt="Vickery kitchen with Spanish-inspired detailing" loading="lazy" decoding="async">
+          </div>
+          <div class="frame__cap">
+            <h3 class="frame__name"><a href="project-vickery-dallas.html">Vickery</a></h3>
+            <p class="frame__desc">Spanish-inspired kitchen renovation.</p>
+          </div>
+        </article>
+
+        <article class="frame">
+          <span class="frame__ghost serif" aria-hidden="true">Indian Hills</span>
+          <div class="frame__shot">
+            <img src="r2-assets/misc/indian-hills.jpg" alt="Indian Hills interior after a full home remodel" loading="lazy" decoding="async">
+          </div>
+          <div class="frame__cap">
+            <h3 class="frame__name">Indian Hills</h3>
+            <p class="frame__desc">Full home remodel.</p>
+          </div>
+        </article>
+
+        <article class="frame">
+          <span class="frame__ghost serif" aria-hidden="true">Sukay</span>
+          <div class="frame__shot">
+            <img src="r2-assets/misc/sukay-living.jpg" alt="Sukay living space with natural textures and abundant daylight" loading="lazy" decoding="async">
+          </div>
+          <div class="frame__cap">
+            <h3 class="frame__name"><a href="project-sukay-mckinney.html">Sukay</a></h3>
+            <p class="frame__desc">Bright living space, natural textures.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STUDIO ============ -->
+  <section class="studio" id="about">
+    <div class="wrap studio__grid">
+      <figure class="studio__figure">
+        <img src="r2-assets/misc/brittany-portrait.jpg" alt="Brittany Lyons, principal designer, seated in a light-filled room" loading="lazy" decoding="async">
+      </figure>
+      <div class="studio__text">
+        <h2>The studio</h2>
+        <p class="studio__lead">Hi! I'm Brittany. I run a boutique interior design firm
+           that's been serving clients in the Dallas, Texas area since 2016.</p>
+        <p>One of my clients came to me in the middle of a transition. She was living
+           alone for the first time, in a house that did not yet feel like hers. We made
+           it into a sanctuary, quiet enough to rest in and warm enough to come home to.
+           She told me later that the rooms had changed how her days started.</p>
+        <p>That is the work. Everyone deserves a personal sanctuary for comfort and
+           restoration, and a house can be one if it is planned with care.</p>
+        <a class="textlink" href="about.html">More about Brittany</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICES ============ -->
+  <section class="services" id="services">
+    <div class="wrap">
+      <h2>How we can help</h2>
+
+      <div class="svc">
+        <button class="svc__btn" type="button" aria-expanded="true" aria-controls="svc-1" id="svcbtn-1">
+          <span class="svc__title serif">Renovations and new construction</span>
+          <span class="svc__sign" aria-hidden="true"></span>
+        </button>
+        <div class="svc__panel" id="svc-1" role="region" aria-labelledby="svcbtn-1">
+          <div>
+            <p>Full home renovations, additions, and ground-up new construction. We work
+               alongside your builder from plans through the final install, so the
+               finishes, lighting and millwork are decided before they are ordered.</p>
+            <p class="svc__price">The discovery call is free. An in-home consultation is
+               $350. Pricing after that is set by project.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="svc">
+        <button class="svc__btn" type="button" aria-expanded="true" aria-controls="svc-2" id="svcbtn-2">
+          <span class="svc__title serif">Redesigns</span>
+          <span class="svc__sign" aria-hidden="true"></span>
+        </button>
+        <div class="svc__panel" id="svc-2" role="region" aria-labelledby="svcbtn-2">
+          <div>
+            <p>For rooms that are structurally fine and simply are not working. New
+               furniture plans, sourcing and styling, using what is worth keeping and
+               replacing what is not.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="svc">
+        <button class="svc__btn" type="button" aria-expanded="true" aria-controls="svc-3" id="svcbtn-3">
+          <span class="svc__title serif">Selections: paint, flooring, window treatments</span>
+          <span class="svc__sign" aria-hidden="true"></span>
+        </button>
+        <div class="svc__panel" id="svc-3" role="region" aria-labelledby="svcbtn-3">
+          <div>
+            <p>Painting selections, flooring selections, and custom window treatments,
+               specified as a set so the whole house reads as one house.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ VOICES ============ -->
+  <section class="voices" id="voices">
+    <div class="wrap">
+      <h2>Kind words</h2>
+      <div class="voices__stage" id="voiceStage">
+
+        <figure class="voice is-on">
+          <blockquote>Brittany was a joy to work with. Punctual, professional, and she
+            coordinated the entire project with great precision and proficiency. She has
+            my highest recommendation.</blockquote>
+          <figcaption>B.E., Dallas</figcaption>
+        </figure>
+
+        <figure class="voice">
+          <blockquote>I decided to treat myself by hiring a designer to redo my home
+            office. Brittany completely exceeded my expectations. Now I build an extra
+            5–7 minutes into my Zoom meetings for the compliments about my fabulous new
+            room.</blockquote>
+          <figcaption>T.B., Aubrey</figcaption>
+        </figure>
+
+        <figure class="voice">
+          <blockquote>Brittany was amazing to work with. She captured our style instantly
+            and carried it throughout our home. The quality of work is impeccable. We'll
+            absolutely use her again.</blockquote>
+          <figcaption>S.P., Dallas</figcaption>
+        </figure>
+
+      </div>
+      <div class="voices__dots" id="voiceDots" role="tablist" aria-label="Choose a testimonial"></div>
+    </div>
+  </section>
+
+  <!-- ============ INVITE ============ -->
+  <section class="invite" id="contact">
+    <img class="invite__bg" src="r2-assets/haskell/living.jpg" alt="Haskell living room in full afternoon daylight" loading="lazy" decoding="async">
+    <div class="invite__scrim"></div>
+    <div class="wrap invite__inner">
+      <h2>Start with a conversation.</h2>
+      <p>Tell us about the house and how you want it to feel. The discovery call is free,
+         and there is no obligation after it.</p>
+      <a class="btn" href="contact.html">Book a discovery call</a>
+      <p class="invite__contact">
+        <a href="tel:+12143770251">214-377-0251</a><br>
+        <a href="mailto:info@brittanylyonsinteriors.com">info@brittanylyonsinteriors.com</a>
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__grid">
+      <p class="foot__mark">Brittany Lyons<br>Interiors</p>
+
+      <div class="foot__col">
+        <h3>Studio</h3>
+        <p>1300 S. Polk Street, Suite 166<br>Dallas, TX 75224</p>
+      </div>
+
+      <div class="foot__col">
+        <h3>Get in touch</h3>
+        <p><a href="tel:+12143770251">214-377-0251</a><br>
+           <a href="mailto:info@brittanylyonsinteriors.com">info@brittanylyonsinteriors.com</a></p>
+      </div>
+
+      <div class="foot__col">
+        <h3>Elsewhere</h3>
+        <p><a href="https://www.instagram.com/brittanylyonsinteriors_/" rel="noopener">Instagram</a><br>
+           <a href="https://www.houzz.com/professionals/interior-designers-and-decorators/brittany-lyons-interiors-pfvwus-pf~1797681810" rel="noopener">Houzz, rated 5.0</a></p>
+      </div>
+    </div>
+
+    <div class="foot__base">
+      <p>Serving Dallas, Highland Park, University Park, Oak Cliff, Plano, Frisco, McKinney, Allen and Aubrey.</p>
+      <p>© 2026 Brittany Lyons Interiors</p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js" defer></script>
+<script>
+window.addEventListener('load', function () {
+
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (reduced) {
+    document.querySelectorAll('video[autoplay]').forEach(function (video) {
+      video.removeAttribute('autoplay');
+      video.removeAttribute('loop');
+      video.pause();
+    });
+  }
+
+  /* ---------- nav state (always on, cheap) ---------- */
+  var nav = document.getElementById('nav');
+  function navState() {
+    if (window.scrollY > window.innerHeight * 0.72) nav.classList.add('is-scrolled');
+    else nav.classList.remove('is-scrolled');
+  }
+  navState();
+  window.addEventListener('scroll', navState, { passive: true });
+
+  /* ---------- services accordion (works without GSAP) ---------- */
+  var svcBtns = reduced ? [] : Array.prototype.slice.call(document.querySelectorAll('.svc__btn'));
+  svcBtns.forEach(function (btn, i) {
+    var panel = document.getElementById(btn.getAttribute('aria-controls'));
+    if (i !== 0) { btn.setAttribute('aria-expanded', 'false'); panel.setAttribute('data-collapsed', ''); }
+    btn.addEventListener('click', function () {
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      svcBtns.forEach(function (b) {
+        var p = document.getElementById(b.getAttribute('aria-controls'));
+        b.setAttribute('aria-expanded', 'false');
+        p.setAttribute('data-collapsed', '');
+      });
+      if (!open) { btn.setAttribute('aria-expanded', 'true'); panel.removeAttribute('data-collapsed'); }
+    });
+  });
+
+  /* ---------- testimonial crossfade ---------- */
+  var stage = document.getElementById('voiceStage');
+  var voices = Array.prototype.slice.call(stage.querySelectorAll('.voice'));
+  var dotsWrap = document.getElementById('voiceDots');
+  var section = document.getElementById('voices');
+
+  if (!reduced && voices.length > 1) {
+    section.classList.add('is-cycling');
+    var idx = 0, timer = null, paused = false;
+
+    voices.forEach(function (v, i) {
+      v.classList.toggle('is-on', i === 0);
+      var d = document.createElement('button');
+      d.className = 'dot';
+      d.type = 'button';
+      d.setAttribute('role', 'tab');
+      d.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+      d.setAttribute('aria-label', 'Testimonial ' + (i + 1));
+      d.addEventListener('click', function () { show(i); restart(); });
+      dotsWrap.appendChild(d);
+    });
+    var dots = Array.prototype.slice.call(dotsWrap.children);
+
+    function show(n) {
+      idx = n;
+      voices.forEach(function (v, i) { v.classList.toggle('is-on', i === n); });
+      dots.forEach(function (d, i) { d.setAttribute('aria-selected', i === n ? 'true' : 'false'); });
+    }
+    function tick() { if (!paused) show((idx + 1) % voices.length); }
+    function restart() { clearInterval(timer); timer = setInterval(tick, 7000); }
+    restart();
+
+    ['mouseenter', 'focusin'].forEach(function (e) {
+      section.addEventListener(e, function () { paused = true; });
+    });
+    ['mouseleave', 'focusout'].forEach(function (e) {
+      section.addEventListener(e, function () { paused = false; });
+    });
+  }
+
+  /* ---------- everything below needs GSAP + motion ---------- */
+  if (reduced) return;
+  if (typeof window.gsap === 'undefined' || typeof window.ScrollTrigger === 'undefined') return;
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* Lenis smooth scroll, wired to ScrollTrigger */
+  var lenis = null;
+  if (typeof window.Lenis !== 'undefined') {
+    lenis = new Lenis({ lerp: 0.08, wheelMultiplier: 1, smoothWheel: true });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
+    gsap.ticker.lagSmoothing(0);
+
+    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+      a.addEventListener('click', function (ev) {
+        var id = a.getAttribute('href');
+        if (id.length < 2) return;
+        var t = document.querySelector(id);
+        if (!t) return;
+        ev.preventDefault();
+        lenis.scrollTo(t, { offset: -(nav.offsetHeight + 12) });
+      });
+    });
+  }
+
+  /* ---------- THE EFFECT: scrolling lets the light in ---------- */
+  var media = document.getElementById('heroMedia');
+  var dusk = document.getElementById('heroDusk');
+  var title = document.getElementById('heroTitle');
+  var progress = document.getElementById('progress');
+  var progressFill = document.getElementById('progressFill');
+  var hero = document.querySelector('.hero');
+
+  var light = { b: 0.55, s: 0.6 };
+  gsap.set(dusk, { opacity: 0.45 });
+  gsap.set(media, { filter: 'saturate(0.6) brightness(0.55)' });
+  gsap.set(title, { opacity: 0, scale: 1.15, letterSpacing: '0.04em' });
+
+  var tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: hero,
+      start: 'top top',
+      end: function () { return '+=' + (window.innerHeight * 1.5); },
+      scrub: 0.6,
+      invalidateOnRefresh: true,
+      onToggle: function (self) { progress.classList.toggle('is-live', self.isActive); },
+      onUpdate: function (self) { gsap.set(progressFill, { scaleY: self.progress }); }
+    }
+  });
+
+  tl.to(dusk, { opacity: 0, ease: 'none' }, 0)
+    .to(light, {
+      b: 1.05, s: 1, ease: 'none',
+      onUpdate: function () {
+        media.style.filter = 'saturate(' + light.s.toFixed(3) + ') brightness(' + light.b.toFixed(3) + ')';
+      }
+    }, 0)
+    .to(title, { opacity: 1, scale: 1, letterSpacing: '-0.02em', ease: 'none' }, 0);
+
+  /* ---------- Rooms: pinned horizontal gallery ---------- */
+  var mm = gsap.matchMedia();
+  mm.add('(min-width: 901px)', function () {
+    var track = document.getElementById('roomsTrack');
+    var pin = document.getElementById('roomsPin');
+    var distance = function () { return Math.max(0, track.scrollWidth - window.innerWidth); };
+
+    var scroller = gsap.to(track, {
+      x: function () { return -distance(); },
+      ease: 'none',
+      scrollTrigger: {
+        trigger: pin,
+        start: 'top top',
+        end: function () { return '+=' + distance(); },
+        pin: true,
+        scrub: 1,
+        anticipatePin: 1,
+        invalidateOnRefresh: true
+      }
+    });
+
+    document.querySelectorAll('.frame').forEach(function (frame) {
+      gsap.fromTo(frame.querySelector('img'),
+        { xPercent: -4 },
+        {
+          xPercent: 4, ease: 'none',
+          scrollTrigger: {
+            trigger: frame,
+            containerAnimation: scroller,
+            start: 'left right',
+            end: 'right left',
+            scrub: true,
+            invalidateOnRefresh: true
+          }
+        });
+    });
+
+    return function () { gsap.set(track, { clearProps: 'transform' }); };
+  });
+
+  ScrollTrigger.refresh();
+});
+</script>
+</body>
+</html>

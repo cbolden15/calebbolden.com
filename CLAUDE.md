@@ -12,7 +12,7 @@ Production is the Hetzner server (5.78.121.71), NOT Vercel and NOT the homelab. 
 - Business docs (MSA draft, outreach templates, E&O research): consulting/
 - Interactive tools: app/tools/ai-readiness, app/tools/revenue-leak; capture route app/api/lead-magnet
 - Gated PDFs: public/downloads/ (print HTML sources live in session scratchpad; regenerate via headless Chrome)
-- Brittany Lyons mockups: public/clients/brittany-lyons/; chooser at index.html, existing design in classic/, R2 in r2/, access gate in proxy.ts
+- Brittany Lyons mockups: public/clients/brittany-lyons/; chooser at index.html, existing design in classic/, R2 in r2/, staged R2 Gold variant in r2-gold/, access gate in proxy.ts
 
 ## Visual-system rollout — partially implemented, resume here (as of 2026-08-05)
 

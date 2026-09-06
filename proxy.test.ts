@@ -87,7 +87,7 @@ describe("Brittany Lyons private-link preview", () => {
     expect(response.headers.get("x-robots-tag")).toBe(ROBOTS);
   });
 
-  it("uses the cookie for the chooser, both mockups, and their assets", () => {
+  it("uses the cookie for the chooser, all mockups, and their assets", () => {
     const headers = { cookie: `${cookieName}=${token}` };
     const paths = [
       `${sitePath}/index.html`,
@@ -95,6 +95,9 @@ describe("Brittany Lyons private-link preview", () => {
       `${sitePath}/classic/site.css`,
       `${sitePath}/r2/index.html`,
       `${sitePath}/r2/r2.css`,
+      `${sitePath}/r2-gold/index.html`,
+      `${sitePath}/r2-gold/r2-gold.css`,
+      `${sitePath}/r2-gold-preview.jpeg`,
     ];
 
     for (const path of paths) {

@@ -1,0 +1,254 @@
+/* R2 Gold: a brighter heritage-gold layer over the Still Water system.
+   Client copy and the underlying R2 layout remain unchanged. */
+
+:root {
+  --gold: #C1A948;
+  --gold-soft: #DCCB93;
+  --gold-ink: #78613E;
+  --gold-line: rgba(193, 169, 72, .72);
+  --gold-wash: rgba(193, 169, 72, .075);
+
+  /* Homepage tokens. */
+  --brass: var(--gold);
+  --hair: var(--gold-line);
+
+  /* Interior-page tokens. */
+  --bli-secondary-soft: var(--gold-soft);
+  --bli-secondary: var(--gold);
+  --bli-secondary-ink: var(--gold-ink);
+  --bli-brass: var(--gold);
+  --bli-gold-line: var(--gold-line);
+  --bli-gold-wash: var(--gold-wash);
+}
+
+/* Homepage: carry the existing sunburst into R2 without restoring the old header. */
+.nav {
+  border-bottom-color: rgba(193, 169, 72, .55);
+}
+
+.nav.is-scrolled {
+  border-bottom-color: var(--gold-line);
+}
+
+.nav__mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav__mark::before,
+.foot__mark::before {
+  content: "";
+  display: block;
+  flex: 0 0 auto;
+  background: var(--gold);
+  -webkit-mask: url("r2-assets/misc/bl-logo.png") center / contain no-repeat;
+  mask: url("r2-assets/misc/bl-logo.png") center / contain no-repeat;
+}
+
+.nav__mark::before {
+  width: 34px;
+  height: 34px;
+}
+
+.nav__cta {
+  border-color: var(--gold);
+}
+
+.nav__cta:hover,
+.nav.is-scrolled .nav__cta:hover {
+  color: #223A4A;
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+.progress {
+  background: rgba(193, 169, 72, .28);
+}
+
+.rooms__head,
+.services {
+  border-color: var(--gold-line);
+}
+
+.services {
+  border-top: 1px solid var(--gold-line);
+}
+
+.svc {
+  border-color: rgba(193, 169, 72, .48);
+}
+
+.svc:last-of-type {
+  border-bottom-color: var(--gold-line);
+}
+
+.svc__title {
+  color: var(--gold-ink);
+  transition: color .35s ease;
+}
+
+.svc__btn:hover .svc__title,
+.svc__btn:focus-visible .svc__title {
+  color: var(--water);
+}
+
+.svc__panel > div {
+  padding-left: 18px;
+  border-left: 1px solid transparent;
+  transition: border-color .45s ease;
+}
+
+.svc__btn[aria-expanded="true"] + .svc__panel > div {
+  border-left-color: var(--gold-line);
+}
+
+.svc__price {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.voices__stage {
+  padding-block: 18px;
+  border-block: 1px solid var(--gold-line);
+}
+
+.voice blockquote::before {
+  content: "\201C";
+  display: block;
+  height: 28px;
+  margin-bottom: 10px;
+  color: var(--gold);
+  font-size: 58px;
+  line-height: .8;
+}
+
+.dot {
+  border-color: var(--gold-ink);
+}
+
+.dot[aria-selected="true"] {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+.btn {
+  border: 1px solid var(--gold);
+}
+
+.btn:hover {
+  color: #223A4A;
+  background: var(--gold);
+}
+
+.foot {
+  background:
+    linear-gradient(var(--gold-wash), var(--gold-wash)),
+    var(--mist);
+  border-top-color: var(--gold-line);
+}
+
+.foot__base {
+  border-top-color: var(--gold-line);
+}
+
+.foot__mark::before {
+  width: 72px;
+  height: 72px;
+  margin-bottom: 18px;
+}
+
+.foot__col a:hover,
+.foot__col a:focus-visible {
+  border-bottom-color: var(--gold);
+}
+
+/* Interior pages: one shared accent system across every copied route. */
+.bli-header,
+.bli-pagehero,
+.bli-cta,
+.bli-footer {
+  border-color: var(--bli-gold-line);
+}
+
+.bli-pagehero {
+  border-bottom: 1px solid var(--bli-gold-line);
+}
+
+.bli-kicker,
+.bli-rubric,
+.bli-band .bli-kicker {
+  color: var(--bli-secondary-ink);
+}
+
+.bli-pill--sea {
+  border-color: var(--bli-brass);
+}
+
+.bli-pill--sea:hover,
+.bli-pill--secondary:hover,
+.bli-pill--ghost:hover,
+.bli-pill--ghost-dark:hover {
+  color: var(--bli-primary-dark);
+  background: var(--bli-brass);
+  border-color: var(--bli-brass);
+}
+
+.bli-pill--secondary,
+.bli-pill--ghost,
+.bli-pill--ghost-dark {
+  border-color: var(--bli-brass);
+}
+
+.bli-glance,
+.bli-svc,
+.bli-faq-item,
+.bli-quote,
+.bli-footer__legal {
+  border-color: var(--bli-gold-line);
+}
+
+.bli-quote {
+  border-top: 1px solid var(--bli-gold-line);
+  border-bottom: 1px solid var(--bli-gold-line);
+}
+
+.bli-svc h2,
+.bli-svc h3,
+.bli-uform button {
+  color: var(--bli-secondary-ink);
+}
+
+.bli-footer {
+  background:
+    linear-gradient(var(--bli-gold-wash), var(--bli-gold-wash)),
+    var(--bli-sand);
+}
+
+.bli-footer a:hover,
+.bli-footer a:focus-visible {
+  text-decoration-color: var(--bli-brass);
+}
+
+@media (max-width: 520px) {
+  .nav__mark {
+    gap: 8px;
+  }
+
+  .nav__mark::before {
+    width: 28px;
+    height: 28px;
+  }
+
+  .foot__mark::before {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .svc__title,
+  .svc__panel > div {
+    transition: none;
+  }
+}
