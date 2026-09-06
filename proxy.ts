@@ -7,6 +7,14 @@ type PreviewSite = {
   passwordEnv: string;
 };
 
+type PasswordlessPreview = {
+  path: string;
+  assetPaths: string[];
+  tokenEnv: string;
+  cookieName: string;
+  cookiePath: string;
+};
+
 const PREVIEW_SITES: PreviewSite[] = [
   {
     path: "/clients/brittany-lyons",
@@ -19,6 +27,16 @@ const PREVIEW_SITES: PreviewSite[] = [
     realm: "Field Good Foods preview",
     userEnv: "FIELDGOOD_PREVIEW_USER",
     passwordEnv: "FIELDGOOD_PREVIEW_PASSWORD",
+  },
+];
+
+const PASSWORDLESS_PREVIEWS: PasswordlessPreview[] = [
+  {
+    path: "/clients/fieldgoodfoods/soil-to-supper",
+    assetPaths: ["/clients/fieldgoodfoods/shared"],
+    tokenEnv: "FIELDGOOD_SOIL_TO_SUPPER_TOKEN",
+    cookieName: "fieldgood_soil_to_supper_access",
+    cookiePath: "/clients/fieldgoodfoods",
   },
 ];
 
@@ -100,6 +118,44 @@ export function proxy(request: NextRequest) {
     return withPreviewHeaders(
       NextResponse.rewrite(new URL(internalPath, request.url)),
     );
+  }
+
+  const passwordlessPreview = PASSWORDLESS_PREVIEWS.find(
+    (preview) =>
+      isWithinPath(pathname, preview.path) ||
+      preview.assetPaths.some((path) => isWithinPath(pathname, path)),
+  );
+
+  if (passwordlessPreview) {
+    const expectedToken = process.env[passwordlessPreview.tokenEnv];
+    const isPreviewPage = isWithinPath(pathname, passwordlessPreview.path);
+    const linkToken = isPreviewPage
+      ? request.nextUrl.searchParams.get("preview")
+      : null;
+    const cookieToken = request.cookies.get(
+      passwordlessPreview.cookieName,
+    )?.value;
+
+    if (
+      expectedToken &&
+      (linkToken === expectedToken || cookieToken === expectedToken)
+    ) {
+      const response = withPreviewHeaders(NextResponse.next());
+
+      if (linkToken === expectedToken) {
+        response.cookies.set({
+          name: passwordlessPreview.cookieName,
+          value: expectedToken,
+          httpOnly: true,
+          secure: true,
+          sameSite: "lax",
+          path: passwordlessPreview.cookiePath,
+          maxAge: 60 * 60 * 24 * 90,
+        });
+      }
+
+      return response;
+    }
   }
 
   const site = PREVIEW_SITES.find((s) =>
