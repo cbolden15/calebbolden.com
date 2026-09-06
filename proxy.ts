@@ -22,14 +22,37 @@ const PREVIEW_SITES: PreviewSite[] = [
   },
 ];
 
+const OJA_INTERNAL_PATH = "/client-previews/oja";
+const PREVIEW_ROBOTS_POLICY =
+  "noindex, nofollow, noarchive, nosnippet, noimageindex";
+
+function isWithinPath(pathname: string, basePath: string) {
+  return pathname === basePath || pathname.startsWith(`${basePath}/`);
+}
+
+function normalizePublicPreviewPath(value: string | undefined) {
+  if (!value) return null;
+
+  const path = value.replace(/\/+$/, "");
+  if (!/^\/clients\/[a-z0-9-]{24,}$/i.test(path)) return null;
+
+  return path;
+}
+
+function withPreviewHeaders(response: NextResponse) {
+  response.headers.set("X-Robots-Tag", PREVIEW_ROBOTS_POLICY);
+  response.headers.set("Cache-Control", "private, no-store");
+  response.headers.set("Referrer-Policy", "no-referrer");
+  return response;
+}
+
 function unauthorized(realm: string) {
-  return new NextResponse("Authentication required", {
+  return withPreviewHeaders(new NextResponse("Authentication required", {
     status: 401,
     headers: {
       "WWW-Authenticate": `Basic realm="${realm}", charset="UTF-8"`,
-      "X-Robots-Tag": "noindex, nofollow",
     },
-  });
+  }));
 }
 
 function parseBasicAuth(header: string | null) {
@@ -53,8 +76,34 @@ function parseBasicAuth(header: string | null) {
 }
 
 export function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  if (isWithinPath(pathname, OJA_INTERNAL_PATH)) {
+    return withPreviewHeaders(new NextResponse("Not found", { status: 404 }));
+  }
+
+  const ojaPublicPath = normalizePublicPreviewPath(
+    process.env.OJA_PREVIEW_PATH,
+  );
+
+  if (ojaPublicPath && isWithinPath(pathname, ojaPublicPath)) {
+    if (pathname === ojaPublicPath) {
+      return withPreviewHeaders(
+        NextResponse.redirect(
+          new URL(`${ojaPublicPath}/index.html`, request.url),
+          307,
+        ),
+      );
+    }
+
+    const internalPath = `${OJA_INTERNAL_PATH}${pathname.slice(ojaPublicPath.length)}`;
+    return withPreviewHeaders(
+      NextResponse.rewrite(new URL(internalPath, request.url)),
+    );
+  }
+
   const site = PREVIEW_SITES.find((s) =>
-    request.nextUrl.pathname.startsWith(s.path),
+    isWithinPath(pathname, s.path),
   );
 
   if (!site) {
@@ -65,12 +114,9 @@ export function proxy(request: NextRequest) {
   const expectedPassword = process.env[site.passwordEnv];
 
   if (!expectedUsername || !expectedPassword) {
-    return new NextResponse("Preview password not configured", {
-      status: 503,
-      headers: {
-        "X-Robots-Tag": "noindex, nofollow",
-      },
-    });
+    return withPreviewHeaders(
+      new NextResponse("Preview password not configured", { status: 503 }),
+    );
   }
 
   const credentials = parseBasicAuth(request.headers.get("authorization"));
@@ -87,14 +133,13 @@ export function proxy(request: NextRequest) {
   // URLs can't be served here. The bare path rewrites to index.html; that page
   // carries a <base href> so its relative links resolve correctly.
   const response =
-    request.nextUrl.pathname === site.path
+    pathname === site.path
       ? NextResponse.rewrite(new URL(`${site.path}/index.html`, request.url))
       : NextResponse.next();
 
-  response.headers.set("X-Robots-Tag", "noindex, nofollow");
-  return response;
+  return withPreviewHeaders(response);
 }
 
 export const config = {
-  matcher: ["/clients/brittany-lyons/:path*", "/clients/fieldgoodfoods/:path*"],
+  matcher: ["/clients/:path*", "/client-previews/:path*"],
 };

@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Concept B for The OJÄ Experience: a warm editorial approach to bespoke gifting and hospitality.">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="referrer" content="no-referrer">
+  <title>The OJÄ Experience | The OJÄ Edit</title>
+  <script>document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');</script>
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/oja-curated-gifting.webp" as="image" type="image/webp">
+  <link rel="preload" href="assets/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/playfair-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/playfair-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <style>
+    @font-face {
+      font-family: "Manrope";
+      src: url("assets/manrope-latin.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 400 600;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Playfair Display";
+      src: url("assets/playfair-normal-latin.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 600 700;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Playfair Display";
+      src: url("assets/playfair-italic-latin.woff2") format("woff2");
+      font-style: italic;
+      font-weight: 500;
+      font-display: swap;
+    }
+
+    :root {
+      --ink: #0b0b0a;
+      --paper: #f4eee3;
+      --paper-raised: #faf6ef;
+      --paper-deep: #e8dece;
+      --gold: #c9a227;
+      --gold-deep: #755a08;
+      --muted: #686159;
+      --line: rgba(11, 11, 10, 0.2);
+      --line-light: rgba(11, 11, 10, 0.11);
+      --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+      --font-body: "Manrope", "Helvetica Neue", Arial, sans-serif;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --nav-h: 62px;
+      --masthead-h: 100px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--paper);
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      overflow-x: clip;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body.menu-open { overflow: hidden; }
+
+    a { color: inherit; }
+    button, input { font: inherit; }
+    button { color: inherit; }
+    img { display: block; max-width: 100%; height: auto; }
+
+    ::selection {
+      background: var(--gold);
+      color: var(--ink);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--gold-deep);
+      outline-offset: 5px;
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 100;
+      padding: 10px 14px;
+      background: var(--ink);
+      color: var(--paper);
+      transform: translateY(-160%);
+      transition: transform 180ms ease;
+    }
+
+    .skip-link:focus-visible { transform: translateY(0); }
+
+    .shell {
+      width: min(calc(100% - 64px), 1360px);
+      margin-inline: auto;
+    }
+
+    .site-header {
+      position: relative;
+      z-index: 20;
+      background: var(--paper);
+    }
+
+    .masthead {
+      height: var(--masthead-h);
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .masthead-meta {
+      margin: 0;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      line-height: 1.5;
+      text-transform: uppercase;
+    }
+
+    .masthead-meta:last-child { justify-self: end; text-align: right; }
+
+    .masthead-wordmark {
+      padding: 0 clamp(34px, 5vw, 82px);
+      border-inline: 1px solid var(--line);
+      font-family: var(--font-display);
+      font-size: clamp(48px, 5.2vw, 76px);
+      font-weight: 700;
+      line-height: 0.95;
+      letter-spacing: -0.06em;
+      text-decoration: none;
+    }
+
+    .navigation {
+      height: var(--nav-h);
+      display: grid;
+      grid-template-columns: minmax(180px, 1fr) auto minmax(180px, 1fr);
+      align-items: stretch;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-name,
+    .nav-action,
+    .nav-toggle {
+      display: flex;
+      align-items: center;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .nav-name { justify-self: start; }
+
+    .nav-links {
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .nav-links li { display: flex; }
+
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      padding: 0 22px;
+      border-left: 1px solid var(--line-light);
+      color: #302d29;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: color 220ms ease, background-color 220ms ease;
+    }
+
+    .nav-links li:last-child a { border-right: 1px solid var(--line-light); }
+
+    .nav-links a:hover {
+      color: var(--gold-deep);
+      background: rgba(201,162,39,.08);
+    }
+
+    .nav-action {
+      justify-self: end;
+      padding-left: 24px;
+      border-left: 1px solid var(--line);
+    }
+
+    .nav-action span {
+      padding-bottom: 3px;
+      border-bottom: 1px solid var(--gold-deep);
+    }
+
+    .nav-toggle {
+      display: none;
+      justify-self: end;
+      border: 0;
+      border-bottom: 1px solid var(--gold-deep);
+      padding: 4px 0 2px;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .nav-panel { display: none; }
+
+    .hero {
+      min-height: calc(100dvh - var(--masthead-h) - var(--nav-h));
+      display: grid;
+      grid-template-columns: minmax(430px, 0.86fr) minmax(560px, 1.14fr);
+      border-bottom: 1px solid var(--ink);
+      background: var(--paper-raised);
+    }
+
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 52px clamp(40px, 6vw, 90px) 54px max(32px, calc((100vw - 1360px) / 2 + 32px));
+    }
+
+    .eyebrow {
+      margin: 0 0 20px;
+      color: var(--gold-deep);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    .hero h1 {
+      max-width: 570px;
+      margin-bottom: 24px;
+      font-family: var(--font-display);
+      font-size: clamp(3.4rem, 5.6vw, 6rem);
+      font-weight: 600;
+      line-height: 0.96;
+      letter-spacing: -0.052em;
+      text-wrap: balance;
+    }
+
+    .hero h1 em {
+      display: inline-block;
+      color: var(--gold-deep);
+      font-weight: 500;
+      line-height: 1.1;
+      padding-bottom: 0.05em;
+    }
+
+    .hero-intro {
+      max-width: 430px;
+      margin-bottom: 30px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .button {
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 13px 24px;
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: var(--paper);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      line-height: 1.2;
+      text-transform: uppercase;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: transform 260ms var(--ease), background-color 260ms ease, color 260ms ease;
+    }
+
+    .button:hover {
+      background: var(--gold);
+      color: var(--ink);
+      transform: translateY(-2px);
+    }
+
+    .button:active { transform: translateY(1px); }
+
+    .button.secondary {
+      background: transparent;
+      color: var(--ink);
+      border-color: var(--line);
+    }
+
+    .button.secondary:hover {
+      background: var(--ink);
+      color: var(--paper);
+      border-color: var(--ink);
+    }
+
+    .hero-gallery {
+      min-width: 0;
+      display: flex;
+      align-items: stretch;
+      overflow: hidden;
+      border-left: 1px solid var(--ink);
+      background: var(--paper-deep);
+    }
+
+    .gallery-panel {
+      position: relative;
+      min-width: 0;
+      flex: 1 1 0;
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) auto;
+      padding: 0;
+      border: 0;
+      border-left: 1px solid rgba(11,11,10,.2);
+      background: var(--paper);
+      cursor: pointer;
+      transform-origin: center;
+      transition: transform 520ms var(--ease), opacity 420ms ease;
+    }
+
+    .gallery-panel:first-child { border-left: 0; }
+
+    .gallery-panel .image-wrap {
+      display: block;
+      min-height: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #d8c9b4;
+    }
+
+    .gallery-panel img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(.86);
+      transition: transform 700ms var(--ease), filter 420ms ease;
+    }
+
+    .gallery-panel figcaption {
+      display: flex;
+      align-items: center;
+      min-height: 54px;
+      padding: 14px 18px;
+      color: #39342e;
+      font-family: var(--font-display);
+      font-size: clamp(14px, 1.35vw, 20px);
+      line-height: 1.1;
+      text-align: left;
+    }
+
+    .hero-gallery:has(.gallery-panel:hover) .gallery-panel:not(:hover),
+    .hero-gallery:has(.gallery-panel:focus-visible) .gallery-panel:not(:focus-visible) {
+      opacity: .66;
+    }
+
+    .gallery-panel:hover,
+    .gallery-panel:focus-visible {
+      transform: scaleX(1.035);
+      z-index: 2;
+    }
+
+    .gallery-panel:hover img,
+    .gallery-panel:focus-visible img {
+      transform: scale(1.045);
+      filter: saturate(1);
+    }
+
+    .section {
+      position: relative;
+      padding-block: clamp(96px, 11vw, 172px);
+    }
+
+    .section-title {
+      max-width: 960px;
+      margin-bottom: 30px;
+      font-family: var(--font-display);
+      font-size: clamp(3.1rem, 6.35vw, 6.7rem);
+      font-weight: 600;
+      line-height: 0.98;
+      letter-spacing: -0.052em;
+      text-wrap: balance;
+    }
+
+    .section-title em {
+      display: inline-block;
+      color: var(--gold-deep);
+      font-weight: 500;
+      line-height: 1.1;
+      padding-bottom: 0.05em;
+    }
+
+    .purpose {
+      border-bottom: 1px solid var(--line);
+      background: var(--paper);
+    }
+
+    .purpose .section-title {
+      max-width: 1050px;
+      margin-bottom: clamp(64px, 9vw, 120px);
+    }
+
+    .purpose-grid {
+      display: grid;
+      grid-template-columns: 0.55fr 0.7fr 1.22fr;
+      gap: clamp(28px, 5vw, 72px);
+      align-items: end;
+    }
+
+    .purpose-small {
+      align-self: end;
+      margin: 0;
+    }
+
+    .purpose-small img {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      filter: sepia(.08) saturate(.72);
+    }
+
+    .purpose-copy {
+      align-self: start;
+      padding-top: 8px;
+    }
+
+    .purpose-copy h3 {
+      margin-bottom: 20px;
+      font-family: var(--font-display);
+      font-size: clamp(26px, 2.5vw, 38px);
+      font-weight: 600;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+
+    .purpose-copy p {
+      margin-bottom: 20px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .purpose-copy p:last-child { margin-bottom: 0; }
+
+    .purpose-large {
+      position: relative;
+      margin: 0;
+    }
+
+    .purpose-large::after {
+      content: "";
+      position: absolute;
+      right: -18px;
+      bottom: -18px;
+      width: 50%;
+      height: 50%;
+      border-right: 1px solid var(--gold-deep);
+      border-bottom: 1px solid var(--gold-deep);
+    }
+
+    .purpose-large img {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 5 / 6;
+      object-fit: cover;
+      object-position: center 18%;
+    }
+
+    .services {
+      overflow: hidden;
+      border-bottom: 1px solid var(--ink);
+      background: var(--paper-raised);
+    }
+
+    .section-heading-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 34px;
+      align-items: end;
+      margin-bottom: clamp(48px, 7vw, 86px);
+    }
+
+    .section-heading-row .section-title { margin-bottom: 0; }
+
+    .carousel-controls {
+      display: flex;
+      gap: 8px;
+      padding-bottom: 8px;
+    }
+
+    .carousel-control {
+      min-width: 74px;
+      min-height: 42px;
+      border: 1px solid var(--ink);
+      background: transparent;
+      color: var(--ink);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background-color 220ms ease, color 220ms ease, transform 220ms var(--ease);
+    }
+
+    .carousel-control:hover {
+      background: var(--ink);
+      color: var(--paper);
+      transform: translateY(-2px);
+    }
+
+    .service-track {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      border: 1px solid var(--ink);
+    }
+
+    .service-track::-webkit-scrollbar { display: none; }
+
+    .service-card {
+      min-width: min(420px, 82vw);
+      flex: 1 0 min(420px, 82vw);
+      scroll-snap-align: start;
+      border-left: 1px solid var(--ink);
+      background: var(--paper);
+    }
+
+    .service-card:first-child { border-left: 0; }
+
+    .service-card figure { margin: 0; overflow: hidden; }
+
+    .service-card img {
+      width: 100%;
+      aspect-ratio: 4 / 4.6;
+      object-fit: cover;
+      transition: transform 700ms var(--ease);
+    }
+
+    .service-card:hover img { transform: scale(1.025); }
+
+    .service-card-content { padding: 30px 30px 36px; }
+
+    .service-card h3 {
+      min-height: 2.15em;
+      margin-bottom: 15px;
+      font-family: var(--font-display);
+      font-size: clamp(26px, 2.5vw, 36px);
+      font-weight: 600;
+      line-height: 1.06;
+      letter-spacing: -0.03em;
+    }
+
+    .service-card p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .expect {
+      background: var(--paper-deep);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .expect-grid {
+      display: grid;
+      grid-template-columns: minmax(300px, 0.72fr) minmax(520px, 1.28fr);
+      gap: clamp(60px, 10vw, 150px);
+      align-items: start;
+    }
+
+    .expect-intro {
+      position: sticky;
+      top: 34px;
+    }
+
+    .expect-intro .section-title { margin-bottom: 26px; }
+
+    .expect-intro p {
+      max-width: 420px;
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .expect-list {
+      margin: 0;
+      padding: 0;
+      border-top: 1px solid var(--ink);
+      list-style: none;
+    }
+
+    .expect-item {
+      display: grid;
+      grid-template-columns: minmax(180px, .72fr) 1fr;
+      gap: 28px;
+      padding: 30px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .expect-item h3 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: clamp(22px, 2.1vw, 31px);
+      font-weight: 600;
+      line-height: 1.08;
+      letter-spacing: -0.025em;
+    }
+
+    .expect-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.72;
+    }
+
+    .booking {
+      min-height: 82dvh;
+      display: grid;
+      align-items: center;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, rgba(244,238,227,.98) 0%, rgba(244,238,227,.9) 52%, rgba(244,238,227,.5) 100%),
+        url("assets/oja-tulle.jpg") right center / cover no-repeat;
+    }
+
+    .booking-copy { max-width: 880px; }
+
+    .booking-copy .section-title { margin-bottom: 26px; }
+
+    .booking-copy p {
+      max-width: 510px;
+      margin-bottom: 32px;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .site-footer {
+      padding: 56px 0 30px;
+      border-top: 1px solid var(--ink);
+      background: var(--paper);
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.45fr repeat(3, 1fr);
+      gap: 42px;
+      align-items: start;
+    }
+
+    .footer-wordmark {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 5vw, 74px);
+      font-weight: 700;
+      line-height: 0.9;
+      letter-spacing: -0.06em;
+      text-decoration: none;
+    }
+
+    .footer-brand p {
+      max-width: 290px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer-column h2 {
+      margin: 3px 0 14px;
+      color: var(--gold-deep);
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.17em;
+      text-transform: uppercase;
+    }
+
+    .footer-column a,
+    .footer-column p {
+      display: block;
+      margin: 0 0 8px;
+      color: #3d3832;
+      font-size: 13px;
+      text-decoration: none;
+    }
+
+    .footer-column a:hover { color: var(--gold-deep); }
+
+    .footer-bottom {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      margin-top: 50px;
+      padding-top: 21px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .js [data-reveal] {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 820ms var(--ease), transform 820ms var(--ease);
+    }
+
+    .js [data-reveal].is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .masthead-meta,
+      .navigation > * {
+        opacity: 0;
+        animation: header-arrive 760ms var(--ease) forwards;
+      }
+      .masthead-meta:first-child { animation-delay: 210ms; }
+      .masthead-meta:last-child { animation-delay: 290ms; }
+      .navigation > :nth-child(1) { animation-delay: 340ms; }
+      .navigation > :nth-child(2) { animation-delay: 400ms; }
+      .navigation > :nth-child(3) { animation-delay: 460ms; }
+      .hero-copy > :not(h1) {
+        opacity: 0;
+        animation: hero-arrive 850ms var(--ease) forwards;
+      }
+      .hero-copy > :nth-child(1) { animation-delay: 460ms; }
+      .hero-copy > :nth-child(3) { animation-delay: 560ms; }
+      .hero-copy > :nth-child(4) { animation-delay: 680ms; }
+      .gallery-panel {
+        animation: panel-arrive 940ms var(--ease) forwards;
+      }
+      .gallery-panel:nth-child(1) { animation-delay: 520ms; }
+      .gallery-panel:nth-child(2) { animation-delay: 640ms; }
+      .gallery-panel:nth-child(3) { animation-delay: 760ms; }
+    }
+
+    @keyframes header-arrive {
+      from { opacity: 0; transform: translateY(-14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes hero-arrive {
+      from { opacity: 0; transform: translateY(20px); filter: blur(7px); }
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+
+    @keyframes panel-arrive {
+      from { transform: translateY(26px); }
+      to { transform: translateY(0); }
+    }
+
+    @media (max-width: 1080px) {
+      .shell { width: min(calc(100% - 44px), 920px); }
+
+      .masthead { grid-template-columns: 1fr auto 1fr; }
+      .masthead-wordmark { padding-inline: 36px; }
+
+      .navigation { grid-template-columns: 1fr auto; }
+      .nav-links,
+      .nav-action { display: none; }
+      .nav-toggle { display: flex; align-self: center; }
+
+      .nav-panel {
+        position: fixed;
+        inset: 0;
+        z-index: 19;
+        display: grid;
+        align-content: center;
+        gap: 20px;
+        padding: 114px 24px 48px;
+        background: rgba(244,238,227,.99);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-18px);
+        transition: opacity 340ms var(--ease), transform 340ms var(--ease), visibility 340ms;
+      }
+
+      .nav-panel[data-open="true"] {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .no-js .nav-toggle { display: none; }
+
+      .no-js .nav-panel {
+        position: relative;
+        inset: auto;
+        z-index: auto;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px 22px;
+        padding: 14px 22px;
+        background: var(--paper);
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+      }
+
+      .no-js .nav-panel a {
+        padding: 4px 0;
+        border: 0;
+        font-family: var(--font-body);
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: .12em;
+        line-height: 1.4;
+        text-transform: uppercase;
+      }
+
+      .nav-panel a {
+        padding: 9px 0;
+        border-bottom: 1px solid var(--line);
+        font-family: var(--font-display);
+        font-size: clamp(34px, 9vw, 58px);
+        line-height: 1.08;
+        text-decoration: none;
+      }
+
+      .hero {
+        grid-template-columns: 0.9fr 1.1fr;
+      }
+
+      .hero-copy { padding-left: 24px; padding-right: 34px; }
+      .hero h1 { font-size: clamp(3.15rem, 6vw, 5.3rem); }
+
+      .purpose-grid {
+        grid-template-columns: .72fr 1fr;
+      }
+
+      .purpose-small { display: none; }
+
+      .expect-grid {
+        grid-template-columns: 1fr;
+        gap: 54px;
+      }
+
+      .expect-intro { position: relative; top: auto; }
+
+      .footer-top { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 760px) {
+      :root {
+        --masthead-h: 78px;
+        --nav-h: 56px;
+      }
+
+      .shell { width: calc(100% - 36px); }
+
+      .masthead {
+        grid-template-columns: 1fr auto;
+      }
+
+      .masthead-meta { display: none; }
+
+      .masthead-wordmark {
+        grid-column: 1;
+        justify-self: start;
+        padding: 0;
+        border: 0;
+        font-size: 49px;
+      }
+
+      .masthead::after {
+        content: "Bespoke gifting";
+        justify-self: end;
+        color: var(--muted);
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+      }
+
+      .navigation { grid-template-columns: 1fr auto; }
+
+      .hero {
+        height: calc(100dvh - var(--masthead-h) - var(--nav-h));
+        min-height: calc(100dvh - var(--masthead-h) - var(--nav-h));
+        grid-template-columns: 1fr;
+        grid-template-rows: auto minmax(0, 1fr);
+      }
+
+      .hero-copy {
+        padding: 30px 18px 28px;
+      }
+
+      .hero h1 {
+        max-width: 560px;
+        margin-bottom: 18px;
+        font-size: clamp(3rem, 14vw, 4.6rem);
+      }
+
+      .hero-intro {
+        max-width: 360px;
+        margin-bottom: 24px;
+        font-size: 14px;
+      }
+
+      .eyebrow { margin-bottom: 13px; }
+
+      .hero-gallery {
+        min-height: 0;
+        height: auto;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        border-top: 1px solid var(--ink);
+        border-left: 0;
+        scrollbar-width: none;
+      }
+
+      .hero-gallery::-webkit-scrollbar { display: none; }
+
+      .gallery-panel {
+        min-width: 76vw;
+        flex: 0 0 76vw;
+        scroll-snap-align: center;
+      }
+
+      .gallery-panel:hover,
+      .gallery-panel:focus-visible { transform: none; }
+
+      .gallery-panel figcaption { min-height: 45px; padding: 11px 15px; }
+
+      .section { padding-block: 88px; }
+
+      .section-title { font-size: clamp(2.9rem, 13vw, 4.7rem); }
+
+      .purpose .section-title { margin-bottom: 52px; }
+
+      .purpose-grid { grid-template-columns: 1fr; gap: 46px; }
+
+      .purpose-copy { order: 2; }
+      .purpose-large { order: 1; width: calc(100% - 18px); }
+
+      .section-heading-row {
+        grid-template-columns: 1fr;
+        gap: 22px;
+      }
+
+      .carousel-controls { padding: 0; }
+
+      .service-track {
+        width: calc(100% + 18px);
+      }
+
+      .service-card {
+        min-width: 82vw;
+        flex-basis: 82vw;
+      }
+
+      .service-card-content { padding: 25px 22px 30px; }
+
+      .expect-grid { gap: 44px; }
+
+      .expect-item {
+        grid-template-columns: 1fr;
+        gap: 11px;
+        padding: 26px 0;
+      }
+
+      .booking {
+        min-height: 76dvh;
+        background:
+          linear-gradient(to bottom, rgba(244,238,227,.95), rgba(244,238,227,.78)),
+          url("assets/oja-tulle.jpg") center / cover no-repeat;
+      }
+
+      .footer-top { grid-template-columns: 1fr; gap: 28px; }
+      .footer-bottom { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .js [data-reveal] { opacity: 1; transform: none; }
+      .gallery-panel { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" id="top">
+    <div class="masthead shell">
+      <p class="masthead-meta">Bespoke gifting<br>Private celebrations</p>
+      <a class="masthead-wordmark" href="#top" aria-label="The OJÄ Experience home">OJÄ</a>
+      <p class="masthead-meta">Hospitality curation<br>Corporate gatherings</p>
+    </div>
+    <nav class="navigation shell" aria-label="Primary navigation">
+      <a class="nav-name" href="#top">The OJÄ Experience</a>
+      <ul class="nav-links">
+        <li><a href="#purpose">Purpose</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#expect">What to expect</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a class="nav-action" href="https://www.honeybook.com/widget/the_ojexperience_294656/cf_id/6907d7a3ed781f0034ca32cf" target="_blank" rel="noreferrer"><span>Reserve now</span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">Menu</button>
+    </nav>
+  </header>
+
+  <div class="nav-panel" id="mobile-menu" data-open="false">
+    <a href="#purpose">Purpose</a>
+    <a href="#services">Services</a>
+    <a href="#expect">What to expect</a>
+    <a href="#contact">Contact</a>
+    <a href="https://www.honeybook.com/widget/the_ojexperience_294656/cf_id/6907d7a3ed781f0034ca32cf" target="_blank" rel="noreferrer">Reserve now</a>
+  </div>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">The OJÄ Experience</p>
+        <h1 id="hero-title">Hospitality, <em>considered.</em></h1>
+        <p class="hero-intro">Bespoke gifting and guest experiences designed around the people you want to celebrate.</p>
+        <div class="actions">
+          <a class="button" href="https://www.honeybook.com/widget/the_ojexperience_294656/cf_id/6907d7a3ed781f0034ca32cf" target="_blank" rel="noreferrer">Reserve now</a>
+          <a class="button secondary" href="#services">View services</a>
+        </div>
+      </div>
+
+      <div class="hero-gallery" role="group" aria-label="The OJÄ signature services">
+        <figure class="gallery-panel" tabindex="0">
+          <span class="image-wrap"><img src="assets/oja-curated-gifting.webp" alt="Curated gift box with silk, candle, fragrance, and linen" width="1122" height="1402" fetchpriority="high"></span>
+          <figcaption>Curated gifting</figcaption>
+        </figure>
+        <figure class="gallery-panel" tabindex="0">
+          <span class="image-wrap"><img src="assets/oja-hospitality.webp" alt="Luxury hotel welcome tray with gift, robe, sparkling water, and flowers" width="1122" height="1402"></span>
+          <figcaption>Hospitality enhancements</figcaption>
+        </figure>
+        <figure class="gallery-panel" tabindex="0">
+          <span class="image-wrap"><img src="assets/oja-corporate.webp" alt="Corporate gift box with notebook, pen, candle, fragrance, and blue textile" width="1122" height="1402"></span>
+          <figcaption>Brand solutions</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section purpose" id="purpose" aria-labelledby="purpose-title">
+      <div class="shell">
+        <h2 class="section-title" id="purpose-title" data-reveal>A thoughtful welcome changes the whole <em>experience.</em></h2>
+        <div class="purpose-grid">
+          <figure class="purpose-small" data-reveal>
+            <img src="assets/oja-tulle.jpg" alt="Soft folds of ivory tulle" width="2400" height="1600" loading="lazy">
+          </figure>
+          <div class="purpose-copy" data-reveal>
+            <h3>Purpose, made tangible.</h3>
+            <p>The OJÄ Experience was created to redefine the art of hospitality. We curate bespoke gifting and elevated guest experiences that leave a lasting impression.</p>
+            <p>Founded by Ogechi in Atlanta, OJÄ brings a precise eye and a generous spirit to celebrations, corporate gatherings, and guest arrivals.</p>
+          </div>
+          <figure class="purpose-large" data-reveal>
+            <img src="assets/ogechi-founder-red.jpg" alt="Ogechi, founder of The OJÄ Experience, wearing a red dress" width="568" height="640" loading="lazy">
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section services" id="services" aria-labelledby="services-title">
+      <div class="shell">
+        <div class="section-heading-row" data-reveal>
+          <h2 class="section-title" id="services-title">The OJÄ <em>aesthetic.</em></h2>
+          <div class="carousel-controls" role="group" aria-label="Service carousel controls">
+            <button class="carousel-control" type="button" data-direction="back">Back</button>
+            <button class="carousel-control" type="button" data-direction="next">Next</button>
+          </div>
+        </div>
+
+        <div class="service-track" id="service-track" tabindex="0">
+          <article class="service-card">
+            <figure><img src="assets/oja-curated-gifting.webp" alt="Open ivory gift box arranged with premium keepsakes" width="1122" height="1402" loading="lazy"></figure>
+            <div class="service-card-content">
+              <h3>Curated Gifting</h3>
+              <p>Personalized gift boxes, monogrammed keepsakes, seasonal offerings, event favors, and luxury baskets chosen for the person and the moment.</p>
+            </div>
+          </article>
+          <article class="service-card">
+            <figure><img src="assets/oja-hospitality.webp" alt="Hotel welcome arrangement in a sunlit luxury suite" width="1122" height="1402" loading="lazy"></figure>
+            <div class="service-card-content">
+              <h3>Hospitality Enhancements</h3>
+              <p>Hotel room setups, VIP welcome suites, arrival baskets, floral details, and coordinated touches that make a stay feel personal.</p>
+            </div>
+          </article>
+          <article class="service-card">
+            <figure><img src="assets/oja-corporate.webp" alt="Tailored corporate gift set in charcoal, ivory, gold, and blue" width="1122" height="1402" loading="lazy"></figure>
+            <div class="service-card-content">
+              <h3>Corporate &amp; Brand Solutions</h3>
+              <p>Client appreciation, employee gifting, conference details, branded merchandise, and presentation designed to reflect your identity.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section expect" id="expect" aria-labelledby="expect-title">
+      <div class="shell expect-grid">
+        <div class="expect-intro" data-reveal>
+          <h2 class="section-title" id="expect-title">What you can <em>expect.</em></h2>
+          <p>Every engagement is shaped around the host, the guest, and the feeling the occasion should leave behind.</p>
+        </div>
+        <ol class="expect-list" data-reveal>
+          <li class="expect-item">
+            <h3>Bespoke personalization</h3>
+            <p>Every detail reflects the host's vision and each guest's unique experience.</p>
+          </li>
+          <li class="expect-item">
+            <h3>Seamless service</h3>
+            <p>We manage the fine details from start to finish, including professional coordination and delivery.</p>
+          </li>
+          <li class="expect-item">
+            <h3>Luxury craftsmanship</h3>
+            <p>Premium products, elevated materials, and elegant packaging are selected with intention.</p>
+          </li>
+          <li class="expect-item">
+            <h3>Unforgettable impressions</h3>
+            <p>Guests feel valued, celebrated, and remembered long after the moment has passed.</p>
+          </li>
+          <li class="expect-item">
+            <h3>Tailored flexibility</h3>
+            <p>An intimate celebration and a large gathering receive the same attention and care.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section booking" id="contact" aria-labelledby="booking-title">
+      <div class="shell">
+        <div class="booking-copy" data-reveal>
+          <h2 class="section-title" id="booking-title">Plan a welcome they will <em>remember.</em></h2>
+          <p>Your personalized luxury experience begins here. Reserve your bespoke gifting or hospitality service below.</p>
+          <a class="button" href="https://www.honeybook.com/widget/the_ojexperience_294656/cf_id/6907d7a3ed781f0034ca32cf" target="_blank" rel="noreferrer">Reserve now</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="footer-wordmark" href="#top">OJÄ</a>
+          <p>Redefining hospitality, one guest at a time.</p>
+        </div>
+        <div class="footer-column">
+          <h2>Contact</h2>
+          <a href="mailto:the.ojaexperience@gmail.com">the.ojaexperience@gmail.com</a>
+        </div>
+        <div class="footer-column">
+          <h2>Social</h2>
+          <a href="https://www.instagram.com/the.ojaexperience/" target="_blank" rel="noreferrer">@the.ojaexperience</a>
+        </div>
+        <div class="footer-column">
+          <h2>Based in</h2>
+          <p>Atlanta, Georgia</p>
+          <p>Travel available upon request</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 The OJÄ Experience</span>
+        <span>Bespoke gifting and hospitality curation</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const navToggle = document.querySelector('.nav-toggle');
+      const navPanel = document.querySelector('.nav-panel');
+
+      const setMenu = (open) => {
+        navToggle.setAttribute('aria-expanded', String(open));
+        navToggle.textContent = open ? 'Close' : 'Menu';
+        navPanel.dataset.open = String(open);
+        navPanel.setAttribute('aria-hidden', String(!open));
+        document.body.classList.toggle('menu-open', open);
+      };
+
+      navToggle.addEventListener('click', () => setMenu(navToggle.getAttribute('aria-expanded') !== 'true'));
+      navPanel.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setMenu(false)));
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && navToggle.getAttribute('aria-expanded') === 'true') {
+          setMenu(false);
+          navToggle.focus();
+        }
+      });
+
+      const revealItems = document.querySelectorAll('[data-reveal]');
+      if (reduceMotion || !('IntersectionObserver' in window)) {
+        revealItems.forEach((item) => item.classList.add('is-visible'));
+      } else {
+        const observer = new IntersectionObserver((entries, revealObserver) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            revealObserver.unobserve(entry.target);
+          });
+        }, { threshold: 0.14, rootMargin: '0px 0px -6% 0px' });
+        revealItems.forEach((item) => observer.observe(item));
+      }
+
+      const track = document.querySelector('#service-track');
+      const controls = document.querySelectorAll('.carousel-control');
+      controls.forEach((control) => {
+        control.addEventListener('click', () => {
+          const direction = control.dataset.direction === 'next' ? 1 : -1;
+          track.scrollBy({ left: track.clientWidth * 0.78 * direction, behavior: reduceMotion ? 'auto' : 'smooth' });
+        });
+      });
+
+      window.addEventListener('pagehide', () => setMenu(false), { once: true });
+    })();
+  </script>
+</body>
+</html>
