@@ -91,6 +91,10 @@ The app lives in `/opt/calebbolden`:
 
 A shared Caddy reverse proxy at `/opt/caddy` routes `calebbolden.com` to the `calebbolden-site` container on port `3000`.
 
+Before replacing `repo`, compare the server's `public/clients` tree with the
+commit being deployed. Production may contain live-only client-preview
+variants; preserve them or reconcile them into Git before the directory swap.
+
 Deploy from the local repo:
 
 ```bash
@@ -109,6 +113,7 @@ A secondary Docker and Cloudflare Tunnel stack exists on the homelab server. It 
 ## Environment variables
 
 - `GOOGLE_GENERATIVE_AI_API_KEY`: Gemini chat key.
+- `OJA_PREVIEW_PATH`: runtime-only, high-entropy URL path for the unlisted OJÄ preview.
 - `RESEND_API_KEY`: Resend key for lead notification emails.
 - `LEAD_EMAIL_TO`: optional lead email recipient.
 - `LEAD_EMAIL_FROM`: optional lead email sender.
