@@ -124,7 +124,17 @@
       background: var(--card);
     }
 
-    .logo-candidates h2 { margin-top: 10px; font-size: 21px; font-weight: 600; }
+    .logo-candidates__head {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: flex-start;
+      padding-top: 10px;
+    }
+
+    .logo-candidates__head h2 { font-size: 21px; font-weight: 600; }
+    .logo-candidates__head p { max-width: 58ch; margin-top: 8px; color: var(--ink-soft); }
+    .logo-candidates__head .direction__link { flex: none; margin-top: 0; }
 
     .logo-candidates__grid {
       display: grid;
@@ -152,6 +162,8 @@
       }
       .direction__shot img { height: 240px; }
       .logo-candidates__grid { grid-template-columns: 1fr; }
+      .logo-candidates__head { display: grid; }
+      .logo-candidates__head .direction__link { width: fit-content; }
     }
   </style>
 </head>
@@ -231,11 +243,17 @@
       </article>
 
       <section class="logo-candidates" aria-labelledby="logo-candidates-title">
-        <h2 id="logo-candidates-title">Logo candidates</h2>
+        <div class="logo-candidates__head">
+          <div>
+            <h2 id="logo-candidates-title">Logo review</h2>
+            <p>Compare ten directions, including three refined concepts and seven earlier generated samples.</p>
+          </div>
+          <a class="direction__link" href="logo-selector/index.html">Open all 10</a>
+        </div>
         <div class="logo-candidates__grid">
           <figure class="logo-candidate">
             <img src="shared/logos/sunrise-farm-seal-a.svg" alt="Field Good Foods sunrise seal with a ribbon" loading="lazy">
-            <figcaption>Ribbon (selected)</figcaption>
+            <figcaption>Earlier ribbon study</figcaption>
           </figure>
           <figure class="logo-candidate">
             <img src="shared/logos/sunrise-farm-seal-b.svg" alt="Field Good Foods sunrise seal with a ring" loading="lazy">
