@@ -5,243 +5,341 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
   <meta name="theme-color" content="#10140f">
-  <meta name="description" content="Ten logo directions for Field Good Foods, including refined concepts and earlier generated studies.">
-  <title>Field Good Foods logo selector</title>
+  <meta name="description" content="Review and select from ten logo directions for Field Good Foods.">
+  <title>Choose a Field Good Foods logo</title>
   <link rel="icon" href="../shared/wordmark.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../shared/reset.css">
   <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
 </head>
-<body>
+<body id="top">
+  <a class="skip-link" href="#logo-deck">Skip to logo options</a>
+
   <header class="study-header">
-    <a href="../index.html" aria-label="Back to design directions">Design directions</a>
-    <p>Identity study 01</p>
+    <a href="../index.html" aria-label="Back to all Field Good Foods design directions">Design directions</a>
+    <p>Logo selection</p>
     <p>September 2026</p>
   </header>
 
   <main>
     <section class="intro" aria-labelledby="page-title">
-      <p class="eyebrow">Field Good Foods</p>
-      <h1 id="page-title">Ten marks,<br>one good ground.</h1>
-      <p class="intro__copy">Three refined directions and seven existing concepts give us a wider read on what feels right for Field Good Foods. The archive marks are intentionally shown before production cleanup.</p>
-      <div class="palette" aria-label="Identity palette">
-        <span style="--swatch:#10140f"><b>Ink</b><small>#10140F</small></span>
-        <span style="--swatch:#172318"><b>Forest</b><small>#172318</small></span>
-        <span style="--swatch:#d6ad55"><b>Straw</b><small>#D6AD55</small></span>
-        <span style="--swatch:#eee8da"><b>Paper</b><small>#EEE8DA</small></span>
+      <div>
+        <p class="eyebrow">Field Good Foods</p>
+        <h1 id="page-title">Ten marks.<br>Pick the one.</h1>
+      </div>
+      <div class="intro__guide">
+        <p>Move through the options one at a time, then choose the mark that feels most like Field Good Foods.</p>
+        <p class="gesture-note"><span aria-hidden="true">&#8596;</span> Swipe, use your arrow keys, or choose a letter.</p>
       </div>
     </section>
 
-    <section class="concept review-option" id="option-a" aria-labelledby="option-a-title">
-      <div class="concept__heading">
+    <section class="selector" aria-labelledby="selector-title">
+      <div class="selector__heading">
         <div>
-          <p class="option-label">Option A / Refined direction</p>
-          <h2 id="option-a-title">Horizon Fieldmark</h2>
+          <p class="eyebrow">Logo review / A–J</p>
+          <h2 id="selector-title">Find the right direction.</h2>
         </div>
-        <p>A cleaner evolution of the strongest generated concept. The rising sun and furrows tell the land story immediately, while the editorial wordmark keeps it out of farm-supply territory.</p>
+        <p>These are direction tests, not finished production files. Your choice will guide the final logo system for web, packaging, social, and one-color use.</p>
       </div>
 
-      <div class="lockup-grid">
-        <figure class="logo-surface logo-surface--paper">
-          <svg class="logo logo--lockup" viewBox="0 0 680 150" role="img" aria-label="Horizon Fieldmark on paper"><use href="assets/identity-sprite.svg#horizon-lockup"></use></svg>
-          <figcaption>Primary / paper</figcaption>
-        </figure>
-        <figure class="logo-surface logo-surface--dark">
-          <svg class="logo logo--lockup" viewBox="0 0 680 150" role="img" aria-label="Horizon Fieldmark reversed on forest"><use href="assets/identity-sprite.svg#horizon-lockup"></use></svg>
-          <figcaption>Reverse / forest</figcaption>
-        </figure>
-      </div>
+      <div class="selector-toolbar" aria-label="Slideshow controls">
+        <div class="transport">
+          <button class="round-button" id="previous-option" type="button" aria-label="View previous logo" disabled>
+            <span aria-hidden="true">&#8592;</span>
+          </button>
+          <p class="counter" aria-label="Current logo">
+            <span id="current-count">01</span>
+            <span aria-hidden="true">/</span>
+            <span>10</span>
+          </p>
+          <button class="round-button" id="next-option" type="button" aria-label="View next logo">
+            <span aria-hidden="true">&#8594;</span>
+          </button>
+        </div>
 
-      <div class="application-grid">
-        <figure class="mark-study logo-surface--paper">
-          <div class="mark-study__sizes">
-            <svg class="logo logo--icon logo--icon-large" viewBox="0 0 140 140" role="img" aria-label="Horizon compact mark"><use href="assets/identity-sprite.svg#horizon-icon"></use></svg>
-            <svg class="logo logo--icon logo--icon-small" viewBox="0 0 140 140" aria-hidden="true"><use href="assets/identity-sprite.svg#horizon-icon"></use></svg>
+        <div class="preference" id="preference-summary">
+          <p>
+            <span class="preference__label">Preferred logo</span>
+            <strong id="preference-value">Nothing selected yet</strong>
+          </p>
+          <div class="preference__actions">
+            <button id="copy-selection" type="button" disabled>Copy selection link</button>
+            <button id="clear-selection" type="button" disabled>Clear</button>
           </div>
-          <figcaption>Compact mark / 96px and 32px</figcaption>
-        </figure>
-        <div class="header-preview logo-surface--dark" aria-label="Horizon Fieldmark in a website header">
-          <svg class="logo header-preview__brand" viewBox="0 0 680 150" role="img" aria-label="Horizon Fieldmark header logo"><use href="assets/identity-sprite.svg#horizon-lockup"></use></svg>
-          <nav aria-label="Header preview navigation"><span>Our story</span><span>Shop beef</span><span>Contact</span></nav>
-          <span class="header-preview__cta">Shop beef</span>
         </div>
       </div>
-      <ul class="attributes" aria-label="Horizon Fieldmark qualities"><li>Land first</li><li>Fastest recognition</li><li>Strong at small sizes</li></ul>
+
+      <nav class="option-rail" aria-label="Jump to a logo option">
+        <button class="option-tab" type="button" data-go-to="A" aria-controls="option-a" aria-current="true">
+          <span class="option-tab__letter">A</span><span class="option-tab__name">Horizon</span>
+        </button>
+        <button class="option-tab" type="button" data-go-to="B" aria-controls="option-b">
+          <span class="option-tab__letter">B</span><span class="option-tab__name">Oakline</span>
+        </button>
+        <button class="option-tab" type="button" data-go-to="C" aria-controls="option-c">
+          <span class="option-tab__letter">C</span><span class="option-tab__name">Grounded</span>
+        </button>
+        <button class="option-tab" type="button" data-go-to="D" aria-controls="option-d">
+          <span class="option-tab__letter">D</span><span class="option-tab__name">Field</span>
+        </button>
+        <button class="option-tab" type="button" data-go-to="E" aria-controls="option-e">
+          <span class="option-tab__letter">E</span><span class="option-tab__name">Monogram</span>
+        </button>
+        <button class="option-tab" type="button" data-go-to="F" aria-controls="option-f">
+          <span class="option-tab__letter">F</span><span class="option-tab__name">Open gate</span>
+        </button>
+        <button class="option-tab" type="button" data-go-to="G" aria-controls="option-g">
+          <span class="option-tab__letter">G</span><span class="option-tab__name">Watercolor</span>
+        </button>
+        <button class="option-tab" type="button" data-go-to="H" aria-controls="option-h">
+          <span class="option-tab__letter">H</span><span class="option-tab__name">Heritage</span>
+        </button>
+        <button class="option-tab" type="button" data-go-to="I" aria-controls="option-i">
+          <span class="option-tab__letter">I</span><span class="option-tab__name">Stamp</span>
+        </button>
+        <button class="option-tab" type="button" data-go-to="J" aria-controls="option-j">
+          <span class="option-tab__letter">J</span><span class="option-tab__name">Sunburst</span>
+        </button>
+      </nav>
+
+      <div class="deck-frame">
+        <div class="logo-deck" id="logo-deck" role="region" aria-roledescription="carousel" aria-label="Ten Field Good Foods logo options" tabindex="0">
+          <article class="logo-slide review-option is-active" id="option-a" data-option="A" role="group" aria-roledescription="slide" aria-label="1 of 10: Horizon Fieldmark">
+            <div class="slide-visual slide-visual--refined">
+              <div class="direction-board">
+                <div class="logo-stage logo-stage--paper logo-stage--primary">
+                  <svg class="logo logo--lockup" viewBox="0 0 680 150" role="img" aria-label="Horizon Fieldmark logo"><use href="assets/identity-sprite.svg#horizon-lockup"></use></svg>
+                </div>
+                <div class="sample-strip">
+                  <div class="logo-stage logo-stage--dark">
+                    <svg class="logo logo--lockup logo--sample" viewBox="0 0 680 150" aria-hidden="true"><use href="assets/identity-sprite.svg#horizon-lockup"></use></svg>
+                  </div>
+                  <div class="logo-stage logo-stage--paper">
+                    <svg class="logo logo--icon" viewBox="0 0 140 140" aria-hidden="true"><use href="assets/identity-sprite.svg#horizon-icon"></use></svg>
+                  </div>
+                </div>
+              </div>
+              <p class="art-caption">Primary lockup / reverse / compact mark</p>
+            </div>
+            <div class="slide-copy">
+              <p class="slide-meta"><span>Option A</span><span>Refined direction</span></p>
+              <h3>Horizon Fieldmark</h3>
+              <p class="slide-description">A clean evolution of the strongest generated concept. The rising sun and furrows tell the land story immediately, while the editorial wordmark keeps it out of farm-supply territory.</p>
+              <ul class="attributes" aria-label="Horizon Fieldmark qualities"><li>Land first</li><li>Fast recognition</li><li>Strong small</li></ul>
+              <button class="select-button" type="button" data-select="A" aria-pressed="false">
+                <span class="select-button__mark" aria-hidden="true">&#10003;</span>
+                <span class="select-button__text">Choose option A</span>
+              </button>
+            </div>
+          </article>
+
+          <article class="logo-slide review-option" id="option-b" data-option="B" role="group" aria-roledescription="slide" aria-label="2 of 10: Oakline">
+            <div class="slide-visual slide-visual--refined">
+              <div class="direction-board">
+                <div class="logo-stage logo-stage--paper logo-stage--primary">
+                  <svg class="logo logo--lockup" viewBox="0 0 680 150" role="img" aria-label="Oakline logo"><use href="assets/identity-sprite.svg#oakline-lockup"></use></svg>
+                </div>
+                <div class="sample-strip">
+                  <div class="logo-stage logo-stage--dark">
+                    <svg class="logo logo--lockup logo--sample" viewBox="0 0 680 150" aria-hidden="true"><use href="assets/identity-sprite.svg#oakline-lockup"></use></svg>
+                  </div>
+                  <div class="logo-stage logo-stage--paper">
+                    <svg class="logo logo--icon" viewBox="0 0 140 140" aria-hidden="true"><use href="assets/identity-sprite.svg#oakline-icon"></use></svg>
+                  </div>
+                </div>
+              </div>
+              <p class="art-caption">Primary lockup / reverse / compact mark</p>
+            </div>
+            <div class="slide-copy">
+              <p class="slide-meta"><span>Option B</span><span>Refined direction</span></p>
+              <h3>Oakline</h3>
+              <p class="slide-description">An oak stripped of the usual seal and badge treatment. Its branches become roots and field lines, connecting five generations of family stewardship to the working land.</p>
+              <ul class="attributes" aria-label="Oakline qualities"><li>Family legacy</li><li>Story rich</li><li>Distinctive</li></ul>
+              <button class="select-button" type="button" data-select="B" aria-pressed="false">
+                <span class="select-button__mark" aria-hidden="true">&#10003;</span>
+                <span class="select-button__text">Choose option B</span>
+              </button>
+            </div>
+          </article>
+
+          <article class="logo-slide review-option" id="option-c" data-option="C" role="group" aria-roledescription="slide" aria-label="3 of 10: Grounded Wordmark">
+            <div class="slide-visual slide-visual--refined">
+              <div class="direction-board">
+                <div class="logo-stage logo-stage--paper logo-stage--primary">
+                  <svg class="logo logo--lockup" viewBox="0 0 680 150" role="img" aria-label="Grounded Wordmark logo"><use href="assets/identity-sprite.svg#grounded-lockup"></use></svg>
+                </div>
+                <div class="sample-strip">
+                  <div class="logo-stage logo-stage--dark">
+                    <svg class="logo logo--lockup logo--sample" viewBox="0 0 680 150" aria-hidden="true"><use href="assets/identity-sprite.svg#grounded-lockup"></use></svg>
+                  </div>
+                  <div class="logo-stage logo-stage--paper">
+                    <svg class="logo logo--icon" viewBox="0 0 140 140" aria-hidden="true"><use href="assets/identity-sprite.svg#grounded-icon"></use></svg>
+                  </div>
+                </div>
+              </div>
+              <p class="art-caption">Primary lockup / reverse / compact mark</p>
+            </div>
+            <div class="slide-copy">
+              <p class="slide-meta"><span>Option C</span><span>Refined direction</span></p>
+              <h3>Grounded Wordmark</h3>
+              <p class="slide-description">The least illustrative direction. Weight contrast does the branding, while one straw-colored point and a grounded baseline tie it to the forest, straw, and paper system.</p>
+              <ul class="attributes" aria-label="Grounded Wordmark qualities"><li>Contemporary</li><li>Type led</li><li>Easy to extend</li></ul>
+              <button class="select-button" type="button" data-select="C" aria-pressed="false">
+                <span class="select-button__mark" aria-hidden="true">&#10003;</span>
+                <span class="select-button__text">Choose option C</span>
+              </button>
+            </div>
+          </article>
+
+          <article class="logo-slide review-option" id="option-d" data-option="D" role="group" aria-roledescription="slide" aria-label="4 of 10: Minimal Field Wordmark">
+            <div class="slide-visual">
+              <div class="archive-stage">
+                <img src="assets/archive/d-minimal-field-wordmark.svg" alt="Minimal stacked Field Good Foods wordmark with a small field sprout" decoding="async" width="2048" height="2048">
+              </div>
+              <p class="art-caption">Existing generated concept 01</p>
+            </div>
+            <div class="slide-copy">
+              <p class="slide-meta"><span>Option D</span><span>Existing concept</span></p>
+              <h3>Minimal Field Wordmark</h3>
+              <p class="slide-description">A compact, hand-cut wordmark with a small field sprout. Friendly, direct, and easy to recognize on packaging.</p>
+              <ul class="attributes" aria-label="Minimal Field Wordmark qualities"><li>Friendly</li><li>Compact</li><li>Packaging ready</li></ul>
+              <button class="select-button" type="button" data-select="D" aria-pressed="false">
+                <span class="select-button__mark" aria-hidden="true">&#10003;</span>
+                <span class="select-button__text">Choose option D</span>
+              </button>
+            </div>
+          </article>
+
+          <article class="logo-slide review-option" id="option-e" data-option="E" role="group" aria-roledescription="slide" aria-label="5 of 10: Leaf Monogram">
+            <div class="slide-visual">
+              <div class="archive-stage">
+                <img src="assets/archive/e-leaf-monogram.svg" alt="FGF monogram with a gold leaf worked into the center letter" loading="lazy" decoding="async" width="2048" height="2048">
+              </div>
+              <p class="art-caption">Existing generated concept 04</p>
+            </div>
+            <div class="slide-copy">
+              <p class="slide-meta"><span>Option E</span><span>Existing concept</span></p>
+              <h3>Leaf Monogram</h3>
+              <p class="slide-description">An FGF monogram built around a leaf. Formal and compact, with a clear path to labels and social avatars.</p>
+              <ul class="attributes" aria-label="Leaf Monogram qualities"><li>Formal</li><li>Compact</li><li>Avatar ready</li></ul>
+              <button class="select-button" type="button" data-select="E" aria-pressed="false">
+                <span class="select-button__mark" aria-hidden="true">&#10003;</span>
+                <span class="select-button__text">Choose option E</span>
+              </button>
+            </div>
+          </article>
+
+          <article class="logo-slide review-option" id="option-f" data-option="F" role="group" aria-roledescription="slide" aria-label="6 of 10: Open Gate Horizon">
+            <div class="slide-visual">
+              <div class="archive-stage">
+                <img src="assets/archive/f-open-gate-horizon.svg" alt="Open farm gate in layered green and gold fields" loading="lazy" decoding="async" width="2048" height="2048">
+              </div>
+              <p class="art-caption">Existing generated concept 06</p>
+            </div>
+            <div class="slide-copy">
+              <p class="slide-meta"><span>Option F</span><span>Existing concept</span></p>
+              <h3>Open Gate Horizon</h3>
+              <p class="slide-description">A farm gate set into layered fields. This is the strongest scene-based option and makes the family farm explicit.</p>
+              <ul class="attributes" aria-label="Open Gate Horizon qualities"><li>Scene based</li><li>Farm explicit</li><li>Welcoming</li></ul>
+              <button class="select-button" type="button" data-select="F" aria-pressed="false">
+                <span class="select-button__mark" aria-hidden="true">&#10003;</span>
+                <span class="select-button__text">Choose option F</span>
+              </button>
+            </div>
+          </article>
+
+          <article class="logo-slide review-option" id="option-g" data-option="G" role="group" aria-roledescription="slide" aria-label="7 of 10: Watercolor Farmstand">
+            <div class="slide-visual">
+              <div class="archive-stage">
+                <img src="assets/archive/g-watercolor-farmstand.webp" alt="Watercolor Field Good Food farm illustration with cattle and wild grasses" loading="lazy" decoding="async" width="1400" height="1400">
+              </div>
+              <p class="art-caption">Existing generated concept 07</p>
+            </div>
+            <div class="slide-copy">
+              <p class="slide-meta"><span>Option G</span><span>Existing concept</span></p>
+              <h3>Watercolor Farmstand</h3>
+              <p class="slide-description">A pastoral illustration with cattle and wild grasses. Better as a large brand signature than a tiny header mark, but rich in warmth.</p>
+              <ul class="attributes" aria-label="Watercolor Farmstand qualities"><li>Warm</li><li>Pastoral</li><li>Illustrative</li></ul>
+              <button class="select-button" type="button" data-select="G" aria-pressed="false">
+                <span class="select-button__mark" aria-hidden="true">&#10003;</span>
+                <span class="select-button__text">Choose option G</span>
+              </button>
+            </div>
+          </article>
+
+          <article class="logo-slide review-option" id="option-h" data-option="H" role="group" aria-roledescription="slide" aria-label="8 of 10: Heritage Crest">
+            <div class="slide-visual">
+              <div class="archive-stage">
+                <img src="assets/archive/h-heritage-crest.webp" alt="Detailed Field Good Foods fifth generation family farm crest" loading="lazy" decoding="async" width="1400" height="1400">
+              </div>
+              <p class="art-caption">Existing generated concept 10</p>
+            </div>
+            <div class="slide-copy">
+              <p class="slide-meta"><span>Option H</span><span>Existing concept</span></p>
+              <h3>Heritage Crest</h3>
+              <p class="slide-description">A detailed fifth-generation crest with cattle, sunrise, and fields. Traditional, story-forward, and built for larger applications.</p>
+              <ul class="attributes" aria-label="Heritage Crest qualities"><li>Traditional</li><li>Story forward</li><li>Detailed</li></ul>
+              <button class="select-button" type="button" data-select="H" aria-pressed="false">
+                <span class="select-button__mark" aria-hidden="true">&#10003;</span>
+                <span class="select-button__text">Choose option H</span>
+              </button>
+            </div>
+          </article>
+
+          <article class="logo-slide review-option" id="option-i" data-option="I" role="group" aria-roledescription="slide" aria-label="9 of 10: Modern Stamp">
+            <div class="slide-visual">
+              <div class="archive-stage">
+                <img src="assets/archive/i-modern-stamp.webp" alt="Rounded rectangular Field Good Foods stamp with a small sunrise" loading="lazy" decoding="async" width="1400" height="1400">
+              </div>
+              <p class="art-caption">Existing generated concept 16</p>
+            </div>
+            <div class="slide-copy">
+              <p class="slide-meta"><span>Option I</span><span>Existing concept</span></p>
+              <h3>Modern Stamp</h3>
+              <p class="slide-description">A compact rounded stamp that feels direct and packaging-ready. Simple enough for labels, boxes, and hats.</p>
+              <ul class="attributes" aria-label="Modern Stamp qualities"><li>Direct</li><li>Flexible</li><li>Merchandise ready</li></ul>
+              <button class="select-button" type="button" data-select="I" aria-pressed="false">
+                <span class="select-button__mark" aria-hidden="true">&#10003;</span>
+                <span class="select-button__text">Choose option I</span>
+              </button>
+            </div>
+          </article>
+
+          <article class="logo-slide review-option" id="option-j" data-option="J" role="group" aria-roledescription="slide" aria-label="10 of 10: Retro Script Sunburst">
+            <div class="slide-visual">
+              <div class="archive-stage">
+                <img src="assets/archive/j-retro-script-sunburst.webp" alt="Field Good Foods script wordmark in front of a gold sunburst" loading="lazy" decoding="async" width="1400" height="1400">
+              </div>
+              <p class="art-caption">Existing generated concept 20</p>
+            </div>
+            <div class="slide-copy">
+              <p class="slide-meta"><span>Option J</span><span>Existing concept</span></p>
+              <h3>Retro Script Sunburst</h3>
+              <p class="slide-description">A lively script mark with a broad sunrise. This is the most casual and merchandise-friendly option.</p>
+              <ul class="attributes" aria-label="Retro Script Sunburst qualities"><li>Casual</li><li>Energetic</li><li>Merchandise ready</li></ul>
+              <button class="select-button" type="button" data-select="J" aria-pressed="false">
+                <span class="select-button__mark" aria-hidden="true">&#10003;</span>
+                <span class="select-button__text">Choose option J</span>
+              </button>
+            </div>
+          </article>
+        </div>
+        <p class="swipe-hint" aria-hidden="true"><span>&#8596;</span> Swipe or scroll the logo panel</p>
+      </div>
+
+      <p class="screen-reader-status" id="carousel-status" aria-live="polite" aria-atomic="true"></p>
     </section>
 
-    <section class="concept review-option" id="option-b" aria-labelledby="option-b-title">
-      <div class="concept__heading">
-        <div>
-          <p class="option-label">Option B</p>
-          <h2 id="option-b-title">Oakline</h2>
-        </div>
-        <p>An oak stripped of the usual seal and badge treatment. Its branches become roots and field lines, connecting five generations of family stewardship to the working land.</p>
-      </div>
-
-      <div class="lockup-grid">
-        <figure class="logo-surface logo-surface--paper">
-          <svg class="logo logo--lockup" viewBox="0 0 680 150" role="img" aria-label="Oakline logo on paper"><use href="assets/identity-sprite.svg#oakline-lockup"></use></svg>
-          <figcaption>Primary / paper</figcaption>
-        </figure>
-        <figure class="logo-surface logo-surface--dark">
-          <svg class="logo logo--lockup" viewBox="0 0 680 150" role="img" aria-label="Oakline logo reversed on forest"><use href="assets/identity-sprite.svg#oakline-lockup"></use></svg>
-          <figcaption>Reverse / forest</figcaption>
-        </figure>
-      </div>
-
-      <div class="application-grid">
-        <figure class="mark-study logo-surface--paper">
-          <div class="mark-study__sizes">
-            <svg class="logo logo--icon logo--icon-large" viewBox="0 0 140 140" role="img" aria-label="Oakline compact mark"><use href="assets/identity-sprite.svg#oakline-icon"></use></svg>
-            <svg class="logo logo--icon logo--icon-small" viewBox="0 0 140 140" aria-hidden="true"><use href="assets/identity-sprite.svg#oakline-icon"></use></svg>
-          </div>
-          <figcaption>Compact mark / 96px and 32px</figcaption>
-        </figure>
-        <div class="header-preview logo-surface--dark" aria-label="Oakline in a website header">
-          <svg class="logo header-preview__brand" viewBox="0 0 680 150" role="img" aria-label="Oakline header logo"><use href="assets/identity-sprite.svg#oakline-lockup"></use></svg>
-          <nav aria-label="Header preview navigation"><span>Our story</span><span>Shop beef</span><span>Contact</span></nav>
-          <span class="header-preview__cta">Shop beef</span>
-        </div>
-      </div>
-      <ul class="attributes" aria-label="Oakline qualities"><li>Family legacy</li><li>Story rich</li><li>Quietly distinctive</li></ul>
-    </section>
-
-    <section class="concept review-option" id="option-c" aria-labelledby="option-c-title">
-      <div class="concept__heading">
-        <div>
-          <p class="option-label">Option C</p>
-          <h2 id="option-c-title">Grounded Wordmark</h2>
-        </div>
-        <p>The least illustrative direction. Weight contrast does the branding, while one straw-colored point and a grounded baseline keep the identity tied to the current forest, straw, and paper system.</p>
-      </div>
-
-      <div class="lockup-grid">
-        <figure class="logo-surface logo-surface--paper">
-          <svg class="logo logo--lockup" viewBox="0 0 680 150" role="img" aria-label="Grounded Wordmark on paper"><use href="assets/identity-sprite.svg#grounded-lockup"></use></svg>
-          <figcaption>Primary / paper</figcaption>
-        </figure>
-        <figure class="logo-surface logo-surface--dark">
-          <svg class="logo logo--lockup" viewBox="0 0 680 150" role="img" aria-label="Grounded Wordmark reversed on forest"><use href="assets/identity-sprite.svg#grounded-lockup"></use></svg>
-          <figcaption>Reverse / forest</figcaption>
-        </figure>
-      </div>
-
-      <div class="application-grid">
-        <figure class="mark-study logo-surface--paper">
-          <div class="mark-study__sizes">
-            <svg class="logo logo--icon logo--icon-large" viewBox="0 0 140 140" role="img" aria-label="Grounded Wordmark compact mark"><use href="assets/identity-sprite.svg#grounded-icon"></use></svg>
-            <svg class="logo logo--icon logo--icon-small" viewBox="0 0 140 140" aria-hidden="true"><use href="assets/identity-sprite.svg#grounded-icon"></use></svg>
-          </div>
-          <figcaption>Compact mark / 96px and 32px</figcaption>
-        </figure>
-        <div class="header-preview logo-surface--dark" aria-label="Grounded Wordmark in a website header">
-          <svg class="logo header-preview__brand" viewBox="0 0 680 150" role="img" aria-label="Grounded Wordmark header logo"><use href="assets/identity-sprite.svg#grounded-lockup"></use></svg>
-          <nav aria-label="Header preview navigation"><span>Our story</span><span>Shop beef</span><span>Contact</span></nav>
-          <span class="header-preview__cta">Shop beef</span>
-        </div>
-      </div>
-      <ul class="attributes" aria-label="Grounded Wordmark qualities"><li>Most contemporary</li><li>Type led</li><li>Easy to extend</li></ul>
-    </section>
-
-    <section class="archive" aria-labelledby="archive-title">
-      <div class="archive__heading">
-        <div>
-          <p class="option-label">Options D through J / Existing concepts</p>
-          <h2 id="archive-title">Seven more ways in.</h2>
-        </div>
-        <p>These generated concepts are shown as they were made. They broaden the conversation across wordmarks, monograms, illustration, heritage, and merchandise without spending new generation credits.</p>
-      </div>
-
-      <div class="archive-grid">
-        <article class="archive-card review-option" id="option-d">
-          <div class="archive-card__meta"><span>Option D</span><span>Existing 01</span></div>
-          <figure class="archive-card__art">
-            <img src="assets/archive/d-minimal-field-wordmark.svg" alt="Minimal stacked Field Good Foods wordmark with a small field sprout" loading="lazy" decoding="async" width="2048" height="2048">
-          </figure>
-          <div class="archive-card__copy">
-            <h3>Minimal Field Wordmark</h3>
-            <p>A compact, hand-cut wordmark with a small field sprout. Friendly, direct, and easy to recognize on packaging.</p>
-          </div>
-        </article>
-
-        <article class="archive-card review-option" id="option-e">
-          <div class="archive-card__meta"><span>Option E</span><span>Existing 04</span></div>
-          <figure class="archive-card__art">
-            <img src="assets/archive/e-leaf-monogram.svg" alt="FGF monogram with a gold leaf worked into the center letter" loading="lazy" decoding="async" width="2048" height="2048">
-          </figure>
-          <div class="archive-card__copy">
-            <h3>Leaf Monogram</h3>
-            <p>An FGF monogram built around a leaf. Formal and compact, with a clear path to labels and social avatars.</p>
-          </div>
-        </article>
-
-        <article class="archive-card review-option" id="option-f">
-          <div class="archive-card__meta"><span>Option F</span><span>Existing 06</span></div>
-          <figure class="archive-card__art">
-            <img src="assets/archive/f-open-gate-horizon.svg" alt="Open farm gate in layered green and gold fields" loading="lazy" decoding="async" width="2048" height="2048">
-          </figure>
-          <div class="archive-card__copy">
-            <h3>Open Gate Horizon</h3>
-            <p>A farm gate set into layered fields. This is the strongest scene-based option and makes the family farm explicit.</p>
-          </div>
-        </article>
-
-        <article class="archive-card review-option" id="option-g">
-          <div class="archive-card__meta"><span>Option G</span><span>Existing 07</span></div>
-          <figure class="archive-card__art">
-            <img src="assets/archive/g-watercolor-farmstand.webp" alt="Watercolor Field Good Food farm illustration with cattle and wild grasses" loading="lazy" decoding="async" width="1400" height="1400">
-          </figure>
-          <div class="archive-card__copy">
-            <h3>Watercolor Farmstand</h3>
-            <p>A pastoral illustration with cattle and wild grasses. Better as a large brand signature than a tiny header mark, but rich in warmth.</p>
-          </div>
-        </article>
-
-        <article class="archive-card review-option" id="option-h">
-          <div class="archive-card__meta"><span>Option H</span><span>Existing 10</span></div>
-          <figure class="archive-card__art">
-            <img src="assets/archive/h-heritage-crest.webp" alt="Detailed Field Good Foods fifth generation family farm crest" loading="lazy" decoding="async" width="1400" height="1400">
-          </figure>
-          <div class="archive-card__copy">
-            <h3>Heritage Crest</h3>
-            <p>A detailed fifth-generation crest with cattle, sunrise, and fields. Traditional, story-forward, and built for larger applications.</p>
-          </div>
-        </article>
-
-        <article class="archive-card review-option" id="option-i">
-          <div class="archive-card__meta"><span>Option I</span><span>Existing 16</span></div>
-          <figure class="archive-card__art">
-            <img src="assets/archive/i-modern-stamp.webp" alt="Rounded rectangular Field Good Foods stamp with a small sunrise" loading="lazy" decoding="async" width="1400" height="1400">
-          </figure>
-          <div class="archive-card__copy">
-            <h3>Modern Stamp</h3>
-            <p>A compact rounded stamp that feels direct and packaging-ready. Simple enough for labels, boxes, and hats.</p>
-          </div>
-        </article>
-
-        <article class="archive-card review-option" id="option-j">
-          <div class="archive-card__meta"><span>Option J</span><span>Existing 20</span></div>
-          <figure class="archive-card__art">
-            <img src="assets/archive/j-retro-script-sunburst.webp" alt="Field Good Foods script wordmark in front of a gold sunburst" loading="lazy" decoding="async" width="1400" height="1400">
-          </figure>
-          <div class="archive-card__copy">
-            <h3>Retro Script Sunburst</h3>
-            <p>A lively script mark with a broad sunrise. This is the most casual and merchandise-friendly option.</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="recommendation" aria-labelledby="recommendation-title">
-      <p class="option-label">Client review</p>
-      <h2 id="recommendation-title">What feels true?</h2>
-      <p>Pick the one that feels most like Field Good Foods, or shortlist up to three. These are direction tests, not finished production files. The selected mark will be rebuilt for web, packaging, social, and one-color use.</p>
-      <p class="recommendation__action">Reply with one letter or a three-letter shortlist</p>
+    <section class="selection-note" aria-labelledby="selection-note-title">
+      <p class="eyebrow">Your preference</p>
+      <h2 id="selection-note-title">Choose once. Share the link.</h2>
+      <p>Your selection stays saved on this device. Copy the selection link if you want Caleb to open the exact option you chose.</p>
     </section>
   </main>
 
   <footer>
     <p>Field Good Foods / Logo review</p>
-    <a href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Back to top</a>
+    <a href="#top">Back to top</a>
   </footer>
 </body>
 </html>
