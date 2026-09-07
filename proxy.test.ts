@@ -143,13 +143,19 @@ describe("Brittany Lyons private-link preview", () => {
 describe("Field Good Foods previews", () => {
   const sitePath = "/clients/fieldgoodfoods";
 
-  it("serves the bare unlinked URL without credentials", () => {
+  it("redirects the bare unlinked URL to its index document", () => {
     const response = proxy(request(sitePath));
 
-    expect(response.status).toBe(200);
-    expect(response.headers.get("x-middleware-rewrite")).toBe(
+    expect(response.status).toBe(307);
+    expect(response.headers.get("location")).toBe(
       `https://calebbolden.com${sitePath}/index.html`,
     );
+    expect(
+      new URL(
+        "soil-to-supper/index.html",
+        response.headers.get("location")!,
+      ).pathname,
+    ).toBe(`${sitePath}/soil-to-supper/index.html`);
     expect(response.headers.get("www-authenticate")).toBeNull();
     expect(response.headers.get("x-robots-tag")).toBe(ROBOTS);
     expect(response.headers.get("cache-control")).toBe("private, no-store");

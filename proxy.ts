@@ -114,8 +114,9 @@ export function proxy(request: NextRequest) {
   if (isWithinPath(pathname, FIELDGOOD_PREVIEW_PATH)) {
     const response =
       pathname === FIELDGOOD_PREVIEW_PATH
-        ? NextResponse.rewrite(
+        ? NextResponse.redirect(
             new URL(`${FIELDGOOD_PREVIEW_PATH}/index.html`, request.url),
+            307,
           )
         : NextResponse.next();
 
