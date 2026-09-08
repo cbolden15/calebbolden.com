@@ -102,6 +102,9 @@ ul{margin:0;padding:0}
 @media(min-width:768px){.bli-logo{height:99px}}
 .bli-nav{display:none;align-items:center;gap:2rem}
 @media(min-width:1180px){.bli-nav{display:flex}}
+.bli-header .bli-pill{white-space:nowrap;flex-shrink:0}
+@media(max-width:767px){.bli-header .bli-hide-mobile{display:none}}
+@media(min-width:1180px) and (max-width:1399px){.bli-nav{gap:1.1rem}}
 .bli-nav a{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--bli-ink);font-weight:700}
 .bli-ulink{position:relative;padding-bottom:2px}
 .bli-ulink::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:currentColor;transform:scaleX(.2);transform-origin:left;transition:transform 600ms ease}
@@ -193,6 +196,14 @@ ul{margin:0;padding:0}
 .bli-svc:hover .bli-svc__num{color:var(--bli-mint-dk)}
 .bli-svc h3,.bli-svc h2{font-family:var(--bli-font-display);font-weight:400;font-size:1.45rem}
 .bli-svc p{margin-top:.55rem;color:var(--bli-text-body);font-size:14.5px;line-height:1.7}
+/* Shared columns keep the investment steps aligned regardless of numeral or price width. */
+.bli-svc.bli-svc--investment{grid-template-columns:2.5rem minmax(0,1fr);align-items:start}
+.bli-svc--investment .bli-svc__num{line-height:1}
+.bli-svc--investment .bli-svc__tag{display:block;grid-column:2}
+@media(min-width:768px){
+  .bli-svc.bli-svc--investment{grid-template-columns:5rem minmax(0,1fr) 10rem}
+  .bli-svc--investment .bli-svc__tag{grid-column:3;text-align:right}
+}
 .bli-svc__tag{display:none}
 @media(min-width:768px){.bli-svc__tag{display:block}}
 .bli-step__num{display:block;font-family:var(--bli-font-display);font-style:italic;font-weight:500;font-size:3rem;line-height:.8;color:var(--bli-mint-dk);margin-bottom:.75rem}
