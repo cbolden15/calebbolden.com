@@ -30,7 +30,7 @@
   --bli-text-body:#4F687A;
   --bli-text-meta:#5A7284;
   --bli-text-onimage:rgba(46,74,94,.82);
-  --bli-font-display:'Bodoni Moda',Georgia,'Times New Roman',serif;
+  --bli-font-display:'Lora',Georgia,'Times New Roman',serif;
   --bli-font-sans:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
   --bli-size-hero:clamp(3rem,7vw,6.75rem);
   --bli-size-h1:clamp(2.6rem,5.7vw,5.25rem);
