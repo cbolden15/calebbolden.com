@@ -7,9 +7,9 @@
 <title>Brittany Lyons Interiors — peaceful, functional interiors in Dallas</title>
 <meta name="description" content="Brittany Lyons Interiors is a boutique residential design studio in Dallas, Texas. Full home renovations, new construction, redesigns and selections since 2016.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%232E4A5E'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400;1,500&amp;family=DM+Sans:wght@400;500&amp;display=swap" rel="stylesheet">
+
+
+<link rel="stylesheet" href="assets/font-preview/fonts.css?v=20260909"/>
 <style>
 /* ---------------------------------------------------------------
    Brittany Lyons Interiors — "Still Water"
@@ -44,7 +44,7 @@ body{
   margin:0;
   background:var(--mist);
   color:var(--water);
-  font-family:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-family:var(--bli-font-sans, "DM Sans", system-ui, sans-serif);
   font-size:var(--f-16);
   line-height:1.65;
   -webkit-font-smoothing:antialiased;
@@ -58,7 +58,7 @@ a{color:inherit}
 #projects,#services,#about,#contact{scroll-margin-top:110px}
 
 .serif{
-  font-family:"Lora",Georgia,"Times New Roman",serif;
+  font-family:var(--bli-font-display, "Lora", Georgia, serif);
   font-weight:400;
   font-optical-sizing:auto;
 }
@@ -111,7 +111,7 @@ a{color:inherit}
   color:var(--water);
 }
 .nav__mark{
-  font-family:"Lora",Georgia,serif;
+  font-family:var(--bli-font-display, "Lora", Georgia, serif);
   font-size:clamp(17px,1.6vw,21px);
   letter-spacing:.005em;
   text-decoration:none;
@@ -194,7 +194,7 @@ a{color:inherit}
   color:var(--white);
 }
 .hero__title{
-  font-family:"Lora",Georgia,serif;
+  font-family:var(--bli-font-display, "Lora", Georgia, serif);
   font-weight:400;
   font-size:var(--f-display);
   line-height:1.02;
@@ -242,7 +242,7 @@ a{color:inherit}
 }
 .intro__statement{
   grid-column:1 / span 6;
-  font-family:"Lora",Georgia,serif;
+  font-family:var(--bli-font-display, "Lora", Georgia, serif);
   font-size:var(--f-40);
   line-height:1.22;
   letter-spacing:-.005em;
@@ -268,7 +268,7 @@ a{color:inherit}
   border-bottom:1px solid var(--rule);
 }
 .rooms__head h2{
-  font-family:"Lora",Georgia,serif;
+  font-family:var(--bli-font-display, "Lora", Georgia, serif);
   font-weight:400;
   font-size:var(--f-40);
   letter-spacing:-.01em;
@@ -298,7 +298,7 @@ a{color:inherit}
 .frame__ghost{
   position:absolute;
   top:0;left:0;
-  font-family:"Lora",Georgia,serif;
+  font-family:var(--bli-font-display, "Lora", Georgia, serif);
   font-weight:400;
   font-size:clamp(84px,13vw,208px);
   line-height:.86;
@@ -332,7 +332,7 @@ a{color:inherit}
   border-top:1px solid var(--hair);
 }
 .frame__name{
-  font-family:"Lora",Georgia,serif;
+  font-family:var(--bli-font-display, "Lora", Georgia, serif);
   font-size:var(--f-26);
   line-height:1.2;
 }
@@ -387,7 +387,7 @@ a{color:inherit}
 }
 .studio__text{grid-column:8 / span 5}
 .studio__text h2{
-  font-family:"Lora",Georgia,serif;
+  font-family:var(--bli-font-display, "Lora", Georgia, serif);
   font-weight:400;
   font-size:var(--f-40);
   letter-spacing:-.01em;
@@ -423,7 +423,7 @@ a{color:inherit}
   align-items:start;
 }
 .services h2{
-  font-family:"Lora",Georgia,serif;
+  font-family:var(--bli-font-display, "Lora", Georgia, serif);
   font-weight:400;
   font-size:var(--f-40);
   letter-spacing:-.01em;
@@ -444,7 +444,7 @@ a{color:inherit}
   cursor:pointer;
 }
 .svc__title{
-  font-family:"Lora",Georgia,serif;
+  font-family:var(--bli-font-display, "Lora", Georgia, serif);
   font-size:var(--f-26);
   line-height:1.25;
   flex:1;
@@ -496,7 +496,7 @@ a{color:inherit}
   align-items:start;
 }
 .voices h2{
-  font-family:"Lora",Georgia,serif;
+  font-family:var(--bli-font-display, "Lora", Georgia, serif);
   font-weight:400;
   font-size:var(--f-40);
   letter-spacing:-.01em;
@@ -508,7 +508,7 @@ a{color:inherit}
 .voice{min-width:0}
 .voices.is-cycling .voice{grid-area:1 / 1}
 .voice blockquote{
-  font-family:"Lora",Georgia,serif;
+  font-family:var(--bli-font-display, "Lora", Georgia, serif);
   font-size:clamp(21px,2.4vw,28px);
   line-height:1.42;
   max-width:34ch;
@@ -578,7 +578,7 @@ a{color:inherit}
   padding-bottom:clamp(48px,7vw,96px);
 }
 .invite h2{
-  font-family:"Lora",Georgia,serif;
+  font-family:var(--bli-font-display, "Lora", Georgia, serif);
   font-weight:400;
   font-size:clamp(38px,5.6vw,84px);
   line-height:1.05;
@@ -624,7 +624,7 @@ a{color:inherit}
 }
 .foot__mark{
   grid-column:1 / span 4;
-  font-family:"Lora",Georgia,serif;
+  font-family:var(--bli-font-display, "Lora", Georgia, serif);
   font-size:var(--f-26);
   line-height:1.3;
 }
@@ -681,7 +681,9 @@ a{color:inherit}
   .svc__panel[data-collapsed]{grid-template-rows:1fr}
 }
 </style>
-<link rel="stylesheet" href="r2-gold.css?v=20260908-content">
+<link rel="stylesheet" href="r2-gold.css?v=20260909-fonts">
+<link rel="stylesheet" href="font-preview.css?v=20260909"/>
+<script src="font-preview.js?v=20260909" defer></script>
 </head>
 <body>
 

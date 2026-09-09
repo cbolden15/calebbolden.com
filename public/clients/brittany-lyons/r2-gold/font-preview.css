@@ -1,0 +1,96 @@
+/* The selected pairing follows the site's existing display and body roles. */
+:root {
+  --bli-font-display: "BLI Preview Lora", Georgia, serif;
+  --bli-font-sans: "BLI Preview DM Sans", system-ui, sans-serif;
+  /* Review controls sit above the header and grain; opening the mobile menu hides them. */
+  --bli-z-font-preview: 65;
+}
+
+.bli-font-preview {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: var(--bli-z-font-preview);
+  width: min(360px, calc(100vw - 32px));
+  display: grid;
+  justify-items: end;
+  gap: 10px;
+  color: #2e4a5e;
+  font: 400 14px/1.5 "BLI Preview DM Sans", system-ui, sans-serif;
+  pointer-events: none;
+}
+
+.bli-font-preview button,
+.bli-font-preview select {
+  font: inherit;
+  color: inherit;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.bli-font-preview button:focus-visible,
+.bli-font-preview select:focus-visible {
+  outline: 2px solid #2e4a5e;
+  outline-offset: 3px;
+}
+
+.bli-font-preview__launch {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid #c1a948;
+  border-radius: 999px;
+  background: #2e4a5e;
+  color: #fff !important;
+  padding: 10px 18px;
+  box-shadow: 0 4px 20px rgb(34 58 74 / 14%);
+  pointer-events: auto;
+}
+
+.bli-font-preview__launch:hover { background: #223a4a; }
+.bli-font-preview__count { font-variant-numeric: tabular-nums; font-size: 12px; }
+.bli-font-preview__launch:focus-visible { outline-color: #78613e !important; }
+
+.bli-font-preview__panel {
+  width: 100%;
+  max-height: calc(100dvh - 96px - env(safe-area-inset-bottom));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 18px 20px 16px;
+  background: #fff;
+  border: 1px solid #c1a948;
+  box-shadow: 0 12px 48px rgb(34 58 74 / 18%);
+  pointer-events: auto;
+}
+
+.bli-font-preview__panel[hidden] { display: none; }
+.bli-font-preview__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.bli-font-preview__title { margin: 0; font: 500 20px/1.3 "BLI Preview DM Sans", system-ui, sans-serif; }
+.bli-font-preview__close { border: 0; background: transparent; padding: 0 0 0 12px; font-size: 13px !important; text-decoration: underline; text-underline-offset: 3px; }
+.bli-font-preview__intro { margin: 6px 0 18px; font: inherit; font-size: 13px; }
+.bli-font-preview__label { display: block; margin-bottom: 7px; font-weight: 500; }
+.bli-font-preview__select { display: block; width: 100%; padding: 10px 8px; border: 1px solid #87959f; border-radius: 0; background: #f5f7f8; font-size: 13px !important; }
+.bli-font-preview__names { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 18px 0; }
+.bli-font-preview__names dt { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+.bli-font-preview__names dd { margin: 5px 0 0; overflow-wrap: anywhere; }
+.bli-font-preview__heading-name { font: 400 22px/1.35 var(--bli-font-display); }
+.bli-font-preview__body-name { font: 400 17px/1.5 var(--bli-font-sans); }
+.bli-font-preview__steps { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.bli-font-preview__steps button { border: 1px solid #87959f; border-radius: 0; background: #fff; padding: 8px 12px; }
+.bli-font-preview__steps button:hover { background: #f5f7f8; }
+.bli-font-preview__reset { display: block; width: 100%; margin-top: 8px; padding: 8px 0; border: 0; background: transparent; text-decoration: underline; text-underline-offset: 3px; font-size: 13px !important; }
+.bli-font-preview__status { min-height: 3em; margin: 10px 0 0; font: inherit; font-size: 12px; color: #526876; }
+.bli-font-preview__status[data-error="true"] { color: #96372c; }
+body:has(.bli-mobilenav.is-open) .bli-font-preview { display: none; }
+
+@media (max-width: 767px) {
+  /* Keep native font selection from zooming the page on iOS. */
+  .bli-font-preview__select { font-size: 16px !important; }
+}
+
+@media (max-width: 479px) {
+  .bli-font-preview__panel { padding-inline: 16px; }
+  .bli-font-preview__names { gap: 12px; }
+}
+
+@media print { .bli-font-preview { display: none; } }
