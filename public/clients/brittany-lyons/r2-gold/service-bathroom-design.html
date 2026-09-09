@@ -13,10 +13,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400;1,500&amp;family=DM+Sans:wght@400;500&amp;display=swap" rel="stylesheet"/>
 <script>document.documentElement.classList.add('js')</script>
-<link rel="stylesheet" href="site.css?v=20260907"/>
+<link rel="stylesheet" href="site.css?v=20260908-content"/>
 <link rel="stylesheet" href="r2.css?v=20260908-lora"/>
-<link rel="stylesheet" href="r2-gold.css?v=20260906"/>
-<script src="site.js?v=20260816c" defer></script>
+<link rel="stylesheet" href="r2-gold.css?v=20260908-content"/>
+<script src="site.js?v=20260908-content" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
  {"@type":"Service","@id":"https://www.brittanylyonsinteriors.com/services/bathroom-design-dallas#service","serviceType":"Bathroom interior design","name":"Bathroom Design","provider":{"@type":"HomeAndConstructionBusiness","name":"Brittany Lyons Interiors","telephone":"+1-214-377-0251","address":{"@type":"PostalAddress","streetAddress":"1300 S. Polk Street, Suite 166","addressLocality":"Dallas","addressRegion":"TX","postalCode":"75224","addressCountry":"US"}},"areaServed":["Dallas","Highland Park","University Park","Oak Cliff","Plano","Frisco","McKinney","Allen","Aubrey"],"description":"Bathroom design and renovation planning for Dallas–Fort Worth homes, covering layout, tile, lighting, storage, and fixtures for primary baths and powder rooms."},
@@ -41,40 +41,23 @@
     <a href="index.html" aria-label="Brittany Lyons Interiors, home"><img src="bl-logo.png" alt="Brittany Lyons Interiors" class="bli-logo"/></a>
     <nav class="bli-nav" aria-label="Primary">
       <a class="bli-ulink" href="about.html">About</a>
-      <span class="bli-hasmenu"><a class="bli-ulink" href="services.html">Services</a>
-        <span class="bli-menu">
-          <a href="service-home-renovation.html">Full Home Renovations &amp; Remodels</a>
-          <a href="service-new-construction.html">New Construction</a>
-          <a href="service-kitchen-design.html">Kitchen Design</a>
-          <a href="service-bathroom-design.html" aria-current="page">Bathroom Design</a>
-          <a href="service-redesign.html">Redesigns</a>
-          <a href="service-finishing-selections.html">Finishing Selections</a>
-        </span>
-      </span>
-      <a class="bli-ulink" href="portfolio.html">Portfolio</a>
-      <a class="bli-ulink" href="testimonials.html">Reviews</a>
-      <a class="bli-ulink" href="process.html">Process</a>
-      <a class="bli-ulink" href="investment.html">Investment</a>
-      <a class="bli-ulink" href="journal.html">Journal</a>
-      <a class="bli-ulink" href="contact.html">Contact</a>
+      <span class="bli-hasmenu"><button class="bli-ulink bli-menu-button" type="button" aria-expanded="false" aria-controls="servicesMenu">Services</button><span class="bli-menu" id="servicesMenu">
+        <a href="services.html">Services overview</a><a href="service-home-renovation.html">Full Home Renovations &amp; Remodels</a><a href="service-new-construction.html">New Construction</a><a href="service-kitchen-design.html">Kitchen Design</a><a href="service-bathroom-design.html">Bathroom Design</a><a href="service-redesign.html">Redesigns</a><a href="service-finishing-selections.html">Finishing Selections</a>
+      </span></span>
+      <a class="bli-ulink" href="portfolio.html">Portfolio</a><a class="bli-ulink" href="process.html">Process</a><a class="bli-ulink" href="investment.html">Investment</a><a class="bli-ulink" href="testimonials.html">Reviews</a>
+      <span class="bli-hasmenu"><button class="bli-ulink bli-menu-button" type="button" aria-expanded="false" aria-controls="exploreMenu">Explore</button><span class="bli-menu" id="exploreMenu">
+        <a href="faq.html">FAQs</a><a href="journal.html">Journal</a><a href="service-areas.html">Service Areas</a><a href="contact.html">Contact</a>
+      </span></span>
     </nav>
     <a href="contact.html" class="bli-pill bli-pill--sea bli-pill--sm bli-hide-mobile">Schedule Discovery Call</a>
-    <button class="bli-burger" aria-label="Open menu" id="burger"><span></span><span></span><span></span></button>
+    <button class="bli-burger" aria-label="Open menu" id="burger" aria-expanded="false" aria-controls="mobileNav"><span></span><span></span><span></span></button>
   </div>
 </header>
-<nav class="bli-mobilenav" id="mobileNav" aria-label="Mobile">
+<nav class="bli-mobilenav" id="mobileNav" aria-label="Mobile" aria-hidden="true" inert>
   <button class="bli-close" aria-label="Close menu" id="closeNav">&times;</button>
-  <a href="index.html">Home</a>
-  <a href="about.html">About</a>
-  <a href="services.html">Services</a>
-  <a href="portfolio.html">Portfolio</a>
-  <a href="testimonials.html">Reviews</a>
-  <a href="process.html">Process</a>
-  <a href="investment.html">Investment</a>
-  <a href="journal.html">Journal</a>
-  <a href="faq.html">FAQ</a>
-  <a href="contact.html">Contact</a>
-  <a href="contact.html" class="bli-pill bli-pill--sea" style="margin-top:1rem;justify-content:center">Schedule a discovery call</a>
+  <a href="index.html">Home</a><a href="about.html">About</a><a href="portfolio.html">Portfolio</a><a href="process.html">Process</a><a href="investment.html">Investment</a><a href="testimonials.html">Reviews</a>
+  <p class="bli-mobile-group">Services</p><a class="bli-mobile-sub" href="services.html">All Services</a><a class="bli-mobile-sub" href="service-home-renovation.html">Renovations &amp; Remodels</a><a class="bli-mobile-sub" href="service-new-construction.html">New Construction</a><a class="bli-mobile-sub" href="service-kitchen-design.html">Kitchen Design</a><a class="bli-mobile-sub" href="service-bathroom-design.html">Bathroom Design</a><a class="bli-mobile-sub" href="service-redesign.html">Redesigns</a><a class="bli-mobile-sub" href="service-finishing-selections.html">Finishing Selections</a>
+  <p class="bli-mobile-group">Explore</p><a class="bli-mobile-sub" href="faq.html">FAQs</a><a class="bli-mobile-sub" href="journal.html">Journal</a><a class="bli-mobile-sub" href="service-areas.html">Service Areas</a><a class="bli-mobile-sub" href="contact.html">Contact</a>
 </nav>
 
 <main id="main">
@@ -147,7 +130,7 @@
       </div>
       <nav aria-label="Explore">
         <h3>Explore</h3>
-        <ul><li><a class="bli-ulink" href="about.html">About</a></li><li><a class="bli-ulink" href="portfolio.html">Portfolio</a></li><li><a class="bli-ulink" href="process.html">Process</a></li><li><a class="bli-ulink" href="testimonials.html">Reviews</a></li><li><a class="bli-ulink" href="faq.html">FAQ</a></li><li><a class="bli-ulink" href="journal.html">Journal</a></li></ul>
+        <ul><li><a class="bli-ulink" href="about.html">About</a></li><li><a class="bli-ulink" href="portfolio.html">Portfolio</a></li><li><a class="bli-ulink" href="process.html">Process</a></li><li><a class="bli-ulink" href="testimonials.html">Reviews</a></li><li><a class="bli-ulink" href="faq.html">FAQs</a></li><li><a class="bli-ulink" href="journal.html">Journal</a></li></ul>
       </nav>
       <nav aria-label="Services">
         <h3>Services</h3>
