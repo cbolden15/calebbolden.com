@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
+  <meta name="referrer" content="no-referrer">
+  <title>Hero video photo picker | Brittany Lyons Interiors</title>
+  <link rel="stylesheet" href="review.css">
+  <script src="options.js" defer></script>
+  <script src="review.js" defer></script>
+</head>
+<body>
+  <main>
+    <header class="intro">
+      <p class="brand">Brittany Lyons Interiors <a href="../index.html">&#8592; All mockups</a></p>
+      <h1>A new opening for the hero film.</h1>
+      <p class="lead">Four photo previews to compare before Higgsfield generation. Each keeps the other existing interiors and removes the original opening room and outdoor scene.</p>
+    </header>
+
+    <div class="options" role="tablist" aria-label="Video options" id="options"></div>
+
+    <section id="selected-option" role="tabpanel" aria-labelledby="option-01">
+      <div class="description-row">
+        <div><h2 id="option-title">Warm welcome</h2><p id="option-description"></p></div>
+        <a class="download" id="download" href="option-01-warm-welcome.mp4" download>Download this video <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="player-area">
+        <div class="player-frame" id="player-frame">
+          <video id="preview" controls playsinline muted loop preload="metadata" aria-label="Selected hero video preview"></video>
+          <div class="hero-text" id="hero-text" hidden aria-hidden="true"><strong>Let the light in.</strong><span>Peaceful, functional interiors in Dallas.</span></div>
+        </div>
+      </div>
+      <div class="tools">
+        <p id="specs"></p>
+        <div class="view-controls">
+          <label><input id="overlay-toggle" type="checkbox"> Show homepage text</label>
+          <label><input id="mobile-toggle" type="checkbox"> Preview mobile crop</label>
+        </div>
+      </div>
+      <p class="player-error" id="player-error" role="alert" hidden>The video could not load. Keep this page beside its video files, or use the download link to open the MP4.</p>
+
+      <div class="sequence-heading"><h3>Photo order</h3><p>Select a photo to jump to its scene.</p></div>
+      <ol id="sequence" class="sequence"></ol>
+      <p class="note">These are photo animatics with gentle pans, zooms, and dissolves. They show the proposed photos, framing, and timing. The final room-to-room motion will be created after you choose an option.</p>
+    </section>
+    <footer><p>Prefer a mix? Note the option number and the photos you would keep.</p><a href="README.txt">About these previews</a></footer>
+  </main>
+</body>
+</html>

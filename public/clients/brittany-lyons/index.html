@@ -164,6 +164,11 @@
       font-size: 1.3rem;
     }
 
+    .review { margin-top: 32px; }
+    .option--review { grid-template-columns: 240px minmax(0, 1fr); }
+    .option--review .preview { height: 100%; border-bottom: 0; border-right: 1px solid var(--line); }
+    .review-description { margin: 10px 0 0; color: var(--muted); font-size: .95rem; line-height: 1.5; }
+
     @media (max-width: 960px) {
       .options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
@@ -182,6 +187,8 @@
       .instruction { max-width: none; }
       .options { grid-template-columns: 1fr; }
       .option-copy { min-height: 96px; }
+      .option--review { grid-template-columns: 1fr; }
+      .option--review .preview { aspect-ratio: 16 / 7; border-right: 0; border-bottom: 1px solid var(--line); }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -227,6 +234,21 @@
         </div>
         <div class="option-copy">
           <h2><span class="version">Concept 03</span>Gilded Light</h2>
+          <span class="arrow" aria-hidden="true">&#8594;</span>
+        </div>
+      </a>
+    </section>
+
+    <section class="review" aria-label="Hero video review">
+      <a class="option option--review" href="hero-photo-picker/index.html">
+        <div class="preview">
+          <img src="hero-photo-picker/option-01-warm-welcome.jpg" alt="Baroque living room proposed for the new hero video" loading="lazy"/>
+        </div>
+        <div class="option-copy">
+          <div>
+            <h2><span class="version">Ready for review</span>Hero video photo picker</h2>
+            <p class="review-description">Compare four video options and choose the photos for the next hero film.</p>
+          </div>
           <span class="arrow" aria-hidden="true">&#8594;</span>
         </div>
       </a>
