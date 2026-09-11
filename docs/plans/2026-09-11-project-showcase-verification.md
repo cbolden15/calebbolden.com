@@ -63,6 +63,27 @@ Source corrections also clarify that the requested showcase H1 scale is a change
 
 Prevention notes retained in this phase's allowed documentation scope: do not interpret the harden `verified` boolean without auditor outcomes; do not use initially invisible Reveal content as a no-JavaScript fallback; do not treat `next lint` as a valid Next 16 release check; keep an existing route's published entry distinct from a draft replacement body. The wider gotcha registry is outside this phase's allowed edit set and was not changed.
 
+## Follow-up: independent audit routing diagnosis
+
+The follow-up began with a clean website documentation branch at `047e055afe49dcfe990bbda498e6432dd26e94c9`. All supported spec corrections were already committed. No further spec change or review run was made during this diagnosis; the corrected spec hash and provisional plan status remain unchanged.
+
+Read-only inspection of the installed agent-config checkout at `4ab3e27560ad0c846450cf1f4ea2213f350bf804` established a capability mismatch. That checkout has unrelated existing changes, which were preserved.
+
+| Current source evidence | Consequence |
+|---|---|
+| `/Users/calebbolden/Projects/agent-config/packages/workflow-runtime/src/adapters/codex.ts`: `CodexSdkAdapter.supports` accepts only `tool-free`; `execute` rejects other modes. | Codex cannot execute the required repository-reading auditor, regardless of credential availability. No credentials were inspected. |
+| `/Users/calebbolden/Projects/agent-config/packages/workflow-runtime/src/runtime.ts`: `adaptersFor` excludes adapters that do not support the requested permission, and routing receives `authAvailable` from that filtered map. | The recorded `auth-unavailable` reason also covers unsupported permission capability. It is not evidence that login or credential repair is needed. |
+| `/Users/calebbolden/Projects/agent-config/packages/workflow-runners/src/harden/workflow.ts`: `auditSeat` requires an independent provider family and the repository read-only profile; `permissionFor` binds roots to the repo and target, allows filesystem-read/search/git-read, and denies network. | With successful Claude reviewers, no Codex read-only adapter, and third-party providers denied, the finding auditors have no eligible route. Repeating the same workflow cannot resolve this structural blocker. |
+| `/Users/calebbolden/Projects/agent-config/bin/codex-workflow-runtime` launches the pinned Codex CLI with tool disabling, ignored user configuration/rules, strict configuration, read-only sandboxing, and no approvals. | A repair must preserve the security boundary. Merely enabling shell tools or advertising read-only support would not establish confinement to the declared roots. |
+
+The pinned CLI reports version `0.151.0`; the CLI on PATH reports `0.154.0`. Source inspection shows readiness checks use PATH while execution uses the pinned launcher. This discrepancy is a diagnostic lead, not a proven cause of the two transport failures. The generic transport classification also does not identify a network cause. Feasibility adapter failures remain unresolved. A read-only CLI feature-list probe rejected an exec-only flag before model execution; it supplied no readiness evidence and was not retried unchanged. No additional model attempts were consumed; the shared ledger remains at eight.
+
+The recommended infrastructure repair is a bounded read-only Codex adapter that enforces the declared filesystem roots, command classes, denied network, and provider independence, with meaningful escape/rejection tests and a synthetic end-to-end reviewer smoke test. An alternative would be an explicitly redesigned installed workflow using complete, locally prepared evidence packets and tool-free independent auditors; that changes the evidence contract and requires separate design and verification. Neither option is authorized by the original documentation-only scope. No manual replacement topology, permission bypass, source edit, dependency change, or credential operation was attempted.
+
+Follow-up documentation verification: `python3 /private/tmp/verify-project-showcase-docs.py` passed with five nonempty outputs, 32 existing repository files, 48 proposed application files still absent, 95 existing absolute references, 12 tasks, 32 requirement rows, five acceptance rows, and 12 finding dispositions. Original report bytes and corrected spec/plan hashes remain unchanged. Whitespace checks passed. Only this verification document changed; application tests were not run for documentation-only work.
+
+The outstanding scope decision is whether this follow-up may also repair `/Users/calebbolden/Projects/agent-config`. Until that is authorized and the missing review stages succeed against the corrected spec bytes, the implementation plan remains **PROVISIONAL**. Website implementation is still outside this task.
+
 ## Handoff
 
 Branch: `docs/project-showcase-hardening-20260911`, based on current main `c59e91c`. Commit the verified five-document set locally with `/private/tmp/project-showcase-docs-commit.txt`; no push, merge, deployment, or PR. The final local commit identifier is reported in the phase completion message rather than embedded recursively in its own commit.
