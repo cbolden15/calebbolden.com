@@ -7,6 +7,14 @@ type PreviewSite = {
   passwordEnv: string;
 };
 
+type PasswordlessPreview = {
+  path: string;
+  assetPaths: string[];
+  tokenEnv: string;
+  cookieName: string;
+  cookiePath: string;
+};
+
 const PREVIEW_SITES: PreviewSite[] = [
   {
     path: "/clients/brittany-lyons",
@@ -22,14 +30,38 @@ const PREVIEW_SITES: PreviewSite[] = [
   },
 ];
 
+const PASSWORDLESS_PREVIEWS: PasswordlessPreview[] = [
+  {
+    path: "/clients/fieldgoodfoods/soil-to-supper",
+    assetPaths: ["/clients/fieldgoodfoods/shared"],
+    tokenEnv: "FIELDGOOD_SOIL_TO_SUPPER_TOKEN",
+    cookieName: "fieldgood_soil_to_supper_access",
+    cookiePath: "/clients/fieldgoodfoods",
+  },
+];
+
+const ROBOTS_HEADER =
+  "noindex, nofollow, noarchive, nosnippet, noimageindex";
+
+function matchesPath(pathname: string, path: string) {
+  return pathname === path || pathname.startsWith(`${path}/`);
+}
+
+function preventIndexing(response: NextResponse) {
+  response.headers.set("X-Robots-Tag", ROBOTS_HEADER);
+  response.headers.set("Referrer-Policy", "no-referrer");
+  return response;
+}
+
 function unauthorized(realm: string) {
-  return new NextResponse("Authentication required", {
-    status: 401,
-    headers: {
-      "WWW-Authenticate": `Basic realm="${realm}", charset="UTF-8"`,
-      "X-Robots-Tag": "noindex, nofollow",
-    },
-  });
+  return preventIndexing(
+    new NextResponse("Authentication required", {
+      status: 401,
+      headers: {
+        "WWW-Authenticate": `Basic realm="${realm}", charset="UTF-8"`,
+      },
+    }),
+  );
 }
 
 function parseBasicAuth(header: string | null) {
@@ -53,8 +85,51 @@ function parseBasicAuth(header: string | null) {
 }
 
 export function proxy(request: NextRequest) {
+  const passwordlessPreview = PASSWORDLESS_PREVIEWS.find(
+    (preview) =>
+      matchesPath(request.nextUrl.pathname, preview.path) ||
+      preview.assetPaths.some((path) =>
+        matchesPath(request.nextUrl.pathname, path),
+      ),
+  );
+
+  if (passwordlessPreview) {
+    const expectedToken = process.env[passwordlessPreview.tokenEnv];
+    const isPreviewPage = matchesPath(
+      request.nextUrl.pathname,
+      passwordlessPreview.path,
+    );
+    const linkToken = isPreviewPage
+      ? request.nextUrl.searchParams.get("preview")
+      : null;
+    const cookieToken = request.cookies.get(
+      passwordlessPreview.cookieName,
+    )?.value;
+
+    if (
+      expectedToken &&
+      (linkToken === expectedToken || cookieToken === expectedToken)
+    ) {
+      const response = preventIndexing(NextResponse.next());
+
+      if (linkToken === expectedToken) {
+        response.cookies.set({
+          name: passwordlessPreview.cookieName,
+          value: expectedToken,
+          httpOnly: true,
+          secure: true,
+          sameSite: "lax",
+          path: passwordlessPreview.cookiePath,
+          maxAge: 60 * 60 * 24 * 90,
+        });
+      }
+
+      return response;
+    }
+  }
+
   const site = PREVIEW_SITES.find((s) =>
-    request.nextUrl.pathname.startsWith(s.path),
+    matchesPath(request.nextUrl.pathname, s.path),
   );
 
   if (!site) {
@@ -65,12 +140,11 @@ export function proxy(request: NextRequest) {
   const expectedPassword = process.env[site.passwordEnv];
 
   if (!expectedUsername || !expectedPassword) {
-    return new NextResponse("Preview password not configured", {
-      status: 503,
-      headers: {
-        "X-Robots-Tag": "noindex, nofollow",
-      },
-    });
+    return preventIndexing(
+      new NextResponse("Preview password not configured", {
+        status: 503,
+      }),
+    );
   }
 
   const credentials = parseBasicAuth(request.headers.get("authorization"));
@@ -91,8 +165,7 @@ export function proxy(request: NextRequest) {
       ? NextResponse.rewrite(new URL(`${site.path}/index.html`, request.url))
       : NextResponse.next();
 
-  response.headers.set("X-Robots-Tag", "noindex, nofollow");
-  return response;
+  return preventIndexing(response);
 }
 
 export const config = {
