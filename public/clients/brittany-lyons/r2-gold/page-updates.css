@@ -1,0 +1,37 @@
+/* Page-specific refinements from the September 2026 content review. */
+.bli-process-steps .bli-svc {
+  grid-template-columns: 3rem minmax(0, 1fr);
+  align-items: start;
+}
+
+.bli-process-steps .bli-svc__num {
+  line-height: 1;
+}
+
+.bli-process-steps .bli-svc__tag {
+  display: block;
+  grid-column: 2;
+}
+
+.bli-project-portrait {
+  aspect-ratio: auto;
+  margin-inline: auto !important;
+  max-width: 50rem;
+}
+
+.bli-project-portrait img {
+  aspect-ratio: 2 / 3;
+  height: auto;
+  object-fit: contain;
+}
+
+@media (min-width: 768px) {
+  .bli-process-steps .bli-svc {
+    grid-template-columns: 5rem minmax(0, 1fr) 10rem;
+  }
+
+  .bli-process-steps .bli-svc__tag {
+    grid-column: 3;
+    text-align: right;
+  }
+}
