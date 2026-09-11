@@ -2,7 +2,7 @@
 
 Internal documentation. September 11, 2026. This record concerns specification hardening and planning, including the subsequently authorized runtime repair.
 
-**Current status: DONE_WITH_CONCERNS. Plan: PROVISIONAL.** Resumed runtime recovery, deadline, and diagnostic repairs are verified at agent-config commit `c2b97af`. No new showcase review has run. Cycle 2 ended at its 900-second bound with no final report or verdict. Three reviews and their independent audits completed; Feasibility failed; the blind independent review was interrupted. The current disposition is `/Users/calebbolden/Projects/consulting/calebbolden.com/docs/superpowers/specs/2026-09-11-project-showcase-design.md.hardening.md`. No website implementation has started. Earlier check tables below are historical; the resumed milestone at the end records the latest runtime work.
+**Current status: DONE_WITH_CONCERNS. Plan: PROVISIONAL.** The explicitly approved third read-only run returned `fix-first`: 0 Critical, 7 Important, 1 Minor finding groups. All four requested lenses and their independent audits completed; the blind independent reviewer timed out, so `single_engine: true`. The reported counts cover the completed reviewers and do not establish the absence of Critical findings from the missing seat. The generated report is `/Users/calebbolden/Projects/consulting/calebbolden.com/docs/superpowers/specs/2026-09-11-project-showcase-design.md.hardening.md`. No fixes or website implementation were applied. Earlier sections are historical; the third-run outcome at the end is current.
 
 ## Scope and baseline
 
@@ -177,3 +177,116 @@ absolute references, 12 tasks, 32 requirement rows, five acceptance rows, and
 12 finding dispositions. Cycle archives still match the original captures.
 Whitespace and single-file website scope checks passed. Application tests
 remain intentionally unrun for this documentation-only website change.
+
+## Explicitly approved third read-only review
+
+User approved one additional read-only hardening invocation with a 30-minute
+outer cap after the repaired runtime milestone. This is a one-time override of
+the two-cycle limit, not permission for further remediation or implementation.
+The installed runner at runtime commit `c2b97af` owns all reviewer dispatch:
+DESIGN, FEASIBILITY, SCOPE, SECURITY, independent review, enabled audits, and
+third-party denial. No manual replacement topology or additional helper agents
+are dispatched for this invocation.
+
+The corrected spec remains SHA-256
+`3d5be73004e60931083ee486f86645335292addd8f67735bc0ca3d18f348d553`.
+The shared ledger carries forward 26 invocations and reserves at most 12 for
+this explicitly authorized run, raising the cumulative ceiling to 38 solely
+for that purpose. Existing runtime attempt/concurrency limits and permission
+profiles remain enforced. The prior reports and event captures are preserved.
+
+The supervisor enforces 1,800 seconds and captures stdout, event JSONL, exit
+status, and the announced private checkpoint. A changed target or expired
+outer deadline stops the invocation. Finding text stays outside reviewer
+roots until every child has stopped. Stop after the result or interruption;
+no automatic retry, target edit, new runtime repair, or T01 execution follows.
+Current run state: completed, with the coverage limitation recorded below.
+
+### Third-run outcome
+
+Run ID `1da28b04-0eca-4390-b3a6-64ede243783d` exited 0 after 874.95 seconds
+(14 minutes 35 seconds), within the 1,800-second cap. The spec remained
+unchanged. Eleven attempts produced nine successes and two failures, with
+peak concurrency two and no interrupted attempts. The carried total is 37
+of the explicitly expanded 38-invocation ceiling.
+
+| Stage | Outcome |
+|---|---|
+| Design and independent finding audit | Codex review completed in 218.536 s; Claude audit completed in 50.491 s. |
+| Feasibility and independent finding audit | Codex review completed in 128.659 s; Claude audit completed in 25.383 s. The previously missing Feasibility evidence is now available. |
+| Scope and independent finding audit | Codex review completed in 99.531 s; Claude audit completed in 67.279 s. |
+| Security and independent finding audit | Codex review completed in 213.342 s; Claude audit completed in 52.628 s. |
+| Blind independent review | Claude timed out after 302.025 s including shutdown. It supplied no findings, and its audit did not run. |
+| Reconciliation | Codex failed with `transport` after 3.253 s; the allowed Claude fallback completed in 33.222 s. The generic transport event does not establish a cause. |
+
+Actual result: `verdict: fix-first`, `critical: 0`, `important: 7`, `minor: 1`,
+`verified: true`, `single_engine: true`, `lenses_failed: []`. Here `verified`
+is supported by four successful independent finding audits, not just an enabled
+flag. All four primary reviewers used Codex; Claude audited them but did not
+complete its blind review. That distinction explains the single-engine flag
+and prevents treating the result as a complete independent READY attestation.
+
+The checkpoint is complete as a recovery artifact and holds ten final node
+outcomes: four reviews, four audits, the blind-review failure, and successful
+reconciliation. Individual provider failures remain in the event ledger. Its
+complete status means the workflow produced its result; it does not mean the
+spec is ready. The exact report, JSON result, event ledger, checkpoint, and exit
+record are archived beside the spec with `.hardening.cycle-3` suffixes. The
+primary report equals the returned report string byte for byte.
+
+### Retained fix list and limits
+
+The generated result groups ten retained source findings into eight groups.
+Its public-destination group also contains Feasibility's distinct legacy-schema
+finding; its recovery group also contains Scope's custom-retry finding. Preserve
+those member requirements when applying fixes; the report prints a representative
+finding for each group. The raw checkpoint preserves every source finding and
+audit verdict.
+
+| Group | Required correction before reconsidering readiness |
+|---|---|
+| Important: Vora route cutover | Define the legacy, rich-draft-with-legacy-fallback, and rich-published route states, including rollback and route checks. |
+| Important: published destinations and legacy schema | Require valid destinations for published case studies. Separate rich flagship records from retained legacy records so ChapterHQ and the site assistant do not require invented flagship demos. |
+| Important: fixture provenance | Bind review metadata to a fixture revision or digest, and invalidate that attestation when its bytes change. |
+| Important: enhancement recovery | Put recovery outside the failing demo module. A native reload/direct approved asset path can satisfy recovery without a custom retry subsystem. |
+| Important: gallery scope | Make gallery implementation and acceptance conditional on reviewed gallery assets actually being included, or explicitly defer it. |
+| Important: draft assets | Keep unapproved assets outside the production public tree. Enforce an approved-asset manifest and check direct asset URLs and bundles. |
+| Important: active media formats | Restrict media destinations to verified inert formats; reject executable content or isolate it under a separate explicitly reviewed delivery policy. |
+| Minor: surface-specific data | Keep full records on the server and send only the fields required by each card, related link, or case-study view. |
+
+The Scope auditor concretely refuted the analytics-workstream and forced-word-count
+findings. They are recorded in `killed_by_audit`; do not reintroduce them as required
+changes.
+
+Coordinator comparison, not a new independent verdict: T01 already specifies a
+separate optional rich case-study body, published-destination validation, Vora's
+legacy fallback, and card DTO projection. Those details can inform surgical spec
+alignment; they do not change what this spec-only review attests. Neither the
+spec nor the implementation plan was edited. No reported finding was applied or
+silently dismissed after the run.
+
+The next work is a separately scoped correction pass against the retained findings,
+followed by an explicitly bounded decision on any further independent review.
+This one-time third-run authorization is exhausted. T01 remains not started;
+no fourth invocation, runtime repair, application edit, push, merge, PR, or
+deployment followed this run.
+
+### Final archive verification
+
+Documentation and evidence checks passed: 13 nonempty outputs, 98 existing
+absolute references, 12 plan tasks, 32 requirement rows, five acceptance rows,
+and 12 historical finding dispositions. All five cycle-3 archives match their
+private captures exactly. The spec, provisional plan, and prior-cycle archives
+match their pre-run bytes. The event ledger accounts for all 11 attempts with
+no unfinished child; checkpoint records account for four reviews, four audits,
+the independent timeout, and reconciliation. Twelve source findings minus two
+auditor refutations yield ten retained findings in eight distinct groups.
+
+The first scratch verifier incorrectly expected the checkpoint's result pointer
+to contain the full CLI result. The checkpoint contract stores only verdict and
+report path there, with node findings in separate records. Correcting that
+verification assumption produced a passing check; runtime code was unchanged.
+Whitespace and seven-file documentation scope checks passed. The 48 proposed
+application files remain absent. Application tests were not run for this
+documentation-only milestone. Runtime HEAD and both unrelated local runtime
+edits retain their recorded hashes.
