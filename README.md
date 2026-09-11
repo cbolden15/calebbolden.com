@@ -110,19 +110,17 @@ docker compose up -d --build
 
 A secondary Docker and Cloudflare Tunnel stack exists on the homelab server. It receives no production traffic.
 
+The Field Good Foods preview is passwordless at its unlinked `/clients/fieldgoodfoods` path. The proxy adds `noindex`, no-cache, and no-referrer headers to every page and asset under that path.
+
 ## Environment variables
 
 - `GOOGLE_GENERATIVE_AI_API_KEY`: Gemini chat key.
 - `BRITTANY_PREVIEW_TOKEN`: private-link token for the unindexed Brittany Lyons mockups. Keep it out of Git.
-- `FIELDGOOD_PREVIEW_USER` / `FIELDGOOD_PREVIEW_PASSWORD`: Basic Auth fallback for Field Good Foods previews.
-- `FIELDGOOD_SOIL_TO_SUPPER_TOKEN`: private-link token for the Soil to Supper review site.
 - `OJA_PREVIEW_PATH`: high-entropy public path that rewrites to the private OJÄ preview files.
 - `RESEND_API_KEY`: Resend key for lead notification emails.
 - `LEAD_EMAIL_TO`: optional lead email recipient.
 - `LEAD_EMAIL_FROM`: optional lead email sender.
 - `NEXT_PUBLIC_CALENDLY_CLIENT_URL`: optional booking link.
-- `FIELDGOOD_PREVIEW_USER` / `FIELDGOOD_PREVIEW_PASSWORD`: Basic Auth fallback for Field Good Foods previews.
-- `FIELDGOOD_SOIL_TO_SUPPER_TOKEN`: random token for the passwordless, noindex Soil to Supper review link.
 
 ## Content management
 

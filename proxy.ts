@@ -1,45 +1,12 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-type PreviewSite = {
-  path: string;
-  realm: string;
-  userEnv: string;
-  passwordEnv: string;
-};
-
-type PasswordlessPreview = {
-  path: string;
-  assetPaths: string[];
-  tokenEnv: string;
-  cookieName: string;
-  cookiePath: string;
-};
-
 const BRITTANY_PREVIEW_PATH = "/clients/brittany-lyons";
 const BRITTANY_PREVIEW_TOKEN_ENV = "BRITTANY_PREVIEW_TOKEN";
 const BRITTANY_PREVIEW_COOKIE = "brittany_preview_access";
+const FIELDGOOD_PREVIEW_PATH = "/clients/fieldgoodfoods";
 const OJA_INTERNAL_PATH = "/client-previews/oja";
 const ROBOTS_HEADER =
   "noindex, nofollow, noarchive, nosnippet, noimageindex";
-
-const PREVIEW_SITES: PreviewSite[] = [
-  {
-    path: "/clients/fieldgoodfoods",
-    realm: "Field Good Foods preview",
-    userEnv: "FIELDGOOD_PREVIEW_USER",
-    passwordEnv: "FIELDGOOD_PREVIEW_PASSWORD",
-  },
-];
-
-const PASSWORDLESS_PREVIEWS: PasswordlessPreview[] = [
-  {
-    path: "/clients/fieldgoodfoods/soil-to-supper",
-    assetPaths: ["/clients/fieldgoodfoods/shared"],
-    tokenEnv: "FIELDGOOD_SOIL_TO_SUPPER_TOKEN",
-    cookieName: "fieldgood_soil_to_supper_access",
-    cookiePath: "/clients/fieldgoodfoods",
-  },
-];
 
 function isWithinPath(pathname: string, basePath: string) {
   return pathname === basePath || pathname.startsWith(`${basePath}/`);
@@ -63,37 +30,6 @@ function withPreviewHeaders(response: NextResponse) {
 
 function previewNotFound() {
   return withPreviewHeaders(new NextResponse("Not found", { status: 404 }));
-}
-
-function unauthorized(realm: string) {
-  return withPreviewHeaders(
-    new NextResponse("Authentication required", {
-      status: 401,
-      headers: {
-        "WWW-Authenticate": `Basic realm="${realm}", charset="UTF-8"`,
-      },
-    }),
-  );
-}
-
-function parseBasicAuth(header: string | null) {
-  if (!header) return null;
-
-  const [scheme, encoded] = header.split(" ");
-  if (scheme !== "Basic" || !encoded) return null;
-
-  try {
-    const decoded = atob(encoded);
-    const separator = decoded.indexOf(":");
-    if (separator === -1) return null;
-
-    return {
-      username: decoded.slice(0, separator),
-      password: decoded.slice(separator + 1),
-    };
-  } catch {
-    return null;
-  }
 }
 
 function handleBrittanyPreview(request: NextRequest) {
@@ -175,79 +111,19 @@ export function proxy(request: NextRequest) {
     return handleBrittanyPreview(request);
   }
 
-  const passwordlessPreview = PASSWORDLESS_PREVIEWS.find(
-    (preview) =>
-      isWithinPath(pathname, preview.path) ||
-      preview.assetPaths.some((path) => isWithinPath(pathname, path)),
-  );
+  if (isWithinPath(pathname, FIELDGOOD_PREVIEW_PATH)) {
+    const response =
+      pathname === FIELDGOOD_PREVIEW_PATH
+        ? NextResponse.redirect(
+            new URL(`${FIELDGOOD_PREVIEW_PATH}/index.html`, request.url),
+            307,
+          )
+        : NextResponse.next();
 
-  if (passwordlessPreview) {
-    const expectedToken = process.env[passwordlessPreview.tokenEnv];
-    const isPreviewPage = isWithinPath(pathname, passwordlessPreview.path);
-    const linkToken = isPreviewPage
-      ? request.nextUrl.searchParams.get("preview")
-      : null;
-    const cookieToken = request.cookies.get(
-      passwordlessPreview.cookieName,
-    )?.value;
-
-    if (
-      expectedToken &&
-      (linkToken === expectedToken || cookieToken === expectedToken)
-    ) {
-      const response = withPreviewHeaders(NextResponse.next());
-
-      if (linkToken === expectedToken) {
-        response.cookies.set({
-          name: passwordlessPreview.cookieName,
-          value: expectedToken,
-          httpOnly: true,
-          secure: true,
-          sameSite: "lax",
-          path: passwordlessPreview.cookiePath,
-          maxAge: 60 * 60 * 24 * 90,
-        });
-      }
-
-      return response;
-    }
+    return withPreviewHeaders(response);
   }
 
-  const site = PREVIEW_SITES.find((preview) =>
-    isWithinPath(pathname, preview.path),
-  );
-
-  if (!site) {
-    return NextResponse.next();
-  }
-
-  const expectedUsername = process.env[site.userEnv];
-  const expectedPassword = process.env[site.passwordEnv];
-
-  if (!expectedUsername || !expectedPassword) {
-    return withPreviewHeaders(
-      new NextResponse("Preview password not configured", { status: 503 }),
-    );
-  }
-
-  const credentials = parseBasicAuth(request.headers.get("authorization"));
-
-  if (
-    !credentials ||
-    credentials.username !== expectedUsername ||
-    credentials.password !== expectedPassword
-  ) {
-    return unauthorized(site.realm);
-  }
-
-  // Next normalizes trailing slashes before this proxy runs. Rewrite the bare
-  // Field Good Foods path to the index document, whose base tag owns links.
-  const response =
-    pathname === site.path
-      ? NextResponse.rewrite(new URL(`${site.path}/index.html`, request.url))
-      : NextResponse.next();
-
-  return withPreviewHeaders(response);
+  return NextResponse.next();
 }
 
 export const config = {

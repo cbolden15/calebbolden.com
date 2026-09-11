@@ -141,71 +141,41 @@ describe("Brittany Lyons private-link preview", () => {
 });
 
 describe("Field Good Foods previews", () => {
-  const sitePath = "/clients/fieldgoodfoods/soil-to-supper";
-  const cookieName = "fieldgood_soil_to_supper_access";
-  const token = "test-fieldgood-preview-token";
+  const sitePath = "/clients/fieldgoodfoods";
 
-  beforeEach(() => {
-    vi.stubEnv("FIELDGOOD_PREVIEW_USER", "preview-user");
-    vi.stubEnv("FIELDGOOD_PREVIEW_PASSWORD", "preview-password");
-    vi.stubEnv("FIELDGOOD_SOIL_TO_SUPPER_TOKEN", token);
-  });
+  it("redirects the bare unlinked URL to its index document", () => {
+    const response = proxy(request(sitePath));
 
-  it("grants access from the private link and stores a scoped cookie", () => {
-    const response = proxy(
-      request(`${sitePath}/index.html?preview=${token}`),
+    expect(response.status).toBe(307);
+    expect(response.headers.get("location")).toBe(
+      `https://calebbolden.com${sitePath}/index.html`,
     );
-
-    expect(response.status).toBe(200);
-    expect(response.headers.get("set-cookie")).toContain(
-      `${cookieName}=${token}`,
-    );
-    expect(response.headers.get("set-cookie")).toContain("HttpOnly");
-    expect(response.headers.get("set-cookie")).toContain(
-      "Path=/clients/fieldgoodfoods",
-    );
+    expect(
+      new URL(
+        "soil-to-supper/index.html",
+        response.headers.get("location")!,
+      ).pathname,
+    ).toBe(`${sitePath}/soil-to-supper/index.html`);
+    expect(response.headers.get("www-authenticate")).toBeNull();
     expect(response.headers.get("x-robots-tag")).toBe(ROBOTS);
+    expect(response.headers.get("cache-control")).toBe("private, no-store");
+    expect(response.headers.get("referrer-policy")).toBe("no-referrer");
   });
 
-  it("uses the private-link cookie for pages and shared assets", () => {
-    const headers = { cookie: `${cookieName}=${token}` };
-    const pageResponse = proxy(
-      request(`${sitePath}/shop-beef.html`, headers),
-    );
-    const assetResponse = proxy(
-      request("/clients/fieldgoodfoods/shared/reset.css", headers),
-    );
+  it("serves pages and shared assets without a password challenge", () => {
+    const paths = [
+      `${sitePath}/index.html`,
+      `${sitePath}/soil-to-supper/shop-beef.html`,
+      `${sitePath}/shared/reset.css`,
+    ];
 
-    expect(pageResponse.status).toBe(200);
-    expect(assetResponse.status).toBe(200);
-    expect(assetResponse.headers.get("x-robots-tag")).toBe(ROBOTS);
-  });
-
-  it("keeps the predictable URL password-protected", () => {
-    const response = proxy(request(`${sitePath}/index.html`));
-
-    expect(response.status).toBe(401);
-    expect(response.headers.get("www-authenticate")).toContain("Basic");
-    expect(response.headers.get("x-robots-tag")).toBe(ROBOTS);
-  });
-
-  it("rejects an incorrect private-link token", () => {
-    const response = proxy(
-      request(`${sitePath}/index.html?preview=incorrect-token`),
-    );
-
-    expect(response.status).toBe(401);
-  });
-
-  it("preserves Basic Auth access to the rest of the client preview", () => {
-    const authorization = `Basic ${Buffer.from(
-      "preview-user:preview-password",
-    ).toString("base64")}`;
-    const response = proxy(
-      request("/clients/fieldgoodfoods/index.html", { authorization }),
-    );
-
-    expect(response.status).toBe(200);
-    expect(response.headers.get("x-robots-tag")).toBe(ROBOTS);
+    for (const path of paths) {
+      const response = proxy(request(path));
+      expect(response.status).toBe(200);
+      expect(response.headers.get("www-authenticate")).toBeNull();
+      expect(response.headers.get("x-robots-tag")).toBe(ROBOTS);
+      expect(response.headers.get("cache-control")).toBe("private, no-store");
+      expect(response.headers.get("referrer-policy")).toBe("no-referrer");
+    }
   });
 });
