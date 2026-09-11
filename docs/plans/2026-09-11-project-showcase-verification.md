@@ -2,7 +2,7 @@
 
 Internal documentation. September 11, 2026. This record concerns specification hardening and planning, including the subsequently authorized runtime repair.
 
-**Current status: DONE_WITH_CONCERNS. Plan: PROVISIONAL.** Runtime repair is verified at agent-config commit `0bf7293`. Cycle 2 ended at its 900-second bound with no final report or verdict. Three reviews and their independent audits completed; Feasibility failed; the blind independent review was interrupted. The current disposition is `/Users/calebbolden/Projects/consulting/calebbolden.com/docs/superpowers/specs/2026-09-11-project-showcase-design.md.hardening.md`. No website implementation has started. Earlier check tables below are historical; the closing verification section records the final document set.
+**Current status: DONE_WITH_CONCERNS. Plan: PROVISIONAL.** Resumed runtime recovery, deadline, and diagnostic repairs are verified at agent-config commit `c2b97af`. No new showcase review has run. Cycle 2 ended at its 900-second bound with no final report or verdict. Three reviews and their independent audits completed; Feasibility failed; the blind independent review was interrupted. The current disposition is `/Users/calebbolden/Projects/consulting/calebbolden.com/docs/superpowers/specs/2026-09-11-project-showcase-design.md.hardening.md`. No website implementation has started. Earlier check tables below are historical; the resumed milestone at the end records the latest runtime work.
 
 ## Scope and baseline
 
@@ -129,3 +129,51 @@ Final immutable outputs (this verification record excludes its own hash):
 | /Users/calebbolden/Projects/consulting/calebbolden.com/docs/plans/2026-09-11-project-showcase-implementation.md | 77813 | `a13dd8ee20f13aad3a7449b16abe3b9d8b00ecec77b3572afe58736c4ce045b4` |
 
 Final local commits are reported in the completion message after staged-scope verification. Nothing is pushed, merged, deployed, or published. The runtime capability repair is complete; hardening readiness remains limited by the failed/incomplete stages above. **First implementation task remains T01, public catalog and migration boundary, not started.** A separately authorized review series must resolve the missing evidence before marking the plan ready.
+
+## Resumed runtime recovery and verification
+
+User resumed work with parallel subagents. The coordinator verified both
+repositories against the handoff, assigned separate Feasibility and deadline
+investigations, and used a third agent for independent runtime review.
+The local runtime repair is committed as
+`c2b97af0ff688b73c1309ad76333802a1f1796de` on
+`fix/workflow-readonly-review-20260911`. Its durable record is
+/Users/calebbolden/Projects/agent-config/docs/plans/2026-09-11-readonly-review-runtime-repair.md.
+
+The repaired harden runner saves schema-valid outputs before downstream stages,
+in private per-run checkpoints outside reviewer roots. A path-only notice
+allows recovery after termination. Queueing, schema retries, and provider
+fallback now share one execution deadline after provider readiness checks.
+Claude's typed terminal failures retain safe diagnostic subreasons. The two
+historical generic Claude errors cannot be diagnosed retroactively from the
+saved event archive.
+
+Runtime verification passed the actual acceptance gate, full build/typechecks,
+116 runtime tests and 162 runner tests, two real synthetic read-only adapter
+checks, and a synthetic SIGTERM recovery check. The full suite passed with two
+workers after updating downstream timeout assertions and isolating two
+Git-heavy test timeouts; no tests were removed or given larger time limits.
+Independent review found and verified a queued-deadline correction, then
+finished with no unresolved actionable defects. Existing unrelated runtime
+files were preserved byte for byte. The carried invocation ledger is 26 of 28.
+
+The corrected spec, provisional implementation plan, primary recovery report,
+and both cycle archives retain their previous hashes. This resumption changes
+only this website verification record. There is still no new hardening verdict
+and no absence-of-Critical claim for cycle 2. T01 remains not started.
+
+The concrete next review option is one separately authorized read-only
+invocation against the exact corrected spec, with the installed four lenses,
+independent audits, third-party denial, a 12-attempt cap, retained checkpoints,
+and an outer 1,800-second bound. The current two-wave critical path can consume
+1,620 seconds, so 900 seconds cannot promise completion. A resumable stage
+machine with reserved finalization capacity is the fuller architectural option
+if the 900-second bound must remain; it has not been implemented. No third
+review cycle, application edit, push, merge, PR, or deployment occurred.
+
+Resumed documentation verification: PASS. Eight nonempty outputs, 32 existing
+repository files, all 48 proposed application files still absent, 98 existing
+absolute references, 12 tasks, 32 requirement rows, five acceptance rows, and
+12 finding dispositions. Cycle archives still match the original captures.
+Whitespace and single-file website scope checks passed. Application tests
+remain intentionally unrun for this documentation-only website change.
