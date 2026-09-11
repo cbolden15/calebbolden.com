@@ -2,7 +2,7 @@
 
 Internal documentation. September 11, 2026. This record concerns specification hardening and planning, including the subsequently authorized runtime repair.
 
-**Current status: DONE_WITH_CONCERNS. Plan: PROVISIONAL.** The explicitly approved third read-only run returned `fix-first`: 0 Critical, 7 Important, 1 Minor finding groups. All four requested lenses and their independent audits completed; the blind independent reviewer timed out, so `single_engine: true`. The reported counts cover the completed reviewers and do not establish the absence of Critical findings from the missing seat. The generated report is `/Users/calebbolden/Projects/consulting/calebbolden.com/docs/superpowers/specs/2026-09-11-project-showcase-design.md.hardening.md`. No fixes or website implementation were applied. Earlier sections are historical; the third-run outcome at the end is current.
+**Current status: correction pass complete and verified. Plan: PROVISIONAL.** User authorized the retained cycle-3 corrections after reviewing the result. The spec and implementation plan now incorporate those changes; document checks and a bounded independent consistency check passed. Application implementation remains unstarted. Cycle 3's `fix-first` result (0 Critical, 7 Important, 1 Minor groups) describes the earlier spec hash. Four reviews and audits completed, but its blind independent review timed out; no new hardening verdict covers these corrections. The generated report remains unchanged at `/Users/calebbolden/Projects/consulting/calebbolden.com/docs/superpowers/specs/2026-09-11-project-showcase-design.md.hardening.md`. Earlier sections are historical; the approved correction pass at the end is current.
 
 ## Scope and baseline
 
@@ -290,3 +290,69 @@ Whitespace and seven-file documentation scope checks passed. The 48 proposed
 application files remain absent. Application tests were not run for this
 documentation-only milestone. Runtime HEAD and both unrelated local runtime
 edits retain their recorded hashes.
+
+## Approved correction pass
+
+User instructed “please proceed with your changes” after the retained fix list.
+This milestone updates the spec and plan, verifies their agreement, and records
+the result. It does not execute T01 or start another hardening invocation.
+The coordinator owns the spec, this record, gotcha capture, and integration.
+A worker owns only the implementation plan; a second worker checks the final
+documents without editing them. The new milestone allows two workers, no nested
+dispatches. The prior 37 review/repair invocations remain historical and their
+one-time review override remains exhausted.
+
+| Cycle-3 group | Applied document correction and planned behavioral verification |
+|---|---|
+| Important: Vora route cutover | Spec section 5 defines Legacy, Rich draft with legacy fallback, and Rich published, derived from one record revision. Plan T01/T02/T04/T12 cover route/body/metadata/link agreement and rollback, including rich-only assets. |
+| Important: destinations and legacy schema | Spec section 13 distinguishes rich flagship bodies from legacy secondary records and requires resolvable published destinations. T01 validates the graph and accepts ChapterHQ/site-assistant records without fabricated demo fields. This preserves the merged Feasibility member. |
+| Important: fixture provenance | A separate reviewed manifest binds every example's fixture and asset bytes to SHA-256, date, derivation, and disclosure. T01/T03/T04–T08/T11/T12 reject a changed sample under an unchanged attestation and never auto-approve digests during a build. |
+| Important: enhancement recovery | Spec section 5 assigns static content and a native page-reload link to the server shell outside the lazy demo. T02/T03/T12 block module and media loads separately and check that recovery does not depend on failed JavaScript. No custom retry subsystem is required; this preserves the merged Scope member. |
+| Important: gallery scope | Galleries are deferred because no initial asset inventory requires them. Spec sections 4/5/12–16 and plan T03/T12 use posters, readable crops, and optional approved raster links; future gallery acceptance is conditional on separately scoped assets. |
+| Important: draft assets | Spec section 13 and plan T01/T03/T11/T12 require an exact manifest-approved showcase asset tree, reject draft-only/unlisted/stale files, and verify direct URLs and browser payloads. Unreviewed captures stay outside website build inputs. Page 404s are not asset protection. |
+| Important: active media formats | The same gate checks allowed raster/video extension, decoded signature, digest, and MIME. Native image links cannot target HTML/SVG/XML or arbitrary JSON documents. T03/T11/T12 add negative content-type and direct-link checks; unrelated preview rules remain outside this gate. |
+| Minor: per-surface projections | Spec sections 3/13/14 and plan T01/T09/T10/T12 project card/related/homepage fields from one server source; only a detail page receives its selected example. Payload tests exclude other narratives and fixtures. |
+
+The analytics-workstream and mandatory narrative-quota findings stay refuted.
+The 400–700-word narrative range remains a target, and analytics remains
+conditional on an already reviewed provider. Neither becomes a new release gate.
+
+The primary report and all cycle archives preserve their original bytes. The
+reviewed spec hash was `3d5be73004e60931083ee486f86645335292addd8f67735bc0ca3d18f348d553`;
+it must not be relabeled as the hash of this correction. Current document hashes
+and the actual consistency-check result are recorded below.
+
+Current corrected spec SHA-256: `c4dc3707042ecdc575768284a80740c9fd06ef242ceea80e6382c8d8113599d3`.
+Current corrected plan SHA-256: `02ec995c64f77cee54ad9164cebd78c028317ee792aeee817cb8a6e21b797cb7`.
+
+### Final correction verification
+
+The plan worker completed the aligned task, ownership, command, traceability,
+and acceptance updates. The independent consistency worker initially found two
+remaining contradictions: Control Center's reducer had no fixture input for
+ID/visibility-dependent transitions, and unconditional snapshot verification
+blocked permitted synthetic local previews before production approval.
+
+The coordinator corrected both. T08 now passes the projected fixture explicitly
+through reducer calls and tests unknown IDs, hidden selections, and primary-run
+selection. The spec and T01/T05 separate strict local fixture-content validation
+from production attestation, with distinct draft/published bodies and an explicit
+local-synthetic provenance state. A paired check requires a draft to work locally
+with an empty manifest while still resolving to production 404 or Vora's legacy
+fallback. Existing attestations and public-asset checks remain strict.
+
+The same reviewer performed one targeted follow-up on the exact final hashes
+above and returned PASS, with no unresolved inconsistency in the bounded scope.
+This validates the correction pass, not a new hardening or READY verdict. The
+milestone used two workers and one targeted follow-up; no nested dispatch or
+additional harden invocation occurred.
+
+Documentation verification passed: 14 nonempty tracked outputs, all ten historical
+review/report artifacts byte-identical to commit `4f6df31`, 98 existing absolute
+references, 12 tasks, 32 requirement rows, five acceptance rows, and balanced
+fences. The spec hash in the plan and both hashes in this record match the files.
+All 58 checked proposed/deferred application paths remain absent. Whitespace and
+four-document scope checks passed. Runtime HEAD and unrelated runtime edits are
+unchanged. Application tests/build were not run because this pass changed only
+documents; implementation commands and loader/decoder validation remain future
+work. T01 has not started.
