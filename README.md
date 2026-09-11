@@ -121,6 +121,8 @@ A secondary Docker and Cloudflare Tunnel stack exists on the homelab server. It 
 - `LEAD_EMAIL_TO`: optional lead email recipient.
 - `LEAD_EMAIL_FROM`: optional lead email sender.
 - `NEXT_PUBLIC_CALENDLY_CLIENT_URL`: optional booking link.
+- `FIELDGOOD_PREVIEW_USER` / `FIELDGOOD_PREVIEW_PASSWORD`: Basic Auth fallback for Field Good Foods previews.
+- `FIELDGOOD_SOIL_TO_SUPPER_TOKEN`: random token for the passwordless, noindex Soil to Supper review link.
 
 ## Content management
 
