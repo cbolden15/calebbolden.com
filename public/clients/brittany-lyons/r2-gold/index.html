@@ -692,15 +692,21 @@ a{color:inherit}
   <a class="nav__mark" href="index.html">Brittany Lyons Interiors</a>
   <nav aria-label="Primary">
     <ul class="nav__links">
-      <li><a href="portfolio.html">Projects</a></li>
-      <li><a href="services.html">Services</a></li>
       <li><a href="about.html">About</a></li>
-      <li><a href="journal.html">Journal</a></li>
-      <li><a href="contact.html">Contact</a></li>
+      <li class="bli-hasmenu"><button class="bli-menu-button" type="button" aria-expanded="false" aria-controls="homeServicesMenu">Services</button><span class="bli-menu" id="homeServicesMenu"><a href="services.html">Services overview</a><a href="service-home-renovation.html">Full Home Renovations &amp; Remodels</a><a href="service-new-construction.html">New Construction</a><a href="service-kitchen-design.html">Kitchen Design</a><a href="service-bathroom-design.html">Bathroom Design</a><a href="service-redesign.html">Redesigns</a><a href="service-finishing-selections.html">Finishing Selections</a></span></li>
+      <li><a href="portfolio.html">Portfolio</a></li><li><a href="process.html">Process</a></li><li><a href="investment.html">Investment</a></li><li><a href="testimonials.html">Reviews</a></li>
+      <li class="bli-hasmenu"><button class="bli-menu-button" type="button" aria-expanded="false" aria-controls="homeExploreMenu">Explore</button><span class="bli-menu" id="homeExploreMenu"><a href="faq.html">FAQs</a><a href="journal.html">Journal</a><a href="service-areas.html">Service Areas</a><a href="contact.html">Contact</a></span></li>
     </ul>
   </nav>
   <a class="nav__cta" href="contact.html">Schedule Discovery Call</a>
+  <button class="bli-burger" aria-label="Open menu" id="burger" aria-expanded="false" aria-controls="mobileNav"><span></span><span></span><span></span></button>
 </header>
+<nav class="bli-mobilenav" id="mobileNav" aria-label="Mobile" aria-hidden="true" inert>
+  <button class="bli-close" aria-label="Close menu" id="closeNav">&times;</button>
+  <a href="index.html">Home</a><a href="about.html">About</a><a href="portfolio.html">Portfolio</a><a href="process.html">Process</a><a href="investment.html">Investment</a><a href="testimonials.html">Reviews</a>
+  <p class="bli-mobile-group">Services</p><a class="bli-mobile-sub" href="services.html">All Services</a><a class="bli-mobile-sub" href="service-home-renovation.html">Renovations &amp; Remodels</a><a class="bli-mobile-sub" href="service-new-construction.html">New Construction</a><a class="bli-mobile-sub" href="service-kitchen-design.html">Kitchen Design</a><a class="bli-mobile-sub" href="service-bathroom-design.html">Bathroom Design</a><a class="bli-mobile-sub" href="service-redesign.html">Redesigns</a><a class="bli-mobile-sub" href="service-finishing-selections.html">Finishing Selections</a>
+  <p class="bli-mobile-group">Explore</p><a class="bli-mobile-sub" href="faq.html">FAQs</a><a class="bli-mobile-sub" href="journal.html">Journal</a><a class="bli-mobile-sub" href="service-areas.html">Service Areas</a><a class="bli-mobile-sub" href="contact.html">Contact</a>
+</nav>
 
 <div class="progress" id="progress" aria-hidden="true"><span class="progress__fill" id="progressFill"></span></div>
 
@@ -731,7 +737,7 @@ a{color:inherit}
       <div class="intro__body">
         <p>Brittany Lyons Interiors is a boutique residential studio working across
            Dallas–Fort Worth since 2016. We start with how you actually want to live in
-           a house, then build the rooms around it. White walls, real daylight, and
+           a house, then build the rooms around it. Bright rooms, real daylight, and
            color that arrives through cabinetry, fabric and brass.</p>
         <p class="intro__tagline">Helping clients experience self-care through peaceful functional design.</p>
       </div>
@@ -963,6 +969,7 @@ a{color:inherit}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js" defer></script>
+<script src="site.js?v=20260908-navigation" defer></script>
 <script>
 window.addEventListener('load', function () {
 

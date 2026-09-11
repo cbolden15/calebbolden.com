@@ -111,8 +111,10 @@ ul{margin:0;padding:0}
 .bli-ulink:hover::after{transform:scaleX(1)}
 /* services dropdown */
 .bli-hasmenu{position:relative}
+.bli-menu-button{appearance:none;border:0;background:transparent;padding:.75rem 0;font:inherit;cursor:pointer}
+.bli-menu-button::after{content:"";display:inline-block;width:.4rem;height:.4rem;margin-left:.45rem;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:translateY(-.15rem) rotate(45deg)}
 .bli-menu{position:absolute;top:100%;left:50%;transform:translateX(-50%) translateY(6px);min-width:240px;background:var(--bli-cloud);border:1px solid rgba(44,50,47,.12);border-radius:14px;box-shadow:0 20px 50px -24px rgba(44,50,47,.4);padding:.6rem;opacity:0;visibility:hidden;transition:opacity .25s ease,transform .25s ease;z-index:var(--bli-z-dropdown)}
-.bli-hasmenu:hover .bli-menu,.bli-hasmenu:focus-within .bli-menu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(2px)}
+.bli-menu-button[aria-expanded="true"]+.bli-menu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(2px)}
 .bli-menu a{display:block;padding:.6rem .8rem;border-radius:9px;font-size:12px;letter-spacing:.06em;text-transform:none;color:var(--bli-text-body);font-weight:600}
 .bli-menu a:hover{background:var(--bli-seasalt);color:var(--bli-ink)}
 /* mobile menu */
@@ -122,6 +124,8 @@ ul{margin:0;padding:0}
 .bli-mobilenav{position:fixed;inset:0;z-index:var(--bli-z-menu);background:var(--bli-sand);transform:translateX(100%);transition:transform .4s var(--bli-ease);display:flex;flex-direction:column;padding:5rem 2rem 2rem;gap:.4rem;overflow:auto}
 .bli-mobilenav.is-open{transform:none}
 .bli-mobilenav a{font-family:var(--bli-font-display);font-size:1.6rem;color:var(--bli-ink);padding:.55rem 0;border-bottom:1px solid rgba(137,124,104,.16)}
+.bli-mobile-group{margin:.65rem 0 .15rem;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--bli-muted)}
+.bli-mobile-sub{padding-left:1rem!important;font-size:1.1rem!important}
 .bli-mobilenav .bli-close{position:absolute;top:1.4rem;right:1.6rem;font-size:2rem;background:none;border:0;color:var(--bli-ink);cursor:pointer;line-height:1;min-width:44px;min-height:44px}
 /* breadcrumbs */
 .bli-crumbs{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--bli-text-meta);font-weight:700}
