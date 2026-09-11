@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="A private guide for Ogechi covering domain registration, self-managed hosting, and fully managed website care.">
+  <title>Getting Your Own Website Home | Private Guide</title>
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/playfair-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <style>
+    @font-face {
+      font-family: "Manrope";
+      src: url("assets/manrope-latin.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 400 600;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Playfair Display";
+      src: url("assets/playfair-normal-latin.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 600 700;
+      font-display: swap;
+    }
+
+    :root {
+      --ink: #0b0b0a;
+      --ink-soft: #171613;
+      --cream: #f4eee3;
+      --cream-muted: rgba(244, 238, 227, .72);
+      --cream-faint: rgba(244, 238, 227, .5);
+      --gold: #d9bd56;
+      --gold-soft: #e4cf7a;
+      --line: rgba(244, 238, 227, .2);
+      --line-strong: rgba(244, 238, 227, .34);
+      --ease: cubic-bezier(.16, 1, .3, 1);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--ink);
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        radial-gradient(circle at 90% 2%, rgba(217, 189, 86, .1), transparent 28rem),
+        var(--ink);
+      color: var(--cream);
+      font-family: "Manrope", Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; }
+
+    :focus-visible {
+      outline: 2px solid var(--gold-soft);
+      outline-offset: 5px;
+    }
+
+    ::selection {
+      background: var(--gold);
+      color: var(--ink);
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    p { margin-top: 0; }
+
+    .topbar {
+      width: min(calc(100% - 64px), 1320px);
+      min-height: 70px;
+      margin-inline: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      border-bottom: 1px solid var(--line);
+      color: var(--cream-muted);
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .topbar a {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      transition: color 250ms ease;
+    }
+
+    .topbar a:hover { color: var(--gold-soft); }
+
+    .topbar a span {
+      font-size: 18px;
+      line-height: 1;
+      transition: transform 250ms var(--ease);
+    }
+
+    .topbar a:hover span { transform: translateX(-4px); }
+
+    main {
+      width: min(calc(100% - 64px), 1320px);
+      margin-inline: auto;
+    }
+
+    .hero {
+      max-width: 1040px;
+      padding: clamp(62px, 7vw, 96px) 0 clamp(64px, 9vw, 118px);
+    }
+
+    .eyebrow,
+    .section-label,
+    .choice-label,
+    .toc-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow,
+    .section-label,
+    .choice-label { color: var(--gold-soft); }
+
+    .section-label {
+      font-size: 12px;
+      letter-spacing: .02em;
+      text-transform: none;
+    }
+
+    .eyebrow { margin-bottom: 22px; }
+
+    h1 {
+      max-width: 980px;
+      margin-bottom: 30px;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(3.6rem, 8.6vw, 8.8rem);
+      font-weight: 600;
+      line-height: .9;
+      letter-spacing: -.06em;
+      text-wrap: balance;
+    }
+
+    h1 span { color: var(--gold-soft); }
+
+    .lede {
+      max-width: 690px;
+      margin-bottom: 32px;
+      color: var(--cream-muted);
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
+      line-height: 1.7;
+    }
+
+    .hero-note {
+      max-width: 690px;
+      padding: 20px 0 0 24px;
+      border-top: 1px solid var(--line);
+      border-left: 3px solid var(--gold);
+      color: var(--cream-muted);
+      font-size: 14px;
+    }
+
+    .guide-layout {
+      display: grid;
+      grid-template-columns: 210px minmax(0, 1fr);
+      gap: clamp(48px, 8vw, 112px);
+      padding-bottom: 100px;
+      border-top: 1px solid var(--line);
+    }
+
+    .toc {
+      align-self: start;
+      position: sticky;
+      top: 28px;
+      display: grid;
+      gap: 0;
+      padding-top: 54px;
+    }
+
+    .toc-label {
+      margin-bottom: 18px;
+      color: var(--cream-faint);
+    }
+
+    .toc a {
+      padding: 11px 0;
+      border-top: 1px solid var(--line);
+      color: var(--cream-muted);
+      font-size: 12px;
+      text-decoration: none;
+      transition: color 200ms ease, padding-left 250ms var(--ease);
+    }
+
+    .toc a:last-child { border-bottom: 1px solid var(--line); }
+    .toc a:hover { padding-left: 6px; color: var(--gold-soft); }
+
+    .content { min-width: 0; }
+
+    .content-section {
+      padding: clamp(62px, 8vw, 100px) 0;
+      border-bottom: 1px solid var(--line);
+      scroll-margin-top: 24px;
+    }
+
+    .section-heading {
+      max-width: 780px;
+      margin-bottom: 42px;
+    }
+
+    .section-label { margin-bottom: 14px; }
+
+    h2 {
+      margin-bottom: 18px;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(2.5rem, 5.2vw, 5.5rem);
+      font-weight: 600;
+      line-height: .96;
+      letter-spacing: -.05em;
+      text-wrap: balance;
+    }
+
+    .section-heading > p:last-child,
+    .body-copy {
+      max-width: 680px;
+      margin-bottom: 0;
+      color: var(--cream-muted);
+      font-size: 15px;
+    }
+
+    .definitions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .definition {
+      min-height: 260px;
+      padding: clamp(28px, 4vw, 48px);
+      background: var(--ink-soft);
+    }
+
+    .definition-number {
+      display: block;
+      margin-bottom: 54px;
+      color: var(--gold-soft);
+      font-size: 12px;
+      letter-spacing: .14em;
+    }
+
+    .definition h3,
+    .choice h3,
+    .route h3 {
+      margin-bottom: 14px;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(1.9rem, 3.2vw, 3.2rem);
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -.035em;
+    }
+
+    .definition p,
+    .choice-intro,
+    .route p,
+    details p {
+      margin-bottom: 0;
+      color: var(--cream-muted);
+      font-size: 14px;
+    }
+
+    .ownership-note {
+      margin-top: 28px;
+      padding-left: 22px;
+      border-left: 2px solid var(--gold);
+      color: var(--cream);
+      font-size: 15px;
+    }
+
+    .domain-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border-top: 1px solid var(--line-strong);
+    }
+
+    .domain-row {
+      display: grid;
+      grid-template-columns: 130px minmax(180px, .8fr) minmax(0, 1fr);
+      gap: 24px;
+      align-items: baseline;
+      padding: 23px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .domain-choice {
+      color: var(--gold-soft);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .domain-name {
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(1.35rem, 2.3vw, 2rem);
+      font-weight: 600;
+    }
+
+    .domain-reason {
+      color: var(--cream-muted);
+      font-size: 13px;
+    }
+
+    .fine-print {
+      margin: 26px 0 0;
+      color: var(--cream-faint);
+      font-size: 12px;
+    }
+
+    .choices {
+      display: grid;
+      gap: 30px;
+    }
+
+    .choice {
+      padding: clamp(30px, 5vw, 58px);
+      border: 1px solid var(--line-strong);
+      background: var(--ink-soft);
+    }
+
+    .choice-managed {
+      background: var(--gold);
+      color: var(--ink);
+    }
+
+    .choice-managed .choice-label,
+    .choice-managed .choice-intro,
+    .choice-managed .included li,
+    .choice-managed .managed-note { color: rgba(11, 11, 10, .76); }
+
+    .choice-managed .choice-label { font-weight: 600; }
+
+    .choice-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 32px;
+      align-items: start;
+      margin-bottom: 24px;
+    }
+
+    .choice-label { margin-bottom: 15px; }
+
+    .choice-price {
+      min-width: 150px;
+      text-align: right;
+    }
+
+    .choice-price strong {
+      display: block;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(3.2rem, 6vw, 5.8rem);
+      font-weight: 600;
+      line-height: .82;
+      letter-spacing: -.06em;
+    }
+
+    .choice-price span {
+      display: block;
+      margin-top: 10px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .setup-steps {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 34px;
+      margin: 38px 0 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: setup;
+      border-top: 1px solid var(--line);
+    }
+
+    .setup-steps li {
+      position: relative;
+      padding: 24px 0 24px 42px;
+      border-bottom: 1px solid var(--line);
+      counter-increment: setup;
+    }
+
+    .setup-steps li::before {
+      content: counter(setup, decimal-leading-zero);
+      position: absolute;
+      top: 26px;
+      left: 0;
+      color: var(--gold-soft);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .1em;
+    }
+
+    .setup-steps h4 {
+      margin-bottom: 7px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .setup-steps p {
+      margin-bottom: 0;
+      color: var(--cream-muted);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .text-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 28px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid currentColor;
+      color: var(--gold-soft);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .text-link span { transition: transform 250ms var(--ease); }
+    .text-link:hover span { transform: translate(3px, -3px); }
+
+    .included {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 34px;
+      margin: 38px 0 0;
+      padding: 0;
+      list-style: none;
+      border-top: 1px solid rgba(11, 11, 10, .28);
+    }
+
+    .included li {
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(11, 11, 10, .22);
+      font-size: 13px;
+    }
+
+    .managed-note {
+      margin: 28px 0 0;
+      padding-top: 24px;
+      border-top: 1px solid rgba(11, 11, 10, .28);
+      font-size: 12px;
+    }
+
+    .cost-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .cost {
+      min-height: 300px;
+      padding: clamp(28px, 4vw, 48px);
+      background: var(--ink-soft);
+    }
+
+    .cost h3 {
+      margin-bottom: 42px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .cost strong {
+      display: block;
+      margin-bottom: 14px;
+      color: var(--gold-soft);
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(2.8rem, 5vw, 5.2rem);
+      font-weight: 600;
+      line-height: .88;
+      letter-spacing: -.05em;
+    }
+
+    .cost p {
+      margin-bottom: 0;
+      color: var(--cream-muted);
+      font-size: 13px;
+    }
+
+    .domain-cost {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 28px;
+      margin-top: 28px;
+      padding-top: 28px;
+      border-top: 1px solid var(--line);
+    }
+
+    .domain-cost strong {
+      color: var(--gold-soft);
+      font-size: 13px;
+    }
+
+    .domain-cost p {
+      margin-bottom: 0;
+      color: var(--cream-muted);
+      font-size: 13px;
+    }
+
+
+    .watch-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 42px;
+      margin: 42px 0 0;
+      padding: 0;
+      list-style: none;
+      border-top: 1px solid var(--line-strong);
+    }
+
+    .watch-list li {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--line);
+      color: var(--cream-muted);
+      font-size: 13px;
+    }
+
+    .watch-list strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--cream);
+      font-size: 14px;
+    }
+
+    .alternatives {
+      margin-top: 42px;
+      border-top: 1px solid var(--line-strong);
+    }
+
+    details { border-bottom: 1px solid var(--line); }
+
+    summary {
+      position: relative;
+      padding: 22px 44px 22px 0;
+      cursor: pointer;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      list-style: none;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+
+    summary::after {
+      content: "+";
+      position: absolute;
+      top: 22px;
+      right: 0;
+      color: var(--gold-soft);
+      font-family: "Manrope", Arial, sans-serif;
+      font-size: 20px;
+      font-weight: 400;
+    }
+
+    details[open] summary::after { content: "−"; }
+
+    details p {
+      max-width: 690px;
+      padding: 0 0 24px;
+    }
+
+    .routes {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1px;
+      margin-bottom: 48px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .route {
+      min-height: 270px;
+      padding: clamp(28px, 4vw, 46px);
+      background: var(--ink-soft);
+    }
+
+    .route .choice-label { margin-bottom: 38px; }
+
+    .next-sequence {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border-top: 1px solid var(--line-strong);
+      counter-reset: next;
+    }
+
+    .next-sequence li {
+      display: grid;
+      grid-template-columns: 56px minmax(0, 1fr);
+      gap: 20px;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--line);
+      color: var(--cream-muted);
+      font-size: 14px;
+      counter-increment: next;
+    }
+
+    .next-sequence li::before {
+      content: counter(next, decimal-leading-zero);
+      color: var(--gold-soft);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .1em;
+    }
+
+    .source-note {
+      margin-top: 34px;
+      color: var(--cream-faint);
+      font-size: 11px;
+    }
+
+    .source-note a { text-underline-offset: 3px; }
+
+    footer {
+      width: min(calc(100% - 64px), 1320px);
+      margin-inline: auto;
+      padding: 28px 0 52px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      color: var(--cream-faint);
+      font-size: 11px;
+    }
+
+    footer p { margin-bottom: 0; }
+
+    @media (max-width: 860px) {
+      .guide-layout { grid-template-columns: 1fr; gap: 0; }
+
+      .toc {
+        position: static;
+        grid-template-columns: repeat(5, minmax(max-content, 1fr));
+        overflow-x: auto;
+        padding: 26px 0;
+        border-bottom: 1px solid var(--line);
+        scrollbar-width: thin;
+      }
+
+      .toc-label { display: none; }
+
+      .toc a {
+        padding: 8px 18px;
+        border-top: 0;
+        border-right: 1px solid var(--line);
+        white-space: nowrap;
+      }
+
+      .toc a:first-of-type { padding-left: 0; }
+      .toc a:last-child { border-right: 0; border-bottom: 0; }
+    }
+
+    @media (max-width: 680px) {
+      .topbar,
+      main,
+      footer { width: calc(100% - 32px); }
+
+      .topbar { min-height: 62px; }
+      .topbar > span { display: none; }
+      .hero { padding-top: 50px; }
+      h1 { font-size: clamp(3rem, 13vw, 3.35rem); }
+
+      .definitions,
+      .cost-grid,
+      .routes { grid-template-columns: 1fr; }
+
+      .domain-row {
+        grid-template-columns: 1fr;
+        gap: 5px;
+      }
+
+      .choice-head { grid-template-columns: 1fr; }
+      .choice-price { text-align: left; }
+
+      .setup-steps,
+      .included,
+      .watch-list { grid-template-columns: 1fr; }
+
+      .domain-cost { grid-template-columns: 1fr; gap: 8px; }
+      footer { flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+
+      *,
+      *::before,
+      *::after { transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a href="index.html"><span aria-hidden="true">←</span> Design presentation</a>
+    <span>Private client guide</span>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="page-title">
+      <p class="eyebrow">Hosting and ownership</p>
+      <h1 id="page-title">Getting your own <span>website home.</span></h1>
+      <p class="lede">A plain-language guide to choosing a domain and deciding whether to manage hosting yourself or have Caleb handle both websites.</p>
+      <p class="hero-note">Your old Madam Koverage blog is safe. All 121 posts and their photos can move into the new brand site without losing the archive.</p>
+    </section>
+
+    <div class="guide-layout">
+      <nav class="toc" aria-label="Guide sections">
+        <p class="toc-label">On this page</p>
+        <a href="#ownership">What you own</a>
+        <a href="#domain">Choose a domain</a>
+        <a href="#hosting">Hosting options</a>
+        <a href="#costs">Costs</a>
+        <a href="#next">Next steps</a>
+      </nav>
+
+      <div class="content">
+        <section class="content-section" id="ownership" aria-labelledby="ownership-title">
+          <header class="section-heading">
+            <p class="section-label">The foundation</p>
+            <h2 id="ownership-title">Two things make a website yours.</h2>
+            <p>The domain is the address. Hosting and website care keep everything available, secure, and working.</p>
+          </header>
+
+          <div class="definitions">
+            <article class="definition">
+              <span class="definition-number">01</span>
+              <h3>Your domain</h3>
+              <p>This is the address people type, such as madamgech.com. It renews each year. If it expires, another person can register it.</p>
+            </article>
+            <article class="definition">
+              <span class="definition-number">02</span>
+              <h3>Hosting and care</h3>
+              <p>Hosting is where the website lives. Website care covers updates, backups, security, monitoring, and repairs.</p>
+            </article>
+          </div>
+
+          <p class="ownership-note">Keep every domain in an account under your own name, email, and payment card. That remains true even when Caleb manages everything else.</p>
+        </section>
+
+        <section class="content-section" id="domain" aria-labelledby="domain-title">
+          <header class="section-heading">
+            <p class="section-label">Choose the address</p>
+            <h2 id="domain-title">Start with the name.</h2>
+            <p>The new site is a complete personal brand site, with Madam Koverage preserved as its blog rather than the whole identity.</p>
+          </header>
+
+          <ul class="domain-list">
+            <li class="domain-row">
+              <span class="domain-choice">First pick</span>
+              <span class="domain-name">madamgech.com</span>
+              <span class="domain-reason">Short, memorable, and aligned with your Instagram identity.</span>
+            </li>
+            <li class="domain-row">
+              <span class="domain-choice">Second pick</span>
+              <span class="domain-name">drmadamgech.com</span>
+              <span class="domain-reason">Keeps the same identity and adds your professional title.</span>
+            </li>
+            <li class="domain-row">
+              <span class="domain-choice">Third pick</span>
+              <span class="domain-name">themadamgech.com</span>
+              <span class="domain-reason">A clear fallback if the shorter addresses are taken.</span>
+            </li>
+            <li class="domain-row">
+              <span class="domain-choice">Blog-led option</span>
+              <span class="domain-name">themadamkoverage.com</span>
+              <span class="domain-reason">Best only if you want the blog name to remain the main identity.</span>
+            </li>
+          </ul>
+
+          <p class="fine-print">These names were checked on September 6, 2026. Availability can change until a domain is registered. Choose a .com, use your own account, and turn on automatic renewal.</p>
+        </section>
+
+        <section class="content-section" id="hosting" aria-labelledby="hosting-title">
+          <header class="section-heading">
+            <p class="section-label">Choose the arrangement</p>
+            <h2 id="hosting-title">Manage it yourself, or hand it off.</h2>
+            <p>Both choices keep the domains and website content in your name. The difference is who takes responsibility for the technical work.</p>
+          </header>
+
+          <div class="choices">
+            <article class="choice">
+              <div class="choice-head">
+                <div>
+                  <p class="choice-label">Choice A: self-managed</p>
+                  <h3>Open your own Hostinger account.</h3>
+                </div>
+                <div class="choice-price">
+                  <strong>Lower cost</strong>
+                  <span>You manage the account</span>
+                </div>
+              </div>
+
+              <p class="choice-intro">Choose Hostinger Premium with a 12-month term. The current Premium plan supports three websites, which is enough for both projects. You handle billing, renewals, support, and routine maintenance.</p>
+
+              <ol class="setup-steps">
+                <li>
+                  <h4>Open WordPress Hosting</h4>
+                  <p>Visit Hostinger and choose its managed hosting for WordPress.</p>
+                </li>
+                <li>
+                  <h4>Select Premium</h4>
+                  <p>Choose the least expensive plan that supports at least two websites.</p>
+                </li>
+                <li>
+                  <h4>Choose 12 months</h4>
+                  <p>A longer term lowers the advertised monthly price but requires more money upfront.</p>
+                </li>
+                <li>
+                  <h4>Remove extras</h4>
+                  <p>Untick site builders, marketing tools, and other products you did not request.</p>
+                </li>
+                <li>
+                  <h4>Claim the included domain</h4>
+                  <p>Annual plans currently include one domain for the first year. Confirm the discount before paying.</p>
+                </li>
+                <li>
+                  <h4>Create your account</h4>
+                  <p>Use your own email, card, and a password you do not use anywhere else.</p>
+                </li>
+                <li>
+                  <h4>Review the total</h4>
+                  <p>Prices change with promotions. Confirm the term, renewal price, taxes, and final total.</p>
+                </li>
+                <li>
+                  <h4>Share access safely</h4>
+                  <p>Open Account Sharing and invite Caleb. Do not send your account password.</p>
+                </li>
+              </ol>
+
+              <a class="text-link" href="https://www.hostinger.com/wordpress-hosting" target="_blank" rel="noopener noreferrer">Check current Hostinger plans <span aria-hidden="true">↗</span></a>
+            </article>
+
+            <article class="choice choice-managed">
+              <div class="choice-head">
+                <div>
+                  <p class="choice-label">Choice B: fully managed</p>
+                  <h3>Let Caleb manage both websites.</h3>
+                </div>
+                <div class="choice-price">
+                  <strong>$69</strong>
+                  <span>Per month, both sites</span>
+                </div>
+              </div>
+
+              <p class="choice-intro">You own the domains and content. Caleb takes responsibility for the hosting and the routine technical work behind both websites.</p>
+
+              <ul class="included">
+                <li>Hosting, security certificates, and domain connections</li>
+                <li>Daily off-site backups and uptime monitoring</li>
+                <li>WordPress, theme, and plugin updates</li>
+                <li>Troubleshooting and recovery when something breaks</li>
+                <li>One small content-update batch each month, up to 30 minutes shared between both sites</li>
+              </ul>
+
+              <p class="managed-note">Support requests receive a response within two business days. New pages, redesigns, copywriting, large content changes, domain renewals, and paid software licenses are separate. The rate is fixed for the first 12 months, then reviewed annually. You can cancel with 30 days' notice and receive a complete copy of both websites.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="content-section" id="costs" aria-labelledby="costs-title">
+          <header class="section-heading">
+            <p class="section-label">The honest comparison</p>
+            <h2 id="costs-title">What each choice costs.</h2>
+            <p>Self-managed hosting costs less because you remain responsible for the account and maintenance. Managed care pays Caleb to take that responsibility.</p>
+          </header>
+
+          <div class="cost-grid">
+            <article class="cost">
+              <h3>Self-managed Hostinger</h3>
+              <strong>$36-$60</strong>
+              <p>Estimated first-year hosting cost for a 12-month term, depending on the promotion. Renewal is currently estimated around $120-$135 per year.</p>
+            </article>
+            <article class="cost">
+              <h3>Caleb manages both</h3>
+              <strong>$69 monthly</strong>
+              <p>$828 for the first year. Hosting, routine maintenance, backups, monitoring, recovery, and limited monthly updates are included.</p>
+            </article>
+          </div>
+
+          <div class="domain-cost">
+            <strong>Domains remain separate.</strong>
+            <p>Expect roughly $12-$15 per domain each year, depending on the registrar and the address ending. One domain may be free for the first year with an annual Hostinger plan.</p>
+          </div>
+
+          <ul class="watch-list">
+            <li><strong>Never let a domain lapse.</strong>Keep automatic renewal on, even if you later change hosting companies.</li>
+            <li><strong>Protect the account.</strong>Use different passwords for Hostinger and WordPress. Share access instead of passwords.</li>
+            <li><strong>Skip unnecessary upgrades.</strong>Hostinger will offer add-ons and upgrades. Ask Caleb before buying anything extra.</li>
+            <li><strong>Keep the software controlled.</strong>Do not install plugins without checking first. The old blog had 31, and many were abandoned.</li>
+            <li><strong>Ignore offers for the old address.</strong>madamkoverage.com belongs to someone else until at least March 2027. Do not pay unsolicited sellers.</li>
+          </ul>
+
+          <div class="alternatives">
+            <details>
+              <summary>DreamHost as a self-managed alternative</summary>
+              <p>DreamPress costs roughly $180 for the first year and around $240 a year after that. It supports month-to-month billing, but the free domain only comes with an annual plan.</p>
+            </details>
+            <details>
+              <summary>SiteGround as a self-managed alternative</summary>
+              <p>GrowBig costs roughly $105-$145 for the first year and around $310-$370 a year after that. Its support reputation is strong, but the renewal cost is much higher and the domain is separate.</p>
+            </details>
+          </div>
+
+          <p class="source-note">Hosting prices and plan features change. Verify the current checkout before purchasing. Reference: <a href="https://www.hostinger.com/pricing" target="_blank" rel="noopener noreferrer">Hostinger pricing</a> and <a href="https://support.hostinger.com/en/articles/1583777-how-to-share-access-to-your-account" target="_blank" rel="noopener noreferrer">Hostinger account sharing</a>.</p>
+        </section>
+
+        <section class="content-section" id="next" aria-labelledby="next-title">
+          <header class="section-heading">
+            <p class="section-label">Make the choice</p>
+            <h2 id="next-title">What to send Caleb.</h2>
+            <p>Choose the route that gives you the right balance of cost, control, and convenience.</p>
+          </header>
+
+          <div class="routes">
+            <article class="route">
+              <p class="choice-label">If you self-manage</p>
+              <h3>Send the domain and account invite.</h3>
+              <p>Register the domain, purchase Hostinger, then invite Caleb through Account Sharing. Keep your password private.</p>
+            </article>
+            <article class="route">
+              <p class="choice-label">If Caleb manages both</p>
+              <h3>Approve the care plan.</h3>
+              <p>Register the domains in your name, approve the monthly agreement, and Caleb will handle the hosting and setup.</p>
+            </article>
+          </div>
+
+          <ol class="next-sequence">
+            <li>Choose and register the web addresses in your name.</li>
+            <li>Select self-managed hosting or the two-site managed care plan.</li>
+            <li>Caleb moves the 121 posts and photos, builds the approved websites, and connects the domains.</li>
+            <li>Review both websites on your phone before they go live.</li>
+          </ol>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>Prepared for Ogechi. September 2026.</p>
+    <p>Private client guide.</p>
+  </footer>
+</body>
+</html>

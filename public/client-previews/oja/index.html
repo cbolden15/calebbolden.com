@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
   <meta name="referrer" content="no-referrer">
-  <title>The OJÄ Experience | Redesign Concepts</title>
+  <meta name="description" content="Private design preview for the Madam Koverage and OJÄ Experience website concepts and hosting guide.">
+  <title>Madam Koverage &amp; OJÄ | Design Preview</title>
   <link rel="icon" href="data:,">
   <link rel="preload" href="assets/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/playfair-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -17,6 +18,7 @@
       font-weight: 400 600;
       font-display: swap;
     }
+
     @font-face {
       font-family: "Playfair Display";
       src: url("assets/playfair-normal-latin.woff2") format("woff2");
@@ -24,132 +26,447 @@
       font-weight: 600 700;
       font-display: swap;
     }
+
     :root {
       --ink: #0b0b0a;
+      --ink-soft: #171613;
       --cream: #f4eee3;
+      --cream-muted: rgba(244, 238, 227, .66);
       --gold: #c9a227;
       --line: rgba(244, 238, 227, .2);
+      --ease: cubic-bezier(.16, 1, .3, 1);
     }
+
     * { box-sizing: border-box; }
+
+    html { background: var(--ink); }
+
     body {
       margin: 0;
       min-width: 320px;
-      min-height: 100dvh;
-      display: grid;
-      background: var(--ink);
+      background:
+        radial-gradient(circle at 86% 4%, rgba(201, 162, 39, .09), transparent 24rem),
+        var(--ink);
       color: var(--cream);
-      font-family: Manrope, Arial, sans-serif;
+      font-family: "Manrope", Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
+
     a { color: inherit; }
-    :focus-visible { outline: 2px solid var(--gold); outline-offset: 5px; }
-    main {
-      width: min(calc(100% - 48px), 1280px);
-      margin: auto;
-      padding: 48px 0;
+
+    :focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 5px;
     }
-    header {
+
+    main {
+      width: min(calc(100% - 64px), 1320px);
+      margin-inline: auto;
+      padding: clamp(46px, 7vw, 96px) 0 72px;
+    }
+
+    .intro {
       display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 32px;
+      grid-template-columns: minmax(0, 1.4fr) minmax(250px, .6fr);
+      gap: 48px;
       align-items: end;
-      padding-bottom: 30px;
+      padding-bottom: clamp(36px, 5vw, 64px);
       border-bottom: 1px solid var(--line);
     }
+
+    .eyebrow,
+    .direction {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .19em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--gold);
+    }
+
+    h1,
+    h2,
+    h3,
+    p { margin-top: 0; }
+
     h1 {
-      max-width: 760px;
-      margin: 0;
+      max-width: 900px;
+      margin-bottom: 0;
       font-family: "Playfair Display", Georgia, serif;
-      font-size: clamp(3rem, 7vw, 7rem);
+      font-size: clamp(3.4rem, 7.2vw, 7.8rem);
+      font-weight: 600;
+      line-height: .91;
+      letter-spacing: -.055em;
+      text-wrap: balance;
+    }
+
+    h1 span { color: #e4cf7a; }
+
+    .intro-copy {
+      max-width: 390px;
+      margin: 0;
+      color: var(--cream-muted);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .brands {
+      display: grid;
+      gap: clamp(62px, 8vw, 104px);
+      padding-top: clamp(52px, 7vw, 88px);
+    }
+
+    .brand-heading {
+      max-width: 680px;
+      margin-bottom: 28px;
+    }
+
+    .brand-heading h2 {
+      margin-bottom: 12px;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(2.7rem, 5vw, 5.6rem);
       font-weight: 600;
       line-height: .96;
-      letter-spacing: -.05em;
+      letter-spacing: -.045em;
     }
-    header p {
-      max-width: 310px;
-      margin: 0;
-      color: rgba(244,238,227,.68);
+
+    .brand-heading p:last-child {
+      max-width: 560px;
+      margin-bottom: 0;
+      color: var(--cream-muted);
       font-size: 14px;
-      line-height: 1.7;
     }
+
     .concepts {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      margin-top: 38px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       border: 1px solid var(--line);
     }
+
     .concept {
-      min-height: 390px;
+      position: relative;
+      isolation: isolate;
+      min-height: clamp(360px, 40vw, 520px);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: clamp(28px, 4vw, 54px);
+      overflow: hidden;
+      padding: clamp(30px, 4vw, 56px);
       text-decoration: none;
-      transition: transform 300ms cubic-bezier(.16,1,.3,1), background-color 300ms ease;
     }
+
     .concept + .concept { border-left: 1px solid var(--line); }
-    .concept:hover { transform: translateY(-5px); }
-    .concept.dark {
-      background:
-        linear-gradient(rgba(11,11,10,.48), rgba(11,11,10,.83)),
-        url("assets/oja-hero-night.webp") center / cover no-repeat;
+
+    .concept::before,
+    .concept::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
     }
-    .concept.light {
-      background:
-        linear-gradient(rgba(244,238,227,.82), rgba(244,238,227,.96)),
-        url("assets/oja-curated-gifting.webp") center / cover no-repeat;
-      color: var(--ink);
+
+    .concept::before {
+      background: var(--image) var(--position, center) / cover no-repeat;
+      transform: scale(1.02);
+      transition: transform 900ms var(--ease), filter 600ms ease;
     }
-    .label {
+
+    .concept::after {
+      z-index: -1;
+      background: linear-gradient(to top, rgba(8, 8, 7, .95), rgba(8, 8, 7, .16) 74%);
+    }
+
+    .concept:hover::before,
+    .concept:focus-visible::before {
+      transform: scale(1.07);
+      filter: saturate(1.06);
+    }
+
+    .concept.light { color: var(--ink); }
+
+    .concept.light::after {
+      background: linear-gradient(to top, rgba(244, 238, 227, .98), rgba(244, 238, 227, .36) 78%);
+    }
+
+    .concept-cover {
+      --image: url("madam/assets/photo-red-hotel.jpg");
+      --position: center 28%;
+    }
+
+    .concept-masthead {
+      --image: url("madam/assets/photo-gele-green-gold.jpg");
+      --position: center 30%;
+    }
+
+    .concept-house {
+      --image: url("assets/oja-hero-night.webp");
+      --position: center;
+    }
+
+    .concept-edit {
+      --image: url("assets/oja-curated-gifting.webp");
+      --position: center;
+    }
+
+    .direction { color: #f0d96f; }
+    .light .direction { color: #755a08; }
+
+    .concept h3 {
+      max-width: 520px;
+      margin-bottom: 14px;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(2.5rem, 4.8vw, 5.4rem);
+      font-weight: 600;
+      line-height: .94;
+      letter-spacing: -.05em;
+    }
+
+    .concept-description {
+      max-width: 450px;
+      margin-bottom: 22px;
+      color: rgba(244, 238, 227, .76);
+      font-size: 14px;
+    }
+
+    .light .concept-description { color: #514b44; }
+
+    .open-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
       font-size: 10px;
       font-weight: 600;
-      letter-spacing: .17em;
+      letter-spacing: .16em;
       text-transform: uppercase;
     }
-    h2 {
-      max-width: 420px;
-      margin: 0 0 16px;
+
+    .open-label span {
+      font-size: 16px;
+      transition: transform 300ms var(--ease);
+    }
+
+    .concept:hover .open-label span { transform: translate(4px, -4px); }
+
+    .guide-entry {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: clamp(36px, 7vw, 96px);
+      align-items: end;
+      overflow: hidden;
+      padding: clamp(34px, 5vw, 64px) 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      text-decoration: none;
+    }
+
+    .guide-entry::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(201, 162, 39, .12), transparent 66%);
+      opacity: 0;
+      transform: translateX(-3%);
+      transition: opacity 450ms ease, transform 650ms var(--ease);
+      pointer-events: none;
+    }
+
+    .guide-entry:hover::before,
+    .guide-entry:focus-visible::before {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .guide-entry-copy,
+    .guide-rate { position: relative; }
+
+    .guide-entry h3 {
+      max-width: 720px;
+      margin: 20px 0 14px;
       font-family: "Playfair Display", Georgia, serif;
-      font-size: clamp(2.4rem, 4.5vw, 5rem);
-      line-height: .98;
-      letter-spacing: -.045em;
+      font-size: clamp(2.5rem, 5.4vw, 5.9rem);
+      font-weight: 600;
+      line-height: .94;
+      letter-spacing: -.05em;
     }
-    .concept p { max-width: 390px; margin: 0; font-size: 14px; line-height: 1.7; }
-    .dark p { color: rgba(244,238,227,.72); }
-    .light p { color: #5c554d; }
+
+    .guide-entry .concept-description { max-width: 600px; }
+
+    .guide-rate {
+      min-width: 210px;
+      padding-left: clamp(24px, 4vw, 52px);
+      border-left: 1px solid var(--line);
+    }
+
+    .guide-rate span {
+      display: block;
+      color: var(--cream-muted);
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .guide-rate strong {
+      display: block;
+      margin: 10px 0 6px;
+      color: #e4cf7a;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(4.5rem, 8vw, 7.5rem);
+      font-weight: 600;
+      line-height: .8;
+      letter-spacing: -.06em;
+    }
+
+    .guide-rate sup {
+      margin-right: 5px;
+      font-family: "Manrope", Arial, sans-serif;
+      font-size: .22em;
+      font-weight: 600;
+      vertical-align: top;
+    }
+
+    footer {
+      margin-top: 64px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--cream-muted);
+      font-size: 12px;
+    }
+
+    footer p { margin-bottom: 0; }
+
     @media (max-width: 760px) {
-      main { width: calc(100% - 32px); padding: 28px 0; }
-      header { grid-template-columns: 1fr; }
+      main {
+        width: calc(100% - 32px);
+        padding-top: 30px;
+      }
+
+      .intro { grid-template-columns: 1fr; gap: 24px; }
+      .intro-copy { max-width: 34rem; }
       .concepts { grid-template-columns: 1fr; }
-      .concept { min-height: 330px; }
-      .concept + .concept { border-left: 0; border-top: 1px solid var(--line); }
+      .concept { min-height: 390px; }
+
+      .concept + .concept {
+        border-top: 1px solid var(--line);
+        border-left: 0;
+      }
+
+      .guide-entry {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      .guide-rate {
+        width: 100%;
+        padding: 28px 0 0;
+        border-top: 1px solid var(--line);
+        border-left: 0;
+      }
     }
+
     @media (prefers-reduced-motion: reduce) {
-      * { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
     }
   </style>
 </head>
 <body>
   <main>
-    <header>
-      <h1>The OJÄ Experience</h1>
-      <p>Two potential homepage directions, designed as sister experiences to the approved Madam Koverage concepts.</p>
+    <header class="intro">
+      <div>
+        <p class="eyebrow">Private design preview</p>
+        <h1>Madam Koverage <span>&amp; OJÄ</span></h1>
+      </div>
+      <p class="intro-copy">Four homepage directions across Ogechi's personal brand and hospitality studio, plus a practical guide to domain ownership and hosting.</p>
     </header>
-    <div class="concepts">
-      <a class="concept dark" href="a-house-of-oja.html">
-        <span class="label">Concept A</span>
-        <div>
-          <h2>House of OJÄ</h2>
-          <p>Cinematic, intimate, and grounded in black, ivory, and champagne gold.</p>
+
+    <div class="brands">
+      <section aria-labelledby="madam-title">
+        <div class="brand-heading">
+          <p class="eyebrow">Madam Koverage</p>
+          <h2 id="madam-title">Dr. Madam Gech</h2>
+          <p>Her personal brand, editorial platform, and the future home of the Madam Koverage archive.</p>
         </div>
-      </a>
-      <a class="concept light" href="b-oja-edit.html">
-        <span class="label">Concept B</span>
-        <div>
-          <h2>The OJÄ Edit</h2>
-          <p>Warm editorial structure, image-led storytelling, and a fashion-minded point of view.</p>
+        <div class="concepts">
+          <a class="concept concept-cover" href="madam/a-cover.html">
+            <span class="direction">Direction A</span>
+            <div>
+              <h3>Cover story</h3>
+              <p class="concept-description">A cinematic magazine cover with a dramatic portrait, oversized typography, and a rich evening palette.</p>
+              <span class="open-label">Open concept <span aria-hidden="true">↗</span></span>
+            </div>
+          </a>
+          <a class="concept light concept-masthead" href="madam/b-masthead.html">
+            <span class="direction">Direction B</span>
+            <div>
+              <h3>Masthead grid</h3>
+              <p class="concept-description">A fashion-editorial layout that organizes her personal story, OJÄ, and Madam Koverage into a strong visual system.</p>
+              <span class="open-label">Open concept <span aria-hidden="true">↗</span></span>
+            </div>
+          </a>
         </div>
-      </a>
+      </section>
+
+      <section aria-labelledby="oja-title">
+        <div class="brand-heading">
+          <p class="eyebrow">The OJÄ Experience</p>
+          <h2 id="oja-title">Hospitality, considered.</h2>
+          <p>Bespoke gifting and guest experiences presented through two complementary expressions of modern luxury.</p>
+        </div>
+        <div class="concepts">
+          <a class="concept concept-house" href="a-house-of-oja.html">
+            <span class="direction">Direction A</span>
+            <div>
+              <h3>House of OJÄ</h3>
+              <p class="concept-description">Cinematic, intimate, and grounded in black, ivory, and champagne gold.</p>
+              <span class="open-label">Open concept <span aria-hidden="true">↗</span></span>
+            </div>
+          </a>
+          <a class="concept light concept-edit" href="b-oja-edit.html">
+            <span class="direction">Direction B</span>
+            <div>
+              <h3>The OJÄ Edit</h3>
+              <p class="concept-description">Warm editorial structure, image-led storytelling, and a fashion-minded point of view.</p>
+              <span class="open-label">Open concept <span aria-hidden="true">↗</span></span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <section aria-labelledby="guide-index-title">
+        <div class="brand-heading">
+          <p class="eyebrow">Hosting and care</p>
+          <h2 id="guide-index-title">Choose who manages the details.</h2>
+          <p>A plain-language guide to owning the domains, setting up Hostinger, or outsourcing both websites to Caleb.</p>
+        </div>
+        <a class="guide-entry" href="hosting-guide.html">
+          <div class="guide-entry-copy">
+            <span class="direction">Domain and hosting guide</span>
+            <h3>Getting your own website home</h3>
+            <p class="concept-description">Compare the self-managed route with complete hosting and care for both websites.</p>
+            <span class="open-label">Open guide <span aria-hidden="true">↗</span></span>
+          </div>
+          <div class="guide-rate">
+            <span>Managed option</span>
+            <strong><sup>$</sup>69</strong>
+            <span>Per month for both sites</span>
+          </div>
+        </a>
+      </section>
     </div>
+
+    <footer>
+      <p>Private concept presentation prepared for Ogechi. September 2026.</p>
+    </footer>
   </main>
 </body>
 </html>

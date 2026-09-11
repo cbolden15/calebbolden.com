@@ -91,6 +91,10 @@ The app lives in `/opt/calebbolden`:
 
 A shared Caddy reverse proxy at `/opt/caddy` routes `calebbolden.com` to the `calebbolden-site` container on port `3000`.
 
+Before replacing `repo`, compare the server's `public/clients` tree with the
+commit being deployed. Production may contain live-only client-preview
+variants; preserve them or reconcile them into Git before the directory swap.
+
 Deploy from the local repo:
 
 ```bash
