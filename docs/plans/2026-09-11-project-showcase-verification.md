@@ -1,6 +1,8 @@
 # Project showcase documentation verification
 
-Internal documentation. September 11, 2026. This record concerns specification hardening and planning only.
+Internal documentation. September 11, 2026. This record concerns specification hardening and planning, including the subsequently authorized runtime repair.
+
+**Current status: DONE_WITH_CONCERNS. Plan: PROVISIONAL.** Runtime repair is verified at agent-config commit `0bf7293`. Cycle 2 ended at its 900-second bound with no final report or verdict. Three reviews and their independent audits completed; Feasibility failed; the blind independent review was interrupted. The current disposition is `/Users/calebbolden/Projects/consulting/calebbolden.com/docs/superpowers/specs/2026-09-11-project-showcase-design.md.hardening.md`. No website implementation has started. Earlier check tables below are historical; the closing verification section records the final document set.
 
 ## Scope and baseline
 
@@ -34,7 +36,7 @@ The available CodeGraph tool is `mcp__codegraph__codegraph_explore`; it was used
 | Real commands | `/Users/calebbolden/Projects/consulting/calebbolden.com/package.json` defines `test: vitest run`, `build: next build`, `dev: next dev`, `start: next start`, and stale `lint: next lint`. `/Users/calebbolden/Projects/consulting/calebbolden.com/.claude/test-command` says `npm test`. Application tests/build were deliberately not run for this documentation-only phase. |
 | Reference existence | All 10 unique literal absolute paths in the original spec and all 66 in research exist. The initial extractor accidentally combined a Markdown link label and destination; excluding brackets corrected the extractor, and no source document required that repair. Existence is not renewed behavioral, rights, or production verification. |
 
-## Final checks
+## Initial phase verification
 
 **Documentation status: DONE_WITH_CONCERNS. Plan status: PROVISIONAL.** Supported corrections, all finding dispositions, and the sequenced plan are complete. Missing independent hardening evidence is still a readiness blocker; no website task has started.
 
@@ -50,7 +52,7 @@ The installed workflow exited 0 after 535.4 seconds and returned `fix-first`, 0 
 | `git diff --check` and `git diff --cached --check` | PASS, no whitespace errors. Staged file list is exactly the five permitted documentation outputs. Read the spec's complete focused diff and reviewed generated-document additions. |
 | Application checks | NOT RUN, deliberately: this phase changes documentation only. Actual future full tests, build, typecheck, scoped lint, browser states, asset/privacy inspection, and performance measurement are specified in the plan. |
 
-Final immutable source/plan identifiers (verification record excluded from its own hash list):
+Initial committed source/plan identifiers (historical, before the runtime follow-up):
 
 | Output | SHA-256 |
 |---|---|
@@ -82,12 +84,48 @@ The recommended infrastructure repair is a bounded read-only Codex adapter that 
 
 Follow-up documentation verification: `python3 /private/tmp/verify-project-showcase-docs.py` passed with five nonempty outputs, 32 existing repository files, 48 proposed application files still absent, 95 existing absolute references, 12 tasks, 32 requirement rows, five acceptance rows, and 12 finding dispositions. Original report bytes and corrected spec/plan hashes remain unchanged. Whitespace checks passed. Only this verification document changed; application tests were not run for documentation-only work.
 
-The outstanding scope decision is whether this follow-up may also repair `/Users/calebbolden/Projects/agent-config`. Until that is authorized and the missing review stages succeed against the corrected spec bytes, the implementation plan remains **PROVISIONAL**. Website implementation is still outside this task.
+At this checkpoint, runtime repair had not yet been authorized. The later user instruction resolved that scope decision, as recorded below. The implementation plan still requires the missing review evidence before it can be marked ready. Website implementation remains outside this task.
 
-## Handoff
+## Initial handoff
 
 Branch: `docs/project-showcase-hardening-20260911`, based on current main `c59e91c`. Commit the verified five-document set locally with `/private/tmp/project-showcase-docs-commit.txt`; no push, merge, deployment, or PR. The final local commit identifier is reported in the phase completion message rather than embedded recursively in its own commit.
 
 Raw runtime stdout, event ledger, and exit result remain at `/private/tmp/project-showcase-hardening-20260911/`. The durable raw report and reconciliation remain in the repository. No credentials, production accounts, customer logs, deployment hosts, or private captures were inspected for this phase; public asset examples in the plan are synthetic and proposed.
 
 Next readiness action: obtain the missing Feasibility, independent, and auditor evidence through functioning infrastructure without changing the declared permissions or roots. Any new architecture-changing Critical stops dependent work. **First implementation task remains T01, public catalog and migration boundary, not started.** A new session can resume from these documents; it must not mistake provisional planning for implementation or publication authorization.
+
+## Authorized runtime repair and cycle 2
+
+User authorized agent-config runtime repair after the scope question. Runtime repair is locally committed as `0bf7293` on `fix/workflow-readonly-review-20260911`, preserving unrelated changes. The runtime acceptance gate, full tests/typechecks, and three real synthetic provider checks passed. No website implementation or publication is authorized. The earlier scope-decision blocker is resolved; hardening evidence remains pending.
+
+Cycle 2 reviews corrected spec SHA-256 `3d5be73004e60931083ee486f86645335292addd8f67735bc0ca3d18f348d553`, recoverable from website commit `0eaffc8`. The original report plus coordinator disposition is preserved at `/Users/calebbolden/Projects/consulting/calebbolden.com/docs/superpowers/specs/2026-09-11-project-showcase-design.md.hardening.cycle-1-reconciled.md`. The original raw cycle-1 archive remains unchanged.
+
+Governance update: carry forward eight cycle-1 attempts and three synthetic provider smoke invocations. A recorded coordinator override permits at most 28 cumulative node/smoke invocations to fund the authorized infrastructure repair and one complete second cycle, with the existing per-run 12-attempt and concurrency limits. Adapter internal turns stay bounded and usage is aggregated. This supersedes the original no-override assumption solely for attempt count. Roots, command classes, sandboxing, provider independence, and third-party denial are unchanged. The second cycle is bounded to 900 seconds with partial output retained under `/private/tmp/project-showcase-hardening-20260911/`. It uses DESIGN,FEASIBILITY,SCOPE,SECURITY with no verification bypass. No third remediation cycle is authorized.
+
+## Cycle-2 outcome and stop
+
+The installed workflow exited 124 at 900.0 seconds, run ID `5d567258-fc8c-4e9c-aefa-0d9d657908fc`. Actual stdout is empty. Ten attempts produced six successful terminal events, three failure events, and one interrupted attempt; peak concurrency was two. Design, Scope, and Security reviews plus all three corresponding independent auditors completed. Feasibility failed first with a Codex timeout, then with Claude Opus and Sonnet adapter-failure codes. The blind independent review started but did not complete. Its audit and reconciliation did not start. There is no cycle-2 result object, so no returned verdict or verified/single_engine/lenses_failed flags can be reported. The primary report is explicitly labeled coordinator recovery, not a generated verdict.
+
+The raw events are preserved byte for byte in `/Users/calebbolden/Projects/consulting/calebbolden.com/docs/superpowers/specs/2026-09-11-project-showcase-design.md.hardening.cycle-2.events.jsonl`. The partial disposition is `/Users/calebbolden/Projects/consulting/calebbolden.com/docs/superpowers/specs/2026-09-11-project-showcase-design.md.hardening.cycle-2-partial.md`. It is identical to the current primary report. Cycle 1 raw findings and the complete coordinator reconciliation are separately preserved. Completed cycle-2 finding texts were not emitted before termination; node success alone cannot justify a new correction, refutation, or clean verdict. Therefore no further spec correction was applied.
+
+The shared count is 21 node/smoke invocations, below the recorded override cap of 28. The spec is still exactly SHA-256 `3d5be73004e60931083ee486f86645335292addd8f67735bc0ca3d18f348d553`. Two remediation cycles have been used. Stop here; a new review series needs separate authority and a diagnosed Feasibility/checkpoint/run-bound strategy. No third identical attempt, permission bypass, dependency change, application edit, push, merge, deployment, or PR occurred.
+
+## Closing documentation verification
+
+`python3 /private/tmp/verify-project-showcase-final.py`: PASS. Eight nonempty deliverables; 32 existing repository files; 48 proposed application files still absent; 97 existing absolute references; 12 tasks; 32 requirement rows; all five A1–A5 acceptance rows; and all 12 cycle-1 finding dispositions preserved. The original review report and cycle-2 event ledger match their raw captures byte for byte. The current primary report equals the explicit partial archive. Cycle-2 stdout is confirmed empty, its exit is 124, and no result flags are invented.
+
+`git diff --check`: PASS. Reviewed the complete focused plan/spec disposition diff. Only six documentation/report/state files are changed or added in this follow-up; the corrected spec and original raw cycle-1 report are unchanged. Application tests/build remain intentionally not run for website documentation. Runtime code was separately verified with the actual runtime acceptance gate, full 106-runtime/159-runner test pass, 38 final routing regression tests, full typechecks, and three real synthetic provider checks. The two unrelated agent-config files retain their pre-repair hashes.
+
+Final immutable outputs (this verification record excludes its own hash):
+
+| Absolute path | Bytes | SHA-256 |
+|---|---:|---|
+| /Users/calebbolden/Projects/consulting/calebbolden.com/docs/superpowers/specs/2026-09-11-project-showcase-design.md | 46906 | `3d5be73004e60931083ee486f86645335292addd8f67735bc0ca3d18f348d553` |
+| /Users/calebbolden/Projects/consulting/calebbolden.com/docs/superpowers/specs/2026-09-11-project-showcase-design.md.hardening.md | 6785 | `92a8078dd6f65f962171ac8fc2399dfc8c23dde633539e8ffe6dc839ccebada1` |
+| /Users/calebbolden/Projects/consulting/calebbolden.com/docs/superpowers/specs/2026-09-11-project-showcase-design.md.hardening.cycle-1.md | 19559 | `19f4f796895da90d61bdf4755a89af1b19f78a57bfffbd9c2fc66ee3bbd41699` |
+| /Users/calebbolden/Projects/consulting/calebbolden.com/docs/superpowers/specs/2026-09-11-project-showcase-design.md.hardening.cycle-1-reconciled.md | 28570 | `1d34b63ce8f47a828ee381981841e1f2e7c99005121ce8a1083d3ad9ac4d4277` |
+| /Users/calebbolden/Projects/consulting/calebbolden.com/docs/superpowers/specs/2026-09-11-project-showcase-design.md.hardening.cycle-2-partial.md | 6785 | `92a8078dd6f65f962171ac8fc2399dfc8c23dde633539e8ffe6dc839ccebada1` |
+| /Users/calebbolden/Projects/consulting/calebbolden.com/docs/superpowers/specs/2026-09-11-project-showcase-design.md.hardening.cycle-2.events.jsonl | 38187 | `8fc929efbbe7a8862a5d1c3cc7b82b092e6e7a2a294bc3628017854e34f4b888` |
+| /Users/calebbolden/Projects/consulting/calebbolden.com/docs/plans/2026-09-11-project-showcase-implementation.md | 77813 | `a13dd8ee20f13aad3a7449b16abe3b9d8b00ecec77b3572afe58736c4ce045b4` |
+
+Final local commits are reported in the completion message after staged-scope verification. Nothing is pushed, merged, deployed, or published. The runtime capability repair is complete; hardening readiness remains limited by the failed/incomplete stages above. **First implementation task remains T01, public catalog and migration boundary, not started.** A separately authorized review series must resolve the missing evidence before marking the plan ready.
