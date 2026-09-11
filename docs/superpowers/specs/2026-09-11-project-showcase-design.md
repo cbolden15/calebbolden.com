@@ -2,7 +2,7 @@
 
 Date: September 11, 2026
 
-Status: Draft for implementation planning. Design documented; website changes and publication have not been performed.
+Status: Design corrected after partial hardening; implementation planning remains provisional. The run returned fix-first with no Critical findings, but Feasibility, the independent reviewer, and finding auditors failed. Website changes and publication have not been performed. See Document review below.
 
 Site: calebbolden.com
 
@@ -69,7 +69,7 @@ Do not introduce a new CMS, generic workflow engine, agent backend, or public te
 
 Catalog filters are **All**, **Products**, and **Developer tools**. Vora is a Product. The four other flagships are Developer tools. Category describes the work, not repository visibility. A private tool belongs under Developer tools; public source is a separate optional link.
 
-Use native links with `?category=products` and `?category=developer-tools`; All uses `/work`. Render the selected category on direct load. Unknown category values resolve to All. Browser back/forward restores the selected category. Filter navigation keeps focus on the selected control and exposes the resulting count without forcing focus into the list. Filter only the catalog; the How I build, writing, and contact sections remain available.
+Use native links with `?category=products` and `?category=developer-tools`; All uses `/work`. The URL is the single owner of category state. Render its selected category on direct load. Unknown or repeated category values resolve to All. With JavaScript, enhance ordinary same-tab activation with a history update and derive the list from the URL using already public catalog records; keep the controls and count announcement mounted. Do not maintain a second independently mutable category value. Modified clicks retain native link behavior. Browser back/forward restores the selected category. Enhanced navigation keeps focus on the selected control and announces the count without moving focus into the list. Without JavaScript, links perform normal document navigation with a visible text count and native focus behavior. Filter only the catalog; How I build, writing, client-work, audit, and contact remain available.
 
 The first release uses this migration map. Order applies before extracting the featured entry; it does not duplicate that entry in the remaining list.
 
@@ -98,7 +98,8 @@ The page is a vertical editorial layout, with one large feature followed by thin
 | 2 | Featured work | Vora leads All and Products. Prism leads Developer tools. Large poster beside project summary, role, maturity, and “Explore Vora” or “Explore Prism.” |
 | 3 | Project list | Remaining matching flagships in editorial rows, followed by matching secondary projects according to the migration map. Do not repeat the featured project in the list. |
 | 4 | How I build and notes | One illustrated teaser for `/how-i-build`, the existing Open source destination, and the existing recent-writing links. |
-| 5 | Contact | “Have a workflow like this?” followed by “Discuss a project” linking to `/contact`. |
+| 5 | Client work | Preserve the existing client-work positioning and `/results` link. Reconcile dated wording without inventing a completed client engagement. |
+| 6 | Audit and contact | Preserve the fixed-scope audit offer and `/tools/ai-readiness` path. Include “Have a workflow like this?” and “Discuss a project” linking to `/contact`. Pricing/service changes require separate scope. |
 
 Draft introduction:
 
@@ -126,17 +127,19 @@ A missing optional source link produces no empty button, disabled GitHub control
 
 Target 400–700 words of narrative per flagship, excluding transcripts and optional technical disclosures. Technical detail is available through ordinary headings and `<details>` disclosures. Core meaning, maturity, and simulation labels must not be hidden inside a disclosure.
 
-Use the existing `WorkDetail` layout as the migration starting point. Keep ChapterHQ and the site assistant working while adding the richer format. Existing URL paths stay stable. A site build does not prove that every link works; route and interaction verification is required separately.
+Use the existing `WorkDetail` layout as the migration starting point. Extract richer shared sections behind an explicit rich-project input while retaining the current legacy input for ChapterHQ and the site assistant. Do not force new maturity values into the old `live/building/running` union. The Open source collection has its own page and does not use WorkDetail. Full secondary-story redesign is outside this release. Existing URL paths stay stable. A site build does not prove that every link works; route and interaction verification is required separately.
+
+Resolve related slugs through published records with existing detail destinations. Omit unavailable related links while retaining Back to Work and contact. Draft entries are excluded from production links, metadata, related lists, and sitemap; their new detail routes return 404 in production. Local development can render clearly labeled drafts without a deployed preview bypass. Existing Vora remains reachable through its legacy page until its richer case study is ready. Counts reflect currently published entries during migration; the complete-release requirement remains 7/3/4.
 
 ### Shared interaction behavior
 
 Each demonstration starts in a deterministic initial state and has an explicit Reset control. Selecting a scenario resets its step, result, and expanded receipt. State is local to the current page and is not persisted to storage or encoded in share URLs.
 
-Use real buttons, visible step names, and a text description of the active state. Selecting a step changes the preview and caption together. Manual Next/Previous controls are the default; no automatic playback is required for the first release. A status announcement reports only the new step/result, not the entire panel.
+Use real buttons and a text description of the active state. Agent Team and Prism use ordered stage/event controls; selecting a stage changes the preview and caption together, with manual Next/Previous and disabled ends. Vora uses its named branching transitions; Agent Config uses variant/stale/regenerate controls; Control Center uses filters, record selection, and the named run transition. Do not add a generic Next button that bypasses a decision. No automatic playback is required. A status announcement reports only the new step/result, not the entire panel.
 
 No website demonstration sends a message, approves a real action, invokes a model, starts a process, queries a private service, or changes a repository. Button labels and the nearby simulation label must make their scope understandable.
 
-When JavaScript is unavailable, render the first frame plus a complete ordered text walkthrough. Hide enhancement-only controls. Media failure retains the caption, text walkthrough, and retry/open-image option. A failed video never removes the case study's explanation.
+When JavaScript is unavailable, render the first frame plus a complete ordered text walkthrough, including every scenario and terminal branch. Required showcase content must not inherit the existing Reveal component's initially invisible state. Hide enhancement-only controls until their module and hydration are ready. A failed enhancement retains readable static content and offers retry without exposing dead controls. Media failure retains the caption, text walkthrough, and retry/open-image option. A failed video never removes the case study's explanation.
 
 ## 6. Vora demonstration
 
@@ -160,6 +163,8 @@ A sample-outcome selector offers Succeeds and Fails, defaulting to Succeeds. Cha
 The pending state must not progress to completion through Next alone. Rejection cannot lead to completion without Reset. After approval, “Show sample result” selects Completed or Execution failed from the chosen outcome. A failure never displays a delivery confirmation. Reset restores Succeeds and Request received. The text walkthrough includes rejection, successful execution, and failed execution.
 
 Asset production must select a real supported action whose autonomy configuration requires approval. Record that configuration in the internal evidence notes. Until it is verified, copy must describe the concept rather than assert a particular live delivery path. Vora can auto-execute some destructive tools under its autonomy policy; approval is not universal.
+
+Future action verification or recording requires a disposable isolated demo environment with invented records, no reachable customer contacts or production data, and sandbox/test providers or blocked/mocked outbound delivery. Never verify the action against a production tenant. Record environment isolation and provider mode, not credential values, in internal evidence notes. If these preconditions cannot be met, retain the labeled conceptual simulation. Production access and real sends are not asset-preparation shortcuts.
 
 Voice-to-CRM recording, an industry switcher, and knowledge retrieval are follow-on demonstrations. Voice depends on configured mode, provider, and tier; booking defaults to approval. Vora v2 remains an optional architecture note labeled as planned work.
 
@@ -222,6 +227,8 @@ Omit `services_down`: the inspected implementation uses a fixed placeholder. Lab
 
 Needs attention includes failed/stale runs and unresolved decisions. Run and decision counts reflect the visible records; sample spend and deployment totals are unaffected. Scenario changes update the selected run and derived counts together. An empty filtered group says “No items need attention in this example.” If filtering hides a selected record, clear its detail panel. Decision sources are descriptive labels, not fabricated internal links.
 
+Use Succeeds and Fails run scenarios, starting at Started; “Show sample run result” advances to the selected terminal result. A scenario change returns the selected run to Started and clears other record details. Reset restores Succeeds, Show all, Started, and no open record detail. Fixtures explicitly mark stale records against the frozen timestamp and explain the example's staleness rule. Filtering does not mutate source records or the selected outcome; it changes visibility and derived counts.
+
 Credit Homepage and Healthchecks. Describe Caleb's contribution as the aggregator, adapters, run wrapper, configuration, and visual composition. The versioned source of record is `/Users/calebbolden/Projects/infra/homelab-setup/control-center`.
 
 ## 10. Prism demonstration
@@ -236,7 +243,7 @@ Prompt: `Count the words in: one two three`
 
 Expected result: `3 words`
 
-The six event stages are: goal accepted → provider requests tool → policy allows → tool completes → provider finalizes → run completes. Preserve the exact event order of the version-pinned captured run or contract-derived fixture; visitor-facing labels may be shorter, but an optional technical view retains the source identifiers. Its public evidence record includes Prism version, public source tag/commit, derivation type (`captured` or `contract-derived`), and checked date. Show these in About this example.
+The six event stages are: goal accepted → provider requests tool → policy allows → tool completes → provider finalizes → run completes. Preserve the exact event order of the version-pinned captured run or contract-derived fixture; visitor-facing labels may be shorter, but an optional technical view retains public event-type identifiers. This does not require copying private run IDs, paths, hostnames, or raw receipt fields. Its public evidence record includes Prism version, public source tag/commit, derivation type (`captured` or `contract-derived`), and checked date. Show these in About this example. Disclose identifier replacement in a captured example while retaining `captured` as its derivation type; never describe a contract-derived fixture as a recording.
 
 Use Start example, Next event, Previous event, and Reset. The result appears only at the final event. Previous clears later presented state and closes any receipt. “Inspect receipt” becomes available at completion and shows the selected fixture's terminal state, limits/usage where recorded, and cleanup fields with plain-language explanations. Do not invent a cleanup guarantee from the presence of a field.
 
@@ -272,14 +279,14 @@ Reuse tokens and utility contracts in `/Users/calebbolden/Projects/consulting/ca
 | Element | Specification |
 |---|---|
 | Page and structure | White background, 1200px maximum content width, 12-column composition at large available widths, 1px hairline dividers. Grid only in margins and introduction fields, never under paragraphs. |
-| Typography | Archivo headings; Schibsted Grotesk body/UI at 16–18px and about 1.6 line height; Martian Mono for short annotations. H1 uses the existing `clamp(2.4rem, 5.5vw, 4.25rem)` scale. Narrative measure stays at or below 70ch. |
+| Typography | Archivo headings; Schibsted Grotesk body/UI at 16–18px and about 1.6 line height; Martian Mono for short annotations. Showcase H1 uses `clamp(2.4rem, 5.5vw, 4.25rem)`; this updates the smaller scale currently used on Work detail pages. Narrative measure stays at or below 70ch. |
 | Color and form | Existing blue/ink/surface tokens. Blue marks selection; textual labels accompany status colors. One amber note per section at most. Drafting-frame radius 2px, controls 6px. |
 | Media | Default overview poster 16:10; preserve the source ratio when cropping would hide important UI. Dense screens open into a gallery. A crop always has a caption describing the selected region. |
 | Motion | State transitions 160–240ms; optional section reveal up to 400ms using the existing easing. No scroll-controlled demos, parallax, autoplay galleries, or motion required to reveal evidence. |
 
 The older “light only” design note refers to page identity. The July 14 approved spec permits dark instrument surfaces for system views. Keep the document background light; use dark product/terminal frames locally. Do not add a theme switch or recolor authentic product screenshots to make them resemble the website.
 
-Layout decisions use available content width after the existing chat sidebar offset, not viewport width alone. Below 800px of available content width, feature and workflow columns stack. Below 600px, project rows also stack, padding reduces to 20px, and controls wrap. At wider sizes use 32px gutters and 24–40px column gaps. Do not change the user's chat preference to make the page fit.
+Layout decisions use available content width after the existing chat sidebar offset, not viewport width alone. Use a CSS inline-size container inside the post-offset main area, before its content gutters, and container queries on descendants. Below 800px of available content width, feature and workflow columns stack. Below 600px, project rows also stack, padding reduces to 20px, and controls wrap. At wider sizes use 32px gutters and 24–40px column gaps. The existing server default reserves chat space at desktop widths; restoring a saved collapsed preference can widen the container after hydration. Both layouts must remain usable and reflow automatically. Do not change chat preference initialization or promise zero initial reflow in this scope.
 
 On narrow screens, show a legible crop or purpose-built mobile fixture panel above the selected step's explanation. Keep the same state and controls as desktop. Do not shrink a full dashboard to unreadable text. Long code may scroll inside its labeled panel; the document must not scroll horizontally.
 
@@ -303,25 +310,29 @@ Color, typography, and motion constants come from the current site. Reference vi
 
 ### Public content model
 
-Define typed project records in a dedicated public-content module. Homepage, Work, related-project links, and detail pages consume the same record rather than maintaining separate status/summary arrays.
+Define typed project records in a dedicated public-content module. Homepage, Work, How I build, related-project links, and detail pages consume the same record rather than maintaining separate status/summary arrays.
 
 | Field group | Required values |
 |---|---|
 | Identity | Stable slug, name, category, summary, contribution statement, related slugs, optional detail route. A slug alone does not create a published route. |
-| Publication | Draft/published flag, placements (homepage proof, Work catalog, case study), display order, maturity, public checked date, optional product/source/documentation URLs. |
+| Publication | Draft/published flag, placements (homepage proof, Work catalog, case study, How I build), display order, maturity, public checked date, optional product/source/documentation URLs. |
 | Story | Problem, workflow introduction, engineering decisions, limits, contribution credits. |
 | Evidence | Media ID, kind, poster/source, caption, alt text, dimensions, transcript or walkthrough, and public “About this example” explanation. Prism also requires version, public source tag/commit, derivation type, and checked date. |
-| Interaction | One of the five explicitly supported demo kinds, with fixture ID and display copy. No arbitrary scripts or private service configuration. |
+| Interaction | One of the five explicitly supported demo kinds, with fixture ID and display copy. How I build entries also provide responsibility label, order, and a compact static evidence selection/caption referencing that project's approved example. No arbitrary scripts or private service configuration. |
 
 Category, maturity, and media kind are distinct. Initial maturity labels are **Implemented** for Vora, Agent Team, and Agent Config; **Prototype** for Control Center; and **Developer preview** for Prism. Implemented means the reviewed capability exists in source, not that every feature is enabled or production availability was verified. Supporting projects retain evidence-backed existing labels until reviewed.
 
+The flagship labels explicitly replace Vora's old `live` and Agent Team's old `running` presentation for this source-backed showcase. This is an intentional qualification, not a deployment downgrade. Secondary `live` or `in development` labels remain separately represented legacy availability/status values, not members of the flagship maturity enum or a shared ranking. Do not invent new deployment verification or remap every secondary project merely to normalize badges.
+
 Public records may link only to reviewed public assets and destinations. Keep the detailed evidence ledger, private source citations, capture settings, and approval notes in internal research documentation outside runtime imports. A build must serialize only explicitly public fields; a server-only file alone is not sufficient if its contents are passed to a client component.
+
+Captured compiler/Prism examples use an explicit public field allowlist and source replacement. Keep only approved event names/order, harmless excerpts, recorded public limits/usage, terminal status, and plain-language cleanup fields. Exclude raw workspace/temp paths, hostnames, process IDs, account/key identifiers, environment values, and private fragment paths. Preserve semantics and disclose substitutions; a source stamp is valid only for the corresponding sample bytes. Schema/serialization tests reject unexpected nested fields and synthetic private sentinels, and scan public fixtures/assets for path/token/internal-host patterns. These checks supplement review of the full asset, caption, transcript, download, metadata, and destination; a clean pattern scan alone is not publication approval.
 
 ### Initial asset inventory
 
 | Project | Required for first release | Existing material and readiness |
 |---|---|---|
-| Vora | Overview poster; approval simulation fixture; both-branch walkthrough. | Older captures and clips are composition references. Selected action/configuration and fresh sample records need verification. |
+| Vora | Overview poster; approval simulation fixture; rejection, success, and execution-failure walkthrough. | Older captures and clips are composition references. Selected action/configuration and fresh sample records need verification in the isolated environment described above. |
 | Agent Team | Lifecycle poster/diagram; three scenario fixtures; role/decision excerpts. | Existing lifecycle and merge-policy diagrams can guide new public assets. Private run logs are not inputs. |
 | Agent Config | Shared-fragment poster; two generated output pairs; stale-output fixture. | Create harmless samples. No project-specific product captures were found in the targeted research. |
 | Control Center | Relabeled overview poster; run/decision/deploy/spend fixtures with one frozen timestamp. | Existing screenshot is fixture-backed. Replace internal-looking names and omit the services-down placeholder. |
@@ -337,7 +348,7 @@ Draft case studies can be built locally while assets are being prepared. A missi
 
 | Area | Acceptance requirement |
 |---|---|
-| Keyboard and focus | Every filter, step, scenario, disclosure, and media control is reachable and labeled. Gallery dialogs trap focus, close with Escape, and return focus to their opener. Previous/Next disable at the ends. |
+| Keyboard and focus | Every filter, step, scenario, disclosure, and media control is reachable and labeled. Gallery dialogs trap focus, close with Escape, and return focus to their opener. Ordered-sequence Previous/Next disable at the ends; other demos follow their named transitions. |
 | Reading and status | Content order makes sense without layout. Active step and outcomes have text equivalents. Important labels meet 4.5:1 contrast at normal text sizes; do not rely on faint annotation styling for required information. |
 | Motion and media | Reduced motion uses immediate state changes and static diagrams. Video is click-to-play, with native controls and captions/transcript where speech exists. No automatic audio. |
 | Touch and resizing | Controls target at least 44×44 CSS px. Verify at 320px width, 200% zoom, and with chat expanded/collapsed. No obscured controls or page-level horizontal overflow. |
@@ -351,15 +362,15 @@ The current project commands are `npm run test` and `npm run build`. Run them af
 
 | ID | Acceptance criteria |
 |---|---|
-| A1: Navigation and content | Five flagship destinations resolve; every migration-map route remains reachable; filters return the exact mapped entries and counts (7/3/4); Open source remains outside counts; category deep links and back/forward work; featured entries are not duplicated; no private-source button or draft route is published. |
+| A1: Navigation and content | Five flagship destinations resolve; every migration-map route remains reachable; filters return the exact mapped entries and counts (7/3/4); Open source remains outside counts; category deep links and back/forward work; featured entries are not duplicated; no private-source button, draft route, or link to a draft/unresolvable related destination is published. Existing client-work `/results` and audit/readiness paths remain available. |
 | A2: Interaction correctness | Vora cannot complete after rejection or show success for its failed-execution outcome. Agent Team preserves retries, disables unreachable stages, and labels the pass/retry fixture's default automatic merge. Agent Config clears stale state correctly; Control Center counts follow its fixture filter; Prism result/receipt appear only at completion. Reset clears each complete scenario. |
 | A3: Evidence integrity | Every flagship has a truthful contribution, maturity, media label, and checked date. Prism records version, public source revision, and captured/contract-derived provenance. Config-gated behavior is qualified. No fixture is described as current operational data, and no diagram invents cross-project integration. |
 | A4: Presentation and access | Check desktop, narrow available width with chat open, mobile, keyboard, zoom, reduced motion, failed media, and no-JavaScript fallback. Verify the gallery lifecycle and existing contact destination in a browser. |
-| A5: Build and boundaries | Project tests/build pass; public records/fixtures contain no private identifiers or imports; browser network inspection shows no demo call to an AI provider, messaging endpoint, private host, or process launcher. Media dimensions/loading and bundle budgets are checked. |
+| A5: Build and boundaries | Project tests/build pass; public schema/serialization tests reject private identifiers and imports; reviewed assets/fixtures contain only approved fields; any Vora action capture has documented isolation and sandbox/test or mocked delivery. Browser network inspection shows no demo call to an AI provider, messaging endpoint, private host, or process launcher. Media dimensions/loading and bundle budgets are checked. |
 
 Tests should exercise meaningful state transitions, filter routing, data-publication boundaries, and broken-link risks. Do not write tests that only mirror static copy. Browser verification is required in addition to unit checks; a successful build does not validate interaction behavior or every external link.
 
-If analytics already has a reviewed provider, measure only `project_open`, `demo_start`, `demo_complete`, `technical_detail_open`, and `contact_click`, with project slug and fixed scenario ID. Never transmit free text, fixture bodies, approval contents, or private identifiers. Define completion as reaching the intended terminal outcome, including a deliberately blocked scenario. Adding a new analytics service is a separate task; this release does not depend on it.
+If analytics already has a reviewed provider, measure only `project_open`, `demo_start`, `demo_complete`, `technical_detail_open`, and `contact_click`, with project slug and fixed scenario ID. Never transmit free text, fixture bodies, approval contents, or private identifiers. Define completion as reaching the intended terminal outcome, including a deliberately blocked scenario. Adding a new analytics service is a separate task; this release does not depend on it. If no reviewed provider is established, omit instrumentation entirely; do not add dormant event plumbing.
 
 ## 16. Delivery sequence and future work
 
@@ -380,4 +391,8 @@ No design choice is waiting on user input to complete this spec. Remaining depen
 
 ### Document review
 
-A separate reviewer checked consistency against the research and prior source verification. The automated review workflow timed out before producing a final report; the completed review was manual and source-backed. Findings on status/category separation, Vora execution failure, Agent Team merge outcome, secondary-route filters, and Prism provenance are incorporated above. Document references were validated. Application tests were not run because this change contains documentation only.
+A bounded manual consistency review preceded this phase; earlier automated doc-review attempts timed out and are not completed hardening runs.
+
+The installed harden workflow subsequently reviewed the `c59e91c` spec bytes with SHA-256 `c217d8f231bf3ef40d1ea76621a3efe34cee5462801592f3d22a2d24071f8997`, using DESIGN, FEASIBILITY, SCOPE, SECURITY and `--third-party deny`. It returned fix-first, 0 Critical, 9 Important, and 3 Minor groups. `single_engine: true`; Feasibility failed; the independent reviewer failed with transport errors; all three finding auditors failed routing. `verified: true` records that auditing was enabled, not that those auditors succeeded. Findings therefore remain independently unverified.
+
+Supported corrections and concrete refutations are recorded in `/Users/calebbolden/Projects/consulting/calebbolden.com/docs/superpowers/specs/2026-09-11-project-showcase-design.md.hardening.md`. The unmodified cycle report is `/Users/calebbolden/Projects/consulting/calebbolden.com/docs/superpowers/specs/2026-09-11-project-showcase-design.md.hardening.cycle-1.md`. These later corrected bytes have no new independent attestation. No structural Critical required a rerun; unchanged infrastructure failures were not repeated or bypassed. The implementation plan remains provisional until the missing review evidence is obtained. Application tests were not run for this documentation-only phase.
