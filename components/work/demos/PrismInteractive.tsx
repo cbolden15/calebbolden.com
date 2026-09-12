@@ -60,7 +60,7 @@ export default function PrismInteractive({ fixture }: { fixture: PrismFixtureDTO
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
               <p className="font-mono text-xs uppercase tracking-widest">v{view.receipt.recordVersion} inspect-record excerpt</p>
-              <h3 id="prism-receipt-title" className="type-display mt-2 text-2xl">Terminal receipt</h3>
+              <h3 id="prism-receipt-title" className="type-display mt-2 text-2xl" style={{ color: 'var(--color-surface)' }}>Terminal receipt</h3>
             </div>
             <button type="button" className="min-h-11 rounded-md border border-current px-4 py-2" onClick={() => act({ type: 'close-receipt' })}>Close receipt</button>
           </div>
