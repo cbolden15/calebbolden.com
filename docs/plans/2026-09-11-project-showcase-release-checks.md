@@ -1,6 +1,6 @@
 # Project showcase local release checks
 
-Evidence content approved September 12, 2026. This records the reviewed local candidate for five portfolio simulations. It does not authorize deployment, external publication, source-product access, or live capture. T11 code review is accepted. T12 independent review found four Important verification gaps. Fix round 1 is in progress; T12 and whole-branch acceptance remain pending.
+Evidence content approved September 12, 2026. This records the reviewed local candidate for five portfolio simulations. It does not authorize deployment, external publication, source-product access, or live capture. T11 code review is accepted. T12 independent review found four Important verification gaps. Fix round 1 local verification is complete; T12 and whole-branch acceptance remain pending.
 
 ## Review authority and exact bytes
 
@@ -143,3 +143,9 @@ Independent T12 full-range and whole-branch reviews remain pending. This record 
 ## T12 independent-review correction, September 12, 2026
 
 The preceding completion claim is historical and was rejected by independent review. Complete HTTP/RSC bodies and source-state proofs were not retained by body-only attachments; filtered RSC URLs were malformed; same-origin nonstatic requests were permitted by the guards; and four physical double-click checks were missing. Fix round 1 supplies explicitly written response files, corrected query and payload assertions, strict shared/native request guards, and actual repeated-pointer checks. New runs are separate from the original evidence. T12 acceptance remains pending until corrected verification and independent rereview pass.
+
+## Fix round 1 local results
+
+All four Important verification findings are addressed locally. Six fresh source builds from committed test source df7209e retain and validate 126 actual HTML/RSC bodies; eight main boundaries retain 16 more. Correct RSC category/status/MIME and actual Flight public-card invariants pass. Shared/native guards reject actual nonstatic GET, POST and EventSource attempts. Four additional physical double-click checks pass with native pointer behavior and keyboard continuation explicitly asserted. The full production run plus the affected Prism correction supplies 84 applicable passes; six development checks and all five native zoom/guard cases pass.
+
+Application/evidence source remains f738fac; previous matched budgets remain valid. New evidence is separately labeled under `/Users/calebbolden/Projects/consulting/.worktrees/calebbolden-showcase/.superpowers/t12/fix-1`. The exact source/build IDs, commands, failures, retention inventories and all four dispositions are in `/Users/calebbolden/Projects/consulting/.worktrees/calebbolden-showcase/.superpowers/sdd/2026-09-11-project-showcase-implementation/task-12-fix-1-report.md`. Historical missing-body and malformed-query claims above remain corrected, not retroactively relabeled. Independent T12 rereview and whole-branch acceptance remain pending; publication is not authorized.

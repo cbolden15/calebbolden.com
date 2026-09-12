@@ -8,6 +8,7 @@ export function allowedRequest(request) {
   const type=request.resourceType();
   if (request.isNavigationRequest()) return routes.has(url.pathname);
   if (['fetch','xhr'].includes(type)) return request.headers().rsc==='1' && url.searchParams.has('_rsc') && routes.has(url.pathname);
+  if(type==='other') return url.pathname==='/icon.svg'; // Chromium persistent profiles request this fixed app icon as other.
   return ['script','stylesheet','image','font','media'].includes(type) && !url.pathname.startsWith('/api/') && (url.pathname.startsWith('/_next/') || /\.(?:js|css|woff2?|ttf|ico|svg|png|jpe?g|webp|avif|mp4|webm|vtt)$/.test(url.pathname));
 }
 /** @param {import('@playwright/test').BrowserContext} context */

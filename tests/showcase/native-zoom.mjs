@@ -19,6 +19,7 @@ try {
   const page = context.pages()[0] ?? await context.newPage();
   await page.goto('http://localhost:3100/work/vora', {waitUntil:'load', timeout:15000});
   await rejectionProbe(page);
+  await writeFile(process.env.SHOWCASE_ZOOM_DIR+'/guard-startup.json',JSON.stringify(guard,null,2));
   assert.deepEqual(blocked.map(r=>[r.method,r.type]),[['GET','fetch'],['POST','fetch'],['GET','eventsource']]);
   const syntheticRejections=blocked.slice();
   const measure = () => page.evaluate(() => ({innerWidth,outerWidth,dpr:devicePixelRatio,visualScale:visualViewport?.scale,cssZoom:getComputedStyle(document.body).zoom,scrollWidth:document.documentElement.scrollWidth}));

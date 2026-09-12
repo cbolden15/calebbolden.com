@@ -41,3 +41,13 @@ A viewport breakpoint does not guarantee room inside a demo. Agent Team’s five
 Playwright webServer defaults to SIGKILL for its process group. Signal-based cleanup in a standalone runner cannot run under SIGKILL, leaving full runtime copies behind. Set gracefulShutdown to SIGTERM with a bounded timeout and verify the actual child exits, the exact runtime directory disappears, and the local port closes.
 
 An isolated new-project draft must change both the record publication flag and its case-study body flag. Leaving a published record with a draft body and no legacy route correctly fails graph validation before build. Preserve placements and let the production selectors exclude the explicit draft record.
+
+## Retain actual verification evidence before disposable cleanup
+
+Playwright body-only attachments are not durable files with the list reporter. Explicitly write bounded JSON and compressed response bodies, attach their paths, and verify the files by parsing/decompressing and matching response/source/build identities before removing a source runtime. A passing list log is not a retained response body.
+
+Build RSC URLs with URL.searchParams so existing category queries survive. Assert status and text/x-component. WorkFilters intentionally receives all public cards in Flight and filters by the URL on the client; validate the real Flight DTO and independently compare category slug orders/counts with the rendered view. Do not require a server-filtered DTO that the producer does not emit.
+
+Same-origin GET is not synonymous with static traffic. A browser guard must distinguish fixed document/framework/static requests from ordinary fetch/XHR/EventSource and mutations, record rejected attempts, and prove rejection with actual browser requests. Use the same test-side policy for shared and native runs.
+
+A physical double-click can target two different elements when click one removes or reflows a control. Capture both pointer targets and the final activeElement. Preserve native pointer behavior, assert state boundaries and reachable keyboard continuation, and check stable repeated controls separately instead of inventing a heading-focus requirement for a second click on nonfocusable content.
