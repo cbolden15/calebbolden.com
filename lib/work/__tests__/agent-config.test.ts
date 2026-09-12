@@ -164,14 +164,18 @@ describe('Agent Config fixture and publication boundary', () => {
     expect(source).not.toMatch(/https?:|@|\/Users\/|\/home\/|\.internal|localhost|sk-[A-Za-z0-9]+|"(?:runId|workspace|provider|model|customer|sourcePath)"\s*:/);
   });
 
-  it('renders the authored draft only in development and returns production not-found', () => {
+  it('renders an explicit draft only in development and returns production not-found', () => {
+    const draft = { ...agentConfig, publication: 'draft' as const, caseStudy: {
+      publication: 'draft' as const, story: agentConfig.caseStudy?.story,
+      localFixture: { kind: 'agent-config' as const, path: 'lib/work/fixtures/agent-config.json' },
+    } };
     vi.stubEnv('NODE_ENV', 'development');
-    const development = resolveAgentConfigPage(agentConfig);
+    const development = resolveAgentConfigPage(draft);
     expect(development.view.kind).toBe('rich-draft');
-    expect(projectDevelopmentCaseStudyShell(agentConfig)?.developmentLabel).toBe('Local synthetic example. Unapproved for publication.');
+    expect(projectDevelopmentCaseStudyShell(draft)?.developmentLabel).toBe('Local synthetic example. Unapproved for publication.');
     expect(development.metadata?.title).toBe('Agent Config | Work | Caleb Bolden');
     vi.stubEnv('NODE_ENV', 'production');
-    expect(resolveAgentConfigPage(agentConfig)).toEqual({ view: { kind: 'not-found' }, metadata: null });
-    expect(resolvePublicProjectView(agentConfig)).toEqual({ kind: 'not-found' });
+    expect(resolveAgentConfigPage(draft)).toEqual({ view: { kind: 'not-found' }, metadata: null });
+    expect(resolvePublicProjectView(draft)).toEqual({ kind: 'not-found' });
   });
 });

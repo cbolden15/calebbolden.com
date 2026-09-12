@@ -3,8 +3,8 @@ import { resolveDevelopmentProjectView } from '../publication';
 import { projectMetadata } from '../public-content';
 
 export const prism: RichFlagshipRecord = {
-  kind: 'flagship', slug: 'prism', name: 'Prism', category: 'developer-tools', publication: 'draft', order: 1,
-  placements: ['work', 'case-study'], maturity: 'Developer preview', destination: '/work/prism',
+  kind: 'flagship', slug: 'prism', name: 'Prism', category: 'developer-tools', publication: 'published', order: 1,
+  placements: ["home","work","case-study","how-i-build"], maturity: 'Developer preview', destination: '/work/prism',
   summary: 'A developer preview for bounded local agent execution, with an inspectable event trace, a contract-derived terminal run record, and fixed limits clearly separated from measured usage.',
   contribution: 'I build the trace workflow and the interface for inspecting its result.', related: ['agent-team'],
   links: [
@@ -12,9 +12,11 @@ export const prism: RichFlagshipRecord = {
     { label: 'Deterministic getting started', href: 'https://github.com/cbolden15/prism/blob/fcad9afece7a7c12395946f9dd3305de0250bc1c/docs/developer-preview/getting-started.md#deterministic-first-run' },
     { label: 'Attribution / NOTICE', href: 'https://github.com/cbolden15/prism/blob/fcad9afece7a7c12395946f9dd3305de0250bc1c/NOTICE' },
   ],
+  responsibility: {"label":"Event trace and terminal record","order":3,"snapshotId":"prism-portfolio-2026-09-12-v1","caption":"Portfolio simulation screenshot derived from Prism v0.1.0 public source: run.completed, the result 3 words, and a v1 inspect-record excerpt with fixed limits. No Prism execution was captured; measured usage and cleanup receipts are absent from this CLI record."},
   caseStudy: {
-    publication: 'draft',
-    localFixture: { kind: 'prism', path: 'lib/work/fixtures/prism.json' },
+    publication: 'published',
+    evidence: [{"kind":"image","snapshotId":"prism-portfolio-2026-09-12-v1","src":"/work/prism/overview.webp","alt":"Prism portfolio simulation at event six of six, with the result 3 words and an inspect-record excerpt showing two provider turns, one tool call, and completed terminal status.","caption":"Portfolio simulation screenshot derived from Prism v0.1.0 public source: run.completed, the result 3 words, and a v1 inspect-record excerpt with fixed limits. No Prism execution was captured; measured usage and cleanup receipts are absent from this CLI record.","width":950,"height":657}],
+    interaction: {"kind":"prism","snapshotId":"prism-portfolio-2026-09-12-v1","label":"Contract-derived simulation","caption":"Portfolio simulation screenshot derived from Prism v0.1.0 public source: run.completed, the result 3 words, and a v1 inspect-record excerpt with fixed limits. No Prism execution was captured; measured usage and cleanup receipts are absent from this CLI record."},
     story: {
       problem: 'A local agent run can end with a short answer while leaving the important sequence hidden. A developer still needs to see which goal was accepted, which tool the provider requested, whether policy allowed that request, and how the run reached completion. Those stages must stay in order, and the record shown afterward must keep its evidence layers straight. A fixed limit is different from measured usage. A lower-level lifecycle assertion is different from a field persisted by the CLI. This example makes those boundaries readable without executing Prism in the browser.',
       workflow: {
@@ -45,7 +47,7 @@ export const prism: RichFlagshipRecord = {
         'The v1 record persists fixed limits but no measured usage or cleanup receipts. The lower-level lifecycle assertions are documented separately and do not prove sandboxing.',
         'Linux, KVM, QEMU, Firecracker, physical-X1 assurance, plugin digest approval, and ambient-authority experiments remain outside this example.',
       ],
-      about: 'Contract-derived simulation from Prism v0.1.0 public source, checked September 11, 2026. GitHub marks release v0.1.0 immutable; its annotated tag resolves to pinned commit fcad9afece7a7c12395946f9dd3305de0250bc1c. The plan\'s publicRevision concept maps to the shared sourceRevision provenance field. This local fixture is unapproved for publication, has no reviewed poster or manifest snapshot, and contains no substituted runtime identifiers because none were captured.',
+      about: "Contract-derived simulation from Prism v0.1.0 public source, checked September 12, 2026. GitHub marks release v0.1.0 immutable; its annotated tag resolves to pinned commit fcad9afece7a7c12395946f9dd3305de0250bc1c. The overview image shows this portfolio simulation. No Prism command was run and no runtime identifiers were captured or substituted. Fixed limits and terminal fields follow the public v1 record contract; lower-level lifecycle assertions are separate source-test facts, not captured inspect output.",
     },
   },
 };

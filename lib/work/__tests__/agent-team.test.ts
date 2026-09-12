@@ -179,14 +179,18 @@ describe('Agent Team fixture and publication boundary', () => {
     expect(source).not.toMatch(/https?:|@|\/Users\/|\.internal|sk-[A-Za-z0-9]+|"(?:runId|workspace|provider|model|customer)"\s*:/);
   });
 
-  it('renders the authored draft only in development and returns production not-found', () => {
+  it('renders an explicit draft only in development and returns production not-found', () => {
+    const draft = { ...agentTeam, publication: 'draft' as const, caseStudy: {
+      publication: 'draft' as const, story: agentTeam.caseStudy?.story,
+      localFixture: { kind: 'agent-team' as const, path: 'lib/work/fixtures/agent-team.json' },
+    } };
     vi.stubEnv('NODE_ENV', 'development');
-    const development = resolveAgentTeamPage(agentTeam);
+    const development = resolveAgentTeamPage(draft);
     expect(development.view.kind).toBe('rich-draft');
-    expect(projectDevelopmentCaseStudyShell(agentTeam)?.developmentLabel).toBe('Local synthetic example. Unapproved for publication.');
+    expect(projectDevelopmentCaseStudyShell(draft)?.developmentLabel).toBe('Local synthetic example. Unapproved for publication.');
     expect(development.metadata?.title).toBe('Agent Team | Work | Caleb Bolden');
     vi.stubEnv('NODE_ENV', 'production');
-    expect(resolveAgentTeamPage(agentTeam)).toEqual({ view: { kind: 'not-found' }, metadata: null });
-    expect(resolvePublicProjectView(agentTeam)).toEqual({ kind: 'not-found' });
+    expect(resolveAgentTeamPage(draft)).toEqual({ view: { kind: 'not-found' }, metadata: null });
+    expect(resolvePublicProjectView(draft)).toEqual({ kind: 'not-found' });
   });
 });

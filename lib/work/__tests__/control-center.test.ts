@@ -223,14 +223,18 @@ describe('Control Center fixture and publication boundary', () => {
     expect(source).not.toMatch(/https?:|@|\/Users\/|\/home\/|\.internal|localhost|sk-[A-Za-z0-9]+|"(?:runId|workspace|provider|model|customer|sourcePath)"\s*:/);
   });
 
-  it('renders the authored draft only in development and returns production not-found', () => {
+  it('renders an explicit draft only in development and returns production not-found', () => {
+    const draft = { ...controlCenter, publication: 'draft' as const, caseStudy: {
+      publication: 'draft' as const, story: controlCenter.caseStudy?.story,
+      localFixture: { kind: 'control-center' as const, path: 'lib/work/fixtures/control-center.json' },
+    } };
     vi.stubEnv('NODE_ENV', 'development');
-    const development = resolveControlCenterPage(controlCenter);
+    const development = resolveControlCenterPage(draft);
     expect(development.view.kind).toBe('rich-draft');
-    expect(projectDevelopmentCaseStudyShell(controlCenter)?.developmentLabel).toBe('Local synthetic example. Unapproved for publication.');
+    expect(projectDevelopmentCaseStudyShell(draft)?.developmentLabel).toBe('Local synthetic example. Unapproved for publication.');
     expect(development.metadata?.title).toBe('Control Center | Work | Caleb Bolden');
     vi.stubEnv('NODE_ENV', 'production');
-    expect(resolveControlCenterPage(controlCenter)).toEqual({ view: { kind: 'not-found' }, metadata: null });
-    expect(resolvePublicProjectView(controlCenter)).toEqual({ kind: 'not-found' });
+    expect(resolveControlCenterPage(draft)).toEqual({ view: { kind: 'not-found' }, metadata: null });
+    expect(resolvePublicProjectView(draft)).toEqual({ kind: 'not-found' });
   });
 });

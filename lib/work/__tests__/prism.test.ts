@@ -180,16 +180,20 @@ describe('Prism fixture and publication boundary', () => {
     expect(() => projectApprovedFixture(approvedProjectionOptions(changed))).toThrow(/Prism v0\.1\.0 contract/i);
   });
 
-  it('renders the authored draft only in development and returns production not-found', () => {
+  it('renders an explicit draft only in development and returns production not-found', () => {
+    const draft = { ...prism, publication: 'draft' as const, caseStudy: {
+      publication: 'draft' as const, story: prism.caseStudy?.story,
+      localFixture: { kind: 'prism' as const, path: 'lib/work/fixtures/prism.json' },
+    } };
     vi.stubEnv('NODE_ENV', 'development');
-    const development = resolvePrismPage(prism);
+    const development = resolvePrismPage(draft);
     expect(development.view.kind).toBe('rich-draft');
-    expect(projectDevelopmentCaseStudyShell(prism)?.developmentLabel).toBe('Local synthetic example. Unapproved for publication.');
+    expect(projectDevelopmentCaseStudyShell(draft)?.developmentLabel).toBe('Local synthetic example. Unapproved for publication.');
     expect(development.metadata?.title).toBe('Prism | Work | Caleb Bolden');
     vi.stubEnv('NODE_ENV', 'production');
-    const production = resolvePrismPage(prism);
+    const production = resolvePrismPage(draft);
     expect(production).toEqual({ view: { kind: 'not-found' }, metadata: null });
-    expect(resolvePublicProjectView(prism)).toEqual({ kind: 'not-found' });
+    expect(resolvePublicProjectView(draft)).toEqual({ kind: 'not-found' });
   });
 
   it('keeps the authored fixture server-side and aligned to the pinned contract', () => {

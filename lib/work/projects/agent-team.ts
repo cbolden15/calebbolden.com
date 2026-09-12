@@ -3,13 +3,15 @@ import { resolveDevelopmentProjectView } from '../publication';
 import { projectMetadata } from '../public-content';
 
 export const agentTeam: RichFlagshipRecord = {
-  kind: 'flagship', slug: 'agent-team', name: 'Agent Team', category: 'developer-tools', publication: 'draft', order: 2,
-  placements: ['home', 'work', 'case-study'], maturity: 'Implemented', destination: '/work/agent-team',
+  kind: 'flagship', slug: 'agent-team', name: 'Agent Team', category: 'developer-tools', publication: 'published', order: 2,
+  placements: ["home","work","case-study","how-i-build"], maturity: 'Implemented', destination: '/work/agent-team',
   summary: 'A software agent workflow for planning, implementation, and review. Its example separates a successful run, a retry, and a blocked result, with the default automatic merge policy stated beside the steps.',
   contribution: 'I build the orchestration and review workflow around the participating agents.', related: ['prism', 'agent-config'],
+  responsibility: {"label":"Review, retry, and blocked work","order":1,"snapshotId":"agent-team-portfolio-2026-09-12-v1","caption":"Portfolio simulation screenshot: a fictional successful run reaches Delivery through the represented default legacy automatic merge path. Merge and queue enforcement, sandboxing, and anomaly termination are off; hard caps are unset. The website performs no repository operation."},
   caseStudy: {
-    publication: 'draft',
-    localFixture: { kind: 'agent-team', path: 'lib/work/fixtures/agent-team.json' },
+    publication: 'published',
+    evidence: [{"kind":"image","snapshotId":"agent-team-portfolio-2026-09-12-v1","src":"/work/agent-team/overview.webp","alt":"Agent Team portfolio simulation at Delivery, showing fictional sample CI and automatic merge, with the default configuration expanded and enforcement settings off.","caption":"Portfolio simulation screenshot: a fictional successful run reaches Delivery through the represented default legacy automatic merge path. Merge and queue enforcement, sandboxing, and anomaly termination are off; hard caps are unset. The website performs no repository operation.","width":950,"height":925}],
+    interaction: {"kind":"agent-team","snapshotId":"agent-team-portfolio-2026-09-12-v1","label":"Interactive simulation · sample data","caption":"Portfolio simulation screenshot: a fictional successful run reaches Delivery through the represented default legacy automatic merge path. Merge and queue enforcement, sandboxing, and anomaly termination are off; hard caps are unset. The website performs no repository operation."},
     story: {
       problem: 'A coding task can appear to move cleanly from assignment to merge while hiding the decisions that mattered. The implementation may have happened in an isolated workspace, reviewers may have received different prompt contexts, and QA may have needed another attempt. A security finding may also stop the work before a pull request exists. Without those boundaries, a green terminal label says little about why the task continued, retried, or stopped. This example keeps the five stages stable while exposing the role, decision, and sample artifact at each point.',
       workflow: {
@@ -62,9 +64,9 @@ export const agentTeam: RichFlagshipRecord = {
       limits: [
         'Merge enforcement, queue enforcement, sandboxing, and anomaly termination are off in the represented default configuration. Hard caps are unset.',
         'The separate review contexts do not establish different providers or models. The browser performs no model calls, subprocesses, repository actions, approvals, or network requests for the demo.',
-        'Budget termination, staged rollback, and operator-confirmation outcomes remain follow-on examples. This draft has no reviewed poster or manifest approval.',
+        'Budget termination, staged rollback, and operator-confirmation outcomes remain follow-on examples.',
       ],
-      about: 'Prepared September 11, 2026 as a deterministic local simulation with fictional repository, task, review, QA, pull-request, and CI artifacts. The fixture is unapproved for publication and carries no production identifiers or replay data. “Implemented” describes the source-backed capability; it does not claim that the displayed defaults provide active isolation or that a deployment was verified.',
+      about: "Deterministic portfolio simulation with purpose-written fictional task, review, QA, pull-request, and CI artifacts, checked September 12, 2026. The overview image shows the local portfolio UI, not a captured repository pipeline. The fixture contains no production identifiers or replay data. “Implemented” describes the source-backed capability; it does not claim that the displayed defaults provide active isolation or that a deployment was verified.",
     },
   },
 };

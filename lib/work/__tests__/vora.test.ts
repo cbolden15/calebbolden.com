@@ -87,6 +87,11 @@ import { projectCaseStudyShell, projectDevelopmentCaseStudyShell, projectProject
 import { richRecord, releaseManifest, readSampleBytes } from './samples';
 import type { RichFlagshipRecord } from '../types';
 
+const voraDraft: RichFlagshipRecord = { ...vora, publication: 'published', caseStudy: {
+  publication: 'draft', story: vora.caseStudy?.story,
+  localFixture: { kind: 'vora', path: 'lib/work/fixtures/vora.json' },
+} };
+
 afterEach(() => vi.unstubAllEnvs());
 
 describe('Vora server projection and publication adapter', () => {
@@ -94,7 +99,7 @@ describe('Vora server projection and publication adapter', () => {
     vi.stubEnv('NODE_ENV', 'production');
     const published = richRecord('vora');
     const legacy = { ...vora, caseStudy: undefined };
-    const transitions = [legacy, vora, published, vora, published, legacy];
+    const transitions = [legacy, voraDraft, published, voraDraft, published, legacy];
     const expected = ['legacy', 'rich-draft-with-legacy-fallback', 'rich-published', 'rich-draft-with-legacy-fallback', 'rich-published', 'legacy'];
     for (const [index, record] of transitions.entries()) {
       const { view, metadata } = resolveVoraPage(record);
@@ -123,11 +128,11 @@ describe('Vora server projection and publication adapter', () => {
     vi.stubEnv('NODE_ENV', 'development');
     const projected = projectLocalFixture(JSON.stringify(content), voraFixtureSchema, projectVoraScenario, { manifest: { version: 1, snapshots: [] }, readBytes: () => new Uint8Array() });
     expect(voraFixtureDTOSchema.parse(projected)).toEqual(fixture);
-    expect(resolveVoraPage(vora).view.kind).toBe('rich-draft');
-    expect(projectDevelopmentCaseStudyShell(vora)?.developmentLabel).toBe(fixture.provenance.kind === 'local-synthetic' && fixture.provenance.label);
+    expect(resolveVoraPage(voraDraft).view.kind).toBe('rich-draft');
+    expect(projectDevelopmentCaseStudyShell(voraDraft)?.developmentLabel).toBe(fixture.provenance.kind === 'local-synthetic' && fixture.provenance.label);
     vi.stubEnv('NODE_ENV', 'production');
-    expect(resolvePublicProjectView(vora)).toMatchObject({ kind: 'legacy', state: 'rich-draft-with-legacy-fallback' });
-    expect(projectDevelopmentCaseStudyShell(vora)).toBeNull();
+    expect(resolvePublicProjectView(voraDraft)).toMatchObject({ kind: 'legacy', state: 'rich-draft-with-legacy-fallback' });
+    expect(projectDevelopmentCaseStudyShell(voraDraft)).toBeNull();
     expect(() => projectLocalFixture(JSON.stringify(content), voraFixtureSchema, projectVoraScenario, { manifest: { version: 1, snapshots: [] }, readBytes: () => new Uint8Array() })).toThrow(/development/i);
   });
   it('projects exactly the selected Vora fixture and rejects stale bytes or unapproved fields', () => {
@@ -151,6 +156,6 @@ describe('Vora server projection and publication adapter', () => {
     const source = readFileSync('lib/work/fixtures/vora.json', 'utf8');
     expect(voraFixtureSchema.parse(JSON.parse(source)).scenarios[0].business).toBe('Cedar Repair');
     expect(source).not.toMatch(/https?:|@|\/Users\/|\.internal|sk-[A-Za-z0-9]+/);
-    expect((vora as RichFlagshipRecord).caseStudy?.publication).toBe('draft');
+    expect(voraDraft.caseStudy?.publication).toBe('draft');
   });
 });

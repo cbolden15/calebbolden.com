@@ -4,13 +4,14 @@ import { projectMetadata } from '../public-content';
 
 export const vora: RichFlagshipRecord = {
   kind: 'flagship', slug: 'vora', name: 'Vora', category: 'products', publication: 'published', order: 0,
-  placements: ['home', 'work', 'case-study'], maturity: 'Implemented', destination: '/work/vora', legacyDestination: '/work/vora',
+  placements: ["home","work","case-study"], maturity: 'Implemented', destination: '/work/vora', legacyDestination: '/work/vora',
   summary: 'An AI CRM platform for service businesses: missed-call text-back, lead follow-up, campaigns, and scheduling in one system. Approval requirements depend on the action and the configured policy.',
   contribution: 'I design and build the product, its agent tools, and the business workflows around them.',
   related: ['chapterhq', 'agent-team'], links: [{ label: 'Visit Vora', href: 'https://voratechnology.com' }],
   caseStudy: {
-    publication: 'draft',
-    localFixture: { kind: 'vora', path: 'lib/work/fixtures/vora.json' },
+    publication: 'published',
+    evidence: [{"kind":"image","snapshotId":"vora-portfolio-2026-09-12-v1","src":"/work/vora/overview.webp","alt":"Vora portfolio simulation at Awaiting approval, showing an invented repair request, proposed follow-up, and Approve example and Reject example controls.","caption":"Portfolio simulation screenshot: a fictional Cedar Repair follow-up awaits a decision. Approval depends on configuration; this proposed action remains conceptual and has not been verified as a supported delivery path. No real message is sent.","width":950,"height":540}],
+    interaction: {"kind":"vora","snapshotId":"vora-portfolio-2026-09-12-v1","label":"Interactive simulation · sample data","caption":"Portfolio simulation screenshot: a fictional Cedar Repair follow-up awaits a decision. Approval depends on configuration; this proposed action remains conceptual and has not been verified as a supported delivery path. No real message is sent."},
     story: {
       problem: 'A service business can receive a request before anyone is ready to act on it. A customer needs an answer, but a useful answer may depend on availability, the history of the job, or a decision from the owner. Putting an AI employee in that gap raises a practical question: what may it do on its own? A proposed message and a sent message are different things. The interface needs to make that distinction visible, including when a person rejects the proposal or an approved action fails. This example concentrates on that decision boundary inside a CRM workflow.',
       workflow: {
@@ -45,7 +46,7 @@ export const vora: RichFlagshipRecord = {
         'Implemented describes the reviewed capability in source. It does not establish that every feature is enabled or that production availability was checked.',
         'This page does not call a model, contact a provider or write a CRM record. Voice and booking demonstrations require separate configuration checks and evidence.',
       ],
-      about: 'This interactive simulation uses sample data to explain a proposed human approval boundary. The selected outcome is deterministic, and all delivery and CRM records are fictional. A reviewed overview poster and an evidence check remain publication dependencies. Any future recording requires an isolated environment with invented records and blocked, mocked or test-mode delivery. No live delivery claim is made for this example.',
+      about: "This interactive simulation uses purpose-written sample data to explain a proposed human approval boundary. The overview image shows the local portfolio simulation, checked September 12, 2026, rather than a captured Vora product session. All delivery and CRM records are fictional. Approval is configuration-dependent, and the exact supported action remains unverified. No live delivery claim is made for this example.",
     },
   },
 };

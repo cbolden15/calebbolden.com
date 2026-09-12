@@ -3,13 +3,15 @@ import { resolveDevelopmentProjectView } from '../publication';
 import { projectMetadata } from '../public-content';
 
 export const controlCenter: RichFlagshipRecord = {
-  kind: 'flagship', slug: 'control-center', name: 'Control Center', category: 'developer-tools', publication: 'draft', order: 4,
-  placements: ['work', 'case-study'], maturity: 'Prototype', destination: '/work/control-center',
+  kind: 'flagship', slug: 'control-center', name: 'Control Center', category: 'developer-tools', publication: 'published', order: 4,
+  placements: ["home","work","case-study","how-i-build"], maturity: 'Prototype', destination: '/work/control-center',
   summary: 'An operations dashboard combining unattended runs, pending decisions, sample spend, and deployment records. This prototype example shows how an operator can find work that needs attention without implying verified deployment.',
   contribution: 'I built the aggregator, adapters, run wrapper, configuration, and visual composition, with Homepage and Healthchecks credited for their contributions.', related: ['agent-team'],
+  responsibility: {"label":"Operator attention and sample records","order":2,"snapshotId":"control-center-portfolio-2026-09-12-v1","caption":"Portfolio simulation screenshot: the Fails scenario and Needs attention filter show two runs and one unresolved decision, with fictional spend and deployment records. Control Center is a Prototype; deployment is unverified. Ages use a frozen sample time. Homepage and Healthchecks retain credit."},
   caseStudy: {
-    publication: 'draft',
-    localFixture: { kind: 'control-center', path: 'lib/work/fixtures/control-center.json' },
+    publication: 'published',
+    evidence: [{"kind":"image","snapshotId":"control-center-portfolio-2026-09-12-v1","src":"/work/control-center/overview.webp","alt":"Control Center portfolio simulation showing a failed run, a stale run, one unresolved decision, sample spend of $18.40, and a fictional deployment record.","caption":"Portfolio simulation screenshot: the Fails scenario and Needs attention filter show two runs and one unresolved decision, with fictional spend and deployment records. Control Center is a Prototype; deployment is unverified. Ages use a frozen sample time. Homepage and Healthchecks retain credit.","width":950,"height":915}],
+    interaction: {"kind":"control-center","snapshotId":"control-center-portfolio-2026-09-12-v1","label":"Interactive simulation · sample data","caption":"Portfolio simulation screenshot: the Fails scenario and Needs attention filter show two runs and one unresolved decision, with fictional spend and deployment records. Control Center is a Prototype; deployment is unverified. Ages use a frozen sample time. Homepage and Healthchecks retain credit."},
     story: {
       problem: 'Unattended operations scatter useful signals across run histories, decision queues, cost summaries, and deployment records. An operator needs a compact way to see what changed, notice what needs attention, and inspect the record behind a count. A dashboard can easily overstate confidence, though: a fixture can look live, a static age can look current, and a deployment row can be mistaken for proof that the dashboard itself was deployed. This prototype makes those boundaries explicit while demonstrating the information hierarchy with deterministic sample data.',
       workflow: {
@@ -52,9 +54,9 @@ export const controlCenter: RichFlagshipRecord = {
         'Implemented dashboard; deployment not verified. The maturity label Prototype describes this showcase accurately.',
         'Every run, decision, host, job name, timestamp, spend value, deployment target, SHA, and result is purpose-written sample data. None is a measured business outcome or production record.',
         'Needs attention is portfolio-demo behavior unless separately verified in the source product. The fixed service-down placeholder from the inspected source is omitted.',
-        'The browser uses no timer, storage, API, WebSocket, EventSource, provider, messaging, deployment, repository, or process operation. A reviewed poster and evidence manifest entry are still pending.',
+        'The browser uses no timer, storage, API, WebSocket, EventSource, provider, messaging, deployment, repository, or process operation.',
       ],
-      about: 'Local sample fixture prepared for the Control Center case-study draft on September 11, 2026. The dashboard is frozen at September 1, 2026 at 12:00 UTC and marks a run stale after 60 minutes without an update. All records are fictional and were written for this public example. The fixture is not a capture, operational report, deployment verification, or publication approval.',
+      about: "Purpose-written Control Center portfolio simulation checked September 12, 2026. The overview image shows the local sample dashboard, not an operational capture. The dashboard is frozen at September 1, 2026 at 12:00 UTC and marks a run stale after 60 minutes without an update. All records are fictional. Control Center remains a Prototype with deployment unverified; Homepage and Healthchecks retain their upstream attribution.",
     },
   },
 };

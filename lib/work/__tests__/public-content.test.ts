@@ -3,8 +3,13 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
 import { caseStudyShellSchema, homepageProofSchema, methodProjectSchema, projectCardSchema, projectCaseStudyShell, projectDevelopmentCaseStudyShell, projectHomepageProof, projectMethodProjects, projectProjectCard, projectRelatedLinks, publicProjectSchema, relatedProjectLinkSchema } from '../public-content';
 import { createFixtureSchema, projectLocalFixture, projectApprovedFixture } from '../evidence';
-import { projectRecords } from '../catalog';
+import { projectRecords, evidenceManifest } from '../catalog';
+import { projectRecordSchema } from '../types';
 import { richRecord, releaseManifest, releaseRecords, sampleBytes, readSampleBytes } from './samples';
+
+const draftRelatedRecords = projectRecords.map(record => record.slug === 'agent-team'
+  ? projectRecordSchema.parse({ ...record, publication: 'draft', caseStudy: { publication: 'draft' } })
+  : record);
 
 const sentinel = 'SYNTHETIC_PRIVATE_SENTINEL';
 const scenarioSchema = z.strictObject({ id: z.string(), label: z.string(), steps: z.array(z.string()) });
@@ -42,7 +47,7 @@ describe('per-surface public projections', () => {
 
   it('a detail shell contains exactly one narrative and rendered snapshot provenance', () => {
     const record = { ...richRecord('prism'), related: ['chapterhq', 'agent-team'] };
-    const shell = projectCaseStudyShell(record, releaseManifest, projectRecords)!;
+    const shell = projectCaseStudyShell(record, releaseManifest, draftRelatedRecords)!;
     expect(shell.story.about).toBe('Synthetic prism example.');
     expect(shell.snapshots[0]).toMatchObject({ id: 'prism-sample', checkedDate: '2026-09-11', sourceRevision: 'test-revision-1' });
     expect(shell.related).toEqual([{ slug: 'chapterhq', name: 'ChapterHQ', destination: '/work/chapterhq' }]);
@@ -63,9 +68,9 @@ describe('per-surface public projections', () => {
       related: ['chapterhq', 'agent-team'],
       caseStudy: { publication: 'draft' as const, story: published.caseStudy.story },
     };
-    expect(projectDevelopmentCaseStudyShell(draft, projectRecords)?.related)
+    expect(projectDevelopmentCaseStudyShell(draft, draftRelatedRecords)?.related)
       .toEqual([{ slug: 'chapterhq', name: 'ChapterHQ', destination: '/work/chapterhq' }]);
-    expect(projectDevelopmentCaseStudyShell({ ...draft, related: ['missing'] }, projectRecords)?.related).toEqual([]);
+    expect(projectDevelopmentCaseStudyShell({ ...draft, related: ['missing'] }, draftRelatedRecords)?.related).toEqual([]);
   });
 
   it('homepage proof includes only an approved rich poster and omits it for other states', () => {
@@ -78,7 +83,14 @@ describe('per-surface public projections', () => {
     const fallback = { ...rich, caseStudy: { publication: 'draft' as const } };
     expect(projectHomepageProof(fallback, releaseManifest)).not.toHaveProperty('poster');
     expect(projectHomepageProof({ ...rich, publication: 'draft' }, releaseManifest)).toBeNull();
-    for (const slug of ['vora', 'chapterhq', 'real-estate-maite']) {
+    const currentVora = projectHomepageProof(projectRecords.find(record => record.slug === 'vora')!, evidenceManifest)!;
+    expect(currentVora.poster).toEqual({
+      src: '/work/vora/overview.webp', width: 950, height: 540,
+      alt: 'Vora portfolio simulation at Awaiting approval, showing an invented repair request, proposed follow-up, and Approve example and Reject example controls.',
+      caption: 'Portfolio simulation screenshot: a fictional Cedar Repair follow-up awaits a decision. Approval depends on configuration; this proposed action remains conceptual and has not been verified as a supported delivery path. No real message is sent.',
+    });
+    expect(JSON.stringify(currentVora)).not.toMatch(/snapshotId|sha256|allowedFields|sourceRevision|walkthroughs/);
+    for (const slug of ['chapterhq', 'real-estate-maite']) {
       expect(projectHomepageProof(projectRecords.find(record => record.slug === slug)!, releaseManifest)).not.toHaveProperty('poster');
     }
   });

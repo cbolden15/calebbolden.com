@@ -24,6 +24,9 @@ export function richRecord(slug: string): RichFlagshipRecord {
   if (!record || record.kind !== 'flagship') throw new Error('Expected flagship');
   return {
     ...record, publication: 'published',
+    ...(record.placements.includes('how-i-build') && record.responsibility
+      ? { responsibility: { ...record.responsibility, snapshotId: `${slug}-sample` } }
+      : {}),
     caseStudy: {
       publication: 'published',
       story: {

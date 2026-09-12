@@ -3,13 +3,15 @@ import { resolveDevelopmentProjectView } from '../publication';
 import { projectMetadata } from '../public-content';
 
 export const agentConfig: RichFlagshipRecord = {
-  kind: 'flagship', slug: 'agent-config', name: 'Agent Config', category: 'developer-tools', publication: 'draft', order: 3,
-  placements: ['work', 'case-study'], maturity: 'Implemented', destination: '/work/agent-config',
+  kind: 'flagship', slug: 'agent-config', name: 'Agent Config', category: 'developer-tools', publication: 'published', order: 3,
+  placements: ["home","work","case-study","how-i-build"], maturity: 'Implemented', destination: '/work/agent-config',
   summary: 'A shared configuration workflow that turns authored fragments into instructions for different coding tools. The example compares generated outputs and shows what becomes stale when a source fragment changes.',
   contribution: 'I built and maintain the compiler, runtime, adapters, and integration that turn shared fragments into tool-specific instructions.', related: ['agent-team'],
+  responsibility: {"label":"Shared instructions and tool outputs","order":0,"snapshotId":"agent-config-portfolio-2026-09-12-v1","caption":"Portfolio simulation screenshot with Illustrative outputs: the Detailed shared fragment and Claude Code output remain current while Codex shows the Brief output as Out of date. The stacked layout preserves the complete visible excerpts. No real compiler was run and no source stamp was produced."},
   caseStudy: {
-    publication: 'draft',
-    localFixture: { kind: 'agent-config', path: 'lib/work/fixtures/agent-config.json' },
+    publication: 'published',
+    evidence: [{"kind":"image","snapshotId":"agent-config-portfolio-2026-09-12-v1","src":"/work/agent-config/overview.webp","alt":"Agent Config portfolio simulation in a stacked layout, showing a Detailed shared fragment and current Claude Code output followed by the stale Brief Codex output.","caption":"Portfolio simulation screenshot with Illustrative outputs: the Detailed shared fragment and Claude Code output remain current while Codex shows the Brief output as Out of date. The stacked layout preserves the complete visible excerpts. No real compiler was run and no source stamp was produced.","width":610,"height":910}],
+    interaction: {"kind":"agent-config","snapshotId":"agent-config-portfolio-2026-09-12-v1","label":"Interactive simulation · Illustrative outputs","caption":"Portfolio simulation screenshot with Illustrative outputs: the Detailed shared fragment and Claude Code output remain current while Codex shows the Brief output as Out of date. The stacked layout preserves the complete visible excerpts. No real compiler was run and no source stamp was produced."},
     story: {
       problem: 'Agent tools often need the same working rules in different instruction formats. Copying those rules by hand makes drift easy: one tool may receive a concise response policy while another keeps an older, more detailed version. The mismatch can be hard to notice because both files still look reasonable on their own. A useful compiler must keep shared intent in one place, adapt it to each tool, and make regeneration inspectable. This example focuses on that synchronization problem without exposing a private configuration or running the actual generation pipeline in the browser.',
       workflow: {
@@ -46,11 +48,11 @@ export const agentConfig: RichFlagshipRecord = {
         'Imported skills and hooks remain separate inputs with their own authorship and licenses. This showcase does not claim those projects as my work.',
       ],
       limits: [
-        'The displayed fragments and outputs are purpose-written illustrations. They were not captured from the real compiler and carry no source stamp or publication approval.',
+        'The displayed fragments and outputs are purpose-written illustrations. They were not captured from the real compiler and carry no source stamp.',
         'The example covers Brief, Detailed, stale Codex output, regeneration, and Reset. The review-finding funnel and dated session-continuity evidence remain outside this version.',
-        'The browser makes no compiler, model, filesystem, repository, storage, messaging, or network call for the demonstration. A reviewed poster and evidence manifest entry are still pending.',
+        'The browser makes no compiler, model, filesystem, repository, storage, messaging, or network call for the demonstration.',
       ],
-      about: 'Local fixture simulation prepared for the Agent Config case-study draft on September 11, 2026. Every fragment and output excerpt was written for this public example. No canonical configuration, private project source, compiler run, capture, digest, or approval record was used. The page labels the outputs Illustrative until separate evidence work produces reviewed sample bytes and a matching manifest attestation.',
+      about: "Purpose-written portfolio simulation checked September 12, 2026. The overview image shows the local example with Illustrative outputs; every fragment and output excerpt was authored for this page. The outputs remain illustrative after review because no real compiler was run. No canonical configuration, private project source, compiler capture, or source stamp was used. The evidence manifest binds the exact public sample and poster bytes without claiming a compiler-generated digest.",
     },
   },
 };
