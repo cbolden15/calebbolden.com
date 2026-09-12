@@ -8,6 +8,9 @@ function timestamp(seconds: number) {
 
 /** Server media only. The containing shell owns the walkthrough and recovery link. */
 export default function ProjectMedia({ media, primary = false }: { media: PublicMedia; primary?: boolean }) {
+  // Native media loading is supported by Chromium 148+; this narrow attribute
+  // object bridges the older React type declaration without a client island.
+  const videoLoading: { loading: 'eager' | 'lazy' } = { loading: primary ? 'eager' : 'lazy' };
   const captions = media.kind === 'video'
     ? `WEBVTT\n\n${media.captions.map(cue => `${timestamp(cue.start)} --> ${timestamp(cue.end)}\n${cue.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\r?\n/g, ' ')}\n`).join('\n')}`
     : null;
@@ -19,7 +22,7 @@ export default function ProjectMedia({ media, primary = false }: { media: Public
         // eslint-disable-next-line @next/next/no-img-element
         <img src={media.src} alt={media.alt} width={media.width} height={media.height} loading={primary ? 'eager' : 'lazy'} decoding="async" />
       ) : (
-        <video controls preload="none" poster={media.poster} width={media.width} height={media.height} aria-label={media.alt}>
+        <video {...videoLoading} controls preload="none" poster={media.poster} width={media.width} height={media.height} aria-label={media.alt}>
           <source src={media.src} type={media.src.endsWith('.webm') ? 'video/webm' : 'video/mp4'} />
           <track kind="captions" src={`data:text/vtt;charset=utf-8,${encodeURIComponent(captions!)}`} srcLang="en" label="English" default />
           Your browser cannot play this video. Read the transcript below.

@@ -93,9 +93,10 @@ test('component fixture failed media retains caption, transcript, walkthrough an
   await expect(page.getByText('A blue frame stays visible.', { exact: true })).toBeVisible();
   await expect(page.getByRole('list', { name: 'Sample walkthrough' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Open full-size image' })).toHaveAttribute('href', '/work/test-only/poster.png');
+  await page.locator('video').scrollIntoViewIfNeeded();
   await page.locator('video').evaluate(video => (video as HTMLVideoElement).load());
   await expect.poll(() => page.locator('video').evaluate(video => (video as HTMLVideoElement).networkState)).toBe(3);
-  await expect(page.locator('video')).toHaveAttribute('poster', '/work/test-only/poster.png');
+  await expect(page.locator('video')).toHaveAttribute('poster', '/work/test-only/secondary.png');
   await page.locator('[data-demo-reload]').click(); await expect(page.locator('main h1')).toHaveText('Vora');
 });
 
@@ -106,7 +107,7 @@ test('component fixture native video loads reviewed captions under the actual pa
     execFileSync('ffmpeg', ['-nostdin', '-v', 'error', '-f', 'lavfi', '-i', 'color=c=blue:s=32x20:d=1', '-c:v', 'libvpx-vp9', '-y', path], { timeout: 30_000 });
     const poster = await sharp({ create: { width: 32, height: 20, channels: 3, background: '#296f96' } }).png().toBuffer();
     let videoRequests = 0;
-    await page.route('**/work/test-only/poster.png', route => route.fulfill({ contentType: 'image/png', body: poster }));
+    await page.route('**/work/test-only/*.png', route => route.fulfill({ contentType: 'image/png', body: poster }));
     await page.route('**/work/test-only/clip.webm', route => { videoRequests++; return route.fulfill({ contentType: 'video/webm', body: readFileSync(path) }); });
     const response = await page.request.get('/work/vora');
     const output = testInfo.outputPath('actual-page-csp.txt');
@@ -116,6 +117,7 @@ test('component fixture native video loads reviewed captions under the actual pa
     const video = page.locator('video');
     await expect(video).toHaveAttribute('preload', 'none'); await expect(video).toHaveAttribute('controls', '');
     await expect(video).not.toHaveAttribute('autoplay', ''); expect(videoRequests).toBe(0);
+    await video.scrollIntoViewIfNeeded();
     await video.evaluate(element => { (element as HTMLVideoElement).textTracks[0].mode = 'showing'; (element as HTMLVideoElement).load(); });
     await expect.poll(() => video.evaluate(element => (element as HTMLVideoElement).textTracks[0].cues?.length ?? 0)).toBe(1);
     expect(await video.evaluate(element => ((element as HTMLVideoElement).textTracks[0].cues![0] as VTTCue).text)).toBe('A blue frame stays visible.');
@@ -135,3 +137,30 @@ test('component fixture reduced motion is immediate and enhancement controls req
   const reload = page.locator('[data-demo-reload]'); await reload.focus(); await expect(reload).toBeFocused();
   const reloadBox = await reload.boundingBox(); expect(reloadBox!.height).toBeGreaterThanOrEqual(44);
 });
+
+for (const javaScriptEnabled of [true, false]) {
+  test(`component fixture defers the distinct secondary video poster until approach (JavaScript ${javaScriptEnabled})`, async ({ browser }) => {
+    const context = await browser.newContext({ javaScriptEnabled, viewport: { width: 800, height: 600 }, baseURL: 'http://localhost:3100' });
+    const unexpected = await localOnly(context);
+    try {
+      const page = await context.newPage();
+      const requested: string[] = [];
+      const poster = await sharp({ create: { width: 32, height: 20, channels: 3, background: '#296f96' } }).png().toBuffer();
+      await page.route('**/work/test-only/*.png', route => { requested.push(new URL(route.request().url()).pathname); return route.fulfill({ contentType: 'image/png', body: poster }); });
+      await mountComponentFixture(page, { secondaryFarBelow: true });
+      await page.waitForLoadState('networkidle');
+      expect(requested).toContain('/work/test-only/poster.png');
+      expect(requested).not.toContain('/work/test-only/secondary.png');
+      const video = page.locator('video');
+      expect(await video.evaluate(element => element.getBoundingClientRect().top)).toBeGreaterThan(12000);
+      await expect(page.getByText('A blue frame stays visible.', { exact: true })).toBeVisible();
+      await expect(page.locator('[data-demo-reload]')).toHaveAttribute('href', '/work/vora');
+      const approached = page.waitForResponse('**/work/test-only/secondary.png');
+      await video.scrollIntoViewIfNeeded();
+      expect((await approached).status()).toBe(200);
+      expect(requested.filter(path => path === '/work/test-only/secondary.png')).toHaveLength(1);
+      await expect(video).toHaveAttribute('controls', '');
+      expect(unexpected).toEqual([]);
+    } finally { await context.close(); }
+  });
+}

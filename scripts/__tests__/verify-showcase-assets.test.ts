@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync, symlinkSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync, symlinkSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import sharp from 'sharp';
@@ -68,6 +68,73 @@ describe('production showcase asset gate', () => {
   it('rejects valid images renamed to another format', async () => { const c = await candidate(); const bytes = await sharp({ create: { width: 32, height: 20, channels: 3, background: '#ffffff' } }).png().toBuffer(); put(c.root, c.media.path, bytes); c.media.sha256 = digest(bytes); c.save(); await expect(c.run()).rejects.toThrow(/signature|format/i); });
   it('rejects truncated raster files even with a valid signature and digest', async () => { const c = await candidate('png'); const bytes = Buffer.from('89504e470d0a1a0a0000000d4948445200000020000000140802000000', 'hex'); put(c.root, c.media.path, bytes); c.media.sha256 = digest(bytes); c.save(); await expect(c.run()).rejects.toThrow(/decode/i); });
   it('rejects decoded dimensions that disagree with review', async () => { const c = await candidate(); c.media.width = 33; if (c.record.caseStudy?.publication === 'published') c.record.caseStudy.evidence[0].width = 33; c.save(); await expect(c.run()).rejects.toThrow(/dimension/i); });
+  it('accepts every intact animation frame using the reviewed per-frame dimensions, then rejects a corrupt later frame', async () => {
+    const c = await candidate();
+    const raw = Buffer.alloc(32 * 40 * 3);
+    for (let pixel = 0; pixel < 32 * 40; pixel++) raw[pixel * 3 + (pixel < 32 * 20 ? 2 : 0)] = 255;
+    const valid = await sharp(raw, { raw: { width: 32, height: 40, channels: 3, pageHeight: 20 } }).webp({ lossless: true, delay: [100, 100] }).toBuffer();
+    expect((await sharp(valid, { animated: true }).metadata()).pages).toBe(2);
+    put(c.root, c.media.path, valid); c.media.sha256 = digest(valid); c.save();
+    await expect(c.run()).resolves.toMatchObject({ media: 1 });
+    const damaged = Buffer.from(valid);
+    const frames: { offset: number; size: number }[] = [];
+    for (let offset = 12; offset + 8 < damaged.length;) {
+      const size = damaged.readUInt32LE(offset + 4);
+      if (damaged.toString('ascii', offset, offset + 4) === 'ANMF') frames.push({ offset, size });
+      offset += 8 + size + size % 2;
+    }
+    expect(frames).toHaveLength(2);
+    const second = frames[1];
+    damaged.fill(0, second.offset + 8 + 16 + 8 + 5, second.offset + 8 + second.size);
+    // The first frame still decodes; only a complete-frame gate catches this reviewed replacement.
+    await expect(sharp(damaged).raw().toBuffer()).resolves.toBeInstanceOf(Buffer);
+    put(c.root, c.media.path, damaged); c.media.sha256 = digest(damaged); c.save();
+    await expect(c.run()).rejects.toThrow(/decode/i);
+  });
+  for (const format of ['png', 'avif'] as const) {
+    it(`accepts animated ${format} and rejects a damaged later frame with a current digest`, async () => {
+      const c = await candidate(format);
+      const full = join(c.root, c.media.path);
+      const codec = format === 'png' ? ['-f', 'apng', '-plays', '0'] : ['-c:v', 'libsvtav1', '-preset', '12', '-svtav1-params', 'lp=1', '-pix_fmt', 'yuv420p', '-f', 'avif'];
+      if (format === 'avif') {
+        c.media.width = c.media.height = 64;
+        if (c.record.caseStudy?.publication === 'published') Object.assign(c.record.caseStudy.evidence[0], { width: 64, height: 64 });
+      }
+      execFileSync('ffmpeg', ['-nostdin', '-v', 'error', '-f', 'lavfi', '-i', `testsrc=size=${c.media.width}x${c.media.height}:rate=10:duration=0.2`, '-threads', '1', ...codec, '-y', full], { timeout: 30_000, stdio: ['ignore', 'pipe', 'pipe'] });
+      const valid = readFileSync(full);
+      c.media.sha256 = digest(valid); c.save(); await expect(c.run()).resolves.toMatchObject({ media: 1 });
+      const damaged = Buffer.from(valid);
+      if (format === 'png') {
+        let found = false;
+        for (let offset = 8; offset + 12 <= damaged.length;) {
+          const size = damaged.readUInt32BE(offset);
+          if (damaged.toString('ascii', offset + 4, offset + 8) === 'fdAT') { damaged.fill(0, offset + 12, offset + 8 + size); found = true; break; }
+          offset += size + 12;
+        }
+        expect(found).toBe(true);
+      } else {
+        const { packets } = JSON.parse(execFileSync('ffprobe', ['-v', 'error', '-show_packets', '-show_entries', 'packet=pos,size', '-of', 'json', full], { timeout: 30_000, encoding: 'utf8' })) as { packets: { pos: string; size: string }[] };
+        // AVIF may expose the first frame again as its still cover-image stream.
+        expect(new Set(packets.map(packet => packet.pos)).size).toBe(2);
+        const last = packets.at(-1)!;
+        damaged.fill(0, Number(last.pos), Number(last.pos) + Number(last.size));
+      }
+      if (format === 'png') await expect(sharp(damaged).raw().toBuffer()).resolves.toBeInstanceOf(Buffer);
+      put(c.root, c.media.path, damaged); c.media.sha256 = digest(damaged); c.save();
+      await expect(c.run()).rejects.toThrow(/decode/i);
+    });
+  }
+  it('bounds animation frame count before allocating the all-frame raster', async () => {
+    const c = await candidate();
+    const raw = Buffer.alloc(2 * 2 * 513 * 3);
+    for (let pixel = 0; pixel < 2 * 2 * 513; pixel++) raw[pixel * 3 + Math.floor(pixel / 4) % 2] = 255;
+    const bytes = await sharp(raw, { raw: { width: 2, height: 2 * 513, channels: 3, pageHeight: 2 } }).webp({ lossless: true, delay: Array(513).fill(100) }).toBuffer();
+    expect((await sharp(bytes, { animated: true }).metadata()).pages).toBe(513);
+    c.media.width = c.media.height = 2;
+    if (c.record.caseStudy?.publication === 'published') Object.assign(c.record.caseStudy.evidence[0], { width: 2, height: 2 });
+    put(c.root, c.media.path, bytes); c.media.sha256 = digest(bytes); c.save();
+    await expect(c.run()).rejects.toThrow(/frame limit/i);
+  });
   for (const format of ['mp4', 'webm'] as const) {
     it(`fully decodes real ${format} and rejects a truncated replacement`, async () => {
       const c = await candidate(); const path = `public/work/vora/clip.${format}`;

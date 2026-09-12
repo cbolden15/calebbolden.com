@@ -32,7 +32,7 @@ export const test = base.extend<{ networkIsolation: void }>({
 });
 
 /** Real shared source compiled only into disposable scratch, with its actual CSS module. */
-export async function mountComponentFixture(page: Page) {
+export async function mountComponentFixture(page: Page, options: { secondaryFarBelow?: boolean } = {}) {
   const root = resolve(__dirname, '../..');
   const scratch = mkdtempSync(join(tmpdir(), 'showcase-browser-'));
   const require = createRequire(join(root, 'package.json'));
@@ -45,11 +45,11 @@ export async function mountComponentFixture(page: Page) {
         builder.onResolve({ filter: /^[^./]/ }, args => args.path.startsWith('@/') ? undefined : { path: require.resolve(args.path), external: true });
       } }],
     });
-    const { renderFixture } = require(outfile) as { renderFixture: () => string };
+    const { renderFixture } = require(outfile) as { renderFixture: (options: { secondaryFarBelow?: boolean }) => string };
     await page.goto('/work/vora');
     await page.locator('main').evaluate((main, fixture) => {
       main.innerHTML = fixture.markup;
       const style = document.createElement('style'); style.textContent = fixture.css; document.head.append(style);
-    }, { markup: renderFixture(), css: readFileSync(join(scratch, 'fixture.css'), 'utf8') });
+    }, { markup: renderFixture(options), css: readFileSync(join(scratch, 'fixture.css'), 'utf8') });
   } finally { rmSync(scratch, { recursive: true, force: true }); }
 }

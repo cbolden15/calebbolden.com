@@ -91,19 +91,78 @@ function matchesSignature(bytes, mime) {
   }
 }
 
+const MAX_RASTER_FRAMES = 512;
+const MAX_RASTER_PIXELS = 100_000_000;
+function checkRasterBounds(width, height, frames) {
+  if (!Number.isInteger(frames) || frames < 1 || frames > MAX_RASTER_FRAMES) throw new Error('Raster frame limit exceeded');
+  if (!(width > 0 && height > 0) || width * height * frames > MAX_RASTER_PIXELS) throw new Error('Raster decoded pixel limit exceeded');
+}
+
+function apngFrameCount(bytes) {
+  for (let offset = 8; offset + 12 <= bytes.length;) {
+    const size = bytes.readUInt32BE(offset);
+    if (offset + 12 + size > bytes.length) throw new Error('Truncated PNG chunk');
+    if (bytes.toString('ascii', offset + 4, offset + 8) === 'acTL') {
+      if (size !== 8) throw new Error('Invalid APNG animation control');
+      return bytes.readUInt32BE(offset + 8);
+    }
+    offset += size + 12;
+  }
+}
+
+// libvips does not expose APNG or AVIF sequence frames. Use the existing portable
+// decoder for these containers, bounding allocation, output, elapsed time and frames.
+function verifyRasterSequence(root, asset, declaredFrames) {
+  checkRasterBounds(asset.width, asset.height, declaredFrames ?? 1);
+  const full = safePath(root, asset.path);
+  const options = { timeout: 30_000, maxBuffer: 1024 * 1024, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] };
+  const limits = ['-max_alloc', '134217728', '-threads', '1'];
+  const { streams = [] } = JSON.parse(execFileSync('ffprobe', ['-v', 'error', ...limits, '-select_streams', 'v', '-show_streams', '-show_entries', 'stream=index,codec_name,width,height,nb_frames', '-of', 'json', full], options));
+  const codec = asset.mediaType === 'image/png' ? 'apng' : 'av1';
+  if (!streams.length || streams.some(stream => stream.codec_name !== codec)) throw new Error('Decoded animation codec does not match MIME');
+  for (const stream of streams) {
+    if (stream.width !== asset.width || stream.height !== asset.height) throw new Error('Decoded frame dimensions disagree');
+  }
+  // AVIF can expose both its cover and its animation as separate streams. Require
+  // every declared sample to decode; FFmpeg can silently drop a damaged AV1 packet.
+  if (declaredFrames === undefined) {
+    for (const stream of streams) checkRasterBounds(stream.width, stream.height, Number(stream.nb_frames));
+    checkRasterBounds(asset.width, asset.height, streams.reduce((total, stream) => total + Number(stream.nb_frames), 0));
+  }
+  const { frames = [] } = JSON.parse(execFileSync('ffprobe', ['-v', 'error', ...limits, '-select_streams', 'v', '-show_frames', '-show_entries', 'frame=stream_index,width,height', '-of', 'json', full], options));
+  checkRasterBounds(asset.width, asset.height, frames.length);
+  if (declaredFrames === undefined && streams.some(stream => frames.filter(frame => frame.stream_index === stream.index).length !== Number(stream.nb_frames))) throw new Error('Decoded animation frame count disagrees');
+  if (declaredFrames !== undefined && frames.length !== declaredFrames) throw new Error('Decoded animation frame count disagrees');
+  for (const frame of frames) {
+    if (frame.width !== asset.width || frame.height !== asset.height) throw new Error('Decoded frame dimensions disagree');
+  }
+  execFileSync('ffmpeg', ['-nostdin', '-v', 'error', '-xerror', ...limits, '-err_detect', 'explode', '-i', full, '-map', '0:v', '-f', 'null', '-'], options);
+}
+
 async function verifyMedia(root, asset) {
   const bytes = fileBytes(root, asset.path);
   if (!matchesSignature(bytes, asset.mediaType)) throw new Error(`Media signature/format mismatch: ${asset.path}`);
   let width, height;
   try {
     if (asset.mediaType.startsWith('image/')) {
-      const image = sharp(bytes, { failOn: 'warning', limitInputPixels: 100_000_000 });
-      const metadata = await image.metadata();
-      const expected = { 'image/png': 'png', 'image/jpeg': 'jpeg', 'image/webp': 'webp', 'image/avif': 'heif' }[asset.mediaType];
-      if (metadata.format !== expected || (expected === 'heif' && metadata.compression !== 'av1')) throw new Error('Decoded format does not match MIME');
-      // metadata() alone succeeds for several truncated files. Decode every pixel.
-      const decoded = await image.raw().toBuffer({ resolveWithObject: true });
-      width = decoded.info.width; height = decoded.info.height;
+      const pngFrames = asset.mediaType === 'image/png' ? apngFrameCount(bytes) : undefined;
+      if (pngFrames !== undefined || (asset.mediaType === 'image/avif' && isoBrands(bytes).includes('avis'))) {
+        verifyRasterSequence(root, asset, pngFrames);
+        width = asset.width; height = asset.height;
+      } else {
+        const image = sharp(bytes, { animated: true, failOn: 'warning', limitInputPixels: MAX_RASTER_PIXELS }).timeout({ seconds: 30 });
+        const metadata = await image.metadata();
+        const expected = { 'image/png': 'png', 'image/jpeg': 'jpeg', 'image/webp': 'webp', 'image/avif': 'heif' }[asset.mediaType];
+        if (metadata.format !== expected || (expected === 'heif' && metadata.compression !== 'av1')) throw new Error('Decoded format does not match MIME');
+        const frames = metadata.pages ?? 1;
+        const frameHeight = metadata.pageHeight ?? metadata.height;
+        checkRasterBounds(metadata.width, frameHeight, frames);
+        // All pages form one vertical strip. Validate the strip as well as each
+        // composited frame's reviewed dimensions; metadata alone is insufficient.
+        const decoded = await image.raw({ depth: 'uchar' }).toBuffer({ resolveWithObject: true });
+        if (decoded.info.height !== frameHeight * frames) throw new Error('Decoded animation frame dimensions disagree');
+        width = decoded.info.width; height = decoded.info.height / frames;
+      }
     } else {
       const full = safePath(root, asset.path);
       const options = { timeout: 30_000, maxBuffer: 10 * 1024 * 1024, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] };
