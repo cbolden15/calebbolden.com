@@ -22,6 +22,8 @@ Synthetic test records must explicitly bind synthetic snapshot relationships. Sp
 
 Opacity-based visibility checks do not establish readability. Required Proof and method text must stay outside Reveal. Reduced-motion HeroInstrument removes its scroll track, so its static child must be positioned relative; an unwrapped sticky child can intercept later Proof content. Test actual viewport hit targets as well as opacity. Preserve normal-motion sticky containment.
 
+Playwright's `toBeVisible()` can pass for content inside an ancestor with `opacity: 0`. For required server-visible content, walk the ancestor chain and assert effective opacity; keep the content outside `Reveal` when it must survive JavaScript failure.
+
 A native video with preload=none can still load its poster eagerly. Keep later posters lazy and decode all frames during the media gate. A graph-fade mask can fade foreground text along with the background; required rich introductions retain graph-field without that mask.
 
 Block the actual interactive implementation chunk, not an earlier asynchronous loader stub. Keep first frame, complete walkthrough and native reload outside the enhancement boundary. Live regions need event-specific detail announcements, not only unchanged scenario/count summaries. Config text may contain the highlighted phrase more than once; slice around the first match so later text survives.
