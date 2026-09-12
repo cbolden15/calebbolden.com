@@ -1,6 +1,8 @@
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import Reveal from '@/components/Reveal';
+import Header from './Header';
+import Footer from './Footer';
+import Reveal from './Reveal';
+import CaseStudySections from './work/CaseStudySections';
+import type { CaseStudyShell } from '@/lib/work/public-content';
 
 // Shared template for /work/* detail pages. No hardcoded project data here;
 // tasks 2-4 pass props for Vora, ChapterHQ, and the site assistant. Mirrors
@@ -12,7 +14,7 @@ interface TechBand {
   value: string;
 }
 
-interface WorkDetailProps {
+interface LegacyWorkDetailProps {
   name: string;
   status: 'live' | 'building' | 'running';
   whatItIs: string;
@@ -25,7 +27,28 @@ interface WorkDetailProps {
   media?: React.ReactNode;
 }
 
-export default function WorkDetail({
+interface RichWorkDetailProps {
+  project: CaseStudyShell;
+  demonstration: React.ReactNode;
+  reloadHref: string;
+}
+
+type WorkDetailProps = LegacyWorkDetailProps | RichWorkDetailProps;
+
+export default function WorkDetail(props: WorkDetailProps) {
+  if ('project' in props) {
+    return (
+      <>
+        <Header />
+        <main className="chat-offset">
+          <CaseStudySections project={props.project} demonstration={props.demonstration} reloadHref={props.reloadHref} />
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
+  const {
   name,
   status,
   whatItIs,
@@ -36,7 +59,8 @@ export default function WorkDetail({
   href,
   sheet,
   media,
-}: WorkDetailProps) {
+  } = props;
+
   return (
     <>
       <Header />

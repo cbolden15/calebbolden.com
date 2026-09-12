@@ -28,7 +28,8 @@ export const caseStudyShellSchema = z.strictObject({
   contribution: publicTextSchema, maturity: z.enum(['Implemented', 'Prototype', 'Developer preview']),
   destination: destinationSchema, story: projectStorySchema, evidence: z.array(publicMediaSchema),
   interaction: publicInteractionSchema.optional(), snapshots: z.array(approvedProvenanceSchema),
-  links: z.array(publicLinkSchema).optional(), developmentLabel: z.literal('Local synthetic example. Unapproved for publication.').optional(),
+  related: z.array(relatedProjectLinkSchema).max(2), links: z.array(publicLinkSchema).optional(),
+  developmentLabel: z.literal('Local synthetic example. Unapproved for publication.').optional(),
 }).superRefine((shell, ctx) => {
   if (shell.publication === 'published' && (!shell.evidence.length || !shell.snapshots.length || !shell.interaction || shell.developmentLabel)) {
     ctx.addIssue({ code: 'custom', message: 'Published shell requires evidence and approved provenance' });
@@ -106,7 +107,7 @@ export function projectMethodProjects(records: readonly ProjectRecord[], manifes
   }).sort((a, b) => a.order - b.order);
 }
 
-export function projectCaseStudyShell(input: ProjectRecord, inputManifest: EvidenceManifest): CaseStudyShell | null {
+export function projectCaseStudyShell(input: ProjectRecord, inputManifest: EvidenceManifest, records: readonly ProjectRecord[] = []): CaseStudyShell | null {
   const view = resolvePublicProjectView(input);
   if (view.kind !== 'rich') return null;
   const manifest = evidenceManifestSchema.parse(inputManifest);
@@ -116,15 +117,16 @@ export function projectCaseStudyShell(input: ProjectRecord, inputManifest: Evide
   return caseStudyShellSchema.parse({ publication: 'published', slug: record.slug, name: record.name, summary: record.summary, contribution: record.contribution,
     maturity: record.maturity, destination: view.destination, story: projectStory(body.story), evidence: body.evidence.map(projectMedia),
     interaction: { kind: body.interaction.kind, snapshotId: body.interaction.snapshotId, label: body.interaction.label, caption: body.interaction.caption },
-    snapshots: snapshotIds.map(id => projectSnapshotMetadata(getApprovedSnapshot(manifest, id))), ...(record.links ? { links: projectLinks(record) } : {}) });
+    snapshots: snapshotIds.map(id => projectSnapshotMetadata(getApprovedSnapshot(manifest, id))), related: projectRelatedLinks(record, records),
+    ...(record.links ? { links: projectLinks(record) } : {}) });
 }
 
-export function projectDevelopmentCaseStudyShell(input: ProjectRecord): CaseStudyShell | null {
+export function projectDevelopmentCaseStudyShell(input: ProjectRecord, records: readonly ProjectRecord[] = []): CaseStudyShell | null {
   const view = resolveDevelopmentProjectView(input);
   if (view.kind !== 'rich-draft' || !view.body.story || !view.record.destination) return null;
   const record = view.record;
   return caseStudyShellSchema.parse({ publication: 'draft', slug: record.slug, name: record.name, summary: record.summary, contribution: record.contribution,
-    maturity: record.maturity, destination: record.destination, story: projectStory(view.body.story), evidence: [], snapshots: [], developmentLabel: view.label,
+    maturity: record.maturity, destination: record.destination, story: projectStory(view.body.story), evidence: [], snapshots: [], related: projectRelatedLinks(record, records), developmentLabel: view.label,
     ...(record.links ? { links: projectLinks(record) } : {}) });
 }
 

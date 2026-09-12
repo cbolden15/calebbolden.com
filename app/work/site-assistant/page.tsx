@@ -1,16 +1,21 @@
 import type { Metadata } from 'next';
 import WorkDetail from '@/components/WorkDetail';
+import { siteAssistant } from '@/lib/work/projects/secondary';
 
 export const metadata: Metadata = {
-  title: 'Site assistant | Work | Caleb Bolden',
-  description: 'The chat assistant on this site is a live agent: it answers questions about the work and helps a visitor scope what AI could take off their plate.',
+  title: `${siteAssistant.name} | Work | Caleb Bolden`,
+  description: siteAssistant.summary,
 };
 
 export default function SiteAssistantPage() {
+  if (siteAssistant.legacyStatus === 'in development') {
+    throw new Error('Site assistant requires a published legacy status.');
+  }
+
   return (
     <WorkDetail
-      name="Site assistant"
-      status="live"
+      name={siteAssistant.name}
+      status={siteAssistant.legacyStatus}
       sheet="work / site-assistant"
       whatItIs="The chat assistant in the corner of this site is a working agent, not a demo. It answers questions about what I build and helps a visitor think through where AI would pay in their own business."
       whoUsesIt="Anyone reading the site who would rather ask than dig. It is the same pattern I build for clients, running on my own site so you can try it before you buy it."

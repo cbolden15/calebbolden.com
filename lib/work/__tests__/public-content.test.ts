@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
-import { caseStudyShellSchema, homepageProofSchema, methodProjectSchema, projectCardSchema, projectCaseStudyShell, projectHomepageProof, projectMethodProjects, projectProjectCard, projectRelatedLinks, publicProjectSchema, relatedProjectLinkSchema } from '../public-content';
+import { caseStudyShellSchema, homepageProofSchema, methodProjectSchema, projectCardSchema, projectCaseStudyShell, projectDevelopmentCaseStudyShell, projectHomepageProof, projectMethodProjects, projectProjectCard, projectRelatedLinks, publicProjectSchema, relatedProjectLinkSchema } from '../public-content';
 import { createFixtureSchema, projectLocalFixture, projectApprovedFixture } from '../evidence';
 import { projectRecords } from '../catalog';
 import { richRecord, releaseManifest, releaseRecords, sampleBytes, readSampleBytes } from './samples';
@@ -40,12 +40,31 @@ describe('per-surface public projections', () => {
   });
 
   it('a detail shell contains exactly one narrative and rendered snapshot provenance', () => {
-    const shell = projectCaseStudyShell(richRecord('prism'), releaseManifest)!;
+    const record = { ...richRecord('prism'), related: ['chapterhq', 'agent-team'] };
+    const shell = projectCaseStudyShell(record, releaseManifest, projectRecords)!;
     expect(shell.story.about).toBe('Synthetic prism example.');
     expect(shell.snapshots[0]).toMatchObject({ id: 'prism-sample', checkedDate: '2026-09-11', sourceRevision: 'test-revision-1' });
+    expect(shell.related).toEqual([{ slug: 'chapterhq', name: 'ChapterHQ', destination: '/work/chapterhq' }]);
+    expect(Object.keys(shell.related[0]).sort()).toEqual(['destination', 'name', 'slug']);
     expect(JSON.stringify(shell)).not.toMatch(/sha256|allowedFields|lib\/work\/fixtures|Synthetic vora example/);
     expect(caseStudyShellSchema.safeParse({ ...shell, fixture: {} }).success).toBe(false);
+    expect(caseStudyShellSchema.safeParse({ ...shell, related: [{ ...shell.related[0], story: {} }] }).success).toBe(false);
     expect(() => projectCaseStudyShell(richRecord('prism'), { version: 1, snapshots: [] })).toThrow();
+  });
+
+  it('projects only resolvable production related links into development shells', () => {
+    vi.stubEnv('NODE_ENV', 'development');
+    const published = richRecord('prism');
+    if (published.caseStudy?.publication !== 'published') throw new Error('sample');
+    const draft = {
+      ...published,
+      publication: 'draft' as const,
+      related: ['chapterhq', 'agent-team'],
+      caseStudy: { publication: 'draft' as const, story: published.caseStudy.story },
+    };
+    expect(projectDevelopmentCaseStudyShell(draft, projectRecords)?.related)
+      .toEqual([{ slug: 'chapterhq', name: 'ChapterHQ', destination: '/work/chapterhq' }]);
+    expect(projectDevelopmentCaseStudyShell({ ...draft, related: ['missing'] }, projectRecords)?.related).toEqual([]);
   });
 
   it('homepage proof includes only an approved rich poster and omits it for other states', () => {
