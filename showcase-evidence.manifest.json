@@ -1,0 +1,263 @@
+{
+  "version": 1,
+  "snapshots": [
+    {
+      "id": "vora-portfolio-2026-09-12-v1",
+      "approval": "approved",
+      "derivation": "illustrative",
+      "checkedDate": "2026-09-12",
+      "disclosure": "Portfolio simulation screenshot: a fictional Cedar Repair follow-up awaits a decision. Approval depends on configuration; this proposed action remains conceptual and has not been verified as a supported delivery path. No real message is sent.",
+      "fixtures": [
+        {
+          "path": "lib/work/fixtures/vora.json",
+          "sha256": "04b65e909dcdfc8ec0ecc63c0852325b20b99b90bb504df88078dc22b6dfcab3",
+          "mediaType": "application/json",
+          "allowedFields": [
+            "kind",
+            "scenarios",
+            "scenarios.action",
+            "scenarios.business",
+            "scenarios.captions",
+            "scenarios.captions.approved",
+            "scenarios.captions.completed",
+            "scenarios.captions.failed",
+            "scenarios.captions.pending",
+            "scenarios.captions.rejected",
+            "scenarios.captions.request",
+            "scenarios.completion",
+            "scenarios.completion.activity",
+            "scenarios.completion.confirmation",
+            "scenarios.customer",
+            "scenarios.error",
+            "scenarios.id",
+            "scenarios.message",
+            "scenarios.reason",
+            "scenarios.request"
+          ]
+        }
+      ],
+      "media": [
+        {
+          "path": "public/work/vora/overview.webp",
+          "sha256": "4b07c47db4673c33a2aa1ee8a357c140be026ac5a07e9f6077ce6b6673b6a485",
+          "mediaType": "image/webp",
+          "width": 950,
+          "height": 540
+        }
+      ]
+    },
+    {
+      "id": "prism-portfolio-2026-09-12-v1",
+      "approval": "approved",
+      "derivation": "contract-derived",
+      "checkedDate": "2026-09-12",
+      "disclosure": "Portfolio simulation screenshot derived from Prism v0.1.0 public source: run.completed, the result 3 words, and a v1 inspect-record excerpt with fixed limits. No Prism execution was captured; measured usage and cleanup receipts are absent from this CLI record.",
+      "version": "0.1.0",
+      "sourceRevision": "fcad9afece7a7c12395946f9dd3305de0250bc1c",
+      "fixtures": [
+        {
+          "path": "lib/work/fixtures/prism.json",
+          "sha256": "25f3703397c81f4ac3ba2e25399755bb924248a8f3c1e4c95417cbe239c169d9",
+          "mediaType": "application/json",
+          "allowedFields": [
+            "kind",
+            "scenarios",
+            "scenarios.events",
+            "scenarios.events.description",
+            "scenarios.events.label",
+            "scenarios.events.type",
+            "scenarios.id",
+            "scenarios.lifecycleContract",
+            "scenarios.lifecycleContract.label",
+            "scenarios.lifecycleContract.plugins",
+            "scenarios.lifecycleContract.plugins.cleanupErrors",
+            "scenarios.lifecycleContract.plugins.confirmedAbsent",
+            "scenarios.lifecycleContract.plugins.exitCode",
+            "scenarios.lifecycleContract.plugins.oomKilled",
+            "scenarios.lifecycleContract.plugins.pluginId",
+            "scenarios.prompt",
+            "scenarios.receipt",
+            "scenarios.receipt.limits",
+            "scenarios.receipt.limits.providerTurns",
+            "scenarios.receipt.limits.toolCalls",
+            "scenarios.receipt.recordVersion",
+            "scenarios.receipt.terminal",
+            "scenarios.receipt.terminal.answer",
+            "scenarios.receipt.terminal.status",
+            "scenarios.result"
+          ]
+        }
+      ],
+      "media": [
+        {
+          "path": "public/work/prism/overview.webp",
+          "sha256": "3ff3cd01d87249a336167c681ed7eebc620b4fdfba7de47b41d96d98c6227a44",
+          "mediaType": "image/webp",
+          "width": 950,
+          "height": 657
+        }
+      ]
+    },
+    {
+      "id": "agent-team-portfolio-2026-09-12-v1",
+      "approval": "approved",
+      "derivation": "illustrative",
+      "checkedDate": "2026-09-12",
+      "disclosure": "Portfolio simulation screenshot: a fictional successful run reaches Delivery through the represented default legacy automatic merge path. Merge and queue enforcement, sandboxing, and anomaly termination are off; hard caps are unset. The website performs no repository operation.",
+      "fixtures": [
+        {
+          "path": "lib/work/fixtures/agent-team.json",
+          "sha256": "0df6bc33dc77cf8187bcd1e7b704fb0cafff8f2082b697ee60c4fad9eabbe3d5",
+          "mediaType": "application/json",
+          "allowedFields": [
+            "kind",
+            "scenarios",
+            "scenarios.attemptHistory",
+            "scenarios.attemptHistory.assertion",
+            "scenarios.attemptHistory.attempt",
+            "scenarios.attemptHistory.change",
+            "scenarios.attemptHistory.outcome",
+            "scenarios.configuration",
+            "scenarios.configuration.anomalyTermination",
+            "scenarios.configuration.hardCaps",
+            "scenarios.configuration.mergeEnforcement",
+            "scenarios.configuration.queueEnforcement",
+            "scenarios.configuration.sandboxing",
+            "scenarios.id",
+            "scenarios.label",
+            "scenarios.stages",
+            "scenarios.stages.artifact",
+            "scenarios.stages.decision",
+            "scenarios.stages.id",
+            "scenarios.stages.label",
+            "scenarios.stages.role",
+            "scenarios.stages.status",
+            "scenarios.stages.steps",
+            "scenarios.stages.steps.artifact",
+            "scenarios.stages.steps.decision",
+            "scenarios.stages.steps.label",
+            "scenarios.stages.steps.role",
+            "scenarios.summary",
+            "scenarios.terminal",
+            "scenarios.terminal.decision",
+            "scenarios.terminal.label",
+            "scenarios.terminal.stageIndex"
+          ]
+        }
+      ],
+      "media": [
+        {
+          "path": "public/work/agent-team/overview.webp",
+          "sha256": "a79495b0ede0d4e7c9ef56f26390a8b6d8b883326fc63b0bca6c308edd4d3315",
+          "mediaType": "image/webp",
+          "width": 950,
+          "height": 925
+        }
+      ]
+    },
+    {
+      "id": "agent-config-portfolio-2026-09-12-v1",
+      "approval": "approved",
+      "derivation": "illustrative",
+      "checkedDate": "2026-09-12",
+      "disclosure": "Portfolio simulation screenshot with Illustrative outputs: the Detailed shared fragment and Claude Code output remain current while Codex shows the Brief output as Out of date. The stacked layout preserves the complete visible excerpts. No real compiler was run and no source stamp was produced.",
+      "fixtures": [
+        {
+          "path": "lib/work/fixtures/agent-config.json",
+          "sha256": "3c2cb42bead0252e023c6a77444bcdd72d860077b1809903aa90e96c3dddc68b",
+          "mediaType": "application/json",
+          "allowedFields": [
+            "kind",
+            "scenarios",
+            "scenarios.fragment",
+            "scenarios.fragment.content",
+            "scenarios.fragment.heading",
+            "scenarios.id",
+            "scenarios.label",
+            "scenarios.outputs",
+            "scenarios.outputs.claudeCode",
+            "scenarios.outputs.claudeCode.content",
+            "scenarios.outputs.claudeCode.highlight",
+            "scenarios.outputs.claudeCode.variant",
+            "scenarios.outputs.codex",
+            "scenarios.outputs.codex.content",
+            "scenarios.outputs.codex.highlight",
+            "scenarios.outputs.codex.variant"
+          ]
+        }
+      ],
+      "media": [
+        {
+          "path": "public/work/agent-config/overview.webp",
+          "sha256": "2435bf29d97b4c69df162df85b8eacb32364b8a0f106ba641435882106a1a4be",
+          "mediaType": "image/webp",
+          "width": 610,
+          "height": 910
+        }
+      ]
+    },
+    {
+      "id": "control-center-portfolio-2026-09-12-v1",
+      "approval": "approved",
+      "derivation": "illustrative",
+      "checkedDate": "2026-09-12",
+      "disclosure": "Portfolio simulation screenshot: the Fails scenario and Needs attention filter show two runs and one unresolved decision, with fictional spend and deployment records. Control Center is a Prototype; deployment is unverified. Ages use a frozen sample time. Homepage and Healthchecks retain credit.",
+      "fixtures": [
+        {
+          "path": "lib/work/fixtures/control-center.json",
+          "sha256": "acd513aa22b98e163ed5a9edd36413d7f5c76cf8ef60f41b1f0a92cd997cde20",
+          "mediaType": "application/json",
+          "allowedFields": [
+            "kind",
+            "scenarios",
+            "scenarios.decisions",
+            "scenarios.decisions.createdAt",
+            "scenarios.decisions.explanation",
+            "scenarios.decisions.id",
+            "scenarios.decisions.name",
+            "scenarios.decisions.resolvedAt",
+            "scenarios.decisions.sourceType",
+            "scenarios.deployments",
+            "scenarios.deployments.explanation",
+            "scenarios.deployments.id",
+            "scenarios.deployments.recordedAt",
+            "scenarios.deployments.result",
+            "scenarios.deployments.sha",
+            "scenarios.deployments.target",
+            "scenarios.frozenAt",
+            "scenarios.id",
+            "scenarios.label",
+            "scenarios.runs",
+            "scenarios.runs.host",
+            "scenarios.runs.id",
+            "scenarios.runs.name",
+            "scenarios.runs.primary",
+            "scenarios.runs.result",
+            "scenarios.runs.result.finishedAt",
+            "scenarios.runs.result.status",
+            "scenarios.runs.result.summary",
+            "scenarios.runs.sourceType",
+            "scenarios.runs.stale",
+            "scenarios.runs.startedAt",
+            "scenarios.runs.startedSummary",
+            "scenarios.runs.updatedAt",
+            "scenarios.spend",
+            "scenarios.spend.amount",
+            "scenarios.spend.label",
+            "scenarios.spend.period",
+            "scenarios.staleAfterMinutes"
+          ]
+        }
+      ],
+      "media": [
+        {
+          "path": "public/work/control-center/overview.webp",
+          "sha256": "a1b9e79f1e723cbd26cb0f9e3b324f970adb9843759b5add2a4e18b9072d60d3",
+          "mediaType": "image/webp",
+          "width": 950,
+          "height": 915
+        }
+      ]
+    }
+  ]
+}

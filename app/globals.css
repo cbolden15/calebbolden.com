@@ -777,6 +777,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hero-sticky { position: relative; }
   .hero-sticky .cluster,
   .hero-sticky .btn,
   .hero-sticky .pill,

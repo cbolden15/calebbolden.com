@@ -16,7 +16,7 @@ Production is the Hetzner server (5.78.121.71), NOT Vercel and NOT the homelab. 
 
 ## Visual-system rollout — partially implemented, resume here (as of 2026-08-05)
 
-**At session start in this repo, tell Caleb this rollout is partial and state the next steps below.** Remove this section when the rollout finishes.
+This historical rollout remains partial. For showcase surfaces, follow the current Project showcase section below; preserve the unrelated portrait work. Remove this section only when the remaining rollout finishes.
 
 State: 8 of 15 plan tasks merged to main at `114e52f` (image pipeline, TapedPrint/PrintStrip, mobile MethodFigure fix, three service path figures, blog VSM figure, audit template renders, Packages artifact strip). **Deployed to Hetzner 2026-08-11** (shipped with the go-live day-1 deploy at `3660d19`). Full history in `.superpowers/sdd/progress.md`; plan (with complete mount code for the remaining tasks) in `docs/plans/2026-08-04-visual-system-rollout.md`; audit in `consulting/brand/visual-audit-2026-08-04.md`; cross-session detail (test line, creds pointers) in auto-memory `visual-rollout-state`.
 
@@ -52,3 +52,11 @@ Parked / later:
 - Interactive PDF gating is soft (direct URLs work); revisit only if link-sharing shows up.
 - Email list provider decision once lead volume justifies automated sequences.
 - Retire or repurpose the stopped homelab stack (containers stopped 2026-07-07, restart with `docker compose start`).
+
+## Project showcase (September 12, 2026 local candidate)
+
+The shared server catalog is `lib/work/catalog.ts`; authored records, raw fixture JSON and evidence hashing must never enter client imports. The five local rich examples use exact reviewed fixture/poster bytes bound by `showcase-evidence.manifest.json`. Validation never refreshes hashes. Draft case studies do not protect public media: deliberate rollback removes inactive snapshot entries and unreferenced media together.
+
+Use Node 22.21.0 for application checks and gzip comparisons. Run `npm test`, `npm run verify:showcase-assets`, `npm run build`, `npx tsc --noEmit`, then `SHOWCASE_SERVER=production npx playwright test tests/showcase --project=chromium`. The Playwright production runner stages standalone output with matching public/static assets on localhost:3100. Source-transition tests require separate archived sources; no application environment, URL or cookie publication switch exists. Final command output and release gates are recorded in `docs/plans/2026-09-11-project-showcase-release-checks.md`.
+
+The older Vora and How I build capture sequence above is superseded for these showcase surfaces by the approved portfolio simulations. It does not authorize a live capture or complete the unrelated portrait rollout. Local code/evidence readiness is separate from independent review and deployment authorization. Read `docs/gotchas.md` before changing showcase fixtures, loading boundaries or required content.

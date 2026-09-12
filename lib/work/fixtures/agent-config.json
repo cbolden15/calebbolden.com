@@ -1,0 +1,45 @@
+{
+  "kind": "agent-config",
+  "scenarios": [
+    {
+      "id": "brief",
+      "label": "Brief",
+      "fragment": {
+        "heading": "Response style",
+        "content": "Lead with the result. Keep routine answers concise. Use numbered steps when the reader must act."
+      },
+      "outputs": {
+        "claudeCode": {
+          "variant": "brief",
+          "content": "# Response style\n\nLead with the result.\nKeep routine answers concise.\nUse numbered steps when the reader must act.",
+          "highlight": "Keep routine answers concise."
+        },
+        "codex": {
+          "variant": "brief",
+          "content": "Response style\n\nLead with the result.\nKeep routine answers concise.\nUse numbered steps when the reader must act.",
+          "highlight": "Keep routine answers concise."
+        }
+      }
+    },
+    {
+      "id": "detailed",
+      "label": "Detailed",
+      "fragment": {
+        "heading": "Response style",
+        "content": "Lead with the result. State assumptions before implementation. Number multi-step work. Name the real verification command and report its result."
+      },
+      "outputs": {
+        "claudeCode": {
+          "variant": "detailed",
+          "content": "# Response style\n\nLead with the result.\nState assumptions before implementation.\nNumber multi-step work.\nName the real verification command and report its result.",
+          "highlight": "State assumptions before implementation."
+        },
+        "codex": {
+          "variant": "detailed",
+          "content": "Response style\n\nLead with the result.\nState assumptions before implementation.\nNumber multi-step work.\nName the real verification command and report its result.\n\nThis is a purpose-written illustrative output.",
+          "highlight": "State assumptions before implementation."
+        }
+      }
+    }
+  ]
+}

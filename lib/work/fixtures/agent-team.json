@@ -1,0 +1,238 @@
+{
+  "kind": "agent-team",
+  "scenarios": [
+    {
+      "id": "pass",
+      "label": "Passes review",
+      "summary": "A fictional retry-banner task passes separate reviews and QA before the sample delivery workflow completes.",
+      "configuration": {
+        "mergeEnforcement": false,
+        "queueEnforcement": false,
+        "sandboxing": false,
+        "anomalyTermination": false,
+        "hardCaps": null
+      },
+      "terminal": {
+        "stageIndex": 4,
+        "label": "Sample run complete · automatic merge.",
+        "decision": "Green sample CI allows the legacy automatic merge path because merge-policy enforcement is disabled. The website performs no merge."
+      },
+      "stages": [
+        {
+          "id": "task",
+          "label": "Task",
+          "status": "reached",
+          "role": "Coordinator",
+          "decision": "Accept a bounded fictional change and define its checks.",
+          "artifact": "Task: keep a retry banner visible after the next successful check.",
+          "steps": [
+            { "label": "Task intake", "role": "Coordinator", "decision": "Scope one display change and its assertions.", "artifact": "Acceptance: banner remains visible; unrelated layout stays unchanged." }
+          ]
+        },
+        {
+          "id": "implementation",
+          "label": "Implementation",
+          "status": "reached",
+          "role": "Implementer",
+          "decision": "Make the change in an isolated sample workspace.",
+          "artifact": "+ retainRetryNotice(previousAttempt)",
+          "steps": [
+            { "label": "Isolated implementation", "role": "Implementer", "decision": "Edit only the retry summary component.", "artifact": "sample-workspace · retry-summary.tsx · one focused change" }
+          ]
+        },
+        {
+          "id": "reviews",
+          "label": "Reviews",
+          "status": "reached",
+          "role": "Review coordinator",
+          "decision": "Run separate correctness and security reviews with isolated prompt context.",
+          "artifact": "Correctness: pass · Security: pass",
+          "steps": [
+            { "label": "Correctness review", "role": "Reviewer A", "decision": "Accept the state-retention behavior.", "artifact": "Prompt context: task, diff, focused test · result: pass" },
+            { "label": "Security review", "role": "Reviewer B", "decision": "No blocking behavior in the fictional diff.", "artifact": "Separate prompt context: task, diff, threat checklist · result: pass" }
+          ]
+        },
+        {
+          "id": "qa",
+          "label": "QA",
+          "status": "reached",
+          "role": "QA agent",
+          "decision": "Accept the first deterministic sample attempt.",
+          "artifact": "retry-summary.test · 2 checks passed",
+          "steps": [
+            { "label": "QA attempt 1", "role": "QA agent", "decision": "Pass the focused assertions.", "artifact": "PASS banner-retention · PASS unchanged-layout" }
+          ]
+        },
+        {
+          "id": "delivery",
+          "label": "Delivery",
+          "status": "reached",
+          "role": "Delivery workflow",
+          "decision": "Open a fictional draft PR, observe green sample CI, and follow the legacy automatic merge path.",
+          "artifact": "Draft PR SAMPLE-42 · CI green · automatic merge simulated",
+          "steps": [
+            { "label": "Draft PR", "role": "Delivery workflow", "decision": "Create the fictional review boundary.", "artifact": "SAMPLE-42 · draft · retry banner retention" },
+            { "label": "CI", "role": "Sample CI", "decision": "Report all fictional checks green.", "artifact": "unit 8/8 · typecheck passed" },
+            { "label": "Legacy automatic merge", "role": "Merge workflow", "decision": "Allow the legacy path with merge-policy enforcement disabled.", "artifact": "simulation only · no repository operation" }
+          ]
+        }
+      ],
+      "attemptHistory": []
+    },
+    {
+      "id": "retry",
+      "label": "QA retry",
+      "summary": "A fictional QA assertion fails, a debugger changes the sample artifact, and the second attempt passes without erasing the first result.",
+      "configuration": {
+        "mergeEnforcement": false,
+        "queueEnforcement": false,
+        "sandboxing": false,
+        "anomalyTermination": false,
+        "hardCaps": null
+      },
+      "terminal": {
+        "stageIndex": 4,
+        "label": "Sample run complete · automatic merge.",
+        "decision": "Green sample CI allows the legacy automatic merge path because merge-policy enforcement is disabled. Both QA attempts remain visible."
+      },
+      "stages": [
+        {
+          "id": "task",
+          "label": "Task",
+          "status": "reached",
+          "role": "Coordinator",
+          "decision": "Accept a bounded fictional change and require retained retry evidence.",
+          "artifact": "Task: keep the failed assertion visible after a successful retry.",
+          "steps": [
+            { "label": "Task intake", "role": "Coordinator", "decision": "Scope one retention rule and two QA attempts.", "artifact": "Acceptance: failure remains inspectable after success." }
+          ]
+        },
+        {
+          "id": "implementation",
+          "label": "Implementation",
+          "status": "reached",
+          "role": "Implementer",
+          "decision": "Build the initial change in an isolated sample workspace.",
+          "artifact": "+ showLatestAttempt(result)",
+          "steps": [
+            { "label": "Isolated implementation", "role": "Implementer", "decision": "Add the first attempt summary.", "artifact": "sample-workspace · attempt-summary.tsx · initial change" }
+          ]
+        },
+        {
+          "id": "reviews",
+          "label": "Reviews",
+          "status": "reached",
+          "role": "Review coordinator",
+          "decision": "Run separate correctness and security reviews with isolated prompt context.",
+          "artifact": "Correctness: pass · Security: pass",
+          "steps": [
+            { "label": "Correctness review", "role": "Reviewer A", "decision": "Accept the bounded implementation for QA.", "artifact": "Prompt context: task, diff, focused test · result: pass" },
+            { "label": "Security review", "role": "Reviewer B", "decision": "No blocking behavior in the fictional diff.", "artifact": "Separate prompt context: task, diff, threat checklist · result: pass" }
+          ]
+        },
+        {
+          "id": "qa",
+          "label": "QA",
+          "status": "reached",
+          "role": "QA and debugger agents",
+          "decision": "Retain the failed assertion, apply a focused debugger change, and pass attempt 2.",
+          "artifact": "Attempt 1 FAIL → debugger patch → Attempt 2 PASS",
+          "steps": [
+            { "label": "QA attempt 1", "role": "QA agent", "decision": "Fail on missing historical evidence.", "artifact": "FAIL retry-history.test · expected failed attempt marker, received none" },
+            { "label": "Debugger change", "role": "Debugger agent", "decision": "Append attempts instead of replacing the prior result.", "artifact": "- history = [latest]\n+ history = [...history, latest]" },
+            { "label": "QA attempt 2", "role": "QA agent", "decision": "Pass with both attempts inspectable.", "artifact": "PASS retry-history.test · failed and passed markers retained" }
+          ]
+        },
+        {
+          "id": "delivery",
+          "label": "Delivery",
+          "status": "reached",
+          "role": "Delivery workflow",
+          "decision": "Open a fictional draft PR, observe green sample CI, and follow the legacy automatic merge path.",
+          "artifact": "Draft PR SAMPLE-43 · CI green · automatic merge simulated",
+          "steps": [
+            { "label": "Draft PR", "role": "Delivery workflow", "decision": "Create the fictional review boundary.", "artifact": "SAMPLE-43 · draft · retain retry history" },
+            { "label": "CI", "role": "Sample CI", "decision": "Report all fictional checks green on attempt 2.", "artifact": "unit 9/9 · typecheck passed" },
+            { "label": "Legacy automatic merge", "role": "Merge workflow", "decision": "Allow the legacy path with merge-policy enforcement disabled.", "artifact": "simulation only · no repository operation" }
+          ]
+        }
+      ],
+      "attemptHistory": [
+        { "attempt": 1, "outcome": "failed", "assertion": "Expected the failed attempt marker to remain visible; received none.", "change": "Debugger changed replacement to append the latest result to history." },
+        { "attempt": 2, "outcome": "passed", "assertion": "Failed and passed attempt markers both remain visible.", "change": "No further change." }
+      ]
+    },
+    {
+      "id": "security",
+      "label": "Security block",
+      "summary": "A fictional security reviewer finds an unsafe archive path and stops the sample in Reviews, before any draft PR or merge step.",
+      "configuration": {
+        "mergeEnforcement": false,
+        "queueEnforcement": false,
+        "sandboxing": false,
+        "anomalyTermination": false,
+        "hardCaps": null
+      },
+      "terminal": {
+        "stageIndex": 2,
+        "label": "Blocked by review.",
+        "decision": "The fictional security finding stops this sample before PR and merge. This is a review decision, not an enabled merge gate."
+      },
+      "stages": [
+        {
+          "id": "task",
+          "label": "Task",
+          "status": "reached",
+          "role": "Coordinator",
+          "decision": "Accept a bounded fictional archive-label change.",
+          "artifact": "Task: include a branch label in the downloadable sample archive name.",
+          "steps": [
+            { "label": "Task intake", "role": "Coordinator", "decision": "Scope filename construction and review it before delivery.", "artifact": "Acceptance: safe label appears in the archive filename." }
+          ]
+        },
+        {
+          "id": "implementation",
+          "label": "Implementation",
+          "status": "reached",
+          "role": "Implementer",
+          "decision": "Build the sample filename change in an isolated workspace.",
+          "artifact": "+ archiveName = branchLabel + '.zip'",
+          "steps": [
+            { "label": "Isolated implementation", "role": "Implementer", "decision": "Use the supplied fictional branch label.", "artifact": "sample-workspace · archive-name.ts · one focused change" }
+          ]
+        },
+        {
+          "id": "reviews",
+          "label": "Reviews",
+          "status": "reached",
+          "role": "Review coordinator",
+          "decision": "Block because the sample does not reject parent-directory segments in the archive label.",
+          "artifact": "Security: BLOCK · reject parent-directory segments before constructing a filename",
+          "steps": [
+            { "label": "Correctness review", "role": "Reviewer A", "decision": "The requested label appears, so pass the functional check.", "artifact": "Prompt context: task, diff, focused test · result: pass" },
+            { "label": "Security review", "role": "Reviewer B", "decision": "Block the fictional diff before PR.", "artifact": "Separate prompt context: task, diff, path-handling checklist · finding: unsafe parent-directory segment" }
+          ]
+        },
+        {
+          "id": "qa",
+          "label": "QA",
+          "status": "not-reached",
+          "role": "QA agent",
+          "decision": "Not reached",
+          "artifact": "No QA artifact was created in this sample.",
+          "steps": []
+        },
+        {
+          "id": "delivery",
+          "label": "Delivery",
+          "status": "not-reached",
+          "role": "Delivery workflow",
+          "decision": "Not reached",
+          "artifact": "No draft PR, CI result, or merge artifact was created in this sample.",
+          "steps": []
+        }
+      ],
+      "attemptHistory": []
+    }
+  ]
+}

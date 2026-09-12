@@ -1,0 +1,473 @@
+{
+  "version": 1,
+  "status": "complete",
+  "note": "Recovery evidence only. Node outputs have passed schema validation; findings and audits may still be rejected during evidence checking or reconciliation. This file is not a readiness verdict.",
+  "target": "/Users/calebbolden/Projects/consulting/calebbolden.com/docs/superpowers/specs/2026-09-11-project-showcase-design.md",
+  "target_sha256": "3d5be73004e60931083ee486f86645335292addd8f67735bc0ca3d18f348d553",
+  "lenses": [
+    "DESIGN",
+    "FEASIBILITY",
+    "SCOPE",
+    "SECURITY"
+  ],
+  "records": [
+    {
+      "node": "review:FEASIBILITY",
+      "phase": "review",
+      "ok": true,
+      "execution": {
+        "attemptId": "attempt-2",
+        "provider": "codex",
+        "family": "openai",
+        "requestedModel": "gpt-5.6-sol",
+        "actualModel": "gpt-5.6-sol",
+        "authSource": "subscription",
+        "permission": "read-only",
+        "latencyMs": 128659,
+        "usage": {
+          "inputTokens": 211064,
+          "outputTokens": 4802,
+          "totalTokens": 215866
+        }
+      },
+      "value": {
+        "findings": [
+          {
+            "title": "The required project-record schema cannot represent retained legacy projects",
+            "severity": "Important",
+            "evidence": "Interaction | One of the five explicitly supported demo kinds, with fixture ID and display copy. How I build entries also provide responsibility label, order, and a compact static evidence selection/caption referencing that project's approved example. No arbitrary scripts or private service configuration.",
+            "failure_scenario": "Implement the shared catalog as specified and add all seven catalog entries. TypeScript then requires ChapterHQ and Site Assistant to provide one of the five flagship-only interaction kinds and a fixture ID. Omitting those fields violates the required record type; supplying them invents demonstrations that the spec explicitly leaves outside the release and conflicts with retaining the legacy WorkDetail input.",
+            "fix": "Define a discriminated union: a rich flagship record requiring story, evidence, and interaction fields, and a legacy secondary record that retains its existing WorkDetail fields without an interaction. Make placement-specific fields conditional and ensure only rich published records feed demonstration components."
+          }
+        ]
+      }
+    },
+    {
+      "node": "audit:lens:FEASIBILITY",
+      "phase": "verify",
+      "ok": true,
+      "execution": {
+        "attemptId": "attempt-3",
+        "provider": "claude",
+        "family": "anthropic",
+        "requestedModel": "claude-opus-5",
+        "actualModel": "claude-opus-5",
+        "authSource": "subscription",
+        "permission": "read-only",
+        "latencyMs": 25383,
+        "usage": {
+          "inputTokens": 4,
+          "outputTokens": 1721,
+          "totalTokens": 1725
+        }
+      },
+      "value": {
+        "verdicts": [
+          {
+            "index": 0,
+            "evidence_found": true,
+            "refuted": false,
+            "reason": "Quote verified verbatim at line 321 of the target (§13 public content model table). No guard defeats the scenario: the field-group table is headed \"Required values\" and the Interaction row states \"One of the five explicitly supported demo kinds, with fixture ID and display copy\" with no optionality marker, unlike Identity's explicit \"optional detail route\" and the optional product/source/documentation URLs in Publication. §13 also mandates that Homepage, Work, How I build, related links, and detail pages \"consume the same record,\" and §3's migration map places chapterhq and site-assistant in that same catalog with visible filters and result counts (All: 7), so they must be catalog records. The §5 sentence about \"retaining the current legacy input for ChapterHQ and the site assistant\" scopes to the WorkDetail layout component input, not the catalog record type, and §2 states only \"one primary interaction per flagship,\" leaving the secondary entries with no sanctioned interaction kind or fixture ID. The conditional phrasing \"How I build entries also provide...\" hints at per-placement conditionality but never states that the Interaction group itself may be omitted, so the ambiguity is unresolved. Repository check found only the existing untyped per-page components (components/WorkDetail.tsx, app/work/chapterhq/page.tsx, app/work/site-assistant/page.tsx) and no catalog record type that would make interaction optional. Uncertainty remains; keep."
+          }
+        ]
+      }
+    },
+    {
+      "node": "review:DESIGN",
+      "phase": "review",
+      "ok": true,
+      "execution": {
+        "attemptId": "attempt-1",
+        "provider": "codex",
+        "family": "openai",
+        "requestedModel": "gpt-5.6-sol",
+        "actualModel": "gpt-5.6-sol",
+        "authSource": "subscription",
+        "permission": "read-only",
+        "latencyMs": 218536,
+        "usage": {
+          "inputTokens": 180002,
+          "outputTokens": 7528,
+          "totalTokens": 187530
+        }
+      },
+      "value": {
+        "findings": [
+          {
+            "title": "Vora has two implementations competing for one route without a cutover state",
+            "severity": "Important",
+            "evidence": "Existing Vora remains reachable through its legacy page until its richer case study is ready.",
+            "failure_scenario": "Milestone 1 adds Vora as a draft rich record at `/work/vora`. The generic detail resolver sees `draft` and returns the required production 404, replacing the existing legacy page before the rich case study is publishable. If the existing route instead remains hard-coded, changing the record to published has no defined mechanism for switching ownership to the rich page.",
+            "fix": "Define an explicit route-resolution state machine for migrated slugs: legacy, rich draft with legacy fallback, and rich published. Make the transition atomic and reversible, and test `/work/vora` before, during, and after cutover."
+          },
+          {
+            "title": "The content model permits published entries with no valid destination",
+            "severity": "Important",
+            "evidence": "Stable slug, name, category, summary, contribution statement, related slugs, optional detail route. A slug alone does not create a published route.",
+            "failure_scenario": "An Agent Team record is set to `published`, placed in the Work catalog, and assigned no detail route. It is included in the 7/3/4 count, but its required detail link is either missing or generated from the slug and returns 404. The record satisfies the proposed field model even though A1 fails.",
+            "fix": "Use discriminated record types. A published case-study entry must require a resolvable detail route; drafts and collection-only records may omit it. Add a build-time graph validator covering placements, routes, related slugs, and sitemap inclusion."
+          },
+          {
+            "title": "Fixture provenance is separate from the bytes it attests",
+            "severity": "Important",
+            "evidence": "One of the five explicitly supported demo kinds, with fixture ID and display copy.",
+            "failure_scenario": "A developer replaces the JSON behind `control-center-default` to correct a sample run but leaves the project record's checked date and About-this-example copy unchanged. The page now presents new bytes under old review metadata, while schema and private-pattern tests still pass.",
+            "fix": "Model each example as an immutable evidence snapshot that binds fixture revision or digest, derivation, checked date, disclosure, and approved public fields. Make interactions reference that snapshot, and fail validation when fixture bytes change without a new attestation."
+          },
+          {
+            "title": "Enhancement recovery has no failure-independent owner",
+            "severity": "Important",
+            "evidence": "A failed enhancement retains readable static content and offers retry without exposing dead controls.",
+            "failure_scenario": "The Vora demo's dynamically loaded JavaScript chunk returns 404 after the server-rendered page loads. The enhancement never hydrates, so a retry control implemented inside that enhancement cannot render or respond; showing its normal controls instead exposes dead buttons.",
+            "fix": "Put static content and recovery in a separately loaded, server-rendered demo shell. Have an outer error boundary own module loading and retry, and provide a native page-reload link that works even when the demo bundle never executes."
+          },
+          {
+            "title": "The canonical record lacks per-surface projection boundaries",
+            "severity": "Minor",
+            "evidence": "Homepage, Work, How I build, related-project links, and detail pages consume the same record rather than maintaining separate status/summary arrays.",
+            "failure_scenario": "The client-enhanced Work filter imports canonical records containing all five narratives, walkthroughs, transcripts, and interaction configuration so it can filter by category. Visitors download every case study's public payload on `/work`, even though only card fields are rendered, undermining lazy demo loading and the JavaScript budget.",
+            "fix": "Keep one canonical server-side source, but define typed projections such as catalog card, homepage proof, related link, and case-study shell. Load fixture and transcript payloads by ID only on the relevant detail page."
+          }
+        ]
+      }
+    },
+    {
+      "node": "audit:lens:DESIGN",
+      "phase": "verify",
+      "ok": true,
+      "execution": {
+        "attemptId": "attempt-4",
+        "provider": "claude",
+        "family": "anthropic",
+        "requestedModel": "claude-opus-5",
+        "actualModel": "claude-opus-5",
+        "authSource": "subscription",
+        "permission": "read-only",
+        "latencyMs": 50491,
+        "usage": {
+          "inputTokens": 4,
+          "outputTokens": 3554,
+          "totalTokens": 3558
+        }
+      },
+      "value": {
+        "verdicts": [
+          {
+            "index": 0,
+            "evidence_found": true,
+            "refuted": false,
+            "reason": "Quote present verbatim in §5. Partial guards exist: §5 says drafts' \"new detail routes return 404 in production\" (arguably excluding the pre-existing /work/vora path), \"Existing URL paths stay stable,\" and the repo shows /work/vora as a hard-coded static segment (app/work/vora/page.tsx) that in Next.js takes precedence over any dynamic [slug] resolver — defeating the 404-replacement branch. But the second branch survives: no section of the spec defines the cutover mechanism by which ownership of /work/vora transfers from the legacy page to the rich case study when the record flips to published. Milestone 2's completion condition names no route-handoff step. Uncertainty remains, so kept."
+          },
+          {
+            "index": 1,
+            "evidence_found": true,
+            "refuted": false,
+            "reason": "Quote present verbatim in §13 Identity row. The spec does add downstream gates — the migration map assigns a destination to all 7 entries, §5 requires resolving related slugs through \"published records with existing detail destinations,\" and A1 requires that five flagship destinations resolve and every migration-map route stay reachable. But these are release-verification and related-link rules, not a model constraint; the field group explicitly marks the detail route \"optional\" while Publication marks an entry published and catalog-placed, so the inconsistent state remains constructible and countable, with only manual A1 checking catching it. The scenario itself concedes A1 fails, which is the defect, not a refutation."
+          },
+          {
+            "index": 2,
+            "evidence_found": true,
+            "refuted": false,
+            "reason": "Quote present verbatim in §13 Interaction row. Nearby guards address stamps and scans — \"Show a source stamp only if it comes from the corresponding sample fixture,\" \"a source stamp is valid only for the corresponding sample bytes,\" and A3's truthful checked date — but all bind a stamp or human review to bytes at authoring time; nothing links a later edit of fixture JSON referenced only by fixture ID to invalidation or re-dating of the record's checked date and About-this-example copy. §13 even notes that pattern scans \"supplement\" rather than replace review, confirming schema/private-pattern tests would still pass. No guard defeats the stale-provenance path."
+          },
+          {
+            "index": 3,
+            "evidence_found": true,
+            "refuted": false,
+            "reason": "Quote present verbatim in §5 Shared interaction behavior. The adjacent sentences (\"Hide enhancement-only controls until their module and hydration are ready,\" \"A failed enhancement retains readable static content\") state the required outcome but assign no failure-independent owner for the retry affordance; if retry lives in the chunk that 404s, the requirement is unsatisfiable and the alternative is dead controls. No later section (§12, §14, A4) designates a static shell, error boundary, or non-lazy host responsible for rendering retry. Scenario stands."
+          },
+          {
+            "index": 4,
+            "evidence_found": true,
+            "refuted": false,
+            "reason": "Quote present verbatim in §13 Public content model. §3 says the enhanced filter derives the list \"using already public catalog records,\" and §14 requires lazy-loading demo modules with A5 checking bundle budgets — but the 100KB budget is scoped to \"the active case-study demonstration,\" not /work, and no section defines a card-level projection or forbids the client filter from importing Story/Evidence/Interaction field groups. The single-record mandate plus client-side derivation makes the over-shipping path reachable; only post-hoc budget measurement would notice. Not refuted."
+          }
+        ]
+      }
+    },
+    {
+      "node": "review:SCOPE",
+      "phase": "review",
+      "ok": true,
+      "execution": {
+        "attemptId": "attempt-5",
+        "provider": "codex",
+        "family": "openai",
+        "requestedModel": "gpt-5.6-sol",
+        "actualModel": "gpt-5.6-sol",
+        "authSource": "subscription",
+        "permission": "tool-free",
+        "latencyMs": 99531,
+        "usage": {
+          "inputTokens": 28969,
+          "outputTokens": 1558,
+          "totalTokens": 30527
+        }
+      },
+      "value": {
+        "findings": [
+          {
+            "title": "Optional galleries become a mandatory first-release subsystem",
+            "severity": "Important",
+            "evidence": "Catalog, case-study sections, evidence labels, responsive media/gallery, static fallback.",
+            "failure_scenario": "None of the five first-release asset inventories contains a gallery, but Milestone 1 and A4 still require gallery implementation and lifecycle verification. The team must build dialog focus trapping, Escape handling, opener-focus restoration, responsive enlargement, loading behavior, and tests for a feature with no required content.",
+            "fix": "Remove gallery support from Milestone 1 and A4. Add it only when a flagship has multiple reviewed images that require enlargement."
+          },
+          {
+            "title": "Analytics adds an unrelated instrumentation workstream",
+            "severity": "Important",
+            "evidence": "If analytics already has a reviewed provider, measure only `project_open`, `demo_start`, `demo_complete`, `technical_detail_open`, and `contact_click`, with project slug and fixed scenario ID.",
+            "failure_scenario": "During implementation, an existing analytics provider is discovered. This clause then adds five events, completion semantics for blocked scenarios, payload validation, privacy review, and interaction tests even though all showcase success criteria can pass without analytics.",
+            "fix": "Remove analytics from this release and list it as follow-on work. Preserve any existing page-level analytics unchanged."
+          },
+          {
+            "title": "Custom enhancement and media retry behavior is gold-plating",
+            "severity": "Important",
+            "evidence": "A failed enhancement retains readable static content and offers retry without exposing dead controls. Media failure retains the caption, text walkthrough, and retry/open-image option.",
+            "failure_scenario": "A demonstration JavaScript chunk returns 404 and its poster also fails to load. The required static walkthrough already preserves all showcase content, but the implementation must additionally create retry state, module reload behavior, image retry behavior, dead-control gating, and failure-path browser tests across five demonstrations.",
+            "fix": "Require the static walkthrough and caption to remain readable. Use a normal page reload or direct asset link for recovery; defer custom retry controls until real failure data justifies them."
+          },
+          {
+            "title": "Arbitrary narrative quotas force unnecessary copy",
+            "severity": "Minor",
+            "evidence": "Target 400–700 words of narrative per flagship, excluding transcripts and optional technical disclosures.",
+            "failure_scenario": "A project can communicate its purpose, workflow, contribution, maturity, decisions, and limits clearly in 280 words. The quota still forces at least 120 filler words, repeated across five pages, delaying publication without improving any success criterion.",
+            "fix": "Replace the word-count target with the required content sections and a concise-writing requirement."
+          }
+        ]
+      }
+    },
+    {
+      "node": "audit:lens:SCOPE",
+      "phase": "verify",
+      "ok": true,
+      "execution": {
+        "attemptId": "attempt-7",
+        "provider": "claude",
+        "family": "anthropic",
+        "requestedModel": "claude-opus-5",
+        "actualModel": "claude-opus-5",
+        "authSource": "subscription",
+        "permission": "read-only",
+        "latencyMs": 67279,
+        "usage": {
+          "inputTokens": 10,
+          "outputTokens": 5125,
+          "totalTokens": 5135
+        }
+      },
+      "value": {
+        "verdicts": [
+          {
+            "index": 0,
+            "evidence_found": true,
+            "refuted": false,
+            "reason": "Quote matches §16 Milestone 1 deliverable verbatim. Gallery is framed as optional everywhere content is specified (§4 'Use a separate enlarge control only where an image gallery is available'; §5 'optional gallery'; §14 'optional larger gallery asset'), and none of the five §13 asset inventories lists gallery assets — yet §16 Milestone 1 lists 'responsive media/gallery' as a foundation deliverable and §15 A4 mandates 'Verify the gallery lifecycle ... in a browser', with §14 requiring focus trapping, Escape, and opener-focus restoration. No later section makes the gallery conditional on a project actually having gallery content, and no existing gallery/dialog component exists in the repo (grep for gallery/lightbox/Dialog matched only docs and unrelated client static sites), so the build cost is real. §12's 'Dense screens open into a gallery' hints Control Center might need one but does not commit any inventoried asset, leaving the mismatch intact. Not refuted."
+          },
+          {
+            "index": 1,
+            "evidence_found": true,
+            "refuted": true,
+            "reason": "Quote matches §15 verbatim, but the scenario's trigger ('an existing analytics provider is discovered') is not reachable in this repository, and the clause is explicitly gated both ways. The repo has no analytics provider: package.json has no analytics dependency, the only reference is an empty unused NEXT_PUBLIC_VERCEL_ANALYTICS placeholder in .env.example (no code consumes it — grep found hits only in .env.example and 2026-01 planning docs), and app/privacy/page.tsx:22 states 'This site does not currently run visitor analytics.' The same §15 paragraph then supplies the guard for that state: 'If no reviewed provider is established, omit instrumentation entirely; do not add dormant event plumbing. Adding a new analytics service is a separate task; this release does not depend on it.' So the instrumentation workstream cannot be triggered by this release."
+          },
+          {
+            "index": 2,
+            "evidence_found": true,
+            "refuted": false,
+            "reason": "Both sentences appear verbatim in §5 'Shared interaction behavior'. The requirements are unconditional ('A failed enhancement retains readable static content and offers retry without exposing dead controls. Media failure retains the caption, text walkthrough, and retry/open-image option.') and are reinforced, not relaxed, by §15 A4 which requires browser checks of 'failed media, and no-JavaScript fallback'. The adjacent no-JS requirement ('render the first frame plus a complete ordered text walkthrough') does preserve content, which is exactly the redundancy the finding describes, so it is not a guard. No later section caps retry behavior to one demo, makes retry optional, or points to an existing retry primitive in the codebase. Not refuted."
+          },
+          {
+            "index": 3,
+            "evidence_found": true,
+            "refuted": true,
+            "reason": "Quote matches §5 verbatim, but the scenario (forced filler copy and delayed publication) is defeated by the spec's own framing and by the later acceptance section. §5 states a 'Target', deliberately softer than the hard ranges the spec uses elsewhere when it means a constraint (§4: 'a 25–45 word summary'; §5: '80–140 words on the problem'). More decisively, §15's A1–A5 acceptance table — the complete release gate — contains no word-count criterion (A3 checks only truthful contribution, maturity, media label, checked date, provenance, and qualification), and §16's completion conditions are interaction/evidence/browser criteria. Nothing gates publication on reaching 400 words, so a clear 280-word case study cannot be blocked or padded by this line."
+          }
+        ]
+      }
+    },
+    {
+      "node": "review:SECURITY",
+      "phase": "review",
+      "ok": true,
+      "execution": {
+        "attemptId": "attempt-6",
+        "provider": "codex",
+        "family": "openai",
+        "requestedModel": "gpt-5.6-sol",
+        "actualModel": "gpt-5.6-sol",
+        "authSource": "subscription",
+        "permission": "read-only",
+        "latencyMs": 213342,
+        "usage": {
+          "inputTokens": 198428,
+          "outputTokens": 8499,
+          "totalTokens": 206927
+        }
+      },
+      "value": {
+        "findings": [
+          {
+            "title": "Draft assets bypass the production publication gate",
+            "severity": "Important",
+            "evidence": "Proposed new public assets live under `/public/work/<slug>/` within this website; this path is a future implementation target.",
+            "failure_scenario": "A draft Prism case study includes an unreviewed receipt at `public/work/prism/receipt.json` containing a private hostname or account identifier. A production deployment correctly returns 404 for `/work/prism`, but Next.js still serves `/work/prism/receipt.json` directly from `public/`, exposing it without any catalog, route, metadata, or sitemap entry.",
+            "fix": "Keep draft and unreviewed assets outside `public/`. Copy only manifest-approved assets into the production public tree, fail production builds on unapproved files, and test direct asset URLs plus client bundles using synthetic draft sentinels."
+          },
+          {
+            "title": "The open-image fallback can execute active content on the site's origin",
+            "severity": "Important",
+            "evidence": "Media failure retains the caption, text walkthrough, and retry/open-image option.",
+            "failure_scenario": "A captured poster is mistakenly stored as `public/work/prism/poster.html` and contains a script. It fails as an image, so a reviewer with the site's 90-day protected-preview cookie clicks “open image.” The HTML then executes on `calebbolden.com`, fetches `/clients/brittany-lyons/index.html` with that path-scoped cookie, reads the same-origin response, and sends the protected preview content to an attacker.",
+            "fix": "Allowlist inert media formats and verified MIME types; reject HTML, SVG, XML, and other active formats during asset ingestion and production builds. If active documents must be retained, serve them from a cookieless origin or force attachment download with a sandboxing CSP. Test that open-image destinations cannot execute script."
+          }
+        ]
+      }
+    },
+    {
+      "node": "audit:lens:SECURITY",
+      "phase": "verify",
+      "ok": true,
+      "execution": {
+        "attemptId": "attempt-8",
+        "provider": "claude",
+        "family": "anthropic",
+        "requestedModel": "claude-opus-5",
+        "actualModel": "claude-opus-5",
+        "authSource": "subscription",
+        "permission": "read-only",
+        "latencyMs": 52628,
+        "usage": {
+          "inputTokens": 12,
+          "outputTokens": 3299,
+          "totalTokens": 3311
+        }
+      },
+      "value": {
+        "verdicts": [
+          {
+            "index": 0,
+            "evidence_found": true,
+            "refuted": false,
+            "reason": "Quote is present verbatim in §13. The spec's draft gate covers only routes/links/metadata/sitemap (\"their new detail routes return 404 in production\"); nothing gates static files under public/. Confirmed in-repo: proxy.ts matcher is limited to [\"/clients/:path*\", \"/client-previews/:path*\"], so a file at public/work/prism/receipt.json would be served directly with no auth or 404 handling regardless of the draft route returning 404. The spec's only nearby mitigation — pattern scanning of public fixtures/assets — is itself qualified as \"a clean pattern scan alone is not publication approval,\" and it is scoped to reviewed captured examples, not draft-stage files. No concrete guard, unreachable path, or impossible input found."
+          },
+          {
+            "index": 1,
+            "evidence_found": true,
+            "refuted": false,
+            "reason": "Quote is present verbatim in §5 (Shared interaction behavior). Searched for an origin-isolation guard and found none: next.config.ts declares no headers, and vercel.json sets only X-Content-Type-Options: nosniff, X-Frame-Options: DENY, and X-XSS-Protection — no Content-Security-Policy and no sandboxing of public/ assets. nosniff does not prevent a genuine text/html file from executing, and the repo already serves executable HTML from public/ (public/clients/**/index.html, public/client-previews/oja/*.html), so an .html file under public/work/<slug>/ is a reachable serving path. The referenced cookie exists and is exploitable as described: proxy.ts:55-63 sets brittany_preview_access with path \"/clients/brittany-lyons\" and maxAge 60*60*24*90 (90 days); httpOnly blocks document.cookie but not a same-origin credentialed fetch reading the response body. The scenario is contrived (an image asset saved with an .html extension) but the spec supplies no media-kind/extension validation on the open-image fallback, so uncertainty remains and the finding is kept."
+          }
+        ]
+      }
+    },
+    {
+      "node": "review:independent",
+      "phase": "review",
+      "ok": false,
+      "error": {
+        "kind": "timeout",
+        "retryable": true,
+        "reasonCode": "timeout"
+      }
+    },
+    {
+      "node": "reconcile",
+      "phase": "reconcile",
+      "ok": true,
+      "execution": {
+        "attemptId": "attempt-11",
+        "provider": "claude",
+        "family": "anthropic",
+        "requestedModel": "claude-opus-5",
+        "actualModel": "claude-opus-5",
+        "authSource": "subscription",
+        "permission": "tool-free",
+        "latencyMs": 33222,
+        "usage": {
+          "inputTokens": 2,
+          "outputTokens": 2780,
+          "totalTokens": 2782
+        }
+      },
+      "value": {
+        "groups": [
+          {
+            "sources": [
+              {
+                "engine": "lens:DESIGN",
+                "index": 0
+              }
+            ]
+          },
+          {
+            "sources": [
+              {
+                "engine": "lens:DESIGN",
+                "index": 1
+              },
+              {
+                "engine": "lens:FEASIBILITY",
+                "index": 0
+              }
+            ]
+          },
+          {
+            "sources": [
+              {
+                "engine": "lens:DESIGN",
+                "index": 2
+              }
+            ]
+          },
+          {
+            "sources": [
+              {
+                "engine": "lens:DESIGN",
+                "index": 3
+              },
+              {
+                "engine": "lens:SCOPE",
+                "index": 2
+              }
+            ]
+          },
+          {
+            "sources": [
+              {
+                "engine": "lens:DESIGN",
+                "index": 4
+              }
+            ]
+          },
+          {
+            "sources": [
+              {
+                "engine": "lens:SCOPE",
+                "index": 0
+              }
+            ]
+          },
+          {
+            "sources": [
+              {
+                "engine": "lens:SECURITY",
+                "index": 0
+              }
+            ]
+          },
+          {
+            "sources": [
+              {
+                "engine": "lens:SECURITY",
+                "index": 1
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "result": {
+    "verdict": "fix-first",
+    "report_path": "/Users/calebbolden/Projects/consulting/calebbolden.com/docs/superpowers/specs/2026-09-11-project-showcase-design.md.hardening.md"
+  }
+}

@@ -1,119 +1,128 @@
 import Link from 'next/link';
-import Reveal from './Reveal';
+import { getHomeProjects } from '@/lib/work/catalog';
+import type { HomepageProof } from '@/lib/work/public-content';
+import showcaseStyles from './work/Showcase.module.css';
 
-// Spec-sheet proof: shipped products as divided rows with mono status labels.
-// "live" is real semantic state (deployed products), not decoration. No
-// invented metrics, no fake logos.
+function isFlagship(project: HomepageProof) {
+  return project.badge === 'Implemented' || project.badge === 'Prototype' || project.badge === 'Developer preview';
+}
 
-const products = [
-  {
-    name: 'Vora',
-    desc: 'An AI CRM platform for service businesses: missed-call text-back, lead follow-up, campaigns, and scheduling in one system.',
-    href: 'https://voratechnology.com',
-    detail: '/work/vora',
-    status: 'live',
-  },
-  {
-    name: 'ChapterHQ',
-    desc: "Management platform for clubs, chapters, and nonprofits: members, dues, events, and an AI assistant that answers from the org's own records.",
-    href: 'https://chapterhq.ai',
-    detail: '/work/chapterhq',
-    status: 'live',
-  },
-  {
-    name: 'Real Estate Maite',
-    desc: 'An AI operating system for real estate agents: a team of agents handling follow-up, listings, and paperwork over web and SMS.',
-    href: null,
-    status: 'in development',
-  },
-  {
-    name: 'Agent Team',
-    desc: 'An autonomous crew of software agents that plans, writes, reviews, and ships code on its own infrastructure.',
-    href: null,
-    status: 'running',
-  },
-  {
-    name: 'Open source',
-    desc: 'Tooling I publish on GitHub.',
-    href: null,
-    detail: '/work/open-source',
-    status: 'live',
-  },
-];
+function ProjectLinks({ project, detailLabel = `Explore ${project.name}` }: { project: HomepageProof; detailLabel?: string }) {
+  return (
+    <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">
+      {project.destination ? (
+        <Link href={project.destination} className="link-draw inline-flex min-h-11 items-center text-sm font-medium text-[var(--color-blue)]">
+          {detailLabel}
+        </Link>
+      ) : null}
+      {project.links?.map(link => (
+        <a
+          key={link.href}
+          href={link.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="link-draw inline-flex min-h-11 items-center text-sm font-medium text-[var(--color-blue)]"
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+  );
+}
 
 export default function Proof() {
+  const projects = getHomeProjects();
+  const feature = projects.find(project => project.slug === 'vora');
+  const developerTools = projects.filter(project => project !== feature && isFlagship(project));
+  const secondary = projects.filter(project => project !== feature && !developerTools.includes(project));
+
   return (
-    <section id="work" className="py-20 lg:py-28">
-      <div className="mx-auto w-[90%] max-w-[1200px]">
-        <Reveal>
-          <h2 className="type-display mb-4" style={{ fontSize: 'clamp(2.1rem, 4.2vw, 3.4rem)' }}>
-            The systems I recommend are ones I build and run
-          </h2>
-          <p className="mb-10 max-w-lg" style={{ fontSize: 16, color: 'var(--color-ink-muted)' }}>
-            I&apos;m a builder first. These are my own products, designed, built, and run day to day.
-          </p>
-        </Reveal>
+    <section id="work" className={`${showcaseStyles.surface} py-20 lg:py-28`} data-home-proof>
+      <div className={showcaseStyles.content}>
+        <h2 className="type-display mb-4" style={{ fontSize: 'clamp(2.1rem, 4.2vw, 3.4rem)' }}>
+          The systems I recommend are ones I build and run
+        </h2>
+        <p className="mb-10 max-w-2xl" style={{ fontSize: 16, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
+          I&apos;m a builder first. This work ranges from products I run day to day to prototypes and developer previews whose limits are stated beside the example.
+        </p>
 
-        <div style={{ borderTop: '1px solid var(--color-hairline)' }}>
-          {products.map((p, i) => (
-            <Reveal key={p.name} delay={i * 70}>
-              <div
-                className="corner-hover grid grid-cols-1 gap-2 py-6 transition-colors duration-200 hover:bg-surface sm:grid-cols-12 sm:items-baseline sm:gap-6"
-                style={{ borderBottom: '1px solid var(--color-hairline)' }}
-              >
-                <h3
-                  className="sm:col-span-3"
-                  style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 650, color: 'var(--color-ink)' }}
-                >
-                  {p.name}
-                </h3>
-                <p className="sm:col-span-6" style={{ fontSize: 15, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
-                  {p.desc}
-                </p>
-                <div className="flex items-baseline gap-5 sm:col-span-3 sm:justify-end">
-                  <span className="inline-flex items-baseline gap-2">
-                    {p.status === 'live' && <span className="pulse-dot" aria-hidden="true" />}
-                    {p.status === 'running' && (
-                      <span
-                        className="inline-block h-[7px] w-[7px] shrink-0 rounded-full"
-                        style={{ background: 'var(--color-blue)' }}
-                        aria-hidden="true"
-                      />
-                    )}
-                    <span className="anno">{p.status}</span>
-                  </span>
-                  {p.detail && (
-                    <Link
-                      href={p.detail}
-                      className="link-draw transition-colors"
-                      style={{ fontSize: 14, fontWeight: 500, color: 'var(--color-blue)' }}
-                    >
-                      Details
-                    </Link>
-                  )}
-                  {p.href && (
-                    <a
-                      href={p.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="link-draw transition-colors"
-                      style={{ fontSize: 14, fontWeight: 500, color: 'var(--color-blue)' }}
-                    >
-                      Visit {p.name}
-                    </a>
-                  )}
-                </div>
-              </div>
-            </Reveal>
-          ))}
+        {feature ? (
+          <article className={`${showcaseStyles.feature} border-y border-[var(--color-hairline)] py-7`} data-home-project={feature.slug} data-home-feature>
+            {feature.poster ? (
+              <figure className={showcaseStyles.media}>
+                {/* Reviewed local evidence uses native intrinsic sizing and failure behavior. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={feature.poster.src}
+                  alt={feature.poster.alt}
+                  width={feature.poster.width}
+                  height={feature.poster.height}
+                  loading="eager"
+                  decoding="async"
+                />
+                <figcaption className="anno">image · {feature.poster.caption}</figcaption>
+              </figure>
+            ) : null}
+            <div className="min-w-0 self-center">
+              <p className="anno anno-blue mb-3">featured product</p>
+              <h3 className="type-display" style={{ fontSize: 'clamp(1.7rem, 3vw, 2.4rem)' }}>{feature.name}</h3>
+              <p className="anno mt-3">{feature.badge}</p>
+              <p className="mt-5 max-w-[70ch]" style={{ fontSize: 16, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
+                {feature.summary}
+              </p>
+              <ProjectLinks project={feature} />
+            </div>
+          </article>
+        ) : null}
+
+        {developerTools.length ? (
+          <div className="mt-12" data-home-group="developer-tools">
+            <p className="anno anno-blue mb-3">developer tools</p>
+            <div style={{ borderTop: '1px solid var(--color-hairline)' }}>
+              {developerTools.map(project => (
+                <article key={project.slug} className={`${showcaseStyles.row} py-5`} style={{ borderBottom: '1px solid var(--color-hairline)' }} data-home-project={project.slug}>
+                  <div>
+                    <h3 className="type-display text-xl">{project.name}</h3>
+                    <p className="anno mt-2">{project.badge}</p>
+                  </div>
+                  <div>
+                    <p style={{ fontSize: 15, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>{project.summary}</p>
+                    <ProjectLinks project={project} />
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
+        {secondary.length ? (
+          <div className="mt-12" data-home-group="secondary">
+            <p className="anno anno-blue mb-3">more products and tools</p>
+            <div style={{ borderTop: '1px solid var(--color-hairline)' }}>
+              {secondary.map(project => (
+                <article key={project.slug} className={`${showcaseStyles.row} py-5`} style={{ borderBottom: '1px solid var(--color-hairline)' }} data-home-project={project.slug}>
+                  <div>
+                    <h3 className="type-display text-xl">{project.name}</h3>
+                    <p className="anno mt-2">{project.badge}</p>
+                  </div>
+                  <div>
+                    <p style={{ fontSize: 15, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>{project.summary}</p>
+                    <ProjectLinks project={project} detailLabel="Details" />
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
+        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2">
+          <Link href="/work" className="link-draw inline-flex min-h-11 items-center text-sm font-medium text-[var(--color-blue)]">
+            Explore the work
+          </Link>
+          <p className="max-w-xl" style={{ fontSize: 15, lineHeight: 1.65, color: 'var(--color-ink)' }}>
+            The chat assistant on this site is one of these systems. Open it and ask what AI could take off your plate.
+          </p>
         </div>
-
-        <Reveal delay={200}>
-          <p className="mt-8 max-w-xl" style={{ fontSize: 15, lineHeight: 1.65, color: 'var(--color-ink)' }}>
-            The chat assistant on this site is one of these systems. Open it and ask
-            what AI could take off your plate.
-          </p>
-        </Reveal>
       </div>
     </section>
   );

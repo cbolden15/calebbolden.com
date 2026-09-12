@@ -1,0 +1,79 @@
+.surface {
+  container-type: inline-size;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.content {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 32px;
+}
+
+.feature, .workflow, .row, .decisions {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.feature > :first-child { grid-column: span 7; }
+.feature > :last-child { grid-column: span 5; }
+.workflow > :first-child { grid-column: span 5; }
+.workflow > :last-child { grid-column: span 7; }
+.row > :first-child { grid-column: span 4; }
+.row > :last-child { grid-column: span 8; }
+.decisions > * { grid-column: span 4; }
+.feature > :only-child, .row > :only-child { grid-column: 1 / -1; }
+.feature > *, .workflow > *, .row > *, .decisions > * { min-width: 0; }
+/* Stage labels need their own available-space limit, independent of viewport breakpoints. */
+.teamStages { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr)); }
+.teamStage { flex-direction: column; align-items: flex-start; }
+
+.bands { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.media { min-width: 0; }
+.media img, .media video {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--color-hairline);
+  border-radius: 2px;
+  object-fit: contain;
+}
+.media figcaption { margin-top: 12px; max-width: 70ch; }
+.media p { max-width: 70ch; }
+.surface a, .surface button, .surface summary {
+  min-height: 44px;
+  min-width: 44px;
+}
+.surface a { display: inline-flex; align-items: center; }
+.codePanel {
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+.codePanel pre { white-space: pre; overflow-wrap: normal; }
+
+/* An island opts in only after hydration AND its module is ready. Its server
+   frame, ordered walkthrough and native reload must remain outside this group. */
+.enhancementControls:not([data-ready='true']) { display: none; }
+
+@container (width < 800px) {
+  .feature, .workflow, .decisions { grid-template-columns: 1fr; }
+  .feature > :nth-child(n), .workflow > :nth-child(n), .decisions > :nth-child(n) { grid-column: auto; }
+}
+@container (width < 600px) {
+  .row { grid-template-columns: 1fr; }
+  .row > :nth-child(n) { grid-column: auto; }
+  .content { padding-inline: 20px; }
+  .bands { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .surface *, .surface *::before, .surface *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

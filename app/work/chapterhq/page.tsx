@@ -1,16 +1,21 @@
 import type { Metadata } from 'next';
 import WorkDetail from '@/components/WorkDetail';
+import { chapterhq } from '@/lib/work/projects/secondary';
 
 export const metadata: Metadata = {
-  title: 'ChapterHQ | Work | Caleb Bolden',
-  description: "ChapterHQ runs clubs, chapters, and nonprofits: members, dues, events, and an AI assistant that answers from the org's own records.",
+  title: `${chapterhq.name} | Work | Caleb Bolden`,
+  description: chapterhq.summary,
 };
 
 export default function ChapterHQPage() {
+  if (chapterhq.legacyStatus === 'in development') {
+    throw new Error('ChapterHQ requires a published legacy status.');
+  }
+
   return (
     <WorkDetail
-      name="ChapterHQ"
-      status="live"
+      name={chapterhq.name}
+      status={chapterhq.legacyStatus}
       sheet="work / chapterhq"
       whatItIs="ChapterHQ is a management platform for clubs, chapters, and nonprofits. It tracks members, collects dues, runs events, and answers member questions from the organization's own records."
       whoUsesIt="Volunteer-run organizations where the person doing the admin also has a day job. The assistant takes the repeat questions so a board member does not have to."
@@ -23,7 +28,7 @@ export default function ChapterHQPage() {
         { label: 'infra', value: 'Docker, shared Caddy, self-hosted on Hetzner' },
       ]}
       stackLine="Next.js · Postgres + pgvector · Drizzle · Pusher · Stripe · Docker"
-      href="https://chapterhq.ai"
+      href={chapterhq.links?.[0]?.href}
     />
   );
 }

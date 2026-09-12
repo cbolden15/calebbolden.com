@@ -1,9 +1,15 @@
 import type { MetadataRoute } from 'next';
 import { getAllBlogPosts } from '@/lib/blog/getBlogPosts';
+import { getPublishedCaseStudyPaths, projectRecords } from '@/lib/work/catalog';
+import { getPublishedCollectionPaths } from '@/lib/work/publication';
 
 const BASE = 'https://calebbolden.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const workPaths = [
+    ...getPublishedCaseStudyPaths(),
+    ...getPublishedCollectionPaths(projectRecords),
+  ];
   const posts = getAllBlogPosts().map((p) => ({
     url: `${BASE}/blog/${p.slug}`,
     lastModified: new Date(p.date),
@@ -26,10 +32,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/contact`, changeFrequency: 'yearly', priority: 0.7 },
     { url: `${BASE}/results`, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${BASE}/work`, changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${BASE}/work/vora`, changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${BASE}/work/chapterhq`, changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${BASE}/work/site-assistant`, changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${BASE}/work/open-source`, changeFrequency: 'monthly', priority: 0.6 },
+    ...workPaths.map(path => ({ url: `${BASE}${path}`, changeFrequency: 'monthly' as const, priority: 0.6 })),
     { url: `${BASE}/how-i-build`, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${BASE}/privacy`, changeFrequency: 'yearly', priority: 0.2 },
     { url: `${BASE}/terms`, changeFrequency: 'yearly', priority: 0.2 },
