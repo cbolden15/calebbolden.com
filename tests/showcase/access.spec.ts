@@ -10,7 +10,7 @@ test('legacy project bodies remain visible with JavaScript disabled', async ({ b
   const unexpected = await localOnly(context);
   try {
     const page = await context.newPage();
-    for (const slug of ['vora', 'chapterhq', 'site-assistant']) {
+    for (const slug of ['chapterhq', 'site-assistant']) {
       await page.goto(`/work/${slug}`);
       await expect(page.locator('main h1')).toBeVisible();
       const wrappers = page.locator('main .reveal');
@@ -63,7 +63,7 @@ test('component fixture reflows at post-chat container boundaries, including fra
   await testInfo.attach('component-320px', { path: output, contentType: 'image/png' });
 });
 
-test('actual legacy layout preserves chat preference and works at 320px and 200% layout zoom', async ({ page }, testInfo) => {
+test('actual rich layout preserves chat preference and reflows at 320px and 640px', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 1160, height: 900 }); await page.goto('/work/vora');
   await expect(page.locator('html')).toHaveAttribute('data-chat', 'open');
   await expect(page.locator('[data-showcase-surface]')).toHaveCSS('width', '800px');
@@ -76,7 +76,7 @@ test('actual legacy layout preserves chat preference and works at 320px and 200%
   await page.reload(); await expect(page.locator('html')).toHaveAttribute('data-chat', 'collapsed');
   for (const width of [320, 640]) {
     await page.setViewportSize({ width, height: 900 });
-    // 640 CSS px is the layout viewport of a 1280px window at 200% browser zoom.
+    // Native browser zoom is covered separately with chrome.tabs.setZoom.
     await page.addStyleTag({ content: 'html, body { overflow-x: visible !important; }' });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await expect(page.locator('main h1')).toBeVisible();
@@ -164,3 +164,51 @@ for (const javaScriptEnabled of [true, false]) {
     } finally { await context.close(); }
   });
 }
+
+for (const slug of ['vora', 'prism', 'agent-team', 'agent-config', 'control-center']) {
+  test(`${slug} real responsive/chat/reduced-motion matrix`, async ({ page }, info) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    for (const width of [320, 390, 768, 1024, 1440]) {
+      await page.setViewportSize({ width, height: 900 }); await page.goto(`/work/${slug}`, { waitUntil: 'networkidle' });
+      // Inspect overflow with the site's body hiding disabled, so it cannot mask a defect.
+      await page.addStyleTag({ content: 'html,body { overflow-x: visible !important; }' });
+      await page.locator('[data-demo-enhancement]').scrollIntoViewIfNeeded();
+      const controls = page.locator('[data-demo-enhancement] button'); await expect(controls.first()).toBeVisible();
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+      for (const button of await controls.all()) { const box = await button.boundingBox(); expect(box!.width).toBeGreaterThanOrEqual(44); expect(box!.height).toBeGreaterThanOrEqual(44); }
+      if (width < 768) {
+        await page.getByRole('button', { name: 'Open chat assistant', exact: true }).click();
+        await expect(page.getByRole('button', { name: 'Close chat', exact: true })).toBeInViewport();
+        await page.getByRole('button', { name: 'Close chat', exact: true }).click();
+      } else {
+        const hide = page.getByRole('button', { name: 'Hide assistant', exact: true });
+        if (await page.locator('html').getAttribute('data-chat') === 'open') await hide.click();
+        await expect(page.locator('html')).toHaveAttribute('data-chat', 'collapsed');
+        await page.getByRole('button', { name: 'Show assistant', exact: true }).click(); await expect(page.locator('html')).toHaveAttribute('data-chat', 'open');
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+        await page.getByRole('button', { name: 'Hide assistant', exact: true }).click();
+      }
+      await controls.first().scrollIntoViewIfNeeded(); await expect(controls.first()).toBeInViewport();
+      if (width === 320) { const path = info.outputPath(`${slug}-320.png`); await page.screenshot({ path }); await info.attach('mobile', { path, contentType: 'image/png' }); }
+    }
+    for (const width of [599, 599.5, 600, 799, 799.5, 800]) {
+      await page.locator('[data-showcase-surface]').evaluate((el, w) => { (el as HTMLElement).style.width = `${w}px`; }, width);
+      expect(await page.locator('[data-showcase-surface]').evaluate(el => el.scrollWidth <= el.clientWidth + 1)).toBe(true);
+    }
+  });
+}
+
+for (const reducedMotion of ['reduce', 'no-preference'] as const) test(`Home Proof is topmost after scrolling, hero remains bounded (${reducedMotion})`, async ({ page }, info) => {
+  await page.emulateMedia({ reducedMotion }); await page.setViewportSize({ width: 1440, height: 900 }); await page.goto('/');
+  const hero = page.locator('.hero-sticky').filter({ visible: true });
+  await expect(hero).toHaveCSS('position', reducedMotion === 'reduce' ? 'relative' : 'sticky');
+  const feature = page.locator('[data-home-feature="true"]');
+  for (const target of [feature.locator('img'), feature.locator('h3'), feature.locator('p').first()]) {
+    await target.scrollIntoViewIfNeeded();
+    await expect.poll(() => target.evaluate(el => {
+      const box = el.getBoundingClientRect(); const x = box.x + box.width / 2; const y = Math.max(0, box.y) + Math.min(box.height, innerHeight - Math.max(0, box.y)) / 2;
+      const hit = document.elementFromPoint(x, y); return hit === el || !!hit && el.contains(hit);
+    })).toBe(true);
+  }
+  const path = info.outputPath(`proof-${reducedMotion}.png`); await page.screenshot({ path }); await info.attach('proof-hit-test', { path, contentType: 'image/png' });
+});

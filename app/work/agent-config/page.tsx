@@ -31,7 +31,9 @@ function ServerOutput({ name, output }: {
   name: string;
   output: { variant: ConfigVariant; content: string; highlight: string; status: 'Current' | 'Out of date' };
 }) {
-  const [before, after] = output.content.split(output.highlight);
+  const index = output.content.indexOf(output.highlight);
+  const before = output.content.slice(0, index);
+  const after = output.content.slice(index + output.highlight.length);
   return (
     <section className="min-w-0 bg-[var(--color-ink)] p-5 text-[var(--color-surface)]" aria-label={`${name} initial illustrative output`}>
       <div className="flex flex-wrap items-start justify-between gap-3">

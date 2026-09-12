@@ -12,7 +12,9 @@ const retainedRoutes = [
   '/contact',
 ];
 
-const currentPublishedSlugs = ['vora', 'chapterhq', 'site-assistant'];
+const productSlugs = ['vora', 'chapterhq', 'site-assistant'];
+const developerSlugs = ['prism', 'agent-team', 'agent-config', 'control-center'];
+const currentPublishedSlugs = ['vora', ...developerSlugs, 'chapterhq', 'site-assistant'];
 
 async function expectCatalog(page: Page, slugs: string[], count: number) {
   await expect(page.locator('[data-work-count]')).toHaveText(`${count} ${count === 1 ? 'project' : 'projects'}`);
@@ -61,7 +63,7 @@ for (const path of retainedRoutes) {
 
 test('current published catalog has exact ordered cards and no featured duplicate', async ({ page }) => {
   await page.goto('/work');
-  await expectCatalog(page, currentPublishedSlugs, 3);
+  await expectCatalog(page, currentPublishedSlugs, 7);
   await expect(page.locator('[data-work-card][data-featured="true"]')).toHaveAttribute('data-work-card', 'vora');
   await expect(page.locator('[data-work-card="vora"]')).toHaveCount(1);
   await expect(page.getByRole('link', { name: 'All', exact: true })).toHaveAttribute('aria-current', 'page');
@@ -109,18 +111,18 @@ test('catalog responds to its actual post-chat available width', async ({ page }
 
 test('direct category URLs normalize unknown and repeated category values', async ({ page }) => {
   await page.goto('/work?category=products');
-  await expectCatalog(page, currentPublishedSlugs, 3);
+  await expectCatalog(page, productSlugs, 3);
   await expect(page.getByRole('link', { name: 'Products' })).toHaveAttribute('aria-current', 'page');
   await expectFixedSections(page);
 
   await page.goto('/work?category=developer-tools');
-  await expectCatalog(page, [], 0);
+  await expectCatalog(page, developerSlugs, 4);
   await expect(page.getByRole('link', { name: 'Developer tools' })).toHaveAttribute('aria-current', 'page');
   await expectFixedSections(page);
 
   for (const path of ['/work?category=unknown', '/work?category=products&category=developer-tools']) {
     await page.goto(path);
-    await expectCatalog(page, currentPublishedSlugs, 3);
+    await expectCatalog(page, currentPublishedSlugs, 7);
     await expect(page.getByRole('link', { name: 'All', exact: true })).toHaveAttribute('aria-current', 'page');
     await expectFixedSections(page);
   }
@@ -133,35 +135,35 @@ test('filter history, focus, reload, and list stay in URL parity', async ({ page
   await developerTools.click();
   await expect(page).toHaveURL('/work?category=developer-tools');
   await expect(developerTools).toBeFocused();
-  await expectCatalog(page, [], 0);
+  await expectCatalog(page, developerSlugs, 4);
   await expectFixedSections(page);
 
   const products = page.getByRole('link', { name: 'Products' });
   await products.click();
   await expect(page).toHaveURL('/work?category=products');
   await expect(products).toBeFocused();
-  await expectCatalog(page, currentPublishedSlugs, 3);
+  await expectCatalog(page, productSlugs, 3);
 
   await page.goBack();
   await expect(page).toHaveURL('/work?category=developer-tools');
   await expect(developerTools).toBeFocused();
-  await expectCatalog(page, [], 0);
+  await expectCatalog(page, developerSlugs, 4);
 
   await page.goForward();
   await expect(page).toHaveURL('/work?category=products');
   await expect(products).toBeFocused();
-  await expectCatalog(page, currentPublishedSlugs, 3);
+  await expectCatalog(page, productSlugs, 3);
 
   await page.reload();
   await expect(page.getByRole('link', { name: 'Products' })).toHaveAttribute('aria-current', 'page');
-  await expectCatalog(page, currentPublishedSlugs, 3);
+  await expectCatalog(page, productSlugs, 3);
   await expectFixedSections(page);
 });
 
 test('direct filtered pages can select All and preserve URL parity through Back and Forward', async ({ page }) => {
   for (const start of [
-    { path: '/work?category=products', label: 'Products', slugs: currentPublishedSlugs, count: 3 },
-    { path: '/work?category=developer-tools', label: 'Developer tools', slugs: [], count: 0 },
+    { path: '/work?category=products', label: 'Products', slugs: productSlugs, count: 3 },
+    { path: '/work?category=developer-tools', label: 'Developer tools', slugs: developerSlugs, count: 4 },
   ]) {
     await page.goto(start.path);
     await expect(page.getByRole('link', { name: start.label })).toHaveAttribute('aria-current', 'page');
@@ -171,7 +173,7 @@ test('direct filtered pages can select All and preserve URL parity through Back 
     await expect(page).toHaveURL('/work');
     await expect(all).toHaveAttribute('aria-current', 'page');
     await expect(all).toBeFocused();
-    await expectCatalog(page, currentPublishedSlugs, 3);
+    await expectCatalog(page, currentPublishedSlugs, 7);
 
     await page.goBack();
     await expect(page).toHaveURL(start.path);
@@ -182,7 +184,7 @@ test('direct filtered pages can select All and preserve URL parity through Back 
     await expect(page).toHaveURL('/work');
     await expect(all).toHaveAttribute('aria-current', 'page');
     await expect(all).toBeFocused();
-    await expectCatalog(page, currentPublishedSlugs, 3);
+    await expectCatalog(page, currentPublishedSlugs, 7);
   }
 });
 
@@ -194,7 +196,7 @@ test('native direct GET honors the selected filter without JavaScript', async ({
 
   expect(response?.status()).toBe(200);
   await expect(page.getByRole('link', { name: 'Developer tools' })).toHaveAttribute('aria-current', 'page');
-  await expectCatalog(page, [], 0);
+  await expectCatalog(page, developerSlugs, 4);
   await expectFixedSections(page);
   expect(unexpected).toEqual([]);
   await context.close();
@@ -205,22 +207,22 @@ test('homepage proof uses the published catalog and retains every secondary dest
   const proof = page.locator('[data-home-proof]');
 
   await expect(proof.locator('[data-home-project]').evaluateAll(projects => projects.map(project => project.getAttribute('data-home-project'))))
-    .resolves.toEqual(['vora', 'chapterhq', 'site-assistant', 'open-source', 'real-estate-maite']);
+    .resolves.toEqual(['vora', ...developerSlugs, 'chapterhq', 'site-assistant', 'open-source', 'real-estate-maite']);
   await expect(proof.locator('[data-home-feature="true"]')).toHaveAttribute('data-home-project', 'vora');
-  await expect(proof.locator('[data-home-group="developer-tools"]')).toHaveCount(0);
+  await expect(proof.locator('[data-home-group="developer-tools"]')).toHaveCount(1);
   await expect(proof.locator('[data-home-group="secondary"] [data-home-project]')).toHaveCount(4);
   await expect(proof.getByRole('link', { name: 'Explore Vora' })).toHaveAttribute('href', '/work/vora');
-  await expect(proof.getByRole('link', { name: 'Details' })).toHaveCount(3);
+  await expect(proof.getByRole('link', { name: 'Details', exact: true })).toHaveCount(3);
   await expect(proof.getByRole('link', { name: 'Explore the work' })).toHaveAttribute('href', '/work');
   await expect(proof).toContainText('prototypes and developer previews whose limits are stated beside the example');
   expect(await proof.locator('img[loading="eager"]').count()).toBeLessThanOrEqual(1);
   await expect(proof.locator('[data-demo-shell]')).toHaveCount(0);
   for (const path of ['/work/prism', '/work/agent-team', '/work/agent-config', '/work/control-center']) {
-    await expect(proof.locator(`a[href="${path}"]`)).toHaveCount(0);
+    await expect(proof.locator(`a[href="${path}"]`)).toHaveCount(1);
   }
   expect(await proof.textContent()).not.toMatch(/SYNTHETIC_PRIVATE_SENTINEL|\/Users\//);
   if (process.env.SHOWCASE_SERVER === 'production') {
-    expect(await response!.text()).not.toMatch(/\/work\/(?:prism|agent-team|agent-config|control-center)|SYNTHETIC_PRIVATE_SENTINEL|\/Users\//);
+    expect(await response!.text()).not.toMatch(/SYNTHETIC_PRIVATE_SENTINEL|\/Users\//);
   }
 });
 
@@ -232,7 +234,7 @@ test('homepage proof remains readable without JavaScript', async ({ browser }) =
   const proof = page.locator('[data-home-proof]');
 
   expect(response?.status()).toBe(200);
-  await expect(proof.locator('[data-home-project]')).toHaveCount(5);
+  await expect(proof.locator('[data-home-project]')).toHaveCount(9);
   await expect(proof.locator('.reveal')).toHaveCount(0);
   await expectNoTransparentAncestor(proof.getByRole('heading', { name: 'The systems I recommend are ones I build and run' }));
   await expectNoTransparentAncestor(proof.locator('[data-home-feature]'));
@@ -242,11 +244,11 @@ test('homepage proof remains readable without JavaScript', async ({ browser }) =
   await context.close();
 });
 
-test('How I build preserves its method and conversion paths while draft panels stay absent', async ({ page }) => {
+test('How I build preserves its method and conversion paths while approved panels remain present', async ({ page }) => {
   const response = await page.goto('/how-i-build');
 
   await expect(page.getByRole('heading', { name: 'Projects behind my development workflow' })).toBeVisible();
-  await expect(page.locator('[data-method-project]')).toHaveCount(0);
+  await expect(page.locator('[data-method-project]')).toHaveCount(4);
   await expect(page.getByText('None of this is exotic.', { exact: false })).toBeVisible();
   await expect(page.getByRole('link', { name: 'See the systems' })).toHaveAttribute('href', '/work');
   await expect(page.getByRole('link', { name: "Let's talk", exact: true }).first()).toHaveAttribute('href', '/contact');
@@ -254,11 +256,11 @@ test('How I build preserves its method and conversion paths while draft panels s
   await expect(page).toHaveTitle('How I build | Caleb Bolden');
   await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /workflow I use every day/);
   for (const path of ['/work/prism', '/work/agent-team', '/work/agent-config', '/work/control-center']) {
-    await expect(page.locator(`main a[href="${path}"]`)).toHaveCount(0);
+    await expect(page.locator(`main a[href="${path}"]`)).toHaveCount(1);
   }
   expect(await page.locator('main').textContent()).not.toMatch(/SYNTHETIC_PRIVATE_SENTINEL|\/Users\//);
   if (process.env.SHOWCASE_SERVER === 'production') {
-    expect(await response!.text()).not.toMatch(/\/work\/(?:prism|agent-team|agent-config|control-center)|SYNTHETIC_PRIVATE_SENTINEL|\/Users\//);
+    expect(await response!.text()).not.toMatch(/SYNTHETIC_PRIVATE_SENTINEL|\/Users\//);
   }
 });
 
@@ -285,7 +287,7 @@ test('How I build remains readable without JavaScript', async ({ browser }) => {
   await context.close();
 });
 
-test('sitemap retains published legacy and collection routes without draft case studies', async ({ page }) => {
+test('sitemap retains published legacy and collection routes with approved case studies', async ({ page }) => {
   const response = await page.goto('/sitemap.xml');
   expect(response?.status()).toBe(200);
   const xml = await response!.text();
@@ -294,7 +296,7 @@ test('sitemap retains published legacy and collection routes without draft case 
     expect(xml).toContain(`https://calebbolden.com${path}`);
   }
   for (const path of ['/work/prism', '/work/agent-team', '/work/agent-config', '/work/control-center']) {
-    expect(xml).not.toContain(`https://calebbolden.com${path}`);
+    expect(xml).toContain(`https://calebbolden.com${path}`);
   }
   for (const path of ['/results', '/tools/ai-readiness', '/contact']) {
     expect(xml).toContain(`https://calebbolden.com${path}`);
@@ -304,7 +306,7 @@ test('sitemap retains published legacy and collection routes without draft case 
   expect(xml).not.toMatch(/SYNTHETIC_PRIVATE_SENTINEL|\/Users\//);
 });
 
-test.skip('complete catalog filters and five public flagship destinations @release', async ({ page }) => {
+test('complete catalog filters and five public flagship destinations @release', async ({ page }) => {
   await page.goto('/work');
   await expectCatalog(page, ['vora', 'prism', 'agent-team', 'agent-config', 'control-center', 'chapterhq', 'site-assistant'], 7);
   await page.getByRole('link', { name: 'Products' }).click();
@@ -337,7 +339,7 @@ test.skip('complete catalog filters and five public flagship destinations @relea
   }
 });
 
-test.skip('approved featured poster begins within the 1440 by 900 viewport @release', async ({ page }) => {
+test('approved featured poster begins within the 1440 by 900 viewport @release', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/work');
   await page.evaluate(() => document.documentElement.setAttribute('data-chat', 'collapsed'));
@@ -347,4 +349,12 @@ test.skip('approved featured poster begins within the 1440 by 900 viewport @rele
   const bounds = await poster.boundingBox();
   expect(bounds).not.toBeNull();
   expect(bounds!.y).toBeLessThan(900);
+});
+
+test('modified category click opens native destination without changing current state', async ({ page, context }) => {
+  await page.goto('/work');
+  const opened = context.waitForEvent('page');
+  await page.getByRole('link', { name: 'Products', exact: true }).click({ modifiers: ['ControlOrMeta'] });
+  const tab = await opened; await tab.waitForLoadState(); await expect(tab).toHaveURL('/work?category=products');
+  await expect(page).toHaveURL('/work'); await expectCatalog(page, currentPublishedSlugs, 7); await tab.close();
 });

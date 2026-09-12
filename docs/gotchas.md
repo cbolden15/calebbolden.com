@@ -10,4 +10,24 @@ Run the standalone server with `HOSTNAME=localhost` and request `http://localhos
 
 ## A draft route does not protect its public assets
 
-The September 11 showcase review found that a production 404 for a draft case study does not block files copied into `public/work/<slug>/`. The corrected showcase plan requires a reviewed manifest of exact paths, digests, and inert media formats before production builds, plus direct-URL and client-payload checks. Unreviewed captures stay outside website build inputs. This gate is planned, not implemented; existing preview access rules are separate. See `/Users/calebbolden/Projects/consulting/calebbolden.com/docs/plans/2026-09-11-project-showcase-verification.md` for the finding and correction record.
+The September 11 showcase review found that a production 404 for a draft case study does not block files copied into `public/work/<slug>/`. The corrected showcase plan requires a reviewed manifest of exact paths, digests, and inert media formats before production builds, plus direct-URL and client-payload checks. Unreviewed captures stay outside website build inputs. The immutable asset gate is implemented as `npm run verify:showcase-assets` and runs during prebuild; existing preview access rules are separate. See `/Users/calebbolden/Projects/consulting/calebbolden.com/docs/plans/2026-09-11-project-showcase-verification.md` for the finding and correction record.
+
+## Showcase runtime and exact evidence
+
+Use Node 22.21.0 with zlib 1.3.1-470d3a2 for both sides of a gzip comparison. Node 26 compressed identical hashed JavaScript to different byte counts. Compare each rich route with a matched same-source shell that removes its complete client demo entry and enhancement host; the historical 277,999-byte legacy shell is not a like-for-like baseline. Count each unique eager and lazy response body once. Raw fixture JSON remains server-only.
+
+Synthetic test records must explicitly bind synthetic snapshot relationships. Spreading a published record can inherit real method-responsibility IDs and break a valid synthetic manifest. Keep strict shape validation and semantic checks: Prism needs its pinned event/receipt contract, and Control Center needs relational identity/count checks. A matching digest alone does not establish either contract.
+
+## Required content must survive animation and enhancement failure
+
+Opacity-based visibility checks do not establish readability. Required Proof and method text must stay outside Reveal. Reduced-motion HeroInstrument removes its scroll track, so its static child must be positioned relative; an unwrapped sticky child can intercept later Proof content. Test actual viewport hit targets as well as opacity. Preserve normal-motion sticky containment.
+
+A native video with preload=none can still load its poster eagerly. Keep later posters lazy and decode all frames during the media gate. A graph-fade mask can fade foreground text along with the background; required rich introductions retain graph-field without that mask.
+
+Block the actual interactive implementation chunk, not an earlier asynchronous loader stub. Keep first frame, complete walkthrough and native reload outside the enhancement boundary. Live regions need event-specific detail announcements, not only unchanged scenario/count summaries. Config text may contain the highlighted phrase more than once; slice around the first match so later text survives.
+
+## Browser evidence needs actual DOM and command envelopes
+
+CSS uppercase changes rendered labels; compare authored text through textContent when exact capitalization matters. A restored collapsed chat can leave an offscreen Hide assistant button that isVisible considers visible. Use the actual chat state and reachable Show assistant control. Chromium may tab a native scroll container between explicit buttons; include those native stops without losing the required control order.
+
+Development responses include Next debug filesystem paths. Run serialized-public-data checks against a fresh production build and use distinctive authored sentinels; schema validation vocabulary is not authored fixture content. Record command, output and exit status, including silent lint/type checks. Keep expected subscription-test diagnostics visible as existing baseline output.

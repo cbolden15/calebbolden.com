@@ -13,7 +13,9 @@ import styles from '../Showcase.module.css';
 const buttonClass = 'btn-hairline min-h-11 px-4 py-2 disabled:cursor-not-allowed disabled:opacity-50';
 
 function HighlightedOutput({ content, highlight }: { content: string; highlight: string }) {
-  const [before, after] = content.split(highlight);
+  const index = content.indexOf(highlight);
+  const before = content.slice(0, index);
+  const after = content.slice(index + highlight.length);
   return <pre className="font-mono text-sm"><code>{before}<mark className="bg-amber-200 px-1 text-[var(--color-ink)]">{highlight}</mark>{after}</code></pre>;
 }
 

@@ -10,7 +10,7 @@ export async function localOnly(context: BrowserContext) {
   const unexpected: string[] = [];
   await context.route('**/*', route => {
     const url = new URL(route.request().url());
-    if (['http:', 'https:'].includes(url.protocol) && (url.origin !== 'http://localhost:3100' || url.pathname.startsWith('/api/'))) {
+    if (['http:', 'https:'].includes(url.protocol) && (url.origin !== 'http://localhost:3100' || url.pathname.startsWith('/api/') || !['GET', 'HEAD'].includes(route.request().method()) || route.request().resourceType() === 'eventsource')) {
       unexpected.push(`${route.request().method()} ${url.origin}${url.pathname}`);
       return route.abort('blockedbyclient');
     }
@@ -18,7 +18,7 @@ export async function localOnly(context: BrowserContext) {
   });
   await context.routeWebSocket(/.*/, socket => {
     const url = new URL(socket.url());
-    if (url.hostname === 'localhost' && url.port === '3100') socket.connectToServer();
+    if (process.env.SHOWCASE_SERVER !== 'production' && url.hostname === 'localhost' && url.port === '3100' && url.pathname === '/_next/webpack-hmr') socket.connectToServer();
     else { unexpected.push(`WebSocket ${url.origin}`); socket.close(); }
   });
   return unexpected;
