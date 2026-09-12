@@ -3,6 +3,7 @@ import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import assert from 'node:assert/strict';
+import sharp from 'sharp';
 const scratch = await mkdtemp(path.join(tmpdir(), 'showcase-native-zoom-'));
 let context;
 try {
@@ -51,8 +52,20 @@ try {
     await controls.first().scrollIntoViewIfNeeded(); await controls.first().focus(); await page.keyboard.press('Space');
     await page.locator('[data-demo-enhancement]').getByRole('button',{name:'Reset',exact:true}).click();
     const layout = await measure(); assert.equal(layout.scrollWidth,layout.innerWidth); assert.equal(layout.outerWidth,before.outerWidth);
-    await page.screenshot({path:process.env.SHOWCASE_ZOOM_DIR+'/'+slug+'-native200.png'});
-    routes.push({slug,nativeZoom:routeZoom,...layout});
+    await controls.first().scrollIntoViewIfNeeded();
+    const hit = await controls.first().evaluate(el => { const b=el.getBoundingClientRect(); const target=document.elementFromPoint(b.x+b.width/2,b.y+b.height/2);return target===el || !!target&&el.contains(target); });
+    assert(hit,'Actual native-zoom control must be the viewport hit target');
+    // Chromium's native zoom uses device-independent Page metrics for the capture clip.
+    // Playwright's CSS-sized default clip cropped the 2x page; preserve the actual native viewport.
+    const cdp=await context.newCDPSession(page);
+    const metrics=await cdp.send('Page.getLayoutMetrics');
+    const viewport=metrics.layoutViewport;
+    const shot=await cdp.send('Page.captureScreenshot',{format:'png',fromSurface:true,captureBeyondViewport:true,clip:{x:viewport.pageX,y:viewport.pageY,width:viewport.clientWidth,height:viewport.clientHeight,scale:1}});
+    const png=Buffer.from(shot.data,'base64');
+    await cdp.detach();
+    await writeFile(process.env.SHOWCASE_ZOOM_DIR+'/'+slug+'-native200.png',png);
+    const pixels=await sharp(png).stats(); assert(pixels.channels.some(channel=>channel.stdev>5),'Native screenshot must contain rendered content');
+    routes.push({slug,nativeZoom:routeZoom,...layout,captureViewport:viewport});
   }
   assert.equal(blocked.length,0);
   const result={routes,method:'Native chrome.tabs.setZoom via disposable Chromium extension; actual final candidate, local-only requests',browser:context.browser()?.version(),native,before,after,blocked};

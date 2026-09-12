@@ -11,7 +11,7 @@ test('fresh isolated source candidate has explicit HTTP body metadata catalog si
   const selectors = JSON.parse(readFileSync(process.env.SHOWCASE_EXPECTATION!.replace('expectation.json', 'selectors.json'), 'utf8'));
   const richVora = ['approved-rich','four-new-drafts'].includes(expected.state);
   const checks = [];
-  for (const route of ['/', '/work', '/how-i-build', '/work/vora', '/work/prism', '/work/agent-team', '/work/agent-config', '/work/control-center', '/sitemap.xml']) {
+  for (const route of ['/', '/work', '/work?category=products', '/work?category=developer-tools', '/how-i-build', '/work/vora', '/work/prism', '/work/agent-team', '/work/agent-config', '/work/control-center', '/sitemap.xml']) {
     const draft = expected.state==='four-new-drafts' && expected.changed.some((s:string)=>route==='/work/'+s);
     const response = await page.goto(route); expect(response?.status(),route).toBe(draft ? 404 : 200);
     const html = await response!.text(); const rsc = route==='/sitemap.xml' ? null : await page.request.get(route+'?_rsc=source-state', {headers:{RSC:'1'}});
@@ -53,6 +53,6 @@ test('fresh isolated source candidate has explicit HTTP body metadata catalog si
   for (const slug of expected.changed) expect(selectors.assets.some((a:{path:string})=>a.path.includes('/'+slug+'/') || a.path.endsWith('/'+slug+'.json'))).toBe(false);
   const chunks=files('.next/static').filter(f=>f.endsWith('.js')); const chunkEvidence=[];
   for(const file of chunks) {const text=readFileSync(file,'utf8'); for(const marker of expected.markers) expect(text,file).not.toContain(marker); chunkEvidence.push({file,sha256:createHash('sha256').update(text).digest('hex')});}
-  for(const url of [...expected.removedMedia,...['vora','prism','agent-team','agent-config','control-center'].flatMap(s=>['/lib/work/fixtures/'+s+'.json','/work/'+s+'/fixture.json'])]) expect((await page.request.get(url)).status(),url).toBe(404);
+  for(const url of [...expected.removedMedia,...['vora','prism','agent-team','agent-config','control-center'].flatMap(s=>['/lib/work/fixtures/'+s+'.json','/work/'+s+'/fixture.json'])]) { const response=await page.request.get(url); expect(response.status(),url).toBe(404); for(const marker of expected.markers) expect(await response.text(),url).not.toContain(marker); }
   await info.attach('source-state-proof',{body:JSON.stringify({expected,checks,chunkEvidence},null,2),contentType:'application/json'});
 });

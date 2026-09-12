@@ -181,7 +181,10 @@ for (const demo of demos) {
   });
 }
 
-test('actual shared enhancement recovers from a rendered child throwing', async ({ page }) => {
+test('actual shared enhancement recovers from a rendered child throwing', async ({ page }, info) => {
+  // Next development asks for stack frames after this intentional error. Abort and record it separately.
+  const diagnostics: string[] = [];
+  if (process.env.SHOWCASE_SERVER !== 'production') await page.route('**/__nextjs_original-stack-frames', route => { diagnostics.push(`${route.request().method()} ${new URL(route.request().url()).pathname}`); return route.abort('blockedbyclient'); });
   const compiled = await build({ stdin: { contents: `import React from 'react'; import {createRoot} from 'react-dom/client'; import Demo from './components/work/DemoEnhancement'; const load=async()=>({default:()=>{throw Error('Purpose-written render failure')}}); createRoot(document.getElementById('throw-fixture')).render(<Demo load={load} componentProps={{}}/>);`, resolveDir: process.cwd(), loader: 'tsx' }, bundle: true, write: false, outfile: '/tmp/showcase-render-fixture.js', format: 'iife', loader: { '.css': 'empty' }, define: { 'process.env.NODE_ENV': '"production"' } });
   await page.goto('/work/vora');
   await page.locator('[data-demo-enhancement]').evaluate(el => { const fixture = document.createElement('div'); fixture.id = 'throw-fixture'; el.replaceWith(fixture); });
@@ -189,6 +192,8 @@ test('actual shared enhancement recovers from a rendered child throwing', async 
   await expect(page.locator('#throw-fixture')).toContainText('Interactive controls are unavailable'); await expect(page.locator('#throw-fixture button')).toHaveCount(0);
   await expect(page.locator('[data-demo-shell]')).toBeVisible(); await expect(page.locator('[data-case-study-section="workflow"]')).toBeVisible();
   await page.locator('[data-demo-reload]').click(); await expect(page.locator('main h1')).toHaveText('Vora');
+  await info.attach('framework-diagnostics', { body: JSON.stringify(diagnostics), contentType: 'application/json' });
+  expect(diagnostics.every(value => value === 'POST /__nextjs_original-stack-frames')).toBe(true);
 });
 
 test('Reset directly clears every Vora phase, open Prism receipt, stale Config output and Center selection', async ({ page }) => {
