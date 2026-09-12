@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import styles from './Showcase.module.css';
 import type { ProjectCard } from '@/lib/work/public-content';
 
 interface ProjectEntryProps {
@@ -8,17 +9,13 @@ interface ProjectEntryProps {
 
 export default function ProjectEntry({ project, featured }: ProjectEntryProps) {
   const showDevelopmentPlaceholder = !project.poster && process.env.NODE_ENV === 'development';
-  const hasMedia = Boolean(project.poster || showDevelopmentPlaceholder);
-  const mediaClassName = featured ? 'lg:col-span-7' : 'md:col-span-4';
-  const copyClassName = hasMedia
-    ? featured ? 'lg:col-span-5' : 'md:col-span-8'
-    : 'md:col-span-12';
 
   return (
     <article className="border-t border-[var(--color-hairline)] py-8 sm:py-10">
-      <div className={`grid items-start gap-6 ${featured ? 'lg:grid-cols-12 lg:gap-10' : 'md:grid-cols-12 md:gap-8'}`}>
+      <div className={featured ? styles.feature : styles.row}>
         {project.poster ? (
-          <figure className={mediaClassName}>
+          <figure className={styles.media}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={project.poster.src}
               alt={project.poster.alt}
@@ -31,12 +28,12 @@ export default function ProjectEntry({ project, featured }: ProjectEntryProps) {
             <figcaption className="anno mt-3 max-w-[70ch]">{project.poster.caption}</figcaption>
           </figure>
         ) : showDevelopmentPlaceholder ? (
-          <div className={`${mediaClassName} flex min-h-52 items-center justify-center border border-dashed border-[var(--color-blue)] bg-[var(--color-blue-wash)] p-6 text-center`} style={{ borderRadius: 2 }}>
+          <div className="flex min-h-52 items-center justify-center border border-dashed border-[var(--color-blue)] bg-[var(--color-blue-wash)] p-6 text-center" style={{ borderRadius: 2 }}>
             <p className="anno anno-blue">Development placeholder · media pending review</p>
           </div>
         ) : null}
 
-        <div className={copyClassName}>
+        <div className="min-w-0">
           <p className="anno anno-blue">{project.badge}</p>
           <h2 className={`type-display mt-3 ${featured ? 'text-3xl sm:text-4xl' : 'text-2xl sm:text-3xl'}`}>{project.name}</h2>
           <p className="mt-4 max-w-[70ch]" style={{ fontSize: 17, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>{project.summary}</p>

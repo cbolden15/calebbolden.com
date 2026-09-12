@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import ProjectMedia from './ProjectMedia';
+import styles from './Showcase.module.css';
 import type { ReactNode } from 'react';
 import type { CaseStudyShell } from '@/lib/work/public-content';
 
@@ -25,8 +27,8 @@ export default function CaseStudySections({ project, demonstration, reloadHref }
 
   return (
     <>
-      <section className="graph-field graph-fade py-16 lg:py-24" data-case-study-section="introduction">
-        <div className="mx-auto max-w-[1200px] px-5 sm:px-8">
+      <section className="graph-field py-16 lg:py-24" data-case-study-section="introduction">
+        <div className={styles.content}>
           <Link href="/work" className="link-draw inline-block text-sm text-[var(--color-blue)]">
             ← Back to Work
           </Link>
@@ -37,7 +39,7 @@ export default function CaseStudySections({ project, demonstration, reloadHref }
             {project.name}
           </h1>
           <p className="mt-6 max-w-[70ch]" style={bodyStyle}>{project.summary}</p>
-          <dl className="mt-9 grid gap-5 border-t border-[var(--color-hairline)] pt-5 sm:grid-cols-2">
+          <dl className="mt-9 flex flex-wrap gap-5 border-t border-[var(--color-hairline)] pt-5">
             <div>
               <dt className="anno anno-blue">Contribution</dt>
               <dd className="mt-2 max-w-[70ch]" style={bodyStyle}>{project.contribution}</dd>
@@ -60,31 +62,31 @@ export default function CaseStudySections({ project, demonstration, reloadHref }
       </section>
 
       <section className="py-14 lg:py-20" style={sectionStyle} aria-labelledby="primary-demonstration" data-case-study-section="demonstration">
-        <div className="mx-auto max-w-[1200px] px-5 sm:px-8">
+        <div className={styles.content}>
           <p className="anno anno-blue">{demonstrationLabel}</p>
           <h2 id="primary-demonstration" className="type-display mt-3 text-3xl sm:text-4xl">Primary demonstration</h2>
           {demonstrationCaption && <p className="mt-4 max-w-[70ch]" style={bodyStyle}>{demonstrationCaption}</p>}
-          <div className="mt-8 overflow-hidden border border-[var(--color-hairline)] bg-[var(--color-surface)]" style={{ borderRadius: 2 }}>
+          <div data-demo-shell className="mt-8 min-w-0 border border-[var(--color-hairline)] bg-[var(--color-surface)]" style={{ borderRadius: 2 }}>
             {demonstration}
           </div>
           {primaryEvidence && (
-            <p className="anno mt-3 max-w-[70ch]">{primaryEvidence.kind} · {primaryEvidence.caption}</p>
+            <div className="mt-6"><ProjectMedia media={primaryEvidence} primary /></div>
           )}
           <p className="mt-5 text-sm text-[var(--color-ink-muted)]">
-            If the interactive example stops responding, <a href={reloadHref} className="link-draw text-[var(--color-blue)]">Reload this example</a>.
+            If the interactive example stops responding, <a href={reloadHref} data-demo-reload className="link-draw text-[var(--color-blue)]">Reload this example</a>.
           </p>
         </div>
       </section>
 
       <section className="py-14 lg:py-20" style={sectionStyle} aria-labelledby="problem-workflow" data-case-study-section="workflow">
-        <div className="mx-auto max-w-[1200px] px-5 sm:px-8">
+        <div className={styles.content}>
           <h2 id="problem-workflow" className="type-display text-3xl sm:text-4xl">Problem and workflow</h2>
-          <div className="mt-9 grid gap-10 lg:grid-cols-12">
-            <div className="lg:col-span-5">
+          <div className={`${styles.workflow} mt-9`}>
+            <div className="min-w-0">
               <h3 className="anno anno-blue">The problem</h3>
               <p className="mt-3 max-w-[70ch]" style={bodyStyle}>{project.story.problem}</p>
             </div>
-            <div className="lg:col-span-7">
+            <div className="min-w-0">
               <h3 className="anno anno-blue">The workflow</h3>
               <p className="mt-3 max-w-[70ch]" style={bodyStyle}>{project.story.workflow.introduction}</p>
               <div className="mt-8 space-y-8">
@@ -111,11 +113,11 @@ export default function CaseStudySections({ project, demonstration, reloadHref }
       </section>
 
       <section className="py-14 lg:py-20" style={sectionStyle} aria-labelledby="engineering-evidence" data-case-study-section="engineering">
-        <div className="mx-auto max-w-[1200px] px-5 sm:px-8">
+        <div className={styles.content}>
           <h2 id="engineering-evidence" className="type-display text-3xl sm:text-4xl">Engineering and evidence</h2>
-          <ol className="mt-9 grid gap-6 lg:grid-cols-12">
+          <ol className={`${styles.decisions} mt-9`}>
             {project.story.decisions.map((decision, index) => (
-              <li key={`${decision.constraint}-${index}`} className="border-t border-[var(--color-hairline)] pt-5 lg:col-span-4">
+              <li key={`${decision.constraint}-${index}`} className="border-t border-[var(--color-hairline)] pt-5">
                 <p className="anno anno-blue">Decision {String(index + 1).padStart(2, '0')}</p>
                 <h3 className="type-display mt-3 text-xl">{decision.constraint}</h3>
                 <dl className="mt-5 space-y-4">
@@ -132,21 +134,27 @@ export default function CaseStudySections({ project, demonstration, reloadHref }
             ))}
           </ol>
 
-          <div className="mt-12 grid gap-10 border-t border-[var(--color-hairline)] pt-8 lg:grid-cols-12">
-            <div className="lg:col-span-5">
+          <div className={`${styles.workflow} mt-12 border-t border-[var(--color-hairline)] pt-8`}>
+            <div className="min-w-0">
               <h3 className="type-display text-2xl">Contribution and credits</h3>
               <p className="mt-4 max-w-[70ch]" style={bodyStyle}>{project.contribution}</p>
               <ul className="mt-4 list-disc space-y-2 pl-5">
                 {project.story.credits.map(credit => <li key={credit} style={bodyStyle}>{credit}</li>)}
               </ul>
             </div>
-            <div className="lg:col-span-7">
+            <div className="min-w-0">
               <h3 className="type-display text-2xl">Current limits</h3>
               <ul className="mt-4 list-disc space-y-2 pl-5">
                 {project.story.limits.map(limit => <li key={limit} style={bodyStyle}>{limit}</li>)}
               </ul>
             </div>
           </div>
+
+          {project.evidence.length > 1 && (
+            <div className="mt-12 space-y-8">
+              {project.evidence.slice(1).map(media => <ProjectMedia key={media.src} media={media} />)}
+            </div>
+          )}
 
           <div className="mt-12 max-w-[70ch] border-t border-[var(--color-hairline)] pt-8">
             <h3 className="type-display text-2xl">About this example</h3>
@@ -180,10 +188,10 @@ export default function CaseStudySections({ project, demonstration, reloadHref }
       </section>
 
       <section className="py-14 lg:py-20" style={sectionStyle} aria-labelledby="continue" data-case-study-section="continue">
-        <div className="mx-auto max-w-[1200px] px-5 sm:px-8">
+        <div className={styles.content}>
           <h2 id="continue" className="type-display text-3xl sm:text-4xl">Continue</h2>
           {project.related.length ? (
-            <ul className="mt-8 grid gap-4 sm:grid-cols-2">
+            <ul className={`${styles.row} mt-8`}>
               {project.related.map(related => (
                 <li key={related.slug} className="border-t border-[var(--color-hairline)] pt-5">
                   <Link href={related.destination} className="link-draw type-display text-xl text-[var(--color-blue)]">
