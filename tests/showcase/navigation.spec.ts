@@ -1,5 +1,6 @@
 import type { Locator, Page } from '@playwright/test';
 import { test, expect, localOnly } from './helpers';
+import { artifact } from './artifacts';
 
 const retainedRoutes = [
   '/',
@@ -22,32 +23,114 @@ async function expectCatalog(page: Page, slugs: string[], count: number) {
 }
 
 async function expectFixedSections(page: Page) {
-  await expect(page.getByText('I build AI products for real operational work, along with tools for developing and running them. Explore a workflow, see the decisions behind it, and find out what each project does today.', { exact: true })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'How my own operation runs on AI' })).toHaveAttribute('href', '/how-i-build');
-  await expect(page.getByRole('link', { name: 'Explore open source' })).toHaveAttribute('href', '/work/open-source');
-  await expect(page.getByRole('link', { name: 'See how engagements are structured and what the founding-client offer includes' })).toHaveAttribute('href', '/results');
-  await expect(page.getByText('Have a workflow like this?', { exact: true })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Discuss a project' })).toHaveAttribute('href', '/contact');
-  await expect(page.getByRole('link', { name: 'Take the free AI readiness assessment' })).toHaveAttribute('href', '/tools/ai-readiness');
+  const intro = page.getByText('I build AI products for real operational work, along with tools for developing and running them. Explore a workflow, see the decisions behind it, and find out what each project does today.', { exact: true });
+  const method = page.locator('[data-work-section="how-i-build"]');
+  const openSource = page.locator('[data-work-section="open-source"]');
+  const notes = page.locator('[data-work-section="notes"]');
+  const clientWork = page.locator('[data-work-section="client-work"]');
+  const audit = page.locator('[data-work-section="audit"]');
+
+  await expect(method).toContainText('How my own operation runs on AI, the tools I actually use, and where I still draw the line at a human.');
+  await expect(method.getByRole('link', { name: 'How my own operation runs on AI' })).toHaveAttribute('href', '/how-i-build');
+  await expect(openSource.getByRole('heading', { name: 'Open source' })).toBeAttached();
+  await expect(openSource).toContainText('Tooling I publish on GitHub.');
+  await expect(openSource.getByRole('link', { name: 'Explore open source' })).toHaveAttribute('href', '/work/open-source');
+  await expect(notes).toContainText('recent notes');
+  await expect(notes.getByRole('link', { name: 'All notes' })).toHaveAttribute('href', '/blog');
+  await expect(notes.locator('article')).toHaveCount(3);
+  for (const link of await notes.locator('article h2 a').all()) {
+    await expect(link).not.toHaveText('');
+    await expect(link).toHaveAttribute('href', /^\/blog\/[a-z0-9-]+$/);
+  }
+  await expect(clientWork).toContainText('I publish a named client case study only after the engagement is complete and the client has approved what the page says.');
+  await expect(clientWork.getByRole('link', { name: 'See how engagements are structured and what the founding-client offer includes' })).toHaveAttribute('href', '/results');
+  await expect(audit.getByRole('heading', { name: 'Start with the audit' })).toBeAttached();
+  await expect(audit).toContainText('Audits start at $750, fixed scope. Every engagement begins here.');
+  await expect(audit.getByRole('link', { name: 'Discuss a project' })).toHaveAttribute('href', '/contact');
+  await expect(audit.getByRole('link', { name: 'Take the free AI readiness assessment' })).toHaveAttribute('href', '/tools/ai-readiness');
   await expect(page.locator('[data-work-section="client-work"]')).not.toContainText('in progress right now');
+
+  for (const target of [
+    page.getByRole('heading', { name: 'Work', exact: true }),
+    intro,
+    page.getByRole('heading', { name: 'Built for real operations' }),
+    page.locator('[data-work-count]'),
+    page.getByRole('link', { name: 'All', exact: true }),
+    page.getByRole('link', { name: 'Products', exact: true }),
+    page.getByRole('link', { name: 'Developer tools', exact: true }),
+    method,
+    openSource,
+    notes,
+    clientWork,
+    audit,
+  ]) await expectNoTransparentAncestor(target);
 }
 
 async function expectNoTransparentAncestor(locator: Locator) {
   await expect(locator).toBeAttached();
-  const transparentAncestor = await locator.evaluate(element => {
+  const effectiveOpacity = await locator.evaluate(element => {
     let current: Element | null = element;
+    let opacity = 1;
 
     while (current) {
-      if (getComputedStyle(current).opacity === '0') {
-        return current.tagName.toLowerCase();
-      }
+      opacity *= Number.parseFloat(getComputedStyle(current).opacity);
       current = current.parentElement;
     }
 
-    return null;
+    return opacity;
   });
 
-  expect(transparentAncestor).toBeNull();
+  expect(effectiveOpacity).toBeCloseTo(1, 5);
+}
+
+async function workIntroEvidence(page: Page) {
+  const paragraph = page.locator('[data-work-intro] > div > p').last();
+  await expect(paragraph).toBeAttached();
+  return paragraph.evaluate(element => {
+    const ancestors = [];
+    let current: Element | null = element;
+    let effectiveOpacity = 1;
+    while (current) {
+      const style = getComputedStyle(current);
+      const opacity = Number.parseFloat(style.opacity);
+      const maskImage = style.maskImage;
+      const webkitMaskImage = style.getPropertyValue('-webkit-mask-image');
+      effectiveOpacity *= opacity;
+      ancestors.push({ tag: current.tagName.toLowerCase(), opacity, maskImage, webkitMaskImage });
+      current = current.parentElement;
+    }
+    const style = getComputedStyle(element);
+    const toLinear = (value: number) => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+    const readColor = (value: string) => {
+      const canvas = new OffscreenCanvas(1, 1);
+      const context = canvas.getContext('2d', { willReadFrequently: true })!;
+      context.clearRect(0, 0, 1, 1);
+      context.fillStyle = value;
+      context.fillRect(0, 0, 1, 1);
+      return [...context.getImageData(0, 0, 1, 1).data];
+    };
+    const foregroundRgba = readColor(style.color);
+    let backgroundColor = 'rgb(255, 255, 255)';
+    current = element;
+    while (current) {
+      const candidate = getComputedStyle(current).backgroundColor;
+      const channels = candidate.match(/[\d.]+/g)?.map(Number) ?? [];
+      if (!candidate.startsWith('rgba(') || (channels[3] ?? 1) > 0) {
+        backgroundColor = candidate;
+        break;
+      }
+      current = current.parentElement;
+    }
+    const backgroundRgba = readColor(backgroundColor);
+    const foreground = foregroundRgba.slice(0, 3).map(channel => toLinear(channel / 255));
+    const background = backgroundRgba.slice(0, 3).map(channel => toLinear(channel / 255));
+    const luminance = (channels: number[]) => channels.reduce((sum, value, index) => sum + value * [0.2126, 0.7152, 0.0722][index], 0);
+    const foregroundLuminance = luminance(foreground);
+    const backgroundLuminance = luminance(background);
+    const contrast = (Math.max(foregroundLuminance, backgroundLuminance) + 0.05)
+      / (Math.min(foregroundLuminance, backgroundLuminance) + 0.05);
+    return { ancestors, effectiveOpacity, foreground: style.color, foregroundRgba, background: backgroundColor, backgroundRgba, contrast, fontSize: style.fontSize };
+  });
 }
 
 for (const path of retainedRoutes) {
@@ -188,19 +271,57 @@ test('direct filtered pages can select All and preserve URL parity through Back 
   }
 });
 
-test('native direct GET honors the selected filter without JavaScript', async ({ browser }) => {
-  const context = await browser.newContext({ javaScriptEnabled: false, baseURL: 'http://localhost:3100' });
+test('native no-JavaScript filters retain exact catalogs and required Work content', async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false, reducedMotion: 'no-preference', baseURL: 'http://localhost:3100' });
   const unexpected = await localOnly(context);
   const page = await context.newPage();
-  const response = await page.goto('/work?category=developer-tools');
+  try {
+    const response = await page.goto('/work');
+    expect(response?.status()).toBe(200);
+    await expect(page.locator('main .reveal')).toHaveCount(0);
+    await expect(page.getByRole('link', { name: 'All', exact: true })).toHaveAttribute('aria-current', 'page');
+    await expectCatalog(page, currentPublishedSlugs, 7);
+    await expectFixedSections(page);
 
-  expect(response?.status()).toBe(200);
-  await expect(page.getByRole('link', { name: 'Developer tools' })).toHaveAttribute('aria-current', 'page');
-  await expectCatalog(page, developerSlugs, 4);
-  await expectFixedSections(page);
-  expect(unexpected).toEqual([]);
-  await context.close();
+    await page.getByRole('link', { name: 'Products', exact: true }).click();
+    await expect(page).toHaveURL('/work?category=products');
+    await expect(page.getByRole('link', { name: 'Products', exact: true })).toHaveAttribute('aria-current', 'page');
+    await expectCatalog(page, productSlugs, 3);
+    await expectFixedSections(page);
+
+    await page.getByRole('link', { name: 'Developer tools', exact: true }).click();
+    await expect(page).toHaveURL('/work?category=developer-tools');
+    await expect(page.getByRole('link', { name: 'Developer tools', exact: true })).toHaveAttribute('aria-current', 'page');
+    await expectCatalog(page, developerSlugs, 4);
+    await expectFixedSections(page);
+
+    await page.getByRole('link', { name: 'All', exact: true }).click();
+    await expect(page).toHaveURL('/work');
+    await expectCatalog(page, currentPublishedSlugs, 7);
+    expect(unexpected).toEqual([]);
+  } finally { await context.close(); }
 });
+
+for (const reducedMotion of ['no-preference', 'reduce'] as const) {
+  test(`Work intro has opaque unmasked foreground with ${reducedMotion} motion`, async ({ browser }, testInfo) => {
+    const context = await browser.newContext({ reducedMotion, baseURL: 'http://localhost:3100' });
+    const unexpected = await localOnly(context);
+    try {
+      const page = await context.newPage();
+      const response = await page.goto('/work');
+      expect(response?.status()).toBe(200);
+      const evidence = await workIntroEvidence(page);
+      expect(evidence.effectiveOpacity).toBeCloseTo(1, 5);
+      expect(evidence.ancestors.filter(({ maskImage, webkitMaskImage }) => maskImage !== 'none' || (webkitMaskImage !== '' && webkitMaskImage !== 'none'))).toEqual([]);
+      expect(evidence.contrast).toBeGreaterThanOrEqual(4.5);
+      await artifact(testInfo, `work-intro-${reducedMotion}`, evidence);
+      const screenshot = testInfo.outputPath(`work-intro-${reducedMotion}.png`);
+      await page.locator('[data-work-intro]').screenshot({ path: screenshot, animations: 'disabled' });
+      await testInfo.attach(`work-intro-${reducedMotion}`, { path: screenshot, contentType: 'image/png' });
+      expect(unexpected).toEqual([]);
+    } finally { await context.close(); }
+  });
+}
 
 test('homepage proof uses the published catalog and retains every secondary destination', async ({ page }) => {
   const response = await page.goto('/#work');
