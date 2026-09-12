@@ -8,7 +8,7 @@ export const chapterhq: LegacySecondaryRecord = {
 };
 export const siteAssistant: LegacySecondaryRecord = {
   kind: 'legacy-secondary', slug: 'site-assistant', name: 'Site assistant', category: 'products', publication: 'published', order: 6,
-  placements: ['work', 'case-study'], legacyStatus: 'live', destination: '/work/site-assistant',
+  placements: ['home', 'work', 'case-study'], legacyStatus: 'live', destination: '/work/site-assistant',
   summary: 'The chat agent running live in the corner of this site, answering questions from my own content.',
   contribution: 'I build the site assistant and its typed tools.', related: ['vora'],
 };

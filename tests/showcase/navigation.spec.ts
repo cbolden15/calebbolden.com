@@ -182,6 +182,69 @@ test('native direct GET honors the selected filter without JavaScript', async ({
   await context.close();
 });
 
+test('homepage proof uses the published catalog and retains every secondary destination', async ({ page }) => {
+  const response = await page.goto('/#work');
+  const proof = page.locator('[data-home-proof]');
+
+  await expect(proof.locator('[data-home-project]').evaluateAll(projects => projects.map(project => project.getAttribute('data-home-project'))))
+    .resolves.toEqual(['vora', 'chapterhq', 'site-assistant', 'open-source', 'real-estate-maite']);
+  await expect(proof.locator('[data-home-feature="true"]')).toHaveAttribute('data-home-project', 'vora');
+  await expect(proof.locator('[data-home-group="developer-tools"]')).toHaveCount(0);
+  await expect(proof.locator('[data-home-group="secondary"] [data-home-project]')).toHaveCount(4);
+  await expect(proof.getByRole('link', { name: 'Explore Vora' })).toHaveAttribute('href', '/work/vora');
+  await expect(proof.getByRole('link', { name: 'Details' })).toHaveCount(3);
+  await expect(proof.getByRole('link', { name: 'Explore the work' })).toHaveAttribute('href', '/work');
+  await expect(proof).toContainText('prototypes and developer previews whose limits are stated beside the example');
+  expect(await proof.locator('img[loading="eager"]').count()).toBeLessThanOrEqual(1);
+  await expect(proof.locator('[data-demo-shell]')).toHaveCount(0);
+  for (const path of ['/work/prism', '/work/agent-team', '/work/agent-config', '/work/control-center']) {
+    await expect(proof.locator(`a[href="${path}"]`)).toHaveCount(0);
+  }
+  expect(await proof.textContent()).not.toMatch(/SYNTHETIC_PRIVATE_SENTINEL|\/Users\//);
+  if (process.env.SHOWCASE_SERVER === 'production') {
+    expect(await response!.text()).not.toMatch(/\/work\/(?:prism|agent-team|agent-config|control-center)|SYNTHETIC_PRIVATE_SENTINEL|\/Users\//);
+  }
+});
+
+test('How I build preserves its method and conversion paths while draft panels stay absent', async ({ page }) => {
+  const response = await page.goto('/how-i-build');
+
+  await expect(page.getByRole('heading', { name: 'Projects behind my development workflow' })).toBeVisible();
+  await expect(page.locator('[data-method-project]')).toHaveCount(0);
+  await expect(page.getByText('None of this is exotic.', { exact: false })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'See the systems' })).toHaveAttribute('href', '/work');
+  await expect(page.getByRole('link', { name: "Let's talk", exact: true }).first()).toHaveAttribute('href', '/contact');
+  await expect(page.getByRole('link', { name: 'Take the free AI readiness assessment' })).toHaveAttribute('href', '/tools/ai-readiness');
+  await expect(page).toHaveTitle('How I build | Caleb Bolden');
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /workflow I use every day/);
+  for (const path of ['/work/prism', '/work/agent-team', '/work/agent-config', '/work/control-center']) {
+    await expect(page.locator(`main a[href="${path}"]`)).toHaveCount(0);
+  }
+  expect(await page.locator('main').textContent()).not.toMatch(/SYNTHETIC_PRIVATE_SENTINEL|\/Users\//);
+  if (process.env.SHOWCASE_SERVER === 'production') {
+    expect(await response!.text()).not.toMatch(/\/work\/(?:prism|agent-team|agent-config|control-center)|SYNTHETIC_PRIVATE_SENTINEL|\/Users\//);
+  }
+});
+
+test('sitemap retains published legacy and collection routes without draft case studies', async ({ page }) => {
+  const response = await page.goto('/sitemap.xml');
+  expect(response?.status()).toBe(200);
+  const xml = await response!.text();
+
+  for (const path of ['/work/vora', '/work/chapterhq', '/work/site-assistant', '/work/open-source']) {
+    expect(xml).toContain(`https://calebbolden.com${path}`);
+  }
+  for (const path of ['/work/prism', '/work/agent-team', '/work/agent-config', '/work/control-center']) {
+    expect(xml).not.toContain(`https://calebbolden.com${path}`);
+  }
+  for (const path of ['/results', '/tools/ai-readiness', '/contact']) {
+    expect(xml).toContain(`https://calebbolden.com${path}`);
+  }
+  expect(xml).toContain('<loc>https://calebbolden.com/blog</loc>');
+  expect(xml).toMatch(/<loc>https:\/\/calebbolden\.com\/blog\/[a-z0-9-]+<\/loc>/);
+  expect(xml).not.toMatch(/SYNTHETIC_PRIVATE_SENTINEL|\/Users\//);
+});
+
 test.skip('complete catalog filters and five public flagship destinations @release', async ({ page }) => {
   await page.goto('/work');
   await expectCatalog(page, ['vora', 'prism', 'agent-team', 'agent-config', 'control-center', 'chapterhq', 'site-assistant'], 7);
@@ -189,6 +252,30 @@ test.skip('complete catalog filters and five public flagship destinations @relea
   await expectCatalog(page, ['vora', 'chapterhq', 'site-assistant'], 3);
   await page.getByRole('link', { name: 'Developer tools' }).click();
   await expectCatalog(page, ['prism', 'agent-team', 'agent-config', 'control-center'], 4);
+
+  await page.goto('/#work');
+  await expect(page.locator('[data-home-group="developer-tools"] [data-home-project]')
+    .evaluateAll(projects => projects.map(project => project.getAttribute('data-home-project'))))
+    .resolves.toEqual(['prism', 'agent-team', 'agent-config', 'control-center']);
+  await expect(page.locator('[data-home-feature="true"] img')).toHaveCount(1);
+  expect(await page.locator('[data-home-proof] img[loading="eager"]').count()).toBeLessThanOrEqual(1);
+
+  await page.goto('/how-i-build');
+  await expect(page.locator('[data-method-project]').evaluateAll(projects => projects.map(project => project.getAttribute('data-method-project'))))
+    .resolves.toEqual(['agent-config', 'agent-team', 'control-center', 'prism']);
+
+  for (const path of ['/work/vora', '/work/prism', '/work/agent-team', '/work/agent-config', '/work/control-center']) {
+    const response = await page.goto(path);
+    expect(response?.status(), path).toBe(200);
+    await expect(page.getByRole('link', { name: 'Back to Work' }).last()).toHaveAttribute('href', '/work');
+    await expect(page.getByRole('link', { name: 'Discuss a similar project' })).toHaveAttribute('href', '/contact');
+    const related = page.locator('[data-case-study-section="continue"] a.type-display');
+    expect(await related.count()).toBeGreaterThanOrEqual(1);
+    expect(await related.count()).toBeLessThanOrEqual(2);
+    for (const href of await related.evaluateAll(links => links.map(link => link.getAttribute('href')))) {
+      expect(['/work/vora', '/work/prism', '/work/agent-team', '/work/agent-config', '/work/control-center', '/work/chapterhq', '/work/site-assistant']).toContain(href);
+    }
+  }
 });
 
 test.skip('approved featured poster begins within the 1440 by 900 viewport @release', async ({ page }) => {

@@ -3,6 +3,8 @@ import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Reveal from '@/components/Reveal';
+import showcaseStyles from '@/components/work/Showcase.module.css';
+import { getMethodProjects } from '@/lib/work/catalog';
 
 export const metadata: Metadata = {
   title: 'How I build | Caleb Bolden',
@@ -17,6 +19,8 @@ const stackRows = [
 ];
 
 export default function HowIBuildPage() {
+  const projects = getMethodProjects();
+
   return (
     <>
       <Header />
@@ -46,6 +50,47 @@ export default function HowIBuildPage() {
                 </div>
               </div>
             </Reveal>
+          </div>
+        </section>
+
+        <section className={`${showcaseStyles.surface} py-14`} style={{ borderTop: '1px solid var(--color-hairline)' }} aria-labelledby="workflow-projects">
+          <div className={showcaseStyles.content}>
+            <Reveal>
+              <p className="anno anno-blue mb-3">development workflow</p>
+              <h2 id="workflow-projects" className="type-display" style={{ fontSize: 'clamp(1.7rem, 3vw, 2.4rem)' }}>
+                Projects behind my development workflow
+              </h2>
+              <p className="mt-5 max-w-2xl" style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
+                Each published panel describes one responsibility and links to the reviewed project example behind it. The panels are independent parts of my working method; no shared runtime relationship is implied.
+              </p>
+            </Reveal>
+            {projects.length ? (
+              <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2" data-method-projects>
+                {projects.map((project, index) => (
+                  <Reveal key={project.slug} delay={index * 60}>
+                    <article className="h-full border-t border-[var(--color-hairline)] pt-5" data-method-project={project.slug}>
+                      <figure className={showcaseStyles.media}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={project.poster.src}
+                          alt={project.poster.alt}
+                          width={project.poster.width}
+                          height={project.poster.height}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                        <figcaption className="anno">image · {project.caption}</figcaption>
+                      </figure>
+                      <p className="anno anno-blue mt-5">{project.label}</p>
+                      <h3 className="type-display mt-2 text-xl">{project.name}</h3>
+                      <Link href={project.destination} className="link-draw mt-4 inline-flex min-h-11 items-center text-sm font-medium text-[var(--color-blue)]">
+                        Explore {project.name}
+                      </Link>
+                    </article>
+                  </Reveal>
+                ))}
+              </div>
+            ) : null}
           </div>
         </section>
 
@@ -117,9 +162,9 @@ export default function HowIBuildPage() {
                 <div className="mt-7">
                   <Link href="/contact" className="btn-ink btn-roll">
                     <span className="roll-box">
-                      <span className="roll-a">Let's talk</span>
+                      <span className="roll-a">Let&apos;s talk</span>
                       <span className="roll-b" aria-hidden="true">
-                        Let's talk
+                        Let&apos;s talk
                       </span>
                     </span>
                   </Link>

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { existsSync, readdirSync } from 'node:fs';
-import { projectRecords, getCatalog } from '../catalog';
+import { getCatalog, getHomeProjects, getMethodProjects, getPublishedCaseStudyPaths, getRelatedProjects, projectRecords } from '../catalog';
 import { projectRecordSchema, knownRichRoutes, knownLegacyRoutes } from '../types';
 import { collectRequiredShowcaseAssets, getPublishedWorkPaths, resolveDevelopmentProjectView, resolvePublicProjectView, validateProjectGraph } from '../publication';
 import { normalizeCategory, projectMetadata, projectRelatedLinks } from '../public-content';
@@ -15,6 +15,73 @@ describe('catalog publication boundary', () => {
     expect(collectRequiredShowcaseAssets(projectRecords, { version: 1, snapshots: [] })).toEqual([]);
     const actualRoutes = readdirSync('app/work', { withFileTypes: true }).filter(entry => entry.isDirectory() && existsSync(`app/work/${entry.name}/page.tsx`)).map(entry => `/work/${entry.name}`);
     expect(() => validateProjectGraph(projectRecords, { version: 1, snapshots: [] }, actualRoutes)).not.toThrow();
+  });
+
+  it('derives current home, method, related and case-study surfaces from resolved public views', () => {
+    expect(getHomeProjects().map(project => project.slug)).toEqual([
+      'vora', 'chapterhq', 'site-assistant', 'open-source', 'real-estate-maite',
+    ]);
+    expect(getMethodProjects()).toEqual([]);
+    expect(getRelatedProjects('vora')).toEqual([
+      { slug: 'chapterhq', name: 'ChapterHQ', destination: '/work/chapterhq' },
+    ]);
+    expect(getRelatedProjects('missing')).toEqual([]);
+    expect(getPublishedCaseStudyPaths()).toEqual([
+      '/work/vora', '/work/chapterhq', '/work/site-assistant',
+    ]);
+  });
+
+  it('removes a draft project from every public integration projection', () => {
+    const responsibilityOrder = new Map([
+      ['agent-config', 0],
+      ['agent-team', 1],
+      ['control-center', 2],
+      ['prism', 3],
+    ]);
+    const integratedRelease = releaseRecords.map(record => {
+      const order = responsibilityOrder.get(record.slug);
+      if (record.kind !== 'flagship' || order === undefined) return record;
+      return projectRecordSchema.parse({
+        ...record,
+        placements: [...new Set([...record.placements, 'home', 'how-i-build'])],
+        responsibility: {
+          label: `Responsibility ${record.name}`,
+          order,
+          snapshotId: `${record.slug}-sample`,
+          caption: `Evidence for ${record.name}`,
+        },
+      });
+    });
+    const agentTeamDraft = integratedRelease.map(record => record.slug === 'agent-team'
+      ? projectRecordSchema.parse({ ...record, publication: 'draft' })
+      : record);
+
+    expect(getHomeProjects(integratedRelease, releaseManifest).map(project => project.slug)).toContain('agent-team');
+    expect(getMethodProjects(integratedRelease, releaseManifest).map(project => project.slug))
+      .toEqual(['agent-config', 'agent-team', 'control-center', 'prism']);
+    expect(getRelatedProjects('prism', integratedRelease).map(project => project.slug)).toEqual(['agent-team']);
+    expect(getPublishedCaseStudyPaths(integratedRelease)).toContain('/work/agent-team');
+
+    expect(getHomeProjects(agentTeamDraft, releaseManifest).map(project => project.slug)).not.toContain('agent-team');
+    expect(getMethodProjects(agentTeamDraft, releaseManifest).map(project => project.slug)).not.toContain('agent-team');
+    expect(getRelatedProjects('prism', agentTeamDraft)).toEqual([]);
+    expect(getPublishedCaseStudyPaths(agentTeamDraft)).not.toContain('/work/agent-team');
+  });
+
+  it('drops unresolved related candidates and excludes non-case-study records from case-study paths', () => {
+    const withMissingRelated = projectRecords.map(record => record.slug === 'vora'
+      ? projectRecordSchema.parse({ ...record, related: ['missing'] })
+      : record);
+
+    expect(getRelatedProjects('vora', withMissingRelated)).toEqual([]);
+    const homeOnlyPrism = projectRecordSchema.parse({ ...richRecord('prism'), placements: ['home'] });
+    const withHomeOnlyRelated = projectRecords.map(record => record.slug === 'vora'
+      ? projectRecordSchema.parse({ ...record, related: ['prism'] })
+      : record.slug === 'prism' ? homeOnlyPrism : record);
+    expect(resolvePublicProjectView(homeOnlyPrism).kind).toBe('rich');
+    expect(getRelatedProjects('vora', withHomeOnlyRelated)).toEqual([]);
+    expect(getPublishedCaseStudyPaths()).not.toContain('/work/open-source');
+    expect(getPublishedCaseStudyPaths()).not.toContain('/work/real-estate-maite');
   });
 
   it('has exact release filters, a single feature, and a separate collection', () => {
