@@ -35,3 +35,9 @@ Development responses include Next debug filesystem paths. Run serialized-public
 Native Chromium per-tab zoom resets on full navigation. Set and verify tabs.getZoom()==2 on each route. In Chromium 153 headless, Playwright's default CSS-sized screenshot clip produced white or cropped native-zoom captures. Capture with `Page.getLayoutMetrics().layoutViewport` coordinates and dimensions, then inspect the resulting image; numeric zoom alone is insufficient. The fixture uses a disposable extension/profile only.
 
 Turbopack rejects a node_modules symlink that points outside an isolated source root. Reuse existing installed bytes with hardlinks inside the disposable root, wait for staging to finish, and only then build. A single recorded dependency directory can move between sequential owned source candidates after their runtimes stop. Keep failed build logs and exact source transformations before disposal.
+
+A viewport breakpoint does not guarantee room inside a demo. Agent Team’s five-column stage list split two-digit numbers and single-word labels at native 200% zoom. Use an intrinsic minimum track width and stacked button contents, then test individual text Range line boxes at fractional available widths as well as inspecting the native screenshot. Overflow checks alone miss this legibility defect.
+
+Playwright webServer defaults to SIGKILL for its process group. Signal-based cleanup in a standalone runner cannot run under SIGKILL, leaving full runtime copies behind. Set gracefulShutdown to SIGTERM with a bounded timeout and verify the actual child exits, the exact runtime directory disappears, and the local port closes.
+
+An isolated new-project draft must change both the record publication flag and its case-study body flag. Leaving a published record with a draft body and no legacy route correctly fails graph validation before build. Preserve placements and let the production selectors exclude the explicit draft record.

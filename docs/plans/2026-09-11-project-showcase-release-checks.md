@@ -1,6 +1,6 @@
 # Project showcase local release checks
 
-Evidence content approved September 12, 2026. This records the reviewed local candidate for five portfolio simulations. It does not authorize deployment, external publication, source-product access, or live capture. The separate T11 code review and T12 release verification are pending.
+Evidence content approved September 12, 2026. This records the reviewed local candidate for five portfolio simulations. It does not authorize deployment, external publication, source-product access, or live capture. T11 code review is accepted. T12 local verification is complete; independent T12 and whole-branch review remain pending.
 
 ## Review authority and exact bytes
 
@@ -104,10 +104,38 @@ Earlier probe failures remain in `/var/folders/78/w5gyq7w55t7d7v1f99v1vwf80000gn
 
 The first standalone server was bounded to 290 seconds and exited through that timeout (124) after the successful scoped integration probes. The fresh P31 standalone server was stopped explicitly after verification and exited 0. `/var/folders/78/w5gyq7w55t7d7v1f99v1vwf80000gn/T/showcase-evidence-vgtjd7rd/logs/p31-stop-and-byte-check.log` records unchanged accepted bytes and no remaining listener; localhost3100 and .next are released. These runner shutdowns are separate from the build/test/probe results.
 
-## Remaining gates
+## Historical T11 handoff gates
 
 The independent full-range T11 code/spec review remains pending after local finalization. Original task base is `ead99c44270fa36cb4086f449f27fd229b04a518`; P29, P30 and P31 are included in that range.
 
 T12 still owns the complete browser publication-state transitions and deliberate rollback builds; selected-fixture isolation across all emitted chunks; blocked-module/render-failure/no-JavaScript coverage; keyboard/reduced-motion, mobile and native 200% zoom matrix; and matched shell-versus-active-demo gzip JavaScript budgets. T11 scoped integration checks do not complete that matrix. Shared browser specifications with old source-state expectations were deliberately left for T12's reviewed transition. Historical PROVISIONAL spec-hardening status is a separate review record.
 
 No pushes, merges, deployments, production service operations or additional evidence captures are authorized by this file. Any future fixture, image, caption or provenance change needs explicit review and a deliberate manifest revision; validation never refreshes or approves hashes.
+
+## Completed T12 local verification
+
+Application source `f738fac823e244570171c26d5949bb07aa23e0a9` passes the complete local state, browser, failure, privacy, native zoom and matched-budget matrix. Later commits contain test/harness/document updates only. All accepted evidence hashes above remain unchanged. Full command envelopes, failures, current-source build IDs, acceptance paths and review boundaries are recorded in `/Users/calebbolden/Projects/consulting/.worktrees/calebbolden-showcase/.superpowers/sdd/2026-09-11-project-showcase-implementation/task-12-report.md`. The earlier handoff section records what T11 delegated, not outstanding T12 local work.
+
+| Source state | Fresh build ID | Production result |
+|---|---|---|
+| legacy-before | W425gueuGdfb3Hn-6Voc_ | 11-route state/response/asset/chunk proof passes |
+| rich-draft-before | Pnc7D7rTToln6Suru82fW | 11-route state/response/asset/chunk proof passes |
+| approved-rich | uqg5mgHHC6BnRB08Y8a05 | 11-route state/response/asset/chunk proof passes |
+| draft-rollback | YcUATXuFiRZ9lEt9oMfiY | 11-route state/response/asset/chunk proof passes |
+| body-removal-rollback | Znep6VKgefgsUW6BXALLf | 11-route state/response/asset/chunk proof passes |
+| four-new-drafts | xzvabZ3JS3gduUdYSn58e | 11-route state/response/asset/chunk proof passes |
+| shell | HDfCJjJMj1x1YJy2l2gKL | Five route measurements pass |
+
+| Route | Candidate eager | Candidate total | Shell eager / total | Added gzip JS | Poster bytes |
+|---|---:|---:|---:|---:|---:|
+| vora | 284336 | 288346 | 278915 / 278915 | 9431 | 33948 |
+| prism | 284337 | 288928 | 278915 / 278915 | 10013 | 25694 |
+| agent-team | 284333 | 289724 | 278915 / 278915 | 10809 | 47220 |
+| agent-config | 284337 | 288500 | 278915 / 278915 | 9585 | 31342 |
+| control-center | 284335 | 290792 | 278915 / 278915 | 11877 | 39290 |
+
+All added JavaScript values use complete unique eager-plus-interaction totals against matching shell builds under Node 22.21.0 / zlib 1.3.1-470d3a2. Exact evidence: `/Users/calebbolden/Projects/consulting/.worktrees/calebbolden-showcase/.superpowers/t12/measurements/final-comparison.json`. The historical legacy baseline is not used for subtraction.
+
+Native visual acceptance uses `/Users/calebbolden/Projects/consulting/.worktrees/calebbolden-showcase/.superpowers/t12/native-metrics` for Vora, Prism, Config and Center, and `/Users/calebbolden/Projects/consulting/.worktrees/calebbolden-showcase/.superpowers/t12/native-p32` for Team. P32 fixes Team’s cramped stage list through intrinsic tracks and stacked button contents; stage data and all approved poster bytes remain unchanged. Earlier capture directories are explicitly rejected/superseded.
+
+Independent T12 full-range and whole-branch reviews remain pending. This record does not authorize publication, push, merge or deployment.

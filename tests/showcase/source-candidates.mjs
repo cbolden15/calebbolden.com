@@ -30,8 +30,11 @@ for (const slug of changed) {
   const file = join(scratch, 'lib/work/projects/'+slug+'.ts'); copyFileSync(file, file.replace('.ts','.reviewed-fixture.ts'));
   const marker = 'Draft '+state+' '+slug+' authored boundary marker.'; const fixtureMarker = 'Private sample '+state+' '+slug+' fixture boundary marker.';
   const draft = state.includes('draft'); if(draft) markers.push(marker,fixtureMarker);
+  const recordMarker = 'Draft record '+state+' '+slug+' boundary marker.';
+  if(state==='four-new-drafts') markers.push(recordMarker);
+  const recordField = state==='four-new-drafts' ? `publication:'draft',contribution:${JSON.stringify(recordMarker)},` : '';
   const body = draft ? `{publication:'draft',story:{...reviewed.caseStudy!.story!,about:${JSON.stringify(marker)}},localFixture:{kind:${JSON.stringify(slug)},path:'lib/work/fixtures/${slug}.json'}}` : 'undefined';
-  writeFileSync(file, `import type {ProjectRecord} from '../types';\nimport {${name} as reviewed} from './${slug}.reviewed-fixture';\nexport {${resolver}} from './${slug}.reviewed-fixture';\nif(reviewed.caseStudy?.publication !== 'published') throw Error('Expected approved source body');\nexport const ${name}: ProjectRecord = {...reviewed,caseStudy:${body}};\n`);
+  writeFileSync(file, `import type {ProjectRecord} from '../types';\nimport {${name} as reviewed} from './${slug}.reviewed-fixture';\nexport {${resolver}} from './${slug}.reviewed-fixture';\nif(reviewed.caseStudy?.publication !== 'published') throw Error('Expected approved source body');\nexport const ${name}: ProjectRecord = {...reviewed,${recordField}caseStudy:${body}};\n`);
   const fixturePath = join(scratch,'lib/work/fixtures/'+slug+'.json'); const fixture = JSON.parse(readFileSync(fixturePath,'utf8'));
   if(draft) {
     const scenario = fixture.scenarios[0];
@@ -39,7 +42,7 @@ for (const slug of changed) {
     if(slug==='prism') scenario.events[0].description=fixtureMarker;
     if(slug==='agent-team') scenario.stages[0].artifact=fixtureMarker;
     if(slug==='agent-config') scenario.fragment.content=fixtureMarker;
-    if(slug==='control-center') scenario.runs[0].host=fixtureMarker;
+    if(slug==='control-center') for(const sample of fixture.scenarios) sample.runs[0].host=fixtureMarker;
     writeFileSync(fixturePath,JSON.stringify(fixture,null,2)+'\n');
   }
 }
@@ -50,7 +53,7 @@ if (state==='shell') for(const slug of slugs) {
   const name = {vora:'Vora',prism:'Prism','agent-team':'AgentTeam','agent-config':'AgentConfig','control-center':'ControlCenter'}[slug];
   writeFileSync(join(scratch,'components/work/demos/'+name+'Demo.tsx'),`// Isolated matched source shell: no client entry or enhancement host.\nexport default function ${name}Demo(_props: {fixture: unknown}) { return null; }\n`);
 }
-const expectation = {sha,state,scratch,changed,markers,removedMedia:removed.flatMap(s=>s.media.map(m=>m.path.replace(/^public/,''))),counts:state==='four-new-drafts'?[3,3,0]:[7,3,4],homeCount:state==='four-new-drafts'?5:9,methodCount:state==='four-new-drafts'?0:4,manifestSha256:createHash('sha256').update(readFileSync(manifestPath)).digest('hex')};
+const expectation = {sha,generatorSha256:createHash('sha256').update(readFileSync(new URL(import.meta.url))).digest('hex'),state,scratch,changed,markers,removedMedia:removed.flatMap(s=>s.media.map(m=>m.path.replace(/^public/,''))),counts:state==='four-new-drafts'?[3,3,0]:[7,3,4],homeCount:state==='four-new-drafts'?5:9,methodCount:state==='four-new-drafts'?0:4,manifestSha256:createHash('sha256').update(readFileSync(manifestPath)).digest('hex')};
 writeFileSync(join(evidence,'expectation.json'),JSON.stringify(expectation,null,2));
 // Preserve exact transformed public-only sources and immutable input hashes for reconstruction.
 mkdirSync(join(evidence,'source'),{recursive:true});

@@ -7,6 +7,9 @@ assert source.name.startswith('showcase-source-') and (folder/'owned-source-path
 result=json.loads((folder/'browser-result.json').read_text())
 assert result['exit']==0 and '\nEXIT 0\n' in (folder/result['log']).read_text()
 assert (folder/'emitted-client-chunks.tgz').stat().st_size>0
+if expected['state']=='four-new-drafts':
+    assert json.loads((folder/'development-result.json').read_text())['exit']==0
+    assert '\nEXIT 0\n' in (folder/'development-browser.log').read_text()
 probe=socket.socket(); probe.settimeout(1)
 assert probe.connect_ex(('localhost',3100))!=0, 'Release the current runtime before source cleanup'
 probe.close()
