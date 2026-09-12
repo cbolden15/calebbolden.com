@@ -176,6 +176,36 @@ describe('Control Center fixture and publication boundary', () => {
     for (const candidate of candidates) expect(controlCenterFixtureSchema.safeParse(candidate).success).toBe(false);
   });
 
+  it('rejects internally consistent records that break attention counts or primary identity', () => {
+    const [succeeds, fails] = syntheticCenterFixture.scenarios;
+    const stalePrimary = {
+      ...succeeds.runs[0],
+      startedAt: '2026-09-01T10:40:00Z',
+      updatedAt: '2026-09-01T10:50:00Z',
+      stale: true,
+    };
+    const staleFailPrimary = {
+      ...fails.runs[0],
+      startedAt: '2026-09-01T10:40:00Z',
+      updatedAt: '2026-09-01T10:50:00Z',
+      stale: true,
+    };
+    const recentExtraRun = {
+      ...fails.runs[1],
+      startedAt: '2026-09-01T11:30:00Z',
+      updatedAt: '2026-09-01T11:45:00Z',
+      stale: false,
+    };
+    const differentPrimary = { ...fails.runs[0], id: 'run-different' };
+    const candidates: unknown[] = [
+      { kind: 'control-center', scenarios: [{ ...succeeds, runs: [stalePrimary] }, fails] },
+      { kind: 'control-center', scenarios: [succeeds, { ...fails, runs: [staleFailPrimary, fails.runs[1]] }] },
+      { kind: 'control-center', scenarios: [succeeds, { ...fails, runs: [fails.runs[0], recentExtraRun] }] },
+      { kind: 'control-center', scenarios: [succeeds, { ...fails, runs: [differentPrimary, fails.runs[1]] }] },
+    ];
+    for (const candidate of candidates) expect(controlCenterFixtureSchema.safeParse(candidate).success).toBe(false);
+  });
+
   it('projects one local fixture without approval metadata or unrelated fields', () => {
     vi.stubEnv('NODE_ENV', 'development');
     const source = { kind: 'control-center' as const, scenarios: syntheticCenterFixture.scenarios };

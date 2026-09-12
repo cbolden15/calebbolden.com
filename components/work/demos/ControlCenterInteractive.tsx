@@ -1,10 +1,11 @@
 'use client';
 
-import { useReducer } from 'react';
+import { useReducer, useState } from 'react';
 import {
   centerReducer,
   centerView,
   initialCenter,
+  type CenterEvent,
   type CenterFixtureDTO,
   type CenterSelection,
 } from '@/lib/work/demos/control-center';
@@ -72,8 +73,16 @@ export default function ControlCenterInteractive({ fixture }: { fixture: CenterF
     (current: typeof initialCenter, event: Parameters<typeof centerReducer>[1]) => centerReducer(current, event, fixture),
     initialCenter,
   );
+  const [announcement, setAnnouncement] = useState('Control Center controls ready.');
   const view = centerView(state, fixture);
-  const select = (value: CenterSelection) => dispatch({ type: 'select', value });
+  const send = (event: CenterEvent, message: string) => {
+    dispatch(event);
+    setAnnouncement(message);
+  };
+  const select = (value: CenterSelection, label: string) => send(
+    { type: 'select', value },
+    `${value.kind === 'run' ? 'Run' : value.kind === 'decision' ? 'Decision' : 'Deployment'} detail opened: ${label}`,
+  );
 
   return (
     <section role="region" aria-label="Control Center sample dashboard controls" className="mt-7 border-t border-slate-700 pt-6">
@@ -84,7 +93,7 @@ export default function ControlCenterInteractive({ fixture }: { fixture: CenterF
             {fixture.scenarios.map(scenario => (
               <button key={scenario.id} type="button" aria-pressed={state.scenario === scenario.id}
                 className={state.scenario === scenario.id ? activeButton : quietButton}
-                onClick={() => dispatch({ type: 'scenario', value: scenario.id })}>{scenario.label}</button>
+                onClick={() => send({ type: 'scenario', value: scenario.id }, `${scenario.label} scenario selected. Sample run reset to Started.`)}>{scenario.label}</button>
             ))}
           </div>
         </fieldset>
@@ -92,20 +101,24 @@ export default function ControlCenterInteractive({ fixture }: { fixture: CenterF
           <legend className="font-mono text-xs uppercase tracking-widest text-sky-300">Visible records</legend>
           <div className="mt-3 flex flex-wrap gap-3">
             <button type="button" aria-pressed={state.filter === 'all'} className={state.filter === 'all' ? activeButton : quietButton}
-              onClick={() => dispatch({ type: 'filter', value: 'all' })}>Show all</button>
+              onClick={() => send({ type: 'filter', value: 'all' }, 'Show all filter selected.')}>Show all</button>
             <button type="button" aria-pressed={state.filter === 'attention'} className={state.filter === 'attention' ? activeButton : quietButton}
-              onClick={() => dispatch({ type: 'filter', value: 'attention' })}>Needs attention</button>
+              onClick={() => send({ type: 'filter', value: 'attention' }, 'Needs attention filter selected.')}>Needs attention</button>
           </div>
         </fieldset>
       </div>
 
       <div className="mt-5 flex flex-wrap gap-3">
-        <button type="button" className={quietButton} disabled={state.phase === 'finished'} onClick={() => dispatch({ type: 'show-result' })}>Show sample run result</button>
-        <button type="button" className={quietButton} onClick={() => dispatch({ type: 'reset' })}>Reset</button>
+        <button type="button" className={quietButton} disabled={state.phase === 'finished'} onClick={() => {
+          const result = view.scenario.runs.find(run => run.primary)?.result?.status;
+          send({ type: 'show-result' }, `Sample run result: ${result ?? 'Unavailable'}.`);
+        }}>Show sample run result</button>
+        <button type="button" className={quietButton} onClick={() => send({ type: 'reset' }, 'Reset complete. Succeeds, Started, and Show all restored.')}>Reset</button>
       </div>
-      <p role="status" aria-live="polite" aria-atomic="true" className="mt-4 text-sm text-slate-300">
+      <p data-center-state className="mt-4 text-sm text-slate-300">
         {view.scenario.label}, {state.phase === 'started' ? 'Started' : 'sample result shown'}, {state.filter === 'all' ? 'Show all' : 'Needs attention'}: {view.counts.runs} {view.counts.runs === 1 ? 'run' : 'runs'} and {view.counts.decisions} {view.counts.decisions === 1 ? 'decision' : 'decisions'} visible.
       </p>
+      <p role="status" aria-live="polite" aria-atomic="true" className="mt-2 text-sm text-sky-200">{announcement}</p>
 
       <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4" aria-label="Sample dashboard totals">
         <div className="rounded-md border border-slate-700 p-4"><p className="text-xs text-slate-400">Runs</p><p className="mt-2 text-2xl font-semibold">{view.counts.runs}</p></div>
@@ -120,7 +133,7 @@ export default function ControlCenterInteractive({ fixture }: { fixture: CenterF
           <div className="mt-3 space-y-3">
             {view.runs.length ? view.runs.map(run => (
               <button key={run.id} type="button" className={recordButton} aria-pressed={state.selected?.kind === 'run' && state.selected.id === run.id}
-                onClick={() => select({ kind: 'run', id: run.id })}>
+                onClick={() => select({ kind: 'run', id: run.id }, run.name)}>
                 <span className="flex flex-wrap items-center justify-between gap-2"><span className="font-medium">{run.name}</span><span className="font-mono text-xs text-sky-300">{run.status}{run.stale ? ' · Stale' : ''}</span></span>
                 <span className="mt-2 block text-xs text-slate-400">{run.sourceType} · {run.age} old</span>
               </button>
@@ -132,7 +145,7 @@ export default function ControlCenterInteractive({ fixture }: { fixture: CenterF
           <div className="mt-3 space-y-3">
             {view.decisions.length ? view.decisions.map(decision => (
               <button key={decision.id} type="button" className={recordButton} aria-pressed={state.selected?.kind === 'decision' && state.selected.id === decision.id}
-                onClick={() => select({ kind: 'decision', id: decision.id })}>
+                onClick={() => select({ kind: 'decision', id: decision.id }, decision.name)}>
                 <span className="flex flex-wrap items-center justify-between gap-2"><span className="font-medium">{decision.name}</span><span className="font-mono text-xs text-sky-300">{decision.resolved ? 'Resolved' : 'Unresolved'}</span></span>
                 <span className="mt-2 block text-xs text-slate-400">{decision.sourceType} · {decision.age} old</span>
               </button>
@@ -146,7 +159,7 @@ export default function ControlCenterInteractive({ fixture }: { fixture: CenterF
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           {view.deployments.map(deployment => (
             <button key={deployment.id} type="button" className={recordButton} aria-pressed={state.selected?.kind === 'deployment' && state.selected.id === deployment.id}
-              onClick={() => select({ kind: 'deployment', id: deployment.id })}>
+              onClick={() => select({ kind: 'deployment', id: deployment.id }, deployment.target)}>
               <span className="flex flex-wrap items-center justify-between gap-2"><span className="font-medium">{deployment.target}</span><span className="font-mono text-xs text-sky-300">{deployment.result}</span></span>
               <span className="mt-2 block text-xs text-slate-400">SHA {deployment.sha} · {deployment.age} old</span>
             </button>

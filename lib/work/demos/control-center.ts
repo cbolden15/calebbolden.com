@@ -59,6 +59,10 @@ const scenarioSchema = z.strictObject({
   }
   const primaryRuns = scenario.runs.filter(run => run.primary);
   if (primaryRuns.length !== 1) ctx.addIssue({ code: 'custom', message: 'Scenario requires exactly one primary run' });
+  if (primaryRuns[0]?.stale) ctx.addIssue({ code: 'custom', message: 'The primary run must be recent at the frozen example time' });
+  if (scenario.runs.some(run => !run.primary && !run.stale)) {
+    ctx.addIssue({ code: 'custom', message: 'Every additional run must be stale at the frozen example time' });
+  }
   if (primaryRuns[0]?.result?.status !== (scenario.id === 'succeeds' ? 'Succeeded' : 'Failed')) {
     ctx.addIssue({ code: 'custom', message: 'Primary run result does not match its scenario' });
   }
@@ -87,6 +91,21 @@ export const controlCenterFixtureSchema = createFixtureSchema('control-center', 
   const [succeeds, fails] = fixture.scenarios;
   if (JSON.stringify(succeeds.spend) !== JSON.stringify(fails.spend) || JSON.stringify(succeeds.deployments) !== JSON.stringify(fails.deployments)) {
     ctx.addIssue({ code: 'custom', message: 'Sample spend and deployments must be identical across scenarios' });
+  }
+  const primaryIdentity = (scenario: typeof succeeds) => {
+    const run = scenario.runs.find(item => item.primary);
+    return run ? {
+      id: run.id,
+      name: run.name,
+      host: run.host,
+      sourceType: run.sourceType,
+      startedAt: run.startedAt,
+      updatedAt: run.updatedAt,
+      startedSummary: run.startedSummary,
+    } : null;
+  };
+  if (JSON.stringify(primaryIdentity(succeeds)) !== JSON.stringify(primaryIdentity(fails))) {
+    ctx.addIssue({ code: 'custom', message: 'The primary run identity must remain stable across scenarios' });
   }
 });
 
