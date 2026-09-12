@@ -10,7 +10,7 @@ const states = ['legacy-before', 'rich-draft-before', 'approved-rich', 'draft-ro
 if (!/^[a-f0-9]{40}$/.test(sha ?? '') || !states.includes(state)) throw Error('Exact source SHA and known state required');
 const candidate = process.cwd(); const evidence = resolve(evidenceArg); mkdirSync(evidence, { recursive: true });
 const free = statfsSync(candidate); if (free.bavail * free.bsize < 5 * 1024 ** 3) throw Error('Less than 5 GiB reserve');
-const appDiff=execFileSync('git',['diff','--name-only','f738fac823e244570171c26d5949bb07aa23e0a9',sha,'--','app','components','lib','public','showcase-evidence.manifest.json'],{encoding:'utf8'});if(appDiff.trim())throw Error('Application/evidence differs from measured source');
+const appDiff=execFileSync('git',['diff','--name-only','79cab34f12331ec4340976ca10f36caf26604824',sha,'--','app','components','lib','public','showcase-evidence.manifest.json'],{encoding:'utf8'});if(appDiff.trim())throw Error('Application/evidence differs from measured source');
 execFileSync('git', ['merge-base', '--is-ancestor', '78f529e50f06e2e3b428e60c224e154acaa0d4f4', sha]);
 const scratch = mkdtempSync(join(tmpdir(), 'showcase-source-')); writeFileSync(join(evidence, 'owned-source-path.txt'), scratch+'\n');
 const archive = join(scratch, 'source.tar'); execFileSync('git', ['archive', '--format=tar', '--output='+archive, sha]); execFileSync('tar', ['-xf', archive, '-C', scratch]); rmSync(archive);
@@ -54,7 +54,7 @@ if (state==='shell') for(const slug of slugs) {
   const name = {vora:'Vora',prism:'Prism','agent-team':'AgentTeam','agent-config':'AgentConfig','control-center':'ControlCenter'}[slug];
   writeFileSync(join(scratch,'components/work/demos/'+name+'Demo.tsx'),`// Isolated matched source shell: no client entry or enhancement host.\nexport default function ${name}Demo(_props: {fixture: unknown}) { return null; }\n`);
 }
-const expectation = {sha,applicationSource:'f738fac823e244570171c26d5949bb07aa23e0a9',generatorSha256:createHash('sha256').update(readFileSync(new URL(import.meta.url))).digest('hex'),state,scratch,changed,markers,removedMedia:removed.flatMap(s=>s.media.map(m=>m.path.replace(/^public/,''))),counts:state==='four-new-drafts'?[3,3,0]:[7,3,4],homeCount:state==='four-new-drafts'?5:9,methodCount:state==='four-new-drafts'?0:4,manifestSha256:createHash('sha256').update(readFileSync(manifestPath)).digest('hex')};
+const expectation = {sha,applicationSource:'79cab34f12331ec4340976ca10f36caf26604824',generatorSha256:createHash('sha256').update(readFileSync(new URL(import.meta.url))).digest('hex'),state,scratch,changed,markers,removedMedia:removed.flatMap(s=>s.media.map(m=>m.path.replace(/^public/,''))),counts:state==='four-new-drafts'?[3,3,0]:[7,3,4],homeCount:state==='four-new-drafts'?5:9,methodCount:state==='four-new-drafts'?0:4,manifestSha256:createHash('sha256').update(readFileSync(manifestPath)).digest('hex')};
 writeFileSync(join(evidence,'expectation.json'),JSON.stringify(expectation,null,2));
 // Preserve exact transformed public-only sources and immutable input hashes for reconstruction.
 mkdirSync(join(evidence,'source'),{recursive:true});
