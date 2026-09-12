@@ -1,0 +1,27 @@
+{
+  "kind": "vora",
+  "scenarios": [
+    {
+      "id": "approval",
+      "business": "Cedar Repair",
+      "customer": "Customer A",
+      "request": "My kitchen tap is dripping. Could someone come by this week?",
+      "action": "Propose a message asking which day works for a repair visit.",
+      "reason": "This conceptual example places a human decision before the proposed follow-up. The exact configured action has not been verified.",
+      "message": "Hi Customer A, thanks for contacting Cedar Repair. Which day this week would suit a repair visit? We will confirm availability before booking.",
+      "captions": {
+        "request": "A fictional repair request arrives. A follow-up is proposed for review.",
+        "pending": "The proposed message is waiting for a decision in this example.",
+        "approved": "The example action is approved. No execution result has been shown.",
+        "completed": "The selected sample outcome succeeds. The completion and CRM activity below are invented.",
+        "rejected": "No action taken in this example.",
+        "failed": "Action approved; sample execution failed. No completed CRM activity."
+      },
+      "completion": {
+        "confirmation": "Sample delivery confirmed in this fictional outcome. No real message was sent.",
+        "activity": "Sample CRM activity: follow-up message recorded for Customer A at Cedar Repair."
+      },
+      "error": "Fictional error: the sample messaging provider is unavailable."
+    }
+  ]
+}

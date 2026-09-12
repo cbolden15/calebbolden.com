@@ -42,7 +42,7 @@ describe('catalog publication boundary', () => {
   });
 
   it('derives all Vora states and both rollbacks from the same body', () => {
-    const legacy = projectRecords.find(r => r.slug === 'vora')!;
+    const legacy = { ...projectRecords.find(r => r.slug === 'vora')!, caseStudy: undefined };
     const draft = { ...legacy, caseStudy: { publication: 'draft' as const } };
     const rich = richRecord('vora');
     expect(resolvePublicProjectView(legacy)).toMatchObject({ kind: 'legacy', state: 'legacy', destination: '/work/vora' });
