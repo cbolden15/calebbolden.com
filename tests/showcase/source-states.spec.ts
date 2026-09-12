@@ -14,7 +14,7 @@ test('fresh isolated source candidate has explicit HTTP body metadata catalog si
   for (const route of ['/', '/work', '/work?category=products', '/work?category=developer-tools', '/how-i-build', '/work/vora', '/work/prism', '/work/agent-team', '/work/agent-config', '/work/control-center', '/sitemap.xml']) {
     const draft = expected.state==='four-new-drafts' && expected.changed.some((s:string)=>route==='/work/'+s);
     const response = await page.goto(route); expect(response?.status(),route).toBe(draft ? 404 : 200);
-    const html = await response!.text(); const rsc = route==='/sitemap.xml' ? null : await page.request.get(route+'?_rsc=source-state', {headers:{RSC:'1'}});
+    const html = await response!.text(); if(route!=='/sitemap.xml') expect(html, 'served build identity').toContain(readFileSync('.next/BUILD_ID','utf8').trim()); const rsc = route==='/sitemap.xml' ? null : await page.request.get(route+'?_rsc=source-state', {headers:{RSC:'1'}});
     for(const marker of expected.markers) { expect(html,route).not.toContain(marker); if(rsc) expect(await rsc.text(),route+' RSC').not.toContain(marker); }
     if(route==='/work/vora') {
       await expect(page.locator('[data-case-study-section]')).toHaveCount(richVora?5:0);
@@ -37,7 +37,7 @@ test('fresh isolated source candidate has explicit HTTP body metadata catalog si
     if(route==='/sitemap.xml') for(const path of selectors.paths) expect(html).toContain('https://calebbolden.com'+path);
     if (route.startsWith('/work/') && route !== '/work') {
       const selected = selectors.views.find((view: {slug:string}) => route === '/work/'+view.slug);
-      if(selected.metadata) { await expect(page.locator('title')).toHaveText(selected.metadata.title); await expect(page.locator('meta[name="description"]')).toHaveAttribute('content',selected.metadata.description); }
+      if(selected.metadata) { await expect(page).toHaveTitle(selected.metadata.title); await expect(page.locator('meta[name="description"]')).toHaveAttribute('content',selected.metadata.description); }
       else { await expect(page.locator('meta[name="description"]')).not.toHaveAttribute('content',/Draft .* authored boundary marker/); expect(selected.view.kind).toBe('not-found'); expect(draft).toBe(true); }
     }
     await info.attach(route.replaceAll('/', '_')+'-html.gz',{body:gzipSync(html),contentType:'application/gzip'});

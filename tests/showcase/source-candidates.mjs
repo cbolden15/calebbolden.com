@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, symlinkSync, rmSync, copyFileSync, statfsSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync, copyFileSync, statfsSync, renameSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { createHash } from 'node:crypto';
@@ -13,7 +13,12 @@ const free = statfsSync(candidate); if (free.bavail * free.bsize < 5 * 1024 ** 3
 execFileSync('git', ['merge-base', '--is-ancestor', '78f529e50f06e2e3b428e60c224e154acaa0d4f4', sha]);
 const scratch = mkdtempSync(join(tmpdir(), 'showcase-source-')); writeFileSync(join(evidence, 'owned-source-path.txt'), scratch+'\n');
 const archive = join(scratch, 'source.tar'); execFileSync('git', ['archive', '--format=tar', '--output='+archive, sha]); execFileSync('tar', ['-xf', archive, '-C', scratch]); rmSync(archive);
-symlinkSync(join(candidate, 'node_modules'), join(scratch, 'node_modules'));
+// Turbopack rejects a node_modules symlink outside this source root. Hardlinks reuse installed bytes.
+if (process.env.SHOWCASE_OWNED_DEPENDENCIES) {
+  const owned = readFileSync(join(resolve(evidenceArg, '../..'), 'owned-dependencies.txt'), 'utf8').trim();
+  if (owned !== process.env.SHOWCASE_OWNED_DEPENDENCIES || !owned.includes('/showcase-dependencies-')) throw Error('Dependency staging path is not this task’s recorded directory');
+  renameSync(join(owned,'node_modules'),join(scratch,'node_modules'));
+} else execFileSync('python3', ['-c', 'import shutil,os,sys; shutil.copytree(sys.argv[1],sys.argv[2],copy_function=os.link,symlinks=True)',join(candidate,'node_modules'),join(scratch,'node_modules')],{timeout:120000});
 const manifestPath = join(scratch, 'showcase-evidence.manifest.json'); const manifestBytes = readFileSync(manifestPath);
 if (createHash('sha256').update(manifestBytes).digest('hex') !== 'd9c2258c8f6377344ac16d0c357211304b81a2d65d0d5b4070671b3db96c4c37') throw Error('Accepted manifest changed');
 const manifest = JSON.parse(manifestBytes); const slugs = ['vora','prism','agent-team','agent-config','control-center'];
