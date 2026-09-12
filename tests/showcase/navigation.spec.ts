@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 import { test, expect, localOnly } from './helpers';
 
 const retainedRoutes = [
@@ -28,6 +28,24 @@ async function expectFixedSections(page: Page) {
   await expect(page.getByRole('link', { name: 'Discuss a project' })).toHaveAttribute('href', '/contact');
   await expect(page.getByRole('link', { name: 'Take the free AI readiness assessment' })).toHaveAttribute('href', '/tools/ai-readiness');
   await expect(page.locator('[data-work-section="client-work"]')).not.toContainText('in progress right now');
+}
+
+async function expectNoTransparentAncestor(locator: Locator) {
+  await expect(locator).toBeAttached();
+  const transparentAncestor = await locator.evaluate(element => {
+    let current: Element | null = element;
+
+    while (current) {
+      if (getComputedStyle(current).opacity === '0') {
+        return current.tagName.toLowerCase();
+      }
+      current = current.parentElement;
+    }
+
+    return null;
+  });
+
+  expect(transparentAncestor).toBeNull();
 }
 
 for (const path of retainedRoutes) {
@@ -206,6 +224,24 @@ test('homepage proof uses the published catalog and retains every secondary dest
   }
 });
 
+test('homepage proof remains readable without JavaScript', async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false, baseURL: 'http://localhost:3100' });
+  const unexpected = await localOnly(context);
+  const page = await context.newPage();
+  const response = await page.goto('/#work');
+  const proof = page.locator('[data-home-proof]');
+
+  expect(response?.status()).toBe(200);
+  await expect(proof.locator('[data-home-project]')).toHaveCount(5);
+  await expect(proof.locator('.reveal')).toHaveCount(0);
+  await expectNoTransparentAncestor(proof.getByRole('heading', { name: 'The systems I recommend are ones I build and run' }));
+  await expectNoTransparentAncestor(proof.locator('[data-home-feature]'));
+  await expectNoTransparentAncestor(proof.locator('[data-home-group="secondary"]'));
+  await expectNoTransparentAncestor(proof.getByRole('link', { name: 'Explore the work' }));
+  expect(unexpected).toEqual([]);
+  await context.close();
+});
+
 test('How I build preserves its method and conversion paths while draft panels stay absent', async ({ page }) => {
   const response = await page.goto('/how-i-build');
 
@@ -224,6 +260,29 @@ test('How I build preserves its method and conversion paths while draft panels s
   if (process.env.SHOWCASE_SERVER === 'production') {
     expect(await response!.text()).not.toMatch(/\/work\/(?:prism|agent-team|agent-config|control-center)|SYNTHETIC_PRIVATE_SENTINEL|\/Users\//);
   }
+});
+
+test('How I build remains readable without JavaScript', async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false, baseURL: 'http://localhost:3100' });
+  const unexpected = await localOnly(context);
+  const page = await context.newPage();
+  const response = await page.goto('/how-i-build');
+
+  expect(response?.status()).toBe(200);
+  await expect(page.locator('main .reveal')).toHaveCount(0);
+  for (const target of [
+    page.getByRole('heading', { name: 'How I build' }),
+    page.getByText('the operation', { exact: true }),
+    page.getByRole('heading', { name: 'Projects behind my development workflow' }),
+    page.getByText('primary env', { exact: true }),
+    page.getByText('autonomous loops', { exact: true }),
+    page.getByText('what this means for clients', { exact: true }),
+    page.getByRole('heading', { name: 'Start with the audit' }),
+  ]) {
+    await expectNoTransparentAncestor(target);
+  }
+  expect(unexpected).toEqual([]);
+  await context.close();
 });
 
 test('sitemap retains published legacy and collection routes without draft case studies', async ({ page }) => {
