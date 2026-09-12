@@ -23,9 +23,10 @@ describe('per-surface public projections', () => {
   });
 
   it('cards, homepage, related and method props omit narratives and evidence internals', () => {
-    const record = richRecord('prism');
+    const record = { ...richRecord('prism'), links: [{ label: 'Public source', href: 'https://example.com/prism' }] };
     const card = projectProjectCard(record, releaseManifest)!;
-    expect(Object.keys(card).sort()).toEqual(['badge', 'category', 'contribution', 'destination', 'name', 'order', 'poster', 'slug', 'summary'].sort());
+    expect(Object.keys(card).sort()).toEqual(['badge', 'category', 'contribution', 'destination', 'links', 'name', 'order', 'poster', 'slug', 'summary'].sort());
+    expect(card.links).toEqual(record.links);
     expect(projectCardSchema.safeParse({ ...card, story: {} }).success).toBe(false);
     const home = projectHomepageProof(projectRecords.find(r => r.slug === 'real-estate-maite')!, releaseManifest)!;
     expect(home.destination).toBeUndefined();

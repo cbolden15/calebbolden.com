@@ -1,0 +1,204 @@
+import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import {
+  initialPrism,
+  prismFixtureDTOSchema,
+  prismFixtureSchema,
+  prismReducer,
+  prismView,
+  projectPrismScenario,
+  type PrismFixtureDTO,
+  type PrismState,
+} from '../demos/prism';
+import { prism, resolvePrismPage } from '../projects/prism';
+import { projectApprovedFixture, projectLocalFixture } from '../evidence';
+import { projectDevelopmentCaseStudyShell } from '../public-content';
+import { resolvePublicProjectView } from '../publication';
+
+const scenario: PrismFixtureDTO['scenarios'][number] = {
+  id: 'word-count',
+  prompt: 'Count the words in: one two three',
+  events: [
+    { type: 'goal.accepted', label: 'Goal accepted', description: 'The bounded coordinator accepts the fixed goal.' },
+    { type: 'provider.tool-requested', label: 'Tool requested', description: 'The scripted provider requests the text tool.' },
+    { type: 'policy.allowed', label: 'Policy allowed', description: 'The policy admits the exact tool request.' },
+    { type: 'tool.completed', label: 'Tool completed', description: 'The text tool counts three words.' },
+    { type: 'provider.finalized', label: 'Provider finalized', description: 'The provider formats the tool result.' },
+    { type: 'run.completed', label: 'Run completed', description: 'The coordinator records successful completion.' },
+  ],
+  result: '3 words',
+  receipt: {
+    recordVersion: 1,
+    limits: { providerTurns: 2, toolCalls: 1 },
+    terminal: { status: 'completed', answer: '3 words' },
+  },
+  lifecycleContract: {
+    label: 'Lower-level lifecycle contract asserted by pinned source tests.',
+    plugins: [
+      { pluginId: 'local-scripted', confirmedAbsent: true, cleanupErrors: [], exitCode: 0, oomKilled: false },
+      { pluginId: 'allow-text-stats', confirmedAbsent: true, cleanupErrors: [], exitCode: 0, oomKilled: false },
+      { pluginId: 'text-stats', confirmedAbsent: true, cleanupErrors: [], exitCode: 0, oomKilled: false },
+      { pluginId: 'local-scripted', confirmedAbsent: true, cleanupErrors: [], exitCode: 0, oomKilled: false },
+    ],
+  },
+};
+
+const fixture: PrismFixtureDTO = {
+  kind: 'prism', scenarios: [scenario],
+  provenance: { kind: 'local-synthetic', label: 'Local synthetic example. Unapproved for publication.' },
+};
+
+afterEach(() => vi.unstubAllEnvs());
+
+describe('Prism trace transitions', () => {
+  it('keeps Next, Previous, and receipt inspection inert before Start', () => {
+    expect(prismReducer(initialPrism, { type: 'next' })).toBe(initialPrism);
+    expect(prismReducer(initialPrism, { type: 'previous' })).toBe(initialPrism);
+    expect(prismReducer(initialPrism, { type: 'inspect-receipt' })).toBe(initialPrism);
+    expect(prismReducer(initialPrism, { type: 'close-receipt' })).toBe(initialPrism);
+    expect(prismView(initialPrism, fixture)).toMatchObject({
+      activeEvent: undefined, result: undefined, receipt: undefined, receiptEligible: false,
+      disabled: { start: false, previous: true, next: true, inspectReceipt: true },
+    });
+  });
+
+  it('walks all six events, exposes the terminal result and receipt, then walks backward', () => {
+    let state = prismReducer(initialPrism, { type: 'start' });
+    expect(state).toEqual({ eventIndex: 0, receiptOpen: false });
+    expect(prismReducer(state, { type: 'start' })).toBe(state);
+    for (let index = 0; index < scenario.events.length; index += 1) {
+      const view = prismView(state, fixture);
+      expect(view.activeEvent).toEqual(scenario.events[index]);
+      expect(view.result).toBe(index === 5 ? '3 words' : undefined);
+      expect(view.receiptEligible).toBe(index === 5);
+      if (index < 5) state = prismReducer(state, { type: 'next' });
+    }
+    expect(prismView(state, fixture).disabled.next).toBe(true);
+    expect(prismReducer(state, { type: 'next' })).toBe(state);
+    state = prismReducer(state, { type: 'inspect-receipt' });
+    expect(prismView(state, fixture).receipt).toEqual(scenario.receipt);
+    expect(prismReducer(state, { type: 'inspect-receipt' })).toBe(state);
+    const earlier = prismReducer(state, { type: 'previous' });
+    expect(earlier).toEqual({ eventIndex: 4, receiptOpen: false });
+    expect(prismView(earlier, fixture).result).toBeUndefined();
+    expect(prismView(earlier, fixture).receipt).toBeUndefined();
+    expect(prismReducer(earlier, { type: 'reset' })).toEqual(initialPrism);
+  });
+
+  it('bounds Previous at event zero and Reset restores every valid state', () => {
+    const first = prismReducer(initialPrism, { type: 'start' });
+    expect(prismReducer(first, { type: 'previous' })).toBe(first);
+    for (let eventIndex = -1; eventIndex < 6; eventIndex += 1) {
+      for (const receiptOpen of [false, true]) {
+        const state: PrismState = { eventIndex, receiptOpen };
+        expect(prismReducer(state, { type: 'reset' })).toEqual(initialPrism);
+      }
+    }
+  });
+});
+
+describe('Prism fixture and publication boundary', () => {
+  it('accepts the strict six-event DTO and explicitly projects every public field', () => {
+    const content = { kind: 'prism' as const, scenarios: [scenario] };
+    const parsed = prismFixtureSchema.parse(content);
+    expect(parsed.scenarios.map(projectPrismScenario)).toEqual(content.scenarios);
+    expect(prismFixtureDTOSchema.parse(fixture)).toEqual(fixture);
+  });
+
+  it('rejects malformed event counts, nested extras, private text, and receipt overclaims', () => {
+    const content = { kind: 'prism' as const, scenarios: [scenario] };
+    for (const poisoned of [
+      { ...content, internalNotes: 'extra' },
+      { ...content, scenarios: [{ ...scenario, events: scenario.events.slice(0, 5) }] },
+      { ...content, scenarios: [{ ...scenario, events: scenario.events.map((event, index) => index === 2 ? { ...event, raw: 'extra' } : event) }] },
+      { ...content, scenarios: [{ ...scenario, prompt: 'Read /Users/example/private' }] },
+      { ...content, scenarios: [{ ...scenario, receipt: { ...scenario.receipt, usage: { providerTurns: 2 } } }] },
+      { ...content, scenarios: [{ ...scenario, receipt: { ...scenario.receipt, cleanup: [] } }] },
+      { ...content, scenarios: [scenario, scenario] },
+    ]) expect(prismFixtureSchema.safeParse(poisoned).success).toBe(false);
+  });
+
+  it('projects the selected local fixture without approval metadata or unrelated fields', () => {
+    vi.stubEnv('NODE_ENV', 'development');
+    const content = { kind: 'prism' as const, scenarios: [scenario] };
+    const projected = projectLocalFixture(JSON.stringify(content), prismFixtureSchema, projectPrismScenario,
+      { manifest: { version: 1, snapshots: [] }, readBytes: () => new Uint8Array() });
+    expect(prismFixtureDTOSchema.parse(projected)).toEqual(fixture);
+    expect(JSON.stringify(projected)).not.toMatch(/approval|checkedDate|sourceRevision|sha256|runId|workspace|containerId/);
+  });
+
+  it('projects approved provenance only from a versioned, revision-pinned manifest snapshot', () => {
+    const content = Buffer.from(JSON.stringify({ kind: 'prism', scenarios: [scenario] }));
+    const poster = Buffer.from('synthetic poster bytes for projection testing');
+    const digest = (bytes: Uint8Array) => createHash('sha256').update(bytes).digest('hex');
+    const allowedFields = [
+      'kind', 'scenarios', 'scenarios.id', 'scenarios.prompt', 'scenarios.events',
+      'scenarios.events.type', 'scenarios.events.label', 'scenarios.events.description', 'scenarios.result',
+      'scenarios.receipt', 'scenarios.receipt.recordVersion', 'scenarios.receipt.limits',
+      'scenarios.receipt.limits.providerTurns', 'scenarios.receipt.limits.toolCalls',
+      'scenarios.receipt.terminal', 'scenarios.receipt.terminal.status', 'scenarios.receipt.terminal.answer',
+      'scenarios.lifecycleContract', 'scenarios.lifecycleContract.label', 'scenarios.lifecycleContract.plugins',
+      'scenarios.lifecycleContract.plugins.pluginId', 'scenarios.lifecycleContract.plugins.confirmedAbsent',
+      'scenarios.lifecycleContract.plugins.cleanupErrors', 'scenarios.lifecycleContract.plugins.exitCode',
+      'scenarios.lifecycleContract.plugins.oomKilled',
+    ];
+    const manifest = {
+      version: 1 as const,
+      snapshots: [{
+        id: 'prism-public-contract', approval: 'approved' as const, derivation: 'contract-derived' as const,
+        checkedDate: '2026-09-11', disclosure: 'Contract-derived test fixture with no captured identifiers.',
+        version: '0.1.0', sourceRevision: 'fcad9afece7a7c12395946f9dd3305de0250bc1c',
+        fixtures: [{ path: 'lib/work/fixtures/prism.json' as const, sha256: digest(content), mediaType: 'application/json' as const, allowedFields }],
+        media: [{ path: 'public/work/prism/overview.webp', sha256: digest(poster), mediaType: 'image/webp' as const, width: 1200, height: 800 }],
+      }],
+    };
+    const projected = prismFixtureDTOSchema.parse(projectApprovedFixture({
+      manifest, snapshotId: 'prism-public-contract', fixturePath: 'lib/work/fixtures/prism.json',
+      schema: prismFixtureSchema, projectScenario: projectPrismScenario,
+      readBytes: path => path === 'lib/work/fixtures/prism.json' ? content : poster,
+    }));
+    expect(projected.provenance).toEqual({
+      kind: 'approved', id: 'prism-public-contract', derivation: 'contract-derived', checkedDate: '2026-09-11',
+      disclosure: 'Contract-derived test fixture with no captured identifiers.', version: '0.1.0',
+      sourceRevision: 'fcad9afece7a7c12395946f9dd3305de0250bc1c',
+    });
+    manifest.snapshots[0].fixtures[0].allowedFields = allowedFields.filter(field => field !== 'scenarios.receipt.terminal.answer');
+    expect(() => projectApprovedFixture({
+      manifest, snapshotId: 'prism-public-contract', fixturePath: 'lib/work/fixtures/prism.json',
+      schema: prismFixtureSchema, projectScenario: projectPrismScenario,
+      readBytes: path => path === 'lib/work/fixtures/prism.json' ? content : poster,
+    })).toThrow(/not approved/i);
+  });
+
+  it('renders the authored draft only in development and returns production not-found', () => {
+    vi.stubEnv('NODE_ENV', 'development');
+    const development = resolvePrismPage(prism);
+    expect(development.view.kind).toBe('rich-draft');
+    expect(projectDevelopmentCaseStudyShell(prism)?.developmentLabel).toBe('Local synthetic example. Unapproved for publication.');
+    expect(development.metadata?.title).toBe('Prism | Work | Caleb Bolden');
+    vi.stubEnv('NODE_ENV', 'production');
+    const production = resolvePrismPage(prism);
+    expect(production).toEqual({ view: { kind: 'not-found' }, metadata: null });
+    expect(resolvePublicProjectView(prism)).toEqual({ kind: 'not-found' });
+  });
+
+  it('keeps the authored fixture server-side and aligned to the pinned contract', () => {
+    const source = readFileSync('lib/work/fixtures/prism.json', 'utf8');
+    const parsed = prismFixtureSchema.parse(JSON.parse(source));
+    expect(parsed.scenarios[0]).toMatchObject({
+      prompt: 'Count the words in: one two three', result: '3 words',
+      receipt: { recordVersion: 1, limits: { providerTurns: 2, toolCalls: 1 }, terminal: { status: 'completed', answer: '3 words' } },
+    });
+    expect(parsed.scenarios[0].events.map(event => event.type)).toEqual([
+      'goal.accepted', 'provider.tool-requested', 'policy.allowed', 'tool.completed', 'provider.finalized', 'run.completed',
+    ]);
+    expect(parsed.scenarios[0].lifecycleContract.plugins).toEqual([
+      { pluginId: 'local-scripted', confirmedAbsent: true, cleanupErrors: [], exitCode: 0, oomKilled: false },
+      { pluginId: 'allow-text-stats', confirmedAbsent: true, cleanupErrors: [], exitCode: 0, oomKilled: false },
+      { pluginId: 'text-stats', confirmedAbsent: true, cleanupErrors: [], exitCode: 0, oomKilled: false },
+      { pluginId: 'local-scripted', confirmedAbsent: true, cleanupErrors: [], exitCode: 0, oomKilled: false },
+    ]);
+    expect(source).not.toMatch(/https?:|@|\/Users\/|\.internal|sk-[A-Za-z0-9]+|runId|workspace|containerId|hardDeadlineAtMs|daemonState|settledAtMs/);
+  });
+});

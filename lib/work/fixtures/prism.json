@@ -1,0 +1,86 @@
+{
+  "kind": "prism",
+  "scenarios": [
+    {
+      "id": "word-count",
+      "prompt": "Count the words in: one two three",
+      "events": [
+        {
+          "type": "goal.accepted",
+          "label": "Goal accepted",
+          "description": "The bounded coordinator accepts the fixed goal."
+        },
+        {
+          "type": "provider.tool-requested",
+          "label": "Tool requested",
+          "description": "The scripted provider requests the text-stats tool."
+        },
+        {
+          "type": "policy.allowed",
+          "label": "Policy allowed",
+          "description": "The policy admits this exact tool request."
+        },
+        {
+          "type": "tool.completed",
+          "label": "Tool completed",
+          "description": "The text-stats tool counts three words."
+        },
+        {
+          "type": "provider.finalized",
+          "label": "Provider finalized",
+          "description": "The scripted provider formats the tool result."
+        },
+        {
+          "type": "run.completed",
+          "label": "Run completed",
+          "description": "The coordinator records successful completion."
+        }
+      ],
+      "result": "3 words",
+      "receipt": {
+        "recordVersion": 1,
+        "limits": {
+          "providerTurns": 2,
+          "toolCalls": 1
+        },
+        "terminal": {
+          "status": "completed",
+          "answer": "3 words"
+        }
+      },
+      "lifecycleContract": {
+        "label": "Lower-level lifecycle contract asserted by pinned source tests.",
+        "plugins": [
+          {
+            "pluginId": "local-scripted",
+            "confirmedAbsent": true,
+            "cleanupErrors": [],
+            "exitCode": 0,
+            "oomKilled": false
+          },
+          {
+            "pluginId": "allow-text-stats",
+            "confirmedAbsent": true,
+            "cleanupErrors": [],
+            "exitCode": 0,
+            "oomKilled": false
+          },
+          {
+            "pluginId": "text-stats",
+            "confirmedAbsent": true,
+            "cleanupErrors": [],
+            "exitCode": 0,
+            "oomKilled": false
+          },
+          {
+            "pluginId": "local-scripted",
+            "confirmedAbsent": true,
+            "cleanupErrors": [],
+            "exitCode": 0,
+            "oomKilled": false
+          }
+        ]
+      }
+    }
+  ]
+}
