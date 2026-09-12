@@ -1,0 +1,115 @@
+{
+  "kind": "control-center",
+  "scenarios": [
+    {
+      "id": "succeeds",
+      "label": "Succeeds",
+      "frozenAt": "2026-09-01T12:00:00Z",
+      "staleAfterMinutes": 60,
+      "runs": [
+        {
+          "id": "run-primary",
+          "name": "Refresh demo index",
+          "host": "worker-example-01",
+          "sourceType": "Scheduled run",
+          "primary": true,
+          "stale": false,
+          "startedAt": "2026-09-01T11:48:00Z",
+          "updatedAt": "2026-09-01T11:52:00Z",
+          "startedSummary": "The purpose-written sample run is in progress.",
+          "result": {
+            "status": "Succeeded",
+            "finishedAt": "2026-09-01T11:58:00Z",
+            "summary": "The sample index refresh finished successfully."
+          }
+        }
+      ],
+      "decisions": [
+        {
+          "id": "decision-retention",
+          "name": "Keep sample reports for 30 days?",
+          "sourceType": "Configuration review",
+          "createdAt": "2026-09-01T11:20:00Z",
+          "resolvedAt": "2026-09-01T11:40:00Z",
+          "explanation": "The fictional retention choice was resolved before the frozen example time."
+        }
+      ],
+      "spend": {
+        "label": "Sample spend",
+        "amount": "$18.40",
+        "period": "This frozen example"
+      },
+      "deployments": [
+        {
+          "id": "deployment-console",
+          "target": "demo-console.example",
+          "sha": "f1c7a2b",
+          "result": "Recorded successfully",
+          "recordedAt": "2026-09-01T11:36:00Z",
+          "explanation": "A fictional deployment record included only to demonstrate the read-only detail view."
+        }
+      ]
+    },
+    {
+      "id": "fails",
+      "label": "Fails",
+      "frozenAt": "2026-09-01T12:00:00Z",
+      "staleAfterMinutes": 60,
+      "runs": [
+        {
+          "id": "run-primary",
+          "name": "Refresh demo index",
+          "host": "worker-example-01",
+          "sourceType": "Scheduled run",
+          "primary": true,
+          "stale": false,
+          "startedAt": "2026-09-01T11:48:00Z",
+          "updatedAt": "2026-09-01T11:52:00Z",
+          "startedSummary": "The purpose-written sample run is in progress.",
+          "result": {
+            "status": "Failed",
+            "finishedAt": "2026-09-01T11:58:00Z",
+            "summary": "The sample index refresh stopped after a fictional validation error."
+          }
+        },
+        {
+          "id": "run-stale",
+          "name": "Archive sample reports",
+          "host": "worker-example-02",
+          "sourceType": "Run wrapper",
+          "primary": false,
+          "stale": true,
+          "startedAt": "2026-09-01T10:20:00Z",
+          "updatedAt": "2026-09-01T10:42:00Z",
+          "startedSummary": "No sample update has been recorded for more than 60 minutes.",
+          "result": null
+        }
+      ],
+      "decisions": [
+        {
+          "id": "decision-retention",
+          "name": "Keep sample reports for 30 days?",
+          "sourceType": "Configuration review",
+          "createdAt": "2026-09-01T11:20:00Z",
+          "resolvedAt": null,
+          "explanation": "This fictional retention choice still needs an operator decision."
+        }
+      ],
+      "spend": {
+        "label": "Sample spend",
+        "amount": "$18.40",
+        "period": "This frozen example"
+      },
+      "deployments": [
+        {
+          "id": "deployment-console",
+          "target": "demo-console.example",
+          "sha": "f1c7a2b",
+          "result": "Recorded successfully",
+          "recordedAt": "2026-09-01T11:36:00Z",
+          "explanation": "A fictional deployment record included only to demonstrate the read-only detail view."
+        }
+      ]
+    }
+  ]
+}
