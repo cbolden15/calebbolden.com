@@ -80,10 +80,10 @@ function CatalogView({ catalog }: { catalog: CatalogSelection }) {
   );
 }
 
-export default function WorkFilters({ cards, initialCategory }: { cards: readonly ProjectCard[]; initialCategory: CategoryFilter }) {
+export default function WorkFilters({ cards }: { cards: readonly ProjectCard[] }) {
   const searchParams = useSearchParams();
   const categoryValues = searchParams.getAll('category');
-  const selectedValue = categoryValues.length === 0 ? initialCategory : categoryValues.length === 1 ? categoryValues[0] : categoryValues;
+  const selectedValue = categoryValues.length === 1 ? categoryValues[0] : categoryValues;
   const catalog = selectCatalog(cards, selectedValue);
 
   useEffect(() => {

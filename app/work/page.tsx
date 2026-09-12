@@ -4,9 +4,10 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Reveal from '@/components/Reveal';
 import WorkFilters from '@/components/work/WorkFilters';
+import showcaseStyles from '@/components/work/Showcase.module.css';
 import { getAllBlogPosts } from '@/lib/blog/getBlogPosts';
 import { getCatalog } from '@/lib/work/catalog';
-import { normalizeCategory, type ProjectCard } from '@/lib/work/public-content';
+import type { ProjectCard } from '@/lib/work/public-content';
 
 export const metadata: Metadata = {
   title: 'Work | Caleb Bolden',
@@ -18,8 +19,7 @@ type WorkPageProps = {
 };
 
 export default async function WorkPage({ searchParams }: WorkPageProps) {
-  const params = await searchParams;
-  const initialCategory = normalizeCategory(params.category);
+  await searchParams;
   const allCatalog = getCatalog('all');
   const cards = [allCatalog.featured, ...allCatalog.rows].filter((card): card is ProjectCard => card !== null);
   const posts = getAllBlogPosts().slice(0, 3);
@@ -31,26 +31,26 @@ export default async function WorkPage({ searchParams }: WorkPageProps) {
         <section className="graph-field graph-fade py-12 lg:py-16">
           <div className="mx-auto w-[90%] max-w-[1200px]">
             <Reveal>
-              <p className="anno anno-blue mb-5">products and developer tools</p>
+              <p className="anno anno-blue mb-5">products and tools I&apos;ve built</p>
               <h1 className="type-display" style={{ fontSize: 'clamp(2.4rem, 5.5vw, 4.25rem)' }}>
                 Work
               </h1>
               <p className="mt-5 max-w-2xl" style={{ fontSize: 17, lineHeight: 1.65, color: 'var(--color-ink-muted)' }}>
-                Products I run, tools I build, and the decisions behind them. Filter the published work below; drafts stay private until their evidence is reviewed.
+                I build AI products for real operational work, along with tools for developing and running them. Explore a workflow, see the decisions behind it, and find out what each project does today.
               </p>
             </Reveal>
           </div>
         </section>
 
-        <section className="py-10 lg:py-12" style={{ borderTop: '1px solid var(--color-hairline)' }} aria-labelledby="selected-work">
-          <div className="mx-auto w-[90%] max-w-[1200px]">
+        <section className={`${showcaseStyles.surface} py-10 lg:py-12`} style={{ borderTop: '1px solid var(--color-hairline)' }} aria-labelledby="selected-work" data-work-surface>
+          <div className={showcaseStyles.content} data-work-content>
             <Reveal>
               <p className="anno anno-blue mb-3">selected work</p>
               <h2 id="selected-work" className="type-display mb-7" style={{ fontSize: 'clamp(1.6rem, 3vw, 2.2rem)' }}>
                 Built for real operations
               </h2>
             </Reveal>
-            <WorkFilters cards={cards} initialCategory={initialCategory} />
+            <WorkFilters cards={cards} />
           </div>
         </section>
 
@@ -137,7 +137,7 @@ export default async function WorkPage({ searchParams }: WorkPageProps) {
                 <p className="anno anno-blue sm:col-span-2">client work</p>
                 <div className="sm:col-span-8 sm:col-start-4">
                   <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--color-ink-muted)' }}>
-                    Everything above is mine. Client engagements are the newer half of this practice, and one is in progress right now. Nothing on this page carries someone else&apos;s name yet. The named case study goes here when that engagement wraps and the client has approved what it says.
+                    Everything above is mine. Client work is a separate part of this practice. I publish a named client case study only after the engagement is complete and the client has approved what the page says.
                   </p>
                   <Link href="/results" className="link-draw mt-5 inline-block" style={{ fontSize: 14.5, color: 'var(--color-blue)' }}>
                     See how engagements are structured and what the founding-client offer includes
@@ -152,6 +152,7 @@ export default async function WorkPage({ searchParams }: WorkPageProps) {
           <div className="mx-auto w-[90%] max-w-[1200px]">
             <Reveal>
               <div className="max-w-2xl rounded-[2px] p-8 sm:p-10" style={{ background: 'var(--color-bg)', border: '1.5px solid var(--color-blue)' }}>
+                <p className="anno anno-blue mb-4">Have a workflow like this?</p>
                 <h2 className="type-display mb-5" style={{ fontSize: 'clamp(1.6rem, 2.6vw, 2.1rem)' }}>
                   Start with the audit
                 </h2>
@@ -161,8 +162,8 @@ export default async function WorkPage({ searchParams }: WorkPageProps) {
                 <div className="mt-7">
                   <Link href="/contact" className="btn-ink btn-roll">
                     <span className="roll-box">
-                      <span className="roll-a">Let&apos;s talk</span>
-                      <span className="roll-b" aria-hidden="true">Let&apos;s talk</span>
+                      <span className="roll-a">Discuss a project</span>
+                      <span className="roll-b" aria-hidden="true">Discuss a project</span>
                     </span>
                   </Link>
                 </div>

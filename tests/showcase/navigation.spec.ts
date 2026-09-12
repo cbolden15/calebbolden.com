@@ -20,11 +20,14 @@ async function expectCatalog(page: Page, slugs: string[], count: number) {
 }
 
 async function expectFixedSections(page: Page) {
+  await expect(page.getByText('I build AI products for real operational work, along with tools for developing and running them. Explore a workflow, see the decisions behind it, and find out what each project does today.', { exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: 'How my own operation runs on AI' })).toHaveAttribute('href', '/how-i-build');
   await expect(page.getByRole('link', { name: 'Explore open source' })).toHaveAttribute('href', '/work/open-source');
   await expect(page.getByRole('link', { name: 'See how engagements are structured and what the founding-client offer includes' })).toHaveAttribute('href', '/results');
-  await expect(page.getByRole('link', { name: "Let's talk" }).first()).toHaveAttribute('href', '/contact');
+  await expect(page.getByText('Have a workflow like this?', { exact: true })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Discuss a project' })).toHaveAttribute('href', '/contact');
   await expect(page.getByRole('link', { name: 'Take the free AI readiness assessment' })).toHaveAttribute('href', '/tools/ai-readiness');
+  await expect(page.locator('[data-work-section="client-work"]')).not.toContainText('in progress right now');
 }
 
 for (const path of retainedRoutes) {
@@ -47,16 +50,43 @@ test('current published catalog has exact ordered cards and no featured duplicat
   await expectFixedSections(page);
 });
 
-test('first published feature begins within the 1440 by 900 viewport when chat is collapsed', async ({ page }) => {
+test('feature layout begins within the 1440 by 900 viewport as the poster-position precondition', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/work');
   await page.evaluate(() => document.documentElement.setAttribute('data-chat', 'collapsed'));
 
-  const feature = page.locator('[data-work-card][data-featured="true"]');
-  await expect(feature).toBeVisible();
-  const bounds = await feature.boundingBox();
+  const featureLayout = page.locator('[data-work-card][data-featured="true"]');
+  await expect(featureLayout).toBeVisible();
+  const bounds = await featureLayout.boundingBox();
   expect(bounds).not.toBeNull();
   expect(bounds!.y).toBeLessThan(900);
+});
+
+test('catalog responds to its actual post-chat available width', async ({ page }) => {
+  await page.setViewportSize({ width: 1000, height: 900 });
+  await page.goto('/work');
+  await expect.poll(() => page.evaluate(() => document.documentElement.dataset.chat)).toBe('open');
+
+  await expect.poll(async () => page.locator('[data-work-surface]').evaluate(surface => {
+    const content = surface.querySelector<HTMLElement>('[data-work-content]')!;
+    const featureGrid = surface.querySelector<HTMLElement>('[data-work-card][data-featured="true"] article > div')!;
+    return {
+      surfaceWidth: surface.getBoundingClientRect().width,
+      contentPaddingLeft: getComputedStyle(content).paddingLeft,
+      featureColumns: getComputedStyle(featureGrid).gridTemplateColumns.split(' ').length,
+    };
+  }), { timeout: 5_000 }).toMatchObject({ surfaceWidth: 640, contentPaddingLeft: '32px', featureColumns: 1 });
+
+  await page.setViewportSize({ width: 590, height: 900 });
+  await expect.poll(() => page.locator('[data-work-surface]').evaluate(surface => {
+    const content = surface.querySelector<HTMLElement>('[data-work-content]')!;
+    const rowGrid = surface.querySelector<HTMLElement>('[data-work-card][data-featured="false"] article > div')!;
+    return {
+      surfaceWidth: surface.getBoundingClientRect().width,
+      contentPaddingLeft: getComputedStyle(content).paddingLeft,
+      rowColumns: getComputedStyle(rowGrid).gridTemplateColumns.split(' ').length,
+    };
+  }), { timeout: 5_000 }).toEqual({ surfaceWidth: 590, contentPaddingLeft: '20px', rowColumns: 1 });
 });
 
 test('direct category URLs normalize unknown and repeated category values', async ({ page }) => {
@@ -110,6 +140,34 @@ test('filter history, focus, reload, and list stay in URL parity', async ({ page
   await expectFixedSections(page);
 });
 
+test('direct filtered pages can select All and preserve URL parity through Back and Forward', async ({ page }) => {
+  for (const start of [
+    { path: '/work?category=products', label: 'Products', slugs: currentPublishedSlugs, count: 3 },
+    { path: '/work?category=developer-tools', label: 'Developer tools', slugs: [], count: 0 },
+  ]) {
+    await page.goto(start.path);
+    await expect(page.getByRole('link', { name: start.label })).toHaveAttribute('aria-current', 'page');
+
+    const all = page.getByRole('link', { name: 'All', exact: true });
+    await all.click();
+    await expect(page).toHaveURL('/work');
+    await expect(all).toHaveAttribute('aria-current', 'page');
+    await expect(all).toBeFocused();
+    await expectCatalog(page, currentPublishedSlugs, 3);
+
+    await page.goBack();
+    await expect(page).toHaveURL(start.path);
+    await expect(page.getByRole('link', { name: start.label })).toHaveAttribute('aria-current', 'page');
+    await expectCatalog(page, start.slugs, start.count);
+
+    await page.goForward();
+    await expect(page).toHaveURL('/work');
+    await expect(all).toHaveAttribute('aria-current', 'page');
+    await expect(all).toBeFocused();
+    await expectCatalog(page, currentPublishedSlugs, 3);
+  }
+});
+
 test('native direct GET honors the selected filter without JavaScript', async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, baseURL: 'http://localhost:3100' });
   const unexpected = await localOnly(context);
@@ -131,4 +189,16 @@ test.skip('complete catalog filters and five public flagship destinations @relea
   await expectCatalog(page, ['vora', 'chapterhq', 'site-assistant'], 3);
   await page.getByRole('link', { name: 'Developer tools' }).click();
   await expectCatalog(page, ['prism', 'agent-team', 'agent-config', 'control-center'], 4);
+});
+
+test.skip('approved featured poster begins within the 1440 by 900 viewport @release', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/work');
+  await page.evaluate(() => document.documentElement.setAttribute('data-chat', 'collapsed'));
+
+  const poster = page.locator('[data-work-card][data-featured="true"] img');
+  await expect(poster).toBeVisible();
+  const bounds = await poster.boundingBox();
+  expect(bounds).not.toBeNull();
+  expect(bounds!.y).toBeLessThan(900);
 });
