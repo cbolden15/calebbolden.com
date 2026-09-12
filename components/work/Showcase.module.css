@@ -25,6 +25,10 @@
 .decisions > * { grid-column: span 4; }
 .feature > :only-child, .row > :only-child { grid-column: 1 / -1; }
 .feature > *, .workflow > *, .row > *, .decisions > * { min-width: 0; }
+/* Stage labels need their own available-space limit, independent of viewport breakpoints. */
+.teamStages { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr)); }
+.teamStage { flex-direction: column; align-items: flex-start; }
+
 .bands { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
 .media { min-width: 0; }

@@ -40,14 +40,14 @@ export default function AgentTeamInteractive({ fixture }: { fixture: AgentTeamFi
 
       <p className="mt-4 max-w-[70ch]">{view.scenario.summary}</p>
 
-      <ol className="mt-6 grid gap-2 sm:grid-cols-5" aria-label="Run stages">
+      <ol className={`${styles.teamStages} mt-6 gap-2`} aria-label="Run stages">
         {view.scenario.stages.map((stage, index) => {
           const reachable = view.reachableStages.includes(index);
           return (
             <li key={stage.id}>
               <button
                 type="button"
-                className={`${buttonClass} h-full w-full text-left`}
+                className={`${buttonClass} ${styles.teamStage} h-full w-full text-left`}
                 aria-current={state.stage === index ? 'step' : undefined}
                 disabled={!reachable}
                 onClick={() => act({ type: 'select-stage', index })}

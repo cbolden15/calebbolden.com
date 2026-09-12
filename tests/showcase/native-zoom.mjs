@@ -38,7 +38,7 @@ try {
   assert.equal(after.cssZoom,'1'); assert.equal(after.visualScale,1);
   assert.equal(after.scrollWidth,after.innerWidth);
   const routes = [];
-  for (const slug of ['vora','prism','agent-team','agent-config','control-center']) {
+  for (const slug of (process.env.SHOWCASE_ZOOM_SLUGS?.split(',') ?? ['vora','prism','agent-team','agent-config','control-center'])) {
     await page.goto('http://localhost:3100/work/'+slug, {waitUntil:'networkidle'});
     // Native per-tab zoom resets on a full navigation. Set and verify it on each actual page.
     const routeZoom = await worker.evaluate(async () => { const [tab] = await chrome.tabs.query({url:'http://localhost/*'}); await chrome.tabs.setZoom(tab.id,2); return chrome.tabs.getZoom(tab.id); });
@@ -53,8 +53,14 @@ try {
     await page.locator('[data-demo-enhancement]').getByRole('button',{name:'Reset',exact:true}).click();
     const layout = await measure(); assert.equal(layout.scrollWidth,layout.innerWidth); assert.equal(layout.outerWidth,before.outerWidth);
     await controls.first().scrollIntoViewIfNeeded();
+    if(slug==='agent-team') {
+      const stages=page.locator('[data-demo-enhancement]').getByRole('list',{name:'Run stages'});
+      const labels=await stages.locator('button > span').evaluateAll(spans=>spans.map(span=>{const range=document.createRange();range.selectNodeContents(span);return {text:span.textContent,lines:new Set([...range.getClientRects()].map(r=>Math.round(r.y))).size};}));
+      assert(labels.every(label=>label.lines===1),JSON.stringify(labels));
+    }
     const hit = await controls.first().evaluate(el => { const b=el.getBoundingClientRect(); const target=document.elementFromPoint(b.x+b.width/2,b.y+b.height/2);return target===el || !!target&&el.contains(target); });
     assert(hit,'Actual native-zoom control must be the viewport hit target');
+    if(slug==='agent-team') await page.locator('[data-demo-enhancement]').getByRole('list',{name:'Run stages'}).scrollIntoViewIfNeeded();
     // Chromium's native zoom uses device-independent Page metrics for the capture clip.
     // Playwright's CSS-sized default clip cropped the 2x page; preserve the actual native viewport.
     const cdp=await context.newCDPSession(page);

@@ -212,3 +212,17 @@ for (const reducedMotion of ['reduce', 'no-preference'] as const) test(`Home Pro
   }
   const path = info.outputPath(`proof-${reducedMotion}.png`); await page.screenshot({ path }); await info.attach('proof-hit-test', { path, contentType: 'image/png' });
 });
+
+test('Team stage numbers and whole labels stay on one line at every available width', async ({ page }) => {
+  await page.setViewportSize({width:1440,height:900}); await page.goto('/work/agent-team');
+  await page.getByRole('button',{name:'Hide assistant',exact:true}).click();
+  await page.locator('[data-demo-enhancement]').scrollIntoViewIfNeeded();
+  const stages=page.locator('[data-demo-enhancement]').getByRole('list',{name:'Run stages'});
+  await expect(stages).toBeVisible();
+  for(const width of [320,390,599,599.5,600,640,768,799,799.5,800,1024,1440]) {
+    await page.locator('[data-showcase-surface]').evaluate((el,w)=>{(el as HTMLElement).style.width=`${w}px`;},width);
+    const labels=await stages.locator('button > span').evaluateAll(spans=>spans.map(span=>{const range=document.createRange();range.selectNodeContents(span);return {text:span.textContent,lines:new Set([...range.getClientRects()].map(r=>Math.round(r.y))).size};}));
+    expect(labels.every(label=>label.lines===1),JSON.stringify({width,labels})).toBe(true);
+    expect(await stages.evaluate(el=>el.scrollWidth<=el.clientWidth+1)).toBe(true);
+  }
+});

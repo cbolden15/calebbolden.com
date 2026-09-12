@@ -141,6 +141,8 @@ for (const demo of demos) {
     await r.getByRole('button', { name: 'Reset', exact: true }).click();
     expect(await page.evaluate(() => JSON.stringify({ local: { ...localStorage }, session: { ...sessionStorage } }))).toBe(before);
     expect(await page.evaluate(() => (window as unknown as { demoWrites: string[] }).demoWrites)).toEqual([]);
+    expect(await page.evaluate(() => (window as unknown as { startupWrites: string[] }).startupWrites)).toEqual(baselineStartup);
+    await expect(page).toHaveURL(`/work/${demo.slug}`);
   });
   test(`${demo.slug} actual implementation chunk failure and independent poster failure preserve native shell`, async ({ browser }) => {
     const discovery = await browser.newContext(); const unexpected = await localOnly(discovery);
@@ -233,4 +235,23 @@ test('Team stage details reset at every reachable stage and retry history retain
     await expect(r.getByRole('heading',{name:'Stage details',exact:true})).toHaveCount(0);
     await expect(r.getByRole('heading',{name:'Task',exact:true})).toBeFocused();
   }
+});
+
+test('Center attention clears hidden selection and terminal counts preserve sample spend and deployments', async ({ page }) => {
+  const r=await openDemo(page,'control-center');
+  const button=(name:string)=>r.getByRole('button',{name,exact:true});
+  const totals=r.getByLabel('Sample dashboard totals');
+  const fixed=async()=>[await totals.locator(':scope > div').nth(2).textContent(),await totals.locator(':scope > div').nth(3).textContent()];
+  const baseline=await fixed();
+  for(const scenario of ['Succeeds','Fails']) for(const filter of ['Show all','Needs attention']) {
+    await button('Reset').click(); await button(scenario).click(); await button(filter).focus(); await page.keyboard.press('Enter');
+    await expect(r.getByRole('status')).toHaveText(`${filter} filter selected.`);
+    if(filter==='Needs attention') await expect(r.getByText('Select a visible run, decision, or deployment to inspect its sample record.',{exact:true})).toBeVisible();
+    await button('Show sample run result').click();
+    await expect(r.locator('[data-center-state]')).toContainText(scenario==='Fails'?'2 runs and 1 decision':filter==='Show all'?'1 run and 1 decision':'0 runs and 0 decisions');
+    expect(await fixed()).toEqual(baseline);
+  }
+  await page.goto('/work/agent-team'); await page.locator('[data-demo-enhancement]').scrollIntoViewIfNeeded();
+  const retry=page.locator('[data-demo-enhancement]').getByRole('button',{name:'QA retry',exact:true});
+  await retry.focus(); await page.keyboard.press('Space'); await expect(retry).toHaveAttribute('aria-pressed','true');
 });
