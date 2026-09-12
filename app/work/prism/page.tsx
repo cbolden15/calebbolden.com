@@ -5,7 +5,8 @@ import { notFound } from 'next/navigation';
 import WorkDetail from '@/components/WorkDetail';
 import { projectRecords, evidenceManifest } from '@/lib/work/catalog';
 import { projectApprovedFixture, projectLocalFixture } from '@/lib/work/evidence';
-import { initialPrism, prismFixtureDTOSchema, prismFixtureSchema, prismView, projectPrismScenario } from '@/lib/work/demos/prism';
+import { initialPrism, prismFixtureDTOSchema, prismView, projectPrismScenario } from '@/lib/work/demos/prism';
+import { prismContractFixtureSchema } from '@/lib/work/prism-contract.server';
 import { projectCaseStudyShell, projectDevelopmentCaseStudyShell } from '@/lib/work/public-content';
 import { resolvePrismPage } from '@/lib/work/projects/prism';
 
@@ -34,13 +35,13 @@ export default async function PrismPage() {
         manifest: evidenceManifest,
         snapshotId: view.body.interaction.snapshotId,
         fixturePath: 'lib/work/fixtures/prism.json',
-        schema: prismFixtureSchema,
+        schema: prismContractFixtureSchema,
         projectScenario: projectPrismScenario,
         readBytes,
       })
     : projectLocalFixture(
         readBytes('lib/work/fixtures/prism.json').toString(),
-        prismFixtureSchema,
+        prismContractFixtureSchema,
         projectPrismScenario,
         { manifest: evidenceManifest, readBytes },
       );

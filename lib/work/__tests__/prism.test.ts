@@ -15,6 +15,7 @@ import { prism, resolvePrismPage } from '../projects/prism';
 import { projectApprovedFixture, projectLocalFixture } from '../evidence';
 import { projectDevelopmentCaseStudyShell } from '../public-content';
 import { resolvePublicProjectView } from '../publication';
+import { prismContractFixtureSchema } from '../prism-contract.server';
 
 const scenario: PrismFixtureDTO['scenarios'][number] = {
   id: 'word-count',
@@ -48,6 +49,39 @@ const fixture: PrismFixtureDTO = {
   kind: 'prism', scenarios: [scenario],
   provenance: { kind: 'local-synthetic', label: 'Local synthetic example. Unapproved for publication.' },
 };
+
+const approvedAllowedFields = [
+  'kind', 'scenarios', 'scenarios.id', 'scenarios.prompt', 'scenarios.events',
+  'scenarios.events.type', 'scenarios.events.label', 'scenarios.events.description', 'scenarios.result',
+  'scenarios.receipt', 'scenarios.receipt.recordVersion', 'scenarios.receipt.limits',
+  'scenarios.receipt.limits.providerTurns', 'scenarios.receipt.limits.toolCalls',
+  'scenarios.receipt.terminal', 'scenarios.receipt.terminal.status', 'scenarios.receipt.terminal.answer',
+  'scenarios.lifecycleContract', 'scenarios.lifecycleContract.label', 'scenarios.lifecycleContract.plugins',
+  'scenarios.lifecycleContract.plugins.pluginId', 'scenarios.lifecycleContract.plugins.confirmedAbsent',
+  'scenarios.lifecycleContract.plugins.cleanupErrors', 'scenarios.lifecycleContract.plugins.exitCode',
+  'scenarios.lifecycleContract.plugins.oomKilled',
+];
+
+function approvedProjectionOptions(sourceScenario: PrismFixtureDTO['scenarios'][number] = scenario) {
+  const content = Buffer.from(JSON.stringify({ kind: 'prism', scenarios: [sourceScenario] }));
+  const poster = Buffer.from('synthetic poster bytes for projection testing');
+  const digest = (bytes: Uint8Array) => createHash('sha256').update(bytes).digest('hex');
+  const manifest = {
+    version: 1 as const,
+    snapshots: [{
+      id: 'prism-public-contract', approval: 'approved' as const, derivation: 'contract-derived' as const,
+      checkedDate: '2026-09-11', disclosure: 'Contract-derived test fixture with no captured identifiers.',
+      version: '0.1.0', sourceRevision: 'fcad9afece7a7c12395946f9dd3305de0250bc1c',
+      fixtures: [{ path: 'lib/work/fixtures/prism.json' as const, sha256: digest(content), mediaType: 'application/json' as const, allowedFields: [...approvedAllowedFields] }],
+      media: [{ path: 'public/work/prism/overview.webp', sha256: digest(poster), mediaType: 'image/webp' as const, width: 1200, height: 800 }],
+    }],
+  };
+  return {
+    manifest, snapshotId: 'prism-public-contract', fixturePath: 'lib/work/fixtures/prism.json' as const,
+    schema: prismContractFixtureSchema, projectScenario: projectPrismScenario,
+    readBytes: (path: string) => path === 'lib/work/fixtures/prism.json' ? content : poster,
+  };
+}
 
 afterEach(() => vi.unstubAllEnvs());
 
@@ -122,53 +156,28 @@ describe('Prism fixture and publication boundary', () => {
   it('projects the selected local fixture without approval metadata or unrelated fields', () => {
     vi.stubEnv('NODE_ENV', 'development');
     const content = { kind: 'prism' as const, scenarios: [scenario] };
-    const projected = projectLocalFixture(JSON.stringify(content), prismFixtureSchema, projectPrismScenario,
+    const projected = projectLocalFixture(JSON.stringify(content), prismContractFixtureSchema, projectPrismScenario,
       { manifest: { version: 1, snapshots: [] }, readBytes: () => new Uint8Array() });
     expect(prismFixtureDTOSchema.parse(projected)).toEqual(fixture);
     expect(JSON.stringify(projected)).not.toMatch(/approval|checkedDate|sourceRevision|sha256|runId|workspace|containerId/);
   });
 
   it('projects approved provenance only from a versioned, revision-pinned manifest snapshot', () => {
-    const content = Buffer.from(JSON.stringify({ kind: 'prism', scenarios: [scenario] }));
-    const poster = Buffer.from('synthetic poster bytes for projection testing');
-    const digest = (bytes: Uint8Array) => createHash('sha256').update(bytes).digest('hex');
-    const allowedFields = [
-      'kind', 'scenarios', 'scenarios.id', 'scenarios.prompt', 'scenarios.events',
-      'scenarios.events.type', 'scenarios.events.label', 'scenarios.events.description', 'scenarios.result',
-      'scenarios.receipt', 'scenarios.receipt.recordVersion', 'scenarios.receipt.limits',
-      'scenarios.receipt.limits.providerTurns', 'scenarios.receipt.limits.toolCalls',
-      'scenarios.receipt.terminal', 'scenarios.receipt.terminal.status', 'scenarios.receipt.terminal.answer',
-      'scenarios.lifecycleContract', 'scenarios.lifecycleContract.label', 'scenarios.lifecycleContract.plugins',
-      'scenarios.lifecycleContract.plugins.pluginId', 'scenarios.lifecycleContract.plugins.confirmedAbsent',
-      'scenarios.lifecycleContract.plugins.cleanupErrors', 'scenarios.lifecycleContract.plugins.exitCode',
-      'scenarios.lifecycleContract.plugins.oomKilled',
-    ];
-    const manifest = {
-      version: 1 as const,
-      snapshots: [{
-        id: 'prism-public-contract', approval: 'approved' as const, derivation: 'contract-derived' as const,
-        checkedDate: '2026-09-11', disclosure: 'Contract-derived test fixture with no captured identifiers.',
-        version: '0.1.0', sourceRevision: 'fcad9afece7a7c12395946f9dd3305de0250bc1c',
-        fixtures: [{ path: 'lib/work/fixtures/prism.json' as const, sha256: digest(content), mediaType: 'application/json' as const, allowedFields }],
-        media: [{ path: 'public/work/prism/overview.webp', sha256: digest(poster), mediaType: 'image/webp' as const, width: 1200, height: 800 }],
-      }],
-    };
-    const projected = prismFixtureDTOSchema.parse(projectApprovedFixture({
-      manifest, snapshotId: 'prism-public-contract', fixturePath: 'lib/work/fixtures/prism.json',
-      schema: prismFixtureSchema, projectScenario: projectPrismScenario,
-      readBytes: path => path === 'lib/work/fixtures/prism.json' ? content : poster,
-    }));
+    const options = approvedProjectionOptions();
+    const projected = prismFixtureDTOSchema.parse(projectApprovedFixture(options));
     expect(projected.provenance).toEqual({
       kind: 'approved', id: 'prism-public-contract', derivation: 'contract-derived', checkedDate: '2026-09-11',
       disclosure: 'Contract-derived test fixture with no captured identifiers.', version: '0.1.0',
       sourceRevision: 'fcad9afece7a7c12395946f9dd3305de0250bc1c',
     });
-    manifest.snapshots[0].fixtures[0].allowedFields = allowedFields.filter(field => field !== 'scenarios.receipt.terminal.answer');
-    expect(() => projectApprovedFixture({
-      manifest, snapshotId: 'prism-public-contract', fixturePath: 'lib/work/fixtures/prism.json',
-      schema: prismFixtureSchema, projectScenario: projectPrismScenario,
-      readBytes: path => path === 'lib/work/fixtures/prism.json' ? content : poster,
-    })).toThrow(/not approved/i);
+    options.manifest.snapshots[0].fixtures[0].allowedFields = approvedAllowedFields.filter(field => field !== 'scenarios.receipt.terminal.answer');
+    expect(() => projectApprovedFixture(options)).toThrow(/not approved/i);
+  });
+
+  it('rejects semantically changed bytes through the approved projection path even with a matching digest', () => {
+    const changed = structuredClone(scenario);
+    changed.prompt = 'Count the words in: one two';
+    expect(() => projectApprovedFixture(approvedProjectionOptions(changed))).toThrow(/Prism v0\.1\.0 contract/i);
   });
 
   it('renders the authored draft only in development and returns production not-found', () => {
@@ -185,7 +194,7 @@ describe('Prism fixture and publication boundary', () => {
 
   it('keeps the authored fixture server-side and aligned to the pinned contract', () => {
     const source = readFileSync('lib/work/fixtures/prism.json', 'utf8');
-    const parsed = prismFixtureSchema.parse(JSON.parse(source));
+    const parsed = prismContractFixtureSchema.parse(JSON.parse(source));
     expect(parsed.scenarios[0]).toMatchObject({
       prompt: 'Count the words in: one two three', result: '3 words',
       receipt: { recordVersion: 1, limits: { providerTurns: 2, toolCalls: 1 }, terminal: { status: 'completed', answer: '3 words' } },
@@ -200,5 +209,79 @@ describe('Prism fixture and publication boundary', () => {
       { pluginId: 'local-scripted', confirmedAbsent: true, cleanupErrors: [], exitCode: 0, oomKilled: false },
     ]);
     expect(source).not.toMatch(/https?:|@|\/Users\/|\.internal|sk-[A-Za-z0-9]+|runId|workspace|containerId|hardDeadlineAtMs|daemonState|settledAtMs/);
+  });
+});
+
+describe('Prism pinned server contract', () => {
+  const content = () => ({ kind: 'prism' as const, scenarios: [structuredClone(scenario)] });
+  const rejectedByActualProjection = (candidate: ReturnType<typeof content>) => {
+    vi.stubEnv('NODE_ENV', 'development');
+    expect(() => projectLocalFixture(JSON.stringify(candidate), prismContractFixtureSchema, projectPrismScenario,
+      { manifest: { version: 1, snapshots: [] }, readBytes: () => new Uint8Array() })).toThrow(/Prism v0\.1\.0 contract/i);
+  };
+
+  it('rejects changed prompt, result, or terminal answer on the route projection schema', () => {
+    const changedPrompt = content();
+    changedPrompt.scenarios[0].prompt = 'Count the words in: one two';
+    rejectedByActualProjection(changedPrompt);
+    const changedResult = content();
+    changedResult.scenarios[0].result = '2 words';
+    rejectedByActualProjection(changedResult);
+    const changedTerminal = content();
+    changedTerminal.scenarios[0].receipt.terminal.answer = '2 words';
+    rejectedByActualProjection(changedTerminal);
+  });
+
+  it('rejects swapped, repeated, or invented event identifiers', () => {
+    const swapped = content();
+    [swapped.scenarios[0].events[1], swapped.scenarios[0].events[2]] = [swapped.scenarios[0].events[2], swapped.scenarios[0].events[1]];
+    rejectedByActualProjection(swapped);
+    const repeated = content();
+    repeated.scenarios[0].events[1].type = repeated.scenarios[0].events[0].type;
+    rejectedByActualProjection(repeated);
+    const invented = content();
+    invented.scenarios[0].events[4].type = 'provider.invented';
+    rejectedByActualProjection(invented);
+  });
+
+  it('rejects altered fixed limits', () => {
+    for (const [field, value] of [['providerTurns', 3], ['toolCalls', 2]] as const) {
+      const changed = content();
+      changed.scenarios[0].receipt.limits[field] = value;
+      rejectedByActualProjection(changed);
+    }
+  });
+
+  it('rejects missing, reordered, repeated, or arbitrary lifecycle plugin identities', () => {
+    const missing = content();
+    missing.scenarios[0].lifecycleContract.plugins.pop();
+    rejectedByActualProjection(missing);
+    const reordered = content();
+    [reordered.scenarios[0].lifecycleContract.plugins[0], reordered.scenarios[0].lifecycleContract.plugins[1]] =
+      [reordered.scenarios[0].lifecycleContract.plugins[1], reordered.scenarios[0].lifecycleContract.plugins[0]];
+    rejectedByActualProjection(reordered);
+    const repeated = content();
+    repeated.scenarios[0].lifecycleContract.plugins[1].pluginId = 'local-scripted';
+    rejectedByActualProjection(repeated);
+    const arbitrary = content();
+    arbitrary.scenarios[0].lifecycleContract.plugins[2].pluginId = 'arbitrary-tool';
+    rejectedByActualProjection(arbitrary);
+  });
+
+  it('rejects every failed lifecycle invariant', () => {
+    const absence = content();
+    absence.scenarios[0].lifecycleContract.plugins[0].confirmedAbsent = false;
+    rejectedByActualProjection(absence);
+    const cleanup = content();
+    cleanup.scenarios[0].lifecycleContract.plugins[1].cleanupErrors = ['cleanup failed'];
+    rejectedByActualProjection(cleanup);
+    for (const exitCode of [null, 1]) {
+      const exit = content();
+      exit.scenarios[0].lifecycleContract.plugins[2].exitCode = exitCode;
+      rejectedByActualProjection(exit);
+    }
+    const oom = content();
+    oom.scenarios[0].lifecycleContract.plugins[3].oomKilled = true;
+    rejectedByActualProjection(oom);
   });
 });
