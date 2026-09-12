@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { createHash } from 'node:crypto';
-import { gzipSync } from 'node:zlib';
+import { artifact, responseArtifact } from './artifacts';
 import { test, expect } from './helpers';
 const files = (path: string): string[] => readdirSync(path, { withFileTypes: true }).flatMap(e => e.isDirectory() ? files(join(path,e.name)) : [join(path,e.name)]);
 
@@ -11,10 +11,28 @@ test('fresh isolated source candidate has explicit HTTP body metadata catalog si
   const selectors = JSON.parse(readFileSync(process.env.SHOWCASE_EXPECTATION!.replace('expectation.json', 'selectors.json'), 'utf8'));
   const richVora = ['approved-rich','four-new-drafts'].includes(expected.state);
   const checks = [];
+  const responses = [];
+  const buildId=readFileSync('.next/BUILD_ID','utf8').trim();
   for (const route of ['/', '/work', '/work?category=products', '/work?category=developer-tools', '/how-i-build', '/work/vora', '/work/prism', '/work/agent-team', '/work/agent-config', '/work/control-center', '/sitemap.xml']) {
     const draft = expected.state==='four-new-drafts' && expected.changed.some((s:string)=>route==='/work/'+s);
     const response = await page.goto(route); expect(response?.status(),route).toBe(draft ? 404 : 200);
-    const html = await response!.text(); if(route!=='/sitemap.xml') expect(html, 'served build identity').toContain(readFileSync('.next/BUILD_ID','utf8').trim()); const rsc = route==='/sitemap.xml' ? null : await page.request.get(route+'?_rsc=source-state', {headers:{RSC:'1'}});
+    const html = await response!.text(); if(route!=='/sitemap.xml') expect(html, 'served build identity').toContain(readFileSync('.next/BUILD_ID','utf8').trim()); const rscUrl=new URL(route,'http://localhost:3100');rscUrl.searchParams.set('_rsc','source-state');
+    const rsc = route==='/sitemap.xml' ? null : await page.request.get(rscUrl.href, {headers:{RSC:'1'}});
+    if(rsc){expect(rsc.status(),rscUrl.href).toBe(draft?404:200);expect(rsc.headers()['content-type']).toContain('text/x-component');}
+    if(route.startsWith('/work?category=')){
+      const category=new URL(route,'http://localhost:3100').searchParams.get('category')!;
+      expect(rscUrl.searchParams.get('category')).toBe(category);
+      const wanted=category==='products'?['vora','chapterhq','site-assistant']:expected.state==='four-new-drafts'?[]:['prism','agent-team','agent-config','control-center'];
+      expect(await page.locator('[data-work-card]').evaluateAll(cards=>cards.map(c=>c.getAttribute('data-work-card')))).toEqual(wanted);
+      // WorkFilters receives the full public DTO in Flight and selects its URL category on the client.
+      const cardSets: {slug:string;category:string}[][]=[];
+      function visit(value:unknown){if(!value||typeof value!=='object')return;const object=value as Record<string,unknown>;if(Array.isArray(object.cards))cardSets.push(object.cards as {slug:string;category:string}[]);for(const child of Object.values(object))visit(child);}
+      for(const line of (await rsc!.text()).split('\n')){try{visit(JSON.parse(line.slice(line.indexOf(':')+1)));}catch{ /* Flight import/text rows are not JSON model rows. */ }}
+      expect(cardSets.length,'Actual Flight model includes WorkFilters card DTO').toBe(1);
+      expect(cardSets[0].filter(card=>card.category===category).map(card=>card.slug)).toEqual(wanted);
+      expect(cardSets[0].map(card=>card.slug)).toEqual(expected.state==='four-new-drafts'?['vora','chapterhq','site-assistant']:['vora','prism','agent-team','agent-config','control-center','chapterhq','site-assistant']);
+      expect(wanted.length).toBe(category==='products'?expected.counts[1]:expected.counts[2]);
+    }
     for(const marker of expected.markers) { expect(html,route).not.toContain(marker); if(rsc) expect(await rsc.text(),route+' RSC').not.toContain(marker); }
     if(route==='/work/vora') {
       await expect(page.locator('[data-case-study-section]')).toHaveCount(richVora?5:0);
@@ -40,8 +58,9 @@ test('fresh isolated source candidate has explicit HTTP body metadata catalog si
       if(selected.metadata) { await expect(page).toHaveTitle(selected.metadata.title); await expect(page.locator('meta[name="description"]')).toHaveAttribute('content',selected.metadata.description); }
       else { await expect(page.locator('meta[name="description"]')).not.toHaveAttribute('content',/Draft .* authored boundary marker/); expect(selected.view.kind).toBe('not-found'); expect(draft).toBe(true); }
     }
-    await info.attach(route.replaceAll('/', '_')+'-html.gz',{body:gzipSync(html),contentType:'application/gzip'});
-    if(rsc) await info.attach(route.replaceAll('/', '_')+'-rsc.gz',{body:gzipSync(await rsc.body()),contentType:'application/gzip'});
+    const name=route.replaceAll('/','_').replaceAll('?','_').replaceAll('=','-');
+    responses.push(await responseArtifact(info,name+'-html',Buffer.from(html),{route,url:response!.url(),status:response!.status(),headers:response!.headers(),request:{method:'GET',resourceType:'document'},buildId}));
+    if(rsc) responses.push(await responseArtifact(info,name+'-rsc',await rsc.body(),{route,url:rsc.url(),status:rsc.status(),headers:rsc.headers(),request:{method:'GET',headers:{RSC:'1'}},buildId}));
     if(route.startsWith('/work/') && !draft && (route!=='/work/vora'||richVora)) {
       const expectedRelated = selectors.related.find((r:{slug:string})=>route==='/work/'+r.slug).links;
       expect(await page.locator('[data-case-study-section="continue"] a.type-display').evaluateAll(links=>links.map(a=>a.getAttribute('href')))).toEqual(expectedRelated.map((link:{destination:string})=>link.destination));
@@ -54,5 +73,5 @@ test('fresh isolated source candidate has explicit HTTP body metadata catalog si
   const chunks=files('.next/static').filter(f=>f.endsWith('.js')); const chunkEvidence=[];
   for(const file of chunks) {const text=readFileSync(file,'utf8'); for(const marker of expected.markers) expect(text,file).not.toContain(marker); chunkEvidence.push({file,sha256:createHash('sha256').update(text).digest('hex')});}
   for(const url of [...expected.removedMedia,...['vora','prism','agent-team','agent-config','control-center'].flatMap(s=>['/lib/work/fixtures/'+s+'.json','/work/'+s+'/fixture.json'])]) { const response=await page.request.get(url); expect(response.status(),url).toBe(404); for(const marker of expected.markers) expect(await response.text(),url).not.toContain(marker); }
-  await info.attach('source-state-proof',{body:JSON.stringify({expected,checks,chunkEvidence},null,2),contentType:'application/json'});
+  await artifact(info,'source-state-proof',{expected,buildId,checks,responses,chunkEvidence});
 });

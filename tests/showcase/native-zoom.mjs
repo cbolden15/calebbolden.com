@@ -1,5 +1,6 @@
+import {installLocalGuard,rejectionProbe} from './network-policy.mjs';
 import { chromium } from '@playwright/test';
-import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
+import { mkdtemp, mkdir, writeFile, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import assert from 'node:assert/strict';
@@ -12,15 +13,14 @@ try {
   await writeFile(path.join(extension, 'manifest.json'), JSON.stringify({manifest_version:3,name:'Showcase native zoom test',version:'1.0',background:{service_worker:'worker.js'},host_permissions:['http://localhost/*']}));
   await writeFile(path.join(extension, 'worker.js'), 'chrome.runtime.onInstalled.addListener(() => {});');
   context = await chromium.launchPersistentContext(path.join(scratch, 'profile'), {channel:'chromium',headless:true,viewport:null,args:['--window-size=1280,900', '--disable-extensions-except='+extension, '--load-extension='+extension],timeout:30000});
-  const blocked = [];
-  await context.route('**/*', route => {
-    const url = new URL(route.request().url()); if (url.origin === 'http://localhost:3100' && !url.pathname.startsWith('/api/')) return route.continue();
-    blocked.push(route.request().url()); return route.abort();
-  });
-  await context.routeWebSocket(/.*/, socket => { blocked.push(socket.url()); socket.close(); });
+  const guard = await installLocalGuard(context);
+  const blocked = guard.unexpected;
   const worker = context.serviceWorkers()[0] ?? await context.waitForEvent('serviceworker', {timeout:15000});
   const page = context.pages()[0] ?? await context.newPage();
   await page.goto('http://localhost:3100/work/vora', {waitUntil:'load', timeout:15000});
+  await rejectionProbe(page);
+  assert.deepEqual(blocked.map(r=>[r.method,r.type]),[['GET','fetch'],['POST','fetch'],['GET','eventsource']]);
+  const syntheticRejections=blocked.slice();
   const measure = () => page.evaluate(() => ({innerWidth,outerWidth,dpr:devicePixelRatio,visualScale:visualViewport?.scale,cssZoom:getComputedStyle(document.body).zoom,scrollWidth:document.documentElement.scrollWidth}));
   const before = await measure();
   const native = await worker.evaluate(async () => {
@@ -73,8 +73,8 @@ try {
     const pixels=await sharp(png).stats(); assert(pixels.channels.some(channel=>channel.stdev>5),'Native screenshot must contain rendered content');
     routes.push({slug,nativeZoom:routeZoom,...layout,captureViewport:viewport});
   }
-  assert.equal(blocked.length,0);
-  const result={routes,method:'Native chrome.tabs.setZoom via disposable Chromium extension; actual final candidate, local-only requests',browser:context.browser()?.version(),native,before,after,blocked};
+  assert.equal(blocked.length,3);
+  const result={applicationSource:'f738fac823e244570171c26d5949bb07aa23e0a9',buildId:(await readFile('.next/BUILD_ID','utf8')).trim(),routes,method:'Native chrome.tabs.setZoom via disposable Chromium extension; actual final candidate, local-only requests',browser:context.browser()?.version(),native,before,after,syntheticRejections,blocked:blocked.slice(3),requests:guard.requests};
   await writeFile(process.env.SHOWCASE_ZOOM_DIR+'/native-zoom.json', JSON.stringify(result,null,2)+'\n');
   console.log(JSON.stringify(result));
 } finally { await context?.close(); await rm(scratch,{recursive:true,force:true}); }

@@ -1,3 +1,5 @@
+import { installLocalGuard } from './network-policy.mjs';
+import { artifact } from './artifacts';
 import { test as base, expect, type BrowserContext, type Page } from '@playwright/test';
 import { build } from 'esbuild';
 import { createRequire } from 'node:module';
@@ -7,27 +9,14 @@ import { join, resolve } from 'node:path';
 
 export { expect };
 export async function localOnly(context: BrowserContext) {
-  const unexpected: string[] = [];
-  await context.route('**/*', route => {
-    const url = new URL(route.request().url());
-    if (['http:', 'https:'].includes(url.protocol) && (url.origin !== 'http://localhost:3100' || url.pathname.startsWith('/api/') || !['GET', 'HEAD'].includes(route.request().method()) || route.request().resourceType() === 'eventsource')) {
-      unexpected.push(`${route.request().method()} ${url.origin}${url.pathname}`);
-      return route.abort('blockedbyclient');
-    }
-    return route.continue();
-  });
-  await context.routeWebSocket(/.*/, socket => {
-    const url = new URL(socket.url());
-    if (process.env.SHOWCASE_SERVER !== 'production' && url.hostname === 'localhost' && url.port === '3100' && url.pathname === '/_next/webpack-hmr') socket.connectToServer();
-    else { unexpected.push(`WebSocket ${url.origin}`); socket.close(); }
-  });
-  return unexpected;
+  return (await installLocalGuard(context, process.env.SHOWCASE_SERVER !== 'production')).unexpected;
 }
 export const test = base.extend<{ networkIsolation: void }>({
-  networkIsolation: [async ({ context }, use) => {
-    const unexpected = await localOnly(context);
+  networkIsolation: [async ({ context }, use, info) => {
+    const guard = await installLocalGuard(context, process.env.SHOWCASE_SERVER !== 'production');
     await use();
-    expect(unexpected, 'No external or API request may leave the browser').toEqual([]);
+    await artifact(info, 'network-isolation', guard);
+    expect(guard.unexpected, 'Only fixed local navigation/framework/static requests are allowed').toEqual([]);
   }, { auto: true }],
 });
 

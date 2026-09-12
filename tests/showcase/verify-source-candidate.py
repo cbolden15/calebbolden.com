@@ -39,6 +39,8 @@ else:
 # No disposal here: the caller inspects the recorded results before releasing this exact owned source.
 
 (evidence/'browser-result.json').write_text(json.dumps({'log':attempt+'.log','results':attempt,'exit':0},indent=2))
+if expected['state']!='shell':
+    run(attempt+'-retained-proof',['python3',str(root/'tests/showcase/verify-retained-proof.py'),str(evidence)])
 
 if expected['state']=='four-new-drafts':
     shutil.copyfile(root/'tests/showcase/draft-development.spec.ts',source/'tests/showcase/draft-development.spec.ts')

@@ -1,5 +1,5 @@
 """Release only a passed, recorded disposable source after preserving compact evidence."""
-import json, pathlib, tempfile, shutil, os, sys, socket
+import json, pathlib, tempfile, shutil, os, sys, socket, subprocess
 folder=pathlib.Path(sys.argv[1]).resolve()
 expected=json.loads((folder/'expectation.json').read_text())
 source=pathlib.Path(expected['scratch'])
@@ -10,6 +10,7 @@ assert (folder/'emitted-client-chunks.tgz').stat().st_size>0
 if expected['state']=='four-new-drafts':
     assert json.loads((folder/'development-result.json').read_text())['exit']==0
     assert '\nEXIT 0\n' in (folder/'development-browser.log').read_text()
+if expected['state']!='shell': subprocess.run(['python3',str(pathlib.Path(__file__).with_name('verify-retained-proof.py')),str(folder)],check=True)
 probe=socket.socket(); probe.settimeout(1)
 assert probe.connect_ex(('localhost',3100))!=0, 'Release the current runtime before source cleanup'
 probe.close()

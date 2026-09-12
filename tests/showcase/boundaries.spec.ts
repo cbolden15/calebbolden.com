@@ -1,3 +1,4 @@
+import {artifact,responseArtifact} from './artifacts';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
@@ -16,17 +17,17 @@ test('approved media bytes MIME signature decode and exact public inventory', as
     const body = await response.body(); expect(createHash('sha256').update(body).digest('hex')).toBe(media.sha256);
     expect(response.headers()['content-type']).toContain('image/webp'); expect(body.subarray(0, 4).toString()).toBe('RIFF'); expect(body.subarray(8, 12).toString()).toBe('WEBP');
     const metadata = await sharp(body).metadata(); await sharp(body).raw().toBuffer(); expect(metadata.width).toBe(media.width); expect(metadata.height).toBe(media.height); expect(body.length).toBeLessThanOrEqual(250000);
-    measured.push({ path: media.path, bytes: body.length, width: metadata.width, height: metadata.height, sha256: media.sha256 });
+    measured.push({ url:response.url(),status:response.status(),headers:response.headers(),path: media.path, bytes: body.length, width: metadata.width, height: metadata.height, sha256: media.sha256 });
   }
   expect(walk('public/work').sort()).toEqual(measured.map(m => m.path).sort());
-  await info.attach('approved-media', { body: JSON.stringify(measured, null, 2), contentType: 'application/json' });
+  await artifact(info,'approved-media',measured);
 });
 
 test('all emitted client chunks exclude authored data, private imports and raw downloads', async ({ page }, info) => {
   test.skip(process.env.SHOWCASE_SERVER !== 'production', 'Production emitted chunks only.');
   const graph = await build({ entryPoints: walk('components/work').filter(file => file.endsWith('.tsx') && readFileSync(file, 'utf8').startsWith("'use client'")), bundle: true, write: false, outdir: '/tmp/showcase-unused-output', metafile: true, loader: { '.css': 'empty' } });
   for (const input of Object.keys(graph.metafile!.inputs)) expect(input).not.toMatch(/lib\/work\/(?:catalog|projects|fixtures)|consulting\/research/);
-  await info.attach('client-import-graph', { body: JSON.stringify(graph.metafile!.inputs), contentType: 'application/json' });
+  await artifact(info,'client-import-graph',graph.metafile!.inputs);
   const files = walk('.next/static').filter(file => file.endsWith('.js'));
   const scanned = [];
   for (const file of files) {
@@ -36,7 +37,7 @@ test('all emitted client chunks exclude authored data, private imports and raw d
     scanned.push({ file, sha256: createHash('sha256').update(body).digest('hex'), bytes: Buffer.byteLength(body) });
   }
   for (const slug of demos.map(d => d.slug)) for (const path of [`/lib/work/fixtures/${slug}.json`, `/work/${slug}/fixture.json`, `/work/${slug}.json`]) expect((await page.request.get(path)).status(), path).toBe(404);
-  await info.attach('every-emitted-client-chunk', { body: JSON.stringify(scanned, null, 2), contentType: 'application/json' });
+  await artifact(info,'every-emitted-client-chunk',scanned);
 });
 
 for (const route of ['/', '/work', '/how-i-build', ...demos.map(d => `/work/${d.slug}`)]) test(`HTML RSC and loaded client fixture isolation ${route}`, async ({ page }, info) => {
@@ -55,5 +56,7 @@ for (const route of ['/', '/work', '/how-i-build', ...demos.map(d => `/work/${d.
     for (const value of Object.values(marker)) expect(body, path).not.toContain(value);
     for (const demo of demos) if (demo.slug !== selected?.slug) expect(body, `${path}: other implementation`).not.toContain(demo.marker);
   }
-  await info.attach('response-boundary', { body: JSON.stringify({ route, htmlBytes: html.length, rscBytes: payload.length, htmlSha256: createHash('sha256').update(html).digest('hex'), rscSha256: createHash('sha256').update(payload).digest('hex'), scripts: files.map(f => f.path) }, null, 2), contentType: 'application/json' });
+  const saved=[];
+  for(const [name,actual] of [['html',response!],['rsc',rsc]] as const) saved.push(await responseArtifact(info,name,await actual.body(),{route,url:actual.url(),status:actual.status(),headers:actual.headers(),request:{method:'GET',rsc:name==='rsc'}}));
+  await artifact(info,'response-boundary',{route,responses:saved,scripts:files.map(f=>({path:f.path,sha256:createHash('sha256').update(f.body).digest('hex')}))});
 });

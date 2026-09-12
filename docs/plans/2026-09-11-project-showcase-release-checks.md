@@ -1,6 +1,6 @@
 # Project showcase local release checks
 
-Evidence content approved September 12, 2026. This records the reviewed local candidate for five portfolio simulations. It does not authorize deployment, external publication, source-product access, or live capture. T11 code review is accepted. T12 local verification is complete; independent T12 and whole-branch review remain pending.
+Evidence content approved September 12, 2026. This records the reviewed local candidate for five portfolio simulations. It does not authorize deployment, external publication, source-product access, or live capture. T11 code review is accepted. T12 independent review found four Important verification gaps. Fix round 1 is in progress; T12 and whole-branch acceptance remain pending.
 
 ## Review authority and exact bytes
 
@@ -139,3 +139,7 @@ All added JavaScript values use complete unique eager-plus-interaction totals ag
 Native visual acceptance uses `/Users/calebbolden/Projects/consulting/.worktrees/calebbolden-showcase/.superpowers/t12/native-metrics` for Vora, Prism, Config and Center, and `/Users/calebbolden/Projects/consulting/.worktrees/calebbolden-showcase/.superpowers/t12/native-p32` for Team. P32 fixes Team’s cramped stage list through intrinsic tracks and stacked button contents; stage data and all approved poster bytes remain unchanged. Earlier capture directories are explicitly rejected/superseded.
 
 Independent T12 full-range and whole-branch reviews remain pending. This record does not authorize publication, push, merge or deployment.
+
+## T12 independent-review correction, September 12, 2026
+
+The preceding completion claim is historical and was rejected by independent review. Complete HTTP/RSC bodies and source-state proofs were not retained by body-only attachments; filtered RSC URLs were malformed; same-origin nonstatic requests were permitted by the guards; and four physical double-click checks were missing. Fix round 1 supplies explicitly written response files, corrected query and payload assertions, strict shared/native request guards, and actual repeated-pointer checks. New runs are separate from the original evidence. T12 acceptance remains pending until corrected verification and independent rereview pass.

@@ -1,3 +1,5 @@
+import {installLocalGuard,rejectionProbe} from './network-policy.mjs';
+import {artifact} from './artifacts';
 import { build } from 'esbuild';
 import { projectRecords } from '../../lib/work/catalog';
 import { test, expect, localOnly } from './helpers';
@@ -194,7 +196,7 @@ test('actual shared enhancement recovers from a rendered child throwing', async 
   await expect(page.locator('#throw-fixture')).toContainText('Interactive controls are unavailable'); await expect(page.locator('#throw-fixture button')).toHaveCount(0);
   await expect(page.locator('[data-demo-shell]')).toBeVisible(); await expect(page.locator('[data-case-study-section="workflow"]')).toBeVisible();
   await page.locator('[data-demo-reload]').click(); await expect(page.locator('main h1')).toHaveText('Vora');
-  await info.attach('framework-diagnostics', { body: JSON.stringify(diagnostics), contentType: 'application/json' });
+  await artifact(info,'framework-diagnostics',diagnostics);
   expect(diagnostics.every(value => value === 'POST /__nextjs_original-stack-frames')).toBe(true);
 });
 
@@ -254,4 +256,52 @@ test('Center attention clears hidden selection and terminal counts preserve samp
   await page.goto('/work/agent-team'); await page.locator('[data-demo-enhancement]').scrollIntoViewIfNeeded();
   const retry=page.locator('[data-demo-enhancement]').getByRole('button',{name:'QA retry',exact:true});
   await retry.focus(); await page.keyboard.press('Space'); await expect(retry).toHaveAttribute('aria-pressed','true');
+});
+
+
+test('strict shared guard rejects actual same-origin nonstatic GET POST and EventSource',async({browser},info)=>{
+  const context=await browser.newContext();const guard=await installLocalGuard(context,process.env.SHOWCASE_SERVER!=='production');
+  try{const page=await context.newPage();await page.goto('http://localhost:3100/work');await rejectionProbe(page);
+    expect(guard.unexpected.map(r=>[r.method,r.type])).toEqual([['GET','fetch'],['POST','fetch'],['GET','eventsource']]);
+    expect(guard.unexpected.every(r=>r.url.startsWith('http://localhost:3100/work?guard-probe='))).toBe(true);
+    await artifact(info,'synthetic-guard-rejections',guard);
+  }finally{await context.close();}
+});
+
+test('Prism physical double-click preserves start event and receipt boundary with focus',async({page},info)=>{
+  const r=await openDemo(page,'prism');const b=(name:string)=>r.getByRole('button',{name,exact:true});
+  await page.evaluate(()=>{(window as unknown as {pointerTargets:unknown[]}).pointerTargets=[];document.addEventListener('mousedown',event=>{const el=event.target as HTMLElement;(window as unknown as {pointerTargets:unknown[]}).pointerTargets.push({tag:el.tagName,text:el.textContent?.slice(0,140)});});});
+  await b('Start example').dblclick();await artifact(info,'prism-double-start-focus',await page.evaluate(()=>({active:{tag:document.activeElement?.tagName,text:document.activeElement?.textContent?.slice(0,140)},targets:(window as unknown as {pointerTargets:unknown[]}).pointerTargets})));await expect(r.getByRole('heading',{name:'Goal accepted',exact:true})).toBeVisible();await expect(page.locator('body')).toBeFocused();
+  const targets=await page.evaluate(()=>(window as unknown as {pointerTargets:{tag:string;text:string}[]}).pointerTargets);expect(targets.map(t=>t.tag)).toEqual(['BUTTON','SECTION']);expect(targets[0].text).toBe('Start example');expect(targets[1].text).toContain('Prompt');
+  await expect(r.getByRole('region',{name:'Prism result'})).toHaveCount(0);await expect(b('Inspect receipt')).toHaveCount(0);
+  for(let n=0;n<8 && !await b('Next event').evaluate(el=>el===document.activeElement);n++)await page.keyboard.press('Tab');
+  await expect(b('Next event')).toBeFocused();await page.keyboard.press('Enter');await expect(r).toContainText('2 of 6');
+  for(let n=0;n<4;n++)await b('Next event').click();await b('Inspect receipt').dblclick();
+  await expect(b('Close receipt')).toHaveCount(1);await expect(b('Next event')).toBeDisabled();
+  await b('Previous event').click();await expect(r).toContainText('5 of 6');await expect(r.locator('h3[tabindex="-1"]')).toBeFocused();await expect(b('Close receipt')).toHaveCount(0);await expect(r.getByRole('region',{name:'Prism result'})).toHaveCount(0);
+  await b('Reset').click();await b('Reset').dblclick();await expect(r.getByRole('heading',{name:'Ready to start',exact:true})).toBeFocused();await expect(b('Next event')).toBeDisabled();
+});
+
+test('Team physical double-click preserves security boundary and focused stage',async({page})=>{
+  const r=await openDemo(page,'agent-team');const b=(name:string)=>r.getByRole('button',{name,exact:true});
+  await b('Security block').dblclick();const stages=r.getByRole('list',{name:'Run stages'}).getByRole('button');
+  await expect(stages.nth(0)).toHaveAttribute('aria-current','step');await stages.nth(2).dblclick();
+  await expect(stages.nth(2)).toHaveAttribute('aria-current','step');await expect(stages.nth(3)).toBeDisabled();await expect(stages.nth(4)).toBeDisabled();await expect(b('Next stage')).toBeDisabled();
+  await expect(r).not.toContainText('draft-pr');await expect(r.locator('[tabindex="-1"]')).toBeFocused();
+});
+
+test('Config physical double-click preserves atomic variant stale and regeneration state',async({page})=>{
+  const r=await openDemo(page,'agent-config');const b=(name:string)=>r.getByRole('button',{name,exact:true});
+  await b('Detailed').dblclick();await expect(b('Detailed')).toBeFocused();await expect(b('Detailed')).toHaveAttribute('aria-pressed','true');
+  await b('Show stale output').dblclick();await expect(r.getByRole('region',{name:'Codex illustrative output'})).toContainText('Out of date');await expect(r.getByRole('region',{name:'Claude Code illustrative output'})).not.toContainText('Out of date');
+  await b('Regenerate example').dblclick();await expect(r).not.toContainText('Out of date');await expect(b('Regenerate example')).toBeDisabled();
+  await b('Reset').dblclick();await expect(b('Reset')).toBeFocused();await expect(b('Brief')).toHaveAttribute('aria-pressed','true');
+});
+
+test('Center physical double-click preserves terminal failure and filter focus',async({page})=>{
+  const r=await openDemo(page,'control-center');const b=(name:string)=>r.getByRole('button',{name,exact:true});
+  await b('Fails').dblclick();await expect(b('Fails')).toBeFocused();await expect(b('Fails')).toHaveAttribute('aria-pressed','true');
+  await b('Show sample run result').dblclick();await expect(r.getByRole('status')).toHaveText('Sample run result: Failed.');await expect(b('Show sample run result')).toBeDisabled();
+  await b('Needs attention').dblclick();await expect(b('Needs attention')).toBeFocused();await expect(b('Needs attention')).toHaveAttribute('aria-pressed','true');await expect(r.getByRole('button',{name:/approve/i})).toHaveCount(0);
+  await b('Reset').dblclick();await expect(b('Reset')).toBeFocused();await expect(r.getByRole('status')).toHaveText('Reset complete. Succeeds, Started, and Show all restored.');
 });
