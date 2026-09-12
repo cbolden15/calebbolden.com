@@ -53,3 +53,8 @@ Build RSC URLs with URL.searchParams so existing category queries survive. Asser
 Same-origin GET is not synonymous with static traffic. A browser guard must distinguish fixed document/framework/static requests from ordinary fetch/XHR/EventSource and mutations, record rejected attempts, and prove rejection with actual browser requests. Use the same test-side policy for shared and native runs.
 
 A physical double-click can target two different elements when click one removes or reflows a control. Capture both pointer targets and the final activeElement. Preserve native pointer behavior, assert state boundaries and reachable keyboard continuation, and check stable repeated controls separately instead of inventing a heading-focus requirement for a second click on nonfocusable content.
+
+
+## Retry Docker archive-transfer failures with an extracted clean context
+
+The showcase archive-through-stdin build failed before compilation with a 341 MB Dockerfile transfer and COMPRESSION_ERROR. The complete final image later built successfully from an owned directory extracted from its recorded Git commit. Preserve the archive/source and Dockerfile hashes, then pass the extracted directory as the build context. A successful small gate image does not verify the complete runner; start the final image and check rendered routes, approved media bytes and raw-fixture 404s. Record the tested platform explicitly.
