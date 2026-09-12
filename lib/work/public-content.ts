@@ -13,7 +13,7 @@ export const projectCardSchema = z.strictObject({
 export type ProjectCard = z.infer<typeof projectCardSchema>;
 export const homepageProofSchema = z.strictObject({
   slug: slugSchema, name: publicTextSchema, summary: publicTextSchema, badge: badgeSchema,
-  destination: z.union([destinationSchema, collectionDestinationSchema]).optional(), links: z.array(publicLinkSchema).optional(),
+  destination: z.union([destinationSchema, collectionDestinationSchema]).optional(), poster: posterSchema.optional(), links: z.array(publicLinkSchema).optional(),
 });
 export type HomepageProof = z.infer<typeof homepageProofSchema>;
 export const relatedProjectLinkSchema = z.strictObject({ slug: slugSchema, name: publicTextSchema, destination: destinationSchema });
@@ -79,6 +79,7 @@ export function projectHomepageProof(input: ProjectRecord, manifest: EvidenceMan
   if (view.kind === 'rich') collectRequiredShowcaseAssets([record], manifest);
   const destination = record.kind === 'collection' ? record.destination : view.kind === 'not-found' ? undefined : view.destination;
   return homepageProofSchema.parse({ slug: record.slug, name: record.name, summary: record.summary, badge: badge(record),
+    ...(view.kind === 'rich' ? { poster: projectPoster(view.body.evidence[0]) } : {}),
     ...(destination ? { destination } : {}), ...(record.links ? { links: projectLinks(record) } : {}) });
 }
 

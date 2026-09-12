@@ -48,6 +48,21 @@ describe('per-surface public projections', () => {
     expect(() => projectCaseStudyShell(richRecord('prism'), { version: 1, snapshots: [] })).toThrow();
   });
 
+  it('homepage proof includes only an approved rich poster and omits it for other states', () => {
+    const rich = richRecord('vora');
+    const home = projectHomepageProof(rich, releaseManifest)!;
+    expect(home.poster).toEqual({ src: '/work/vora/overview.webp', alt: 'Synthetic overview', caption: 'Illustrative sample', width: 1200, height: 800 });
+    expect(JSON.stringify(home)).not.toMatch(/snapshotId|sha256|allowedFields|sourceRevision|walkthroughs|Synthetic vora example/);
+    expect(homepageProofSchema.safeParse({ ...home, poster: { ...home.poster, snapshotId: 'vora-sample' } }).success).toBe(false);
+    expect(() => projectHomepageProof(rich, { version: 1, snapshots: [] })).toThrow(/snapshot/i);
+    const fallback = { ...rich, caseStudy: { publication: 'draft' as const } };
+    expect(projectHomepageProof(fallback, releaseManifest)).not.toHaveProperty('poster');
+    expect(projectHomepageProof({ ...rich, publication: 'draft' }, releaseManifest)).toBeNull();
+    for (const slug of ['vora', 'chapterhq', 'real-estate-maite']) {
+      expect(projectHomepageProof(projectRecords.find(record => record.slug === slug)!, releaseManifest)).not.toHaveProperty('poster');
+    }
+  });
+
   it('both fixture paths parse strict content and project only the selected project', () => {
     vi.stubEnv('NODE_ENV', 'development');
     const content = JSON.stringify({ kind: 'prism', scenarios: [{ id: 'sample', label: 'Sample', steps: ['Inspect'] }, { id: 'other', label: 'Alternative scenario', steps: ['Other'] }] });
@@ -90,5 +105,23 @@ describe('per-surface public projections', () => {
     vi.stubEnv('NODE_ENV', 'development');
     expect(() => projectLocalFixture(sampleBytes.toString(), fixtureSchema, selectScenario, { manifest: releaseManifest, readBytes: () => Buffer.from('changed') })).toThrow(/digest/i);
     expect(() => projectLocalFixture(sampleBytes.toString().replace('Inspect', 'Review'), fixtureSchema, selectScenario, { manifest: releaseManifest, readBytes: readSampleBytes })).toThrow(/digest/i);
+  });
+
+  it('checks schema-valid projected nested fields against the selected snapshot allowlist', () => {
+    const extendedSchema = createFixtureSchema('prism', scenarioSchema.extend({
+      annotation: z.strictObject({ text: z.string() }).optional(),
+    }));
+    const projectScenario = (scenario: z.infer<typeof scenarioSchema>) => ({
+      ...selectScenario(scenario), annotation: { text: 'Optional displayed explanation.' },
+    });
+    const snapshot = structuredClone(releaseManifest.snapshots[1]);
+    const options = { manifest: { version: 1, snapshots: [snapshot] }, snapshotId: snapshot.id,
+      fixturePath: snapshot.fixtures[0].path, schema: extendedSchema, projectScenario, readBytes: readSampleBytes };
+    expect(() => projectApprovedFixture(options)).toThrow(/not approved.*scenarios.annotation/i);
+    snapshot.fixtures[0].allowedFields.push('scenarios.annotation');
+    expect(() => projectApprovedFixture(options)).toThrow(/not approved.*scenarios.annotation.text/i);
+    snapshot.fixtures[0].allowedFields.push('scenarios.annotation.text');
+    expect(projectApprovedFixture(options).scenarios[0].annotation).toEqual({ text: 'Optional displayed explanation.' });
+    expect(projectApprovedFixture(options).provenance.kind).toBe('approved');
   });
 });

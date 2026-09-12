@@ -69,5 +69,6 @@ export function projectApprovedFixture<T extends FixtureContent, R>(options: {
   if (asset.path !== `lib/work/fixtures/${content.kind}.json`) throw new Error('Fixture kind and approved path disagree');
   assertAllowedFields(content, new Set(asset.allowedFields));
   const selected = projectFixtureContent(content, options.schema, options.projectScenario);
+  assertAllowedFields(selected, new Set(asset.allowedFields));
   return { kind: selected.kind, scenarios: selected.scenarios, provenance: projectSnapshotMetadata(snapshot) };
 }
