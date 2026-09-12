@@ -39,6 +39,9 @@ try {
   const routes = [];
   for (const slug of ['vora','prism','agent-team','agent-config','control-center']) {
     await page.goto('http://localhost:3100/work/'+slug, {waitUntil:'networkidle'});
+    // Native per-tab zoom resets on a full navigation. Set and verify it on each actual page.
+    const routeZoom = await worker.evaluate(async () => { const [tab] = await chrome.tabs.query({url:'http://localhost/*'}); await chrome.tabs.setZoom(tab.id,2); return chrome.tabs.getZoom(tab.id); });
+    assert.equal(routeZoom,2); await page.waitForFunction(() => innerWidth===640);
     await page.addStyleTag({content:'html,body{overflow-x:visible!important}'});
     await page.locator('[data-demo-enhancement]').scrollIntoViewIfNeeded();
     const controls = page.locator('[data-demo-enhancement] button'); await controls.first().waitFor();
@@ -49,7 +52,7 @@ try {
     await page.locator('[data-demo-enhancement]').getByRole('button',{name:'Reset',exact:true}).click();
     const layout = await measure(); assert.equal(layout.scrollWidth,layout.innerWidth); assert.equal(layout.outerWidth,before.outerWidth);
     await page.screenshot({path:process.env.SHOWCASE_ZOOM_DIR+'/'+slug+'-native200.png'});
-    routes.push({slug,...layout});
+    routes.push({slug,nativeZoom:routeZoom,...layout});
   }
   assert.equal(blocked.length,0);
   const result={routes,method:'Native chrome.tabs.setZoom via disposable Chromium extension; actual final candidate, local-only requests',browser:context.browser()?.version(),native,before,after,blocked};

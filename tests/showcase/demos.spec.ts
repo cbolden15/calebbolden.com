@@ -190,3 +190,42 @@ test('actual shared enhancement recovers from a rendered child throwing', async 
   await expect(page.locator('[data-demo-shell]')).toBeVisible(); await expect(page.locator('[data-case-study-section="workflow"]')).toBeVisible();
   await page.locator('[data-demo-reload]').click(); await expect(page.locator('main h1')).toHaveText('Vora');
 });
+
+test('Reset directly clears every Vora phase, open Prism receipt, stale Config output and Center selection', async ({ page }) => {
+  let r = await openDemo(page, 'vora');
+  const click = (name: string) => r.getByRole('button', { name, exact: true }).click();
+  for (const outcome of ['Succeeds', 'Fails']) for (const phase of ['request','pending','approved','rejected','result']) {
+    await click(outcome);
+    if(phase!=='request') await click('Review proposed action');
+    if(['approved','result'].includes(phase)) await click('Approve example');
+    if(phase==='rejected') await click('Reject example');
+    if(phase==='result') await click('Show sample result');
+    await click('Reset'); await expect(r.getByRole('heading',{name:'Request received',exact:true})).toBeFocused();
+    await expect(r.getByRole('button',{name:'Succeeds',exact:true})).toHaveAttribute('aria-pressed','true');
+  }
+  r = await openDemo(page,'prism'); await completeDemo(r,'prism'); await click('Reset');
+  await expect(r.getByRole('heading',{name:'Ready to start'})).toBeFocused(); await expect(r.getByRole('region',{name:'Prism result'})).toHaveCount(0);
+  await expect(r.getByRole('button',{name:'Close receipt',exact:true})).toHaveCount(0);
+  r = await openDemo(page,'agent-config');
+  for(const variant of ['Brief','Detailed']) { await click(variant); await click('Show stale output'); await click('Reset'); await expect(r).not.toContainText('Out of date'); await expect(r.getByRole('button',{name:'Brief',exact:true})).toHaveAttribute('aria-pressed','true'); }
+  r = await openDemo(page,'control-center');
+  for(const scenario of ['Succeeds','Fails']) for(const filter of ['Show all','Needs attention']) {
+    await click(scenario); await click(filter); await r.getByRole('button',{name:/demo-console\.example/}).click(); await click('Reset');
+    await expect(r.locator('[data-center-state]')).toHaveText('Succeeds, Started, Show all: 1 run and 1 decision visible.');
+    await expect(r.getByRole('region',{name:'demo-console.example deployment detail'})).toHaveCount(0);
+  }
+});
+
+test('Team stage details reset at every reachable stage and retry history retains failed assertion debugger change and pass', async ({ page }) => {
+  const r=await openDemo(page,'agent-team');
+  for(const scenario of ['Passes review','QA retry','Security block']) for(let stage=0;stage<(scenario==='Security block'?3:5);stage++) {
+    await r.getByRole('button',{name:scenario,exact:true}).click();
+    await r.getByRole('list',{name:'Run stages'}).getByRole('button').nth(stage).click();
+    await r.getByRole('button',{name:'Show stage details',exact:true}).click();
+    await expect(r.getByRole('heading',{name:'Stage details',exact:true})).toBeVisible();
+    if(scenario==='QA retry'&&stage===4) { const history=r.getByRole('heading',{name:'Retained QA attempt history'}).locator('..'); await expect(history).toContainText('fail'); await expect(history).toContainText('pass'); await expect(history).toContainText('Change:'); }
+    await r.getByRole('button',{name:'Reset',exact:true}).click();
+    await expect(r.getByRole('heading',{name:'Stage details',exact:true})).toHaveCount(0);
+    await expect(r.getByRole('heading',{name:'Task',exact:true})).toBeFocused();
+  }
+});
